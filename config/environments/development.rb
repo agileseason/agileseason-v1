@@ -1,5 +1,6 @@
 Rails.application.configure do
-  # Settings specified here will take precedence over those in config/application.rb.
+  ENV['GITHUB_CLIENT_ID'] ||= '6b8a90342be7cb5e8bca'
+  ENV['GITHUB_CLIENT_SECRET'] ||= '015912776fbfb6c9e7e18f23a4d5a3cb0595b083'
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
