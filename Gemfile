@@ -7,6 +7,7 @@ gem 'compass-rails'
 gem 'enumerize'
 gem 'jbuilder', '~> 2.0'
 gem 'jquery-rails'
+gem 'omniauth-github'
 gem 'rails', '4.1.7'
 gem 'sass-rails'
 gem 'simple_form'
@@ -22,7 +23,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'meta_request'
   gem 'quiet_assets'
-  gem 'rack-mini-profiler'
+  #gem 'rack-mini-profiler'
   gem 'spring'
 end
 

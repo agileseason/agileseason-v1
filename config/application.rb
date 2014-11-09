@@ -25,6 +25,7 @@ module Agileseason
       g.helper false
       g.helper_specs false
       g.stylesheets false
+      g.javascripts false
       g.template_engine :slim
       g.test_framework :rspec
       g.view_specs false
