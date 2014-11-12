@@ -38,6 +38,7 @@ class SessionsController < ApplicationController
 
   def destroy_session
     session[:remember_token] = nil
+    session[:github_token] = nil
   end
 
   def github_username
