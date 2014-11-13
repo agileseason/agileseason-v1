@@ -1,2 +1,7 @@
 h1 Boards#new
-p Find me in app/views/boards/new.html.slim
+= simple_form_for(@board) do |f|
+  = f.input :name
+  = f.collection_radio_buttons :type, [['Board::KanbanBoard', 'Kanban'], ['Board::ScrumBoard', 'Scrum']], :first, :last
+  = f.button :submit, value: 'Create'
+
+a href="#{repos_url}" Cancel

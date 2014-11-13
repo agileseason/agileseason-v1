@@ -1,4 +1,4 @@
 li
   span.title = repo.full_name
   span.actions
-    a.create_board href="#{new_board_url}" [Create Board]
+    a.create_board href="#{new_board_url({github_id: repo.id})}" [Create Board]

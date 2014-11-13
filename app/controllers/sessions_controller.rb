@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   def create
     user = find_user || create_user
     create_session_for(user)
-    redirect_to repos_url
+    redirect_to boards_url
   end
 
   def destroy
