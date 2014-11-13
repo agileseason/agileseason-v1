@@ -5,8 +5,8 @@ class ReposController < ApplicationController
 
 private
   def current_user_repos
-    return [] unless session[:github_token]
-    client = Octokit::Client.new(access_token: session[:github_token])
-    client.repositories
+    return [] unless github_token
+    api = GithubApi.new(github_token)
+    api.repos
   end
 end
