@@ -1,7 +1,8 @@
 h1 Boards#new
 = simple_form_for(@board) do |f|
+  = f.input :github_id, as: :hidden
   = f.input :name
-  = f.collection_radio_buttons :type, [['Board::KanbanBoard', 'Kanban'], ['Board::ScrumBoard', 'Scrum']], :first, :last
+  = f.collection_radio_buttons :type, [['Boards::KanbanBoard', 'Kanban'], ['Boards::ScrumBoard', 'Scrum']], :first, :last
   = f.button :submit, value: 'Create'
 
 a href="#{repos_url}" Cancel

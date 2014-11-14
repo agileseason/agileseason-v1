@@ -1,3 +1,3 @@
-class Boards::ScrumBoard < ActiveRecord::Base
+class Boards::ScrumBoard < Board
 
 end

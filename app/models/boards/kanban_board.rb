@@ -1,3 +1,3 @@
-class Boards::KanbanBoard < ActiveRecord::Base
+class Boards::KanbanBoard < Board
 
 end
