@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   resources :repos, only: [:index]
-  resources :boards, only: [:index, :new, :create]
+  resources :boards, only: [:index, :new, :create, :show]
 
   get '/auth/github/callback', to: 'sessions#create'
   get '/sign_out', to: 'sessions#destroy'

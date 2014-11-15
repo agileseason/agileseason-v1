@@ -1,0 +1,8 @@
+h1 Board#show
+
+h2 = @board.name
+
+.columns
+  - @board.columns.each do |column|
+      .column
+        .title = column.name

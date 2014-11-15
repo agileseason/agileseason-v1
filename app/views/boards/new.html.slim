@@ -3,6 +3,10 @@ h1 Boards#new
   = f.input :github_id, as: :hidden
   = f.input :name
   = f.collection_radio_buttons :type, [['Boards::KanbanBoard', 'Kanban'], ['Boards::ScrumBoard', 'Scrum']], :first, :last
+  ul.columns
+    - ['Backlog', 'To do', 'In progress', 'Test', 'Done', '', '', '', ''].each do |column|
+      li
+        = text_field_tag :name, column, name: 'board[column][name][]'
   = f.button :submit, value: 'Create'
 
 a href="#{repos_url}" Cancel
