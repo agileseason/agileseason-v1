@@ -11,7 +11,7 @@ class BoardsController < ApplicationController
   end
 
   def new
-    repo = GithubApi.new(github_token).cached_repos.select{ |r| r.id == params[:github_id].to_i }.first
+    repo = GithubApi.new(github_token).cached_repos.select { |r| r.id == params[:github_id].to_i }.first
     @board = Board.new(name: repo.name, github_id: repo.id)
   end
 
