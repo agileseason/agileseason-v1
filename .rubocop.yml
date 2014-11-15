@@ -166,7 +166,7 @@ Style/Documentation:
 Style/DotPosition:
   Description: 'Checks the position of the dot in multi-line method calls.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#consistent-multi-line-chains'
-  Enabled: true
+  Enabled: false
 
 Style/DoubleNegation:
   Description: 'Checks for uses of double negation (!!).'
