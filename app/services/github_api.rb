@@ -4,8 +4,6 @@ require 'active_support/core_ext/object/with_options'
 
 class GithubApi
   SERVICES_TEAM_NAME = 'Services'
-  # TODO : remove if not required (maybe deprecated in octokit) @blackchestnut
-  #PREVIEW_MEDIA_TYPE = ::Octokit::Client::Organizations::ORG_INVITATIONS_PREVIEW_MEDIA_TYPE
 
   def initialize(token)
     @token = token
@@ -17,6 +15,19 @@ class GithubApi
 
   def repos
     user_repos + org_repos
+  end
+
+  def cached_repos
+    Rails.cache.fetch([@token, :repos], expires_in: 5.minutes) { repos }
+  end
+
+  def sync_labels(board)
+    repo_id = repo(board.github_id).id
+    labels = client.labels(repo_id).map(&:name)
+    missing_columns = board.columns.select { |column| column unless labels.include?(column.label_name) }
+    missing_columns.each do |column|
+      client.add_label(repo_id, column.label_name, column.color)
+    end
   end
 
   def add_user_to_repo(username, repo_name)
@@ -96,20 +107,6 @@ class GithubApi
   def user_teams
     client.user_teams
   end
-
-  # TODO : remove if not required @blackchestnut
-  #def accept_pending_invitations
-    #with_preview_client do |preview_client|
-      #pending_memberships =
-        #preview_client.organization_memberships(state: 'pending')
-      #pending_memberships.each do |pending_membership|
-        #preview_client.update_organization_membership(
-          #pending_membership['organization']['login'],
-          #state: 'active'
-        #)
-      #end
-    #end
-  #end
 
   private
 
@@ -219,8 +216,4 @@ class GithubApi
     end
   end
 
-  # TODO : remove if not required @blackchestnut
-  #def with_preview_client(&block)
-    #client.with_options(accept: PREVIEW_MEDIA_TYPE, &block)
-  #end
 end

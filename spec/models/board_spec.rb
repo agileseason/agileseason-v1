@@ -5,5 +5,6 @@ RSpec.describe Board, :type => :model do
     subject { Board.new }
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :type }
+    it { is_expected.to validate_presence_of :columns }
   end
 end

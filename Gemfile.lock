@@ -263,7 +263,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   meta_request
-  octokit (~> 3.0)
+  octokit (~> 3.5.2)
   omniauth-github
   quiet_assets
   rails (= 4.1.7)
