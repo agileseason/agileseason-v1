@@ -1,8 +1,13 @@
 require 'octokit'
 require 'base64'
 require 'active_support/core_ext/object/with_options'
+require 'github_api/repos'
+require 'github_api/labels'
 
 class GithubApi
+  include GithubApi::Repos
+  include GithubApi::Labels
+
   SERVICES_TEAM_NAME = 'Services'
 
   def initialize(token)
@@ -13,23 +18,6 @@ class GithubApi
     @client ||= Octokit::Client.new(access_token: @token, auto_paginate: true)
   end
 
-  def repos
-    user_repos + org_repos
-  end
-
-  def cached_repos
-    Rails.cache.fetch([@token, :repos], expires_in: 5.minutes) { repos }
-  end
-
-  def sync_labels(board)
-    repo_id = repo(board.github_id).id
-    labels = client.labels(repo_id).map(&:name)
-    missing_columns = board.columns.select { |column| column unless labels.include?(column.label_name) }
-    missing_columns.each do |column|
-      client.add_label(repo_id, column.label_name, column.color)
-    end
-  end
-
   def add_user_to_repo(username, repo_name)
     repo = repo(repo_name)
 
@@ -38,10 +26,6 @@ class GithubApi
     else
       client.add_collaborator(repo.full_name, username)
     end
-  end
-
-  def repo(repo_name)
-    client.repository(repo_name)
   end
 
   def add_comment(options)
@@ -170,19 +154,6 @@ class GithubApi
     end
   end
 
-  def user_repos
-    repos = paginate { |page| client.repos(nil, page: page) }
-    authorized_repos(repos)
-  end
-
-  def org_repos
-    repos = orgs.flat_map do |org|
-      paginate { |page| client.org_repos(org[:login], page: page) }
-    end
-
-    authorized_repos(repos)
-  end
-
   def paginate
     page = 1
     results = []
@@ -200,14 +171,6 @@ class GithubApi
     end
 
     results
-  end
-
-  def orgs
-    client.orgs
-  end
-
-  def authorized_repos(repos)
-    repos.select { |repo| repo.permissions.admin }
   end
 
   def team_exists_exception?(exception)
