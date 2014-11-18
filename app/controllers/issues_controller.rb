@@ -15,7 +15,7 @@ class IssuesController < ApplicationController
     end
   end
 
-private
+  private
 
   def issue_params
     params

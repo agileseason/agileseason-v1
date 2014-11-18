@@ -6,7 +6,7 @@ FactoryGirl.define do
     type ""
   end
 
-  factory :board_with_columns do
+  factory :board_with_columns, parent: :board do
     after(:build) do |user, evaluator|
       columns [build(:column, board: self)]
     end

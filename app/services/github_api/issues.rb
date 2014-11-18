@@ -17,7 +17,8 @@ class GithubApi
       client.create_issue(board.github_id, issue.title, full_body, { labels: column.label_name })
     end
 
-  private
+    private
+
     def hidden_track(column)
       hidden_content({
         track_stats: {
