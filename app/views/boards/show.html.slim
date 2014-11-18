@@ -6,3 +6,9 @@ h2 = @board.name
   - @board.columns.each do |column|
       .column
         .title = column.name
+        .issues
+          - @issues[column.label_name].each do |issue|
+              .issue
+                .title = issue.title
+                .url
+                  a href="#{issue.html_url}" target='_blank' #{issue.number}
