@@ -2,6 +2,9 @@ h1 Board#show
 
 h2 = @board.name
 
+.actions
+  a href="#{new_board_issues_url(@board)}" New issue
+
 .columns
   - @board.columns.each do |column|
       .column

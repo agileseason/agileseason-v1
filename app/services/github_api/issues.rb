@@ -10,5 +10,9 @@ class GithubApi
       end
       board_labels
     end
+
+    def create_issue(board, issue)
+      client.create_issue(board.github_id, issue.title, issue.body, { labels: board.columns.first.label_name })
+    end
   end
 end
