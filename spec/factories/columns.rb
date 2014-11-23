@@ -4,6 +4,6 @@ FactoryGirl.define do
   factory :column do
     name "MyString"
     color "MyString"
-    baord nil
+    board nil
   end
 end

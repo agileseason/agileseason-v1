@@ -8,17 +8,18 @@ class BoardsController < ApplicationController
 
   def show
     @board = current_user.boards.find(params[:id])
+    @issues = github_api.board_issues(@board)
   end
 
   def new
-    repo = GithubApi.new(github_token).cached_repos.select { |r| r.id == params[:github_id].to_i }.first
+    repo = github_api.cached_repos.select { |r| r.id == params[:github_id].to_i }.first
     @board = Board.new(name: repo.name, github_id: repo.id)
   end
 
   def create
     @board = current_user.boards.new(board_params)
     @board.columns << build_columns
-    GithubApi.new(github_token).sync_labels(@board)
+    github_api.sync_labels(@board)
 
     if @board.save
       redirect_to boards_url

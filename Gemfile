@@ -18,6 +18,7 @@ gem 'sqlite3'
 gem 'state_machine'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
+gem 'virtus'
 
 group :development do
   gem 'better_errors'

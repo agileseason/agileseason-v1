@@ -1,12 +1,11 @@
 require 'octokit'
 require 'base64'
 require 'active_support/core_ext/object/with_options'
-require 'github_api/repos'
-require 'github_api/labels'
 
 class GithubApi
   include GithubApi::Repos
   include GithubApi::Labels
+  include GithubApi::Issues
 
   SERVICES_TEAM_NAME = 'Services'
 
