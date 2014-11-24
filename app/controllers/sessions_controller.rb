@@ -25,7 +25,7 @@ class SessionsController < ApplicationController
   def create_user
     user = User.create!(
       github_username: github_username,
-      email: github_email_address
+      email: github_email_address,
     )
     flash[:signed_up] = true
     user
