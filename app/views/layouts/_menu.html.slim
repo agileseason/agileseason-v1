@@ -1,0 +1,7 @@
+ul.menu
+  li.logo Agile Season
+  /li.debug github_token:#{github_token} remember_token:#{session[:remember_token]} user_id:#{current_user.id}
+  li.repos : a href="#{repos_url}" Repositories
+  li.boars : a href="#{boards_url}" Boards
+  li.user = current_user
+  li.exit : a href="#{sign_out_url}" Exit
