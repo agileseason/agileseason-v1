@@ -12,6 +12,12 @@ h2 = @board.name
         .issues
           - @issues[column.label_name].each do |issue|
               .issue
-                .title = issue.title
-                .url
-                  a href="#{issue.html_url}" target='_blank' #{issue.number}
+                .header
+                  a.url href="#{issue.html_url}" target='_blank' ##{issue.number}
+                  .title = issue.title
+                .body
+                  .move_to
+                    .title Move To
+                    ul.columns
+                      - @board.columns.each do |column|
+                        li: a href="#{move_to_column_board_issues_url(@board, issue.number, column)}" = column.name
