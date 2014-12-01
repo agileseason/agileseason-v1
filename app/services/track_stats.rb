@@ -19,7 +19,7 @@ class TrackStats
     private
 
     def init_track_hash
-      { track_stats: { columns: { } } }
+      { track_stats: { columns: {} } }
     end
   end
 end
