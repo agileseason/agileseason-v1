@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.1.3'
 
+gem 'awesome_print'
 gem 'coffee-rails'
 gem 'compass-rails'
 gem 'enumerize'
