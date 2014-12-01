@@ -1,7 +1,7 @@
 class TrackStats
   class << self
-    def track(column_id, hash=init_track_hash)
-      hash[:track_stats][:columns].each do |key, value|
+    def track(column_id, hash = init_track_hash)
+      hash[:track_stats][:columns].each do |_key, value|
         value[:out_at] = Time.current.to_s unless value[:out_at]
       end
 
