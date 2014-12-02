@@ -276,6 +276,7 @@ DEPENDENCIES
   database_cleaner
   enumerize
   factory_girl_rails
+  guard
   guard-rspec
   jbuilder (~> 2.0)
   jquery-rails
