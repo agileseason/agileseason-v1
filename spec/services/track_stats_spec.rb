@@ -31,7 +31,7 @@ describe TrackStats do
       let(:hash) { { track_stats: { columns: { column_id_1 => { in_at: (current - 1.minute).to_s, out_at: nil } } } } }
       subject { TrackStats.track(column_id_2, hash) }
 
-      it { is_expected.to eq "\n<!---\n@agileseason:{:track_stats=>{:columns=>{#{column_id_1}=>{:in_at=>\"2014-11-18 23:59:00 +0300\", :out_at=>\"#{current}\"}, 22=>{:in_at=>\"#{current}\", :out_at=>nil}}}}\n-->" }
+      it { is_expected.to eq "\n<!---\n@agileseason:{:track_stats=>{:columns=>{#{column_id_1}=>{:in_at=>\"#{current - 1.minute}\", :out_at=>\"#{current}\"}, 22=>{:in_at=>\"#{current}\", :out_at=>nil}}}}\n-->" }
     end
 
     context :thrid_column_track do
