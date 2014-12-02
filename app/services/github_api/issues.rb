@@ -1,11 +1,10 @@
 class GithubApi
   module Issues
     def board_issues(board)
-      labels = board.columns.map(&:label_name)
       issues = client.issues(board.github_id)
-      board_labels = labels.inject({}) { |mem, e| mem[e] = []; mem }
+      board_labels = board.github_labels.inject({}) { |mem, e| mem[e] = []; mem }
       issues.each do |issue|
-        label = issue.labels.find { |e| labels.include?(e.name) }
+        label = issue.labels.find { |e| board_labels.keys.include?(e.name) }
         board_labels[label.name] << issue if label
       end
       board_labels
@@ -25,7 +24,7 @@ class GithubApi
       issue = client.issue(board.github_id, number)
       /(.*)\n<!---\s@agileseason:(.*)\s-->(.*)/im =~ issue.body
       hash = eval($2)
-      labels = issue.labels.map(&:name) - board.columns.map(&:label_name) << column.label_name
+      labels = issue.labels.map(&:name) - board.github_labels << column.label_name
       body = "#{$1}#{TrackStats.track(column.id, hash)}#{$3}"
       client.update_issue(board.github_id, number, issue.title, body, { labels: labels })
     end

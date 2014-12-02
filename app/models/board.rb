@@ -5,4 +5,8 @@ class Board < ActiveRecord::Base
   validates :name, presence: true
   validates :type, presence: true
   validates :columns, presence: true
+
+  def github_labels
+    columns.map(&:label_name)
+  end
 end
