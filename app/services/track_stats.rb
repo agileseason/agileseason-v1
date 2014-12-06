@@ -17,8 +17,8 @@ class TrackStats
     end
 
     def extract(body)
-      /(.*)\n<!---\s@agileseason:(.*)\s-->(.*)/im =~ body
-      { comment: $1, hash: JSON.parse($2).with_indifferent_access, end: $3 }
+      /(?<comment>.*)\n<!---\s@agileseason:(?<hash>.*)\s-->(?<tail>.*)/im =~ body
+      { comment: comment, hash: JSON.parse(hash).with_indifferent_access, tail: tail }
     end
 
     private

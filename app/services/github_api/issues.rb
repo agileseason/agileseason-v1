@@ -25,7 +25,7 @@ class GithubApi
       labels = issue.labels.map(&:name) - board.github_labels << column.label_name
       data = TrackStats.extract(issue.body)
       body = full_body(data[:comment], column, data[:hash])
-      client.update_issue(board.github_id, number, issue.title, body, { labels: labels })
+      client.update_issue(board.github_id, number, issue.title, body, labels: labels)
     end
 
     private

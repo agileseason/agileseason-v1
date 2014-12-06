@@ -62,7 +62,7 @@ describe TrackStats do
       let(:hash) { {} }
       it { expect(subject[:comment]).to be_empty }
       it { expect(subject[:hash]).to eq hash }
-      it { expect(subject[:end]).to be_empty }
+      it { expect(subject[:tail]).to be_empty }
     end
 
     context :by_symbol do
