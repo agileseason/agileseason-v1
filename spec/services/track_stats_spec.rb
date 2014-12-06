@@ -50,7 +50,7 @@ describe TrackStats do
       end
       subject { TrackStats.track(column_id_3, hash) }
 
-      it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"21\":{\"in_at\":\"2014-11-18 23:58:00 +0300\",\"out_at\":\"2014-11-18 23:59:00 +0300\"},\"22\":{\"in_at\":\"2014-11-18 23:59:00 +0300\",\"out_at\":\"2014-11-19 00:00:00 +0300\"},\"23\":{\"in_at\":\"2014-11-19 00:00:00 +0300\",\"out_at\":null}}}}\n-->" }
+      it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"21\":{\"in_at\":\"#{current - 2.minute}\",\"out_at\":\"#{current - 1.minute}\"},\"22\":{\"in_at\":\"#{current - 1.minute}\",\"out_at\":\"#{current}\"},\"23\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
     end
   end
 
