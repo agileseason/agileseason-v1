@@ -31,7 +31,7 @@ group :development do
   gem 'spring'
 end
 
-group :test, :development do
+group :development, :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
@@ -42,4 +42,8 @@ group :test, :development do
   gem 'rspec-rails'
   gem 'shoulda'
   gem 'shoulda-matchers'
+end
+
+group :test do
+  gem "codeclimate-test-reporter", require: nil
 end
