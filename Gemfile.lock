@@ -51,6 +51,8 @@ GEM
     celluloid (0.16.0)
       timers (~> 4.0.0)
     chunky_png (1.3.3)
+    codeclimate-test-reporter (0.4.3)
+      simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
@@ -72,6 +74,7 @@ GEM
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.2.5)
+    docile (1.1.5)
     enumerize (0.8.0)
       activesupport (>= 3.2)
     equalizer (0.0.9)
@@ -221,6 +224,11 @@ GEM
     simple_form (3.0.2)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
+    simplecov (0.9.1)
+      docile (~> 1.1.0)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.8.0)
+    simplecov-html (0.8.0)
     slim (2.1.0)
       temple (~> 0.6.9)
       tilt (>= 1.3.3, < 2.1)
@@ -271,6 +279,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   capybara
+  codeclimate-test-reporter
   coffee-rails
   compass-rails
   database_cleaner
