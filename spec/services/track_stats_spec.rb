@@ -10,7 +10,7 @@ describe TrackStats do
 
     context :not_empty do
       let(:hash) { { track_stats: { column: 1 } } }
-      it { is_expected.to eq "\n<!---\n@agileseason:{:track_stats=>{:column=>1}}\n-->" }
+      it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"column\":1}}\n-->" }
     end
   end
 
@@ -22,7 +22,7 @@ describe TrackStats do
       subject { TrackStats.track(column_id) }
       let(:column_id) { 21 }
 
-      it { is_expected.to eq "\n<!---\n@agileseason:{:track_stats=>{:columns=>{#{column_id}=>{:in_at=>\"#{current}\", :out_at=>nil}}}}\n-->" }
+      it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
     end
 
     context :second_column_track do
@@ -31,7 +31,7 @@ describe TrackStats do
       let(:hash) { { track_stats: { columns: { column_id_1 => { in_at: (current - 1.minute).to_s, out_at: nil } } } } }
       subject { TrackStats.track(column_id_2, hash) }
 
-      it { is_expected.to eq "\n<!---\n@agileseason:{:track_stats=>{:columns=>{#{column_id_1}=>{:in_at=>\"#{current - 1.minute}\", :out_at=>\"#{current}\"}, 22=>{:in_at=>\"#{current}\", :out_at=>nil}}}}\n-->" }
+      it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{column_id_1}\":{\"in_at\":\"#{current - 1.minute}\",\"out_at\":\"#{current}\"},\"22\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
     end
 
     context :thrid_column_track do
@@ -50,7 +50,24 @@ describe TrackStats do
       end
       subject { TrackStats.track(column_id_3, hash) }
 
-      it { is_expected.to eq "\n<!---\n@agileseason:{:track_stats=>{:columns=>{#{column_id_1}=>{:in_at=>\"#{current - 2.minute}\", :out_at=>\"#{current - 1.minute}\"}, #{column_id_2}=>{:in_at=>\"#{current - 1.minute}\", :out_at=>\"#{current}\"}, #{column_id_3}=>{:in_at=>\"#{current}\", :out_at=>nil}}}}\n-->" }
+      it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"21\":{\"in_at\":\"2014-11-18 23:58:00 +0300\",\"out_at\":\"2014-11-18 23:59:00 +0300\"},\"22\":{\"in_at\":\"2014-11-18 23:59:00 +0300\",\"out_at\":\"2014-11-19 00:00:00 +0300\"},\"23\":{\"in_at\":\"2014-11-19 00:00:00 +0300\",\"out_at\":null}}}}\n-->" }
+    end
+  end
+
+  describe '.extract' do
+    subject { TrackStats.extract(body) }
+
+    context :empty do
+      let(:body) { "\n<!---\n@agileseason:{}\n-->" }
+      let(:hash) { {} }
+      it { expect(subject[:comment]).to be_empty }
+      it { expect(subject[:hash]).to eq hash }
+      it { expect(subject[:end]).to be_empty }
+    end
+
+    context :by_symbol do
+      let(:body) { "\n<!---\n@agileseason:{\"x\":\"1\"}\n-->" }
+      it { expect(subject[:hash][:x]).to eq "1" }
     end
   end
 end

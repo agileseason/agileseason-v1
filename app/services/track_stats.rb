@@ -13,7 +13,12 @@ class TrackStats
     end
 
     def hidden_content(hash)
-      "\n<!---\n@agileseason:#{hash}\n-->"
+      "\n<!---\n@agileseason:#{hash.to_json}\n-->"
+    end
+
+    def extract(body)
+      /(.*)\n<!---\s@agileseason:(.*)\s-->(.*)/im =~ body
+      { comment: $1, hash: JSON.parse($2).with_indifferent_access, end: $3 }
     end
 
     private
