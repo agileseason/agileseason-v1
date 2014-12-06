@@ -26,6 +26,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'guard'
   gem 'meta_request'
+  gem 'pry-rails'
   gem 'quiet_assets'
   #gem 'rack-mini-profiler'
   gem 'spring'
