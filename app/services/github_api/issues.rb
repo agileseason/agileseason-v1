@@ -13,7 +13,7 @@ class GithubApi
     def create_issue(board, issue)
       column = board.columns.first
       body = full_body(issue.body, column)
-      client.create_issue(board.github_id, issue.title, body, { labels: column.label_name })
+      client.create_issue(board.github_id, issue.title, body, labels: column.label_name)
     end
 
     def issue(board, number)
