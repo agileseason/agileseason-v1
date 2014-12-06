@@ -12,8 +12,8 @@ class GithubApi
 
     def create_issue(board, issue)
       column = board.columns.first
-      full_body = issue.body + TrackStats.track(column.id)
-      client.create_issue(board.github_id, issue.title, full_body, { labels: column.label_name })
+      body = full_body(issue.body, column)
+      client.create_issue(board.github_id, issue.title, body, labels: column.label_name)
     end
 
     def issue(board, number)
@@ -22,11 +22,17 @@ class GithubApi
 
     def move_to(board, column, number)
       issue = client.issue(board.github_id, number)
-      /(.*)\n<!---\s@agileseason:(.*)\s-->(.*)/im =~ issue.body
-      hash = eval($2)
       labels = issue.labels.map(&:name) - board.github_labels << column.label_name
-      body = "#{$1}#{TrackStats.track(column.id, hash)}#{$3}"
-      client.update_issue(board.github_id, number, issue.title, body, { labels: labels })
+      data = TrackStats.extract(issue.body)
+      body = full_body(data[:comment], column, data[:hash])
+      client.update_issue(board.github_id, number, issue.title, body, labels: labels)
+    end
+
+    private
+
+    def full_body(body, column, hash = nil)
+      track_data = hash ? TrackStats.track(column.id, hash) : TrackStats.track(column.id)
+      body + track_data
     end
   end
 end
