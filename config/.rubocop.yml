@@ -229,7 +229,7 @@ Style/EvenOdd:
 Style/FileName:
   Description: 'Use snake_case for source file names.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#snake-case-files'
-  Enabled: true
+  Enabled: false
 
 Style/FlipFlop:
   Description: 'Checks for flip flops'
