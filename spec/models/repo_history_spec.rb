@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe RepoHistory, :type => :model do
+RSpec.describe RepoHistory, type: :model do
   describe :validates do
     subject { RepoHistory.new }
     it { is_expected.to validate_presence_of :board }
