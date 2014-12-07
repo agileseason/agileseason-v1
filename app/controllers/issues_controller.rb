@@ -27,8 +27,4 @@ class IssuesController < ApplicationController
       .require(:issue)
       .permit(:title, :body)
   end
-
-  def fetch_board
-    @board = current_user.boards.find(params[:board_id])
-  end
 end

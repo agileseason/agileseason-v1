@@ -2,6 +2,10 @@ h1 Board#show
 
 h2 = @board.name
 
+.submenu
+  ul
+    li : a href="#{board_graphs_lines_url(@board)}" Graphs
+
 .actions
   a href="#{new_board_issues_url(@board)}" New issue
 

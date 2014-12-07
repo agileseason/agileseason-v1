@@ -6,6 +6,7 @@ class GithubApi
   include GithubApi::Repos
   include GithubApi::Labels
   include GithubApi::Issues
+  include GithubApi::Stats
 
   SERVICES_TEAM_NAME = 'Services'
 

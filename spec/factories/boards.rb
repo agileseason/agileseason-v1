@@ -4,11 +4,12 @@ FactoryGirl.define do
   factory :board do
     name 'test_board'
     type "Boards::KanbanBoard"
-  end
+    github_id 123
 
-  factory :board_with_columns, parent: :board do
-    after(:build) do |user, evaluator|
-      columns [build(:column, board: self)]
+    trait :with_columns do
+      after(:build) do |board|
+        board.columns = [FactoryGirl.build(:column, board: board)] if board.columns.blank?
+      end
     end
   end
 end

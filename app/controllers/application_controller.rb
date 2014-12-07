@@ -23,4 +23,8 @@ private
   def current_user
     @current_user ||= User.where(remember_token: session[:remember_token]).first
   end
+
+  def fetch_board
+    @board = current_user.boards.find(params[:board_id])
+  end
 end
