@@ -1,4 +1,6 @@
 class BoardsController < ApplicationController
+  after_action :fetch_repo_history, only: :show
+
   def index
     if current_user.boards.blank?
       redirect_to repos_url
@@ -50,5 +52,9 @@ private
       column = Column.new(name: name, color: 'fbca04', order: order)
       mem << column
     end
+  end
+
+  def fetch_repo_history
+    Graphs::LinesWorker.perform_async(@board.id, github_token)
   end
 end

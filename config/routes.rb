@@ -5,6 +5,10 @@ Rails.application.routes.draw do
     resource :issues, only: [:new, :create] do
       get ':number/move_to/:column_id', to: 'issues#move_to', as: :move_to_column
     end
+
+    namespace :graphs do
+      resources :lines, only: [:index]
+    end
   end
 
   get '/auth/github/callback', to: 'sessions#create'
