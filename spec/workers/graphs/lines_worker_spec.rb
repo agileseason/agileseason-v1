@@ -1,12 +1,12 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Graphs::LinesWorker do
   let(:worker) { Graphs::LinesWorker.new }
 
-  describe '.perform' do
+  describe ".perform" do
     subject { board.repo_histories }
     let(:board) { create(:board, :with_columns) }
-    let(:perform) { worker.perform(board.id, 'asdf') }
+    let(:perform) { worker.perform(board.id, "asdf") }
     let(:lines) { 1091 }
     before { allow_any_instance_of(GithubApi).to receive(:repo_lines).and_return(lines) }
     before { perform }
