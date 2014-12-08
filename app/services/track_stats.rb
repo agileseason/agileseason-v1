@@ -22,7 +22,7 @@ class TrackStats
     end
 
     def current_column(hash)
-      stats = hash[:track_stats][:columns].find { |_key, value| value[:out_at].nil? }
+      stats = hash[:track_stats][:columns].detect { |_key, value| value[:out_at].nil? }
       stats.first if stats
     end
 
