@@ -52,6 +52,15 @@ describe TrackStats do
 
       it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"21\":{\"in_at\":\"#{current - 2.minute}\",\"out_at\":\"#{current - 1.minute}\"},\"22\":{\"in_at\":\"#{current - 1.minute}\",\"out_at\":\"#{current}\"},\"23\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
     end
+
+    context :not_rewrite_in_at do
+      subject { TrackStats.track(column_id, hash) }
+      let(:column_id) { 22 }
+      let(:time_s) { (Time.current - 10.minutes).to_s }
+      let(:hash) { { track_stats: { columns: { column_id.to_s => { in_at: time_s, out_at: time_s } } } } }
+
+      it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{column_id}\":{\"in_at\":\"#{time_s}\",\"out_at\":null}}}}\n-->" }
+    end
   end
 
   describe '.extract' do
@@ -68,6 +77,39 @@ describe TrackStats do
     context :by_symbol do
       let(:body) { "\n<!---\n@agileseason:{\"x\":\"1\"}\n-->" }
       it { expect(subject[:hash][:x]).to eq "1" }
+    end
+  end
+
+  describe '.current_column' do
+    subject { TrackStats.current_column(hash) }
+    let(:time_1) { Time.current }
+
+    context :has_one_column do
+      let(:hash) { { track_stats: { columns: { "21" => { in_at: time_1.to_s, out_at: nil } } } } }
+      it { is_expected.to eq "21" }
+    end
+
+    context :has_two_column do
+      let(:hash) { { track_stats: { columns: { "21" => { in_at: time_1.to_s, out_at: time_1.to_s }, "22" => { in_at: time_1.to_s, out_at: nil } } } } }
+      it { is_expected.to eq "22" }
+    end
+  end
+
+  describe '.remove_columns' do
+    subject { TrackStats.remove_columns(hash, columns_ids) }
+    let(:time_s) { Time.current.to_s }
+
+    context :nothing_to_remove do
+      let(:hash) { { track_stats: { columns: { "21" => {} } } } }
+      let(:columns_ids) { [22, 23] }
+      it { is_expected.to eq hash }
+    end
+
+    context :has_to_remove do
+      let(:hash) { { track_stats: { columns: { "21" => {}, "22" => {}, "23" => {} } } } }
+      let(:expected_hash) { { track_stats: { columns: { "21" => {} } } } }
+      let(:columns_ids) { [22, 23] }
+      it { is_expected.to eq expected_hash }
     end
   end
 end
