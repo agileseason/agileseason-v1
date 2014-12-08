@@ -25,3 +25,6 @@ h2 = @board.name
                     ul.columns
                       - @board.columns.each do |column|
                         li: a href="#{move_to_column_board_issues_url(@board, issue.number, column)}" = column.name
+                  .stats
+                    .title Stats (hidden)
+                    .hash = TrackStats.extract(issue.body)[:hash]
