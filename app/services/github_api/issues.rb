@@ -23,12 +23,18 @@ class GithubApi
     def move_to(board, column, number)
       issue = client.issue(board.github_id, number)
       labels = issue.labels.map(&:name) - board.github_labels << column.label_name
-      data = TrackStats.extract(issue.body)
-      hash = data[:hash]
-      column_to_remove = board.columns.select { |c| c.order > column.order }.map(&:id)
-      hash = TrackStats.remove_columns(hash, column_to_remove)
-      body = data[:comment] + TrackStats.track(column.id, hash)
+      body = update_hidden_stats(issue.body, column)
       client.update_issue(board.github_id, number, issue.title, body, labels: labels)
+    end
+
+    private
+
+    def update_hidden_stats(issue_body, column)
+      data = TrackStats.extract(issue_body)
+      hash = data[:hash]
+      column_to_remove = column.board.columns.select { |c| c.order > column.order }.map(&:id)
+      hash = TrackStats.remove_columns(hash, column_to_remove)
+      data[:comment] + TrackStats.track(column.id, hash)
     end
   end
 end
