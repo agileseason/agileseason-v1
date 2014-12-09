@@ -2,7 +2,7 @@ class GithubApi
   module Issues
     def board_issues(board)
       issues = client.issues(board.github_id)
-      board_labels = board.github_labels.inject({}) { |mem, e| mem[e] = []; mem }
+      board_labels = board.github_labels.inject({}) { |mem, label| mem[label] = []; mem }
       issues.each do |issue|
         label = issue.labels.find { |e| board_labels.keys.include?(e.name) }
         board_labels[label.name] << issue if label

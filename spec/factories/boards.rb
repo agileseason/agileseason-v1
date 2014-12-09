@@ -1,5 +1,3 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
-
 FactoryGirl.define do
   factory :board do
     name 'test_board'
@@ -7,8 +5,13 @@ FactoryGirl.define do
     github_id 123
 
     trait :with_columns do
-      after(:build) do |board|
-        board.columns = [FactoryGirl.build(:column, board: board)] if board.columns.blank?
+      ignore do
+        number_of_columns 1
+      end
+      after(:build) do |board, evaluator|
+        board.columns = evaluator.number_of_columns.times.each_with_object([]) do |n, columns|
+          columns << FactoryGirl.build(:column, board: board, name: "column_#{n}")
+        end
       end
     end
   end
