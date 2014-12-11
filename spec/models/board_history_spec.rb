@@ -6,8 +6,8 @@ RSpec.describe BoardHistory, type: :model do
     it { is_expected.to validate_presence_of(:collected_on) }
   end
 
-  describe ".set_issues" do
-    subject { history.set_issues(board_issues) }
+  describe ".update_data_issues" do
+    subject { history.update_data_issues(board_issues) }
     let(:history) { build(:board_history, board: board) }
 
     let(:board) { create(:board, :with_columns) }

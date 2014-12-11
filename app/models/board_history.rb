@@ -4,7 +4,7 @@ class BoardHistory < ActiveRecord::Base
   validates :collected_on, presence: true
   serialize :data
 
-  def set_issues(board_issues)
+  def update_data_issues(board_issues)
     self.data = board.columns.each_with_object([]) do |column, data|
       data << {
         column_id: column.id,

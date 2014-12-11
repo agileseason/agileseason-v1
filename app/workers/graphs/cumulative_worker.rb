@@ -6,7 +6,7 @@ class Graphs::CumulativeWorker
     board_history = fetch_board_history(board)
     github_api = GithubApi.new(github_token)
     board_issues = github_api.board_issues(board)
-    board_history.set_issues(board_issues)
+    board_history.update_data_issues(board_issues)
     board_history.save
   end
 
