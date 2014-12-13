@@ -5,11 +5,18 @@ class BoardHistory < ActiveRecord::Base
   serialize :data
 
   def update_data_issues(board_issues)
-    self.data = board.columns.each_with_object([]) do |column, data|
+    issues_group = board_issues.each_with_object({}) { |pair, mem| mem[pair[0]] = pair[1].try(:size).to_i }
+    total_issues = issues_group.sum { |e| e[1] }
+    data = []
+    board.columns.each_with_index() do |column, index|
+      count = issues_group[column.label_name]
       data << {
         column_id: column.id,
-        issues: board_issues[column.label_name].try(:size).to_i
+        issues: count,
+        issues_cumulative: total_issues
       }
+      total_issues -= count
     end
+    self.data = data
   end
 end

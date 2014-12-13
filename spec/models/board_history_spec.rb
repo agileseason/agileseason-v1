@@ -16,7 +16,7 @@ RSpec.describe BoardHistory, type: :model do
     context :one_column do
       let(:column) { board.columns.first }
       let(:board_issues) { { column.label_name => [issue] } }
-      let(:expected_data) { [{ column_id: column.id, issues: 1 }] }
+      let(:expected_data) { [{ column_id: column.id, issues: 1, issues_cumulative: 1 }] }
 
       it { is_expected.to eq expected_data }
     end
