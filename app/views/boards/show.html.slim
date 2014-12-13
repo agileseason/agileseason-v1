@@ -25,6 +25,8 @@ h2 = @board.name
                       a.user href="#{issue.assignee.html_url}" target="_blank" = issue.assignee.login
                 .body
                   .state = "[#{issue.state}]"
+                  .labels
+                    = k(:issue, issue).labels_html(column.label_name)
                   .actions
                     .title Actions
                     ul
