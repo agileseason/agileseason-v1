@@ -24,4 +24,13 @@ RSpec.describe GithubApi::Issues do
       it { is_expected.to_not be_nil }
     end
   end
+
+  describe ".close" do
+    let(:issue) { OpenStruct.new(number: 1) }
+    let(:board) { build(:board, :with_columns, number_of_columns: 1) }
+    before { allow_any_instance_of(Octokit::Client).to receive(:close_issue).and_return(issue) }
+    subject { service.close(board, issue.number) }
+
+    it { is_expected.to eq issue }
+  end
 end

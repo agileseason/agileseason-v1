@@ -20,6 +20,11 @@ class IssuesController < ApplicationController
     redirect_to board_url(@board)
   end
 
+  def close
+    github_api.close(@board, params[:number])
+    redirect_to board_url(@board)
+  end
+
   private
 
   def issue_params
