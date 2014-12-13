@@ -2,7 +2,7 @@ class GithubApi
   module Issues
     def board_issues(board)
       board_labels = board.github_labels.each_with_object({}) { |label, hash| hash[label] = [] }
-      client.issues(board.github_id).each do |issue|
+      all_issues(board).each do |issue|
         label = issue.labels.find { |e| board_labels.keys.include?(e.name) }
         board_labels[label.name] << issue if label
       end
@@ -34,6 +34,18 @@ class GithubApi
       column_to_remove = column.board.columns.select { |c| c.order > column.order }.map(&:id)
       hash = TrackStats.remove_columns(hash, column_to_remove)
       data[:comment] + TrackStats.track(column.id, hash)
+    end
+
+    def all_issues(board)
+      open_issues(board) + closed_issues(board)
+    end
+
+    def open_issues(board)
+      client.issues(board.github_id)
+    end
+
+    def closed_issues(board)
+      client.issues(board.github_id, state: :closed)
     end
   end
 end

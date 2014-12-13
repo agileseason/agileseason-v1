@@ -1,6 +1,7 @@
 class TrackStats
   class << self
-    def track(column_id, hash = init_track_hash)
+    def track(column_id, hash = nil)
+      hash = init_track_hash if hash.blank?
       hash[:track_stats][:columns].each do |_key, value|
         value[:out_at] = Time.current.to_s unless value[:out_at]
       end
@@ -18,7 +19,7 @@ class TrackStats
 
     def extract(body)
       /(?<comment>.*)\n<!---\s@agileseason:(?<hash>.*)\s-->(?<tail>.*)/im =~ body
-      { comment: comment, hash: JSON.parse(hash).with_indifferent_access, tail: tail }
+      { comment: comment, hash: parse_hash(hash), tail: tail }
     end
 
     def current_column(hash)
@@ -28,7 +29,9 @@ class TrackStats
 
     def remove_columns(hash, columns_ids)
       columns_ids.each do |column_id|
-        hash[:track_stats][:columns].delete(column_id.to_s)
+        if hash[:track_stats] && hash[:track_stats][:columns]
+          hash[:track_stats][:columns].delete(column_id.to_s)
+        end
       end
       hash
     end
@@ -41,6 +44,12 @@ class TrackStats
 
     def in_out_at
       { in_at: Time.current.to_s, out_at: nil }
+    end
+
+    def parse_hash(json)
+      JSON.parse(json).with_indifferent_access
+    rescue
+      {}
     end
   end
 end
