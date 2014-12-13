@@ -10,7 +10,7 @@ Agile board with management stats for github issues
 
 1. Clone this repository `git clone git@github.com:agileseason/agileseason.git ~/PROJECTS_DIR/agileseason`
 1. Install [pow](http://pow.cx/) and set up app `cd ~/.pow && ln -s ~/PROJECTS_DIR/agileseason`
-1. Start Sidekiq `bundle exec sidekiq`
+1. Run Sidekiq `bundle exec sidekiq`
 
 
 ## License
