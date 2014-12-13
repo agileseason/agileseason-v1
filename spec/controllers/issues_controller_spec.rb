@@ -7,7 +7,7 @@ RSpec.describe IssuesController, type: :controller do
 
   describe 'GET new' do
     it 'returns http success' do
-      get :new, { board_id: board.id }
+      get :new, board_id: board.id
       expect(response).to have_http_status(:success)
     end
   end
@@ -15,7 +15,7 @@ RSpec.describe IssuesController, type: :controller do
   describe 'GET close' do
     before { allow_any_instance_of(GithubApi).to receive(:close) }
     it 'return http success' do
-      get :close, { board_id: board.id, number: 1 }
+      get :close, board_id: board.id, number: 1
       expect(response).to redirect_to(board_url(board))
     end
   end
