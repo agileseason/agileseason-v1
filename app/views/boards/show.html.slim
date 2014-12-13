@@ -23,8 +23,11 @@ h2 = @board.name
                     .assigned
                       img.avatar src="#{issue.assignee.avatar_url}"
                       a.user href="#{issue.assignee.html_url}" target="_blank" = issue.assignee.login
-                  .state = "[#{issue.state}]"
                 .body
+                  .state = "[#{issue.state}]"
+                  .actions
+                    - if issue.state == "open"
+                      a.close href="#{close_board_issues_url(@board, issue.number)}" close
                   .move_to
                     .title Move To
                     ul.columns

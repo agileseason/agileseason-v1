@@ -26,6 +26,10 @@ class GithubApi
       client.update_issue(board.github_id, number, issue.title, body, labels: labels)
     end
 
+    def close(board, number)
+      client.close_issue(board.github_id, number)
+    end
+
     private
 
     def update_hidden_stats(issue_body, column)
