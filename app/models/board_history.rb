@@ -4,6 +4,7 @@ class BoardHistory < ActiveRecord::Base
   validates :collected_on, presence: true
   serialize :data
 
+  # FIX : do something with this method!
   def update_data_issues(board_issues)
     issues_group = board_issues.each_with_object({}) { |pair, mem| mem[pair[0]] = pair[1].try(:size).to_i }
     total_issues = issues_group.sum { |e| e[1] }
