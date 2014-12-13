@@ -113,6 +113,8 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.1)
     jwt (1.0.0)
+    keynote (0.2.3)
+      rails (>= 3.0.0)
     listen (2.7.11)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -301,6 +303,7 @@ DEPENDENCIES
   guard-rspec
   jbuilder (~> 2.0)
   jquery-rails
+  keynote
   meta_request
   octokit (~> 3.5.2)
   omniauth-github
