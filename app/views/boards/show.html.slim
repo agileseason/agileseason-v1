@@ -11,7 +11,7 @@ h2 = @board.name
 
 .columns
   - @board.columns.each do |column|
-      .column
+      .column style="width:#{(100.0 / @board.columns.size).to_i - 1}%"
         .title = column.name
         .issues
           - @issues[column.label_name].each do |issue|
