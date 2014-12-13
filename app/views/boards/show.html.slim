@@ -17,8 +17,12 @@ h2 = @board.name
           - @issues[column.label_name].each do |issue|
               .issue
                 .header
-                  a.url href="#{issue.html_url}" target='_blank' ##{issue.number}
+                  a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
                   .title = issue.title
+                  - if issue.user
+                    .assigned
+                      img.avatar src="#{issue.user.avatar_url}"
+                      a.user href="#{issue.user.html_url}" target="_blank" = issue.user.login
                   .state = "[#{issue.state}]"
                 .body
                   .move_to
@@ -26,6 +30,6 @@ h2 = @board.name
                     ul.columns
                       - @board.columns.each do |column|
                         li: a href="#{move_to_column_board_issues_url(@board, issue.number, column)}" = column.name
-                  .stats
+                  /.stats
                     .title Stats (hidden)
                     .hash = TrackStats.extract(issue.body)[:hash]
