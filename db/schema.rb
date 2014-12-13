@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141207042401) do
+ActiveRecord::Schema.define(version: 20141209090518) do
+
+  create_table "board_histories", force: true do |t|
+    t.integer  "board_id"
+    t.date     "collected_on"
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "board_histories", ["board_id"], name: "index_board_histories_on_board_id"
 
   create_table "boards", force: true do |t|
     t.integer  "user_id"

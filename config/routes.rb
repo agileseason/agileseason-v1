@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
     namespace :graphs do
       resources :lines, only: [:index]
+      resources :cumulative, only: [:index]
     end
   end
 

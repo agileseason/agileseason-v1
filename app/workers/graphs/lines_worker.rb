@@ -2,8 +2,8 @@ class Graphs::LinesWorker
   include Sidekiq::Worker
 
   def perform(board_id, github_token)
-    github_api = GithubApi.new(github_token)
     board = Board.find(board_id)
+    github_api = GithubApi.new(github_token)
     repo_history = fetch_repo_history(board)
     repo_history.lines = github_api.repo_lines(board)
     repo_history.save

@@ -1,0 +1,75 @@
+<div>
+  <div id="container"></div>
+  <script type="text/javascript" charset="utf-8">
+    $(function () {
+        $('#container').highcharts({
+            chart: {
+                type: 'area'
+            },
+            title: {
+                text: ''
+            },
+            xAxis: {
+                categories: <%= raw(chart_categories) %>,
+                tickmarkPlacement: 'on',
+                title: {
+                    enabled: false
+                },
+                allowDecimals: false,
+                labels: {
+                    formatter: function () {
+                        return this.value; // clean, unformatted number for year
+                    }
+                }
+                /*
+                type: 'datetime'
+                */
+            },
+            yAxis: {
+                title: {
+                    text: 'Issues'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value;
+                    }
+                },
+                tickInterval: 1,
+                maxPadding: 0,
+                showFirstLabel: false,
+                showLastLabel: true
+            },
+            tooltip: {
+                shared: true,
+                valueSuffix: ' issues'
+            },
+            plotOptions: {
+                area: {
+                    /*
+                    pointStart: <%= point_start.to_time.to_i * 1000 %>,
+                    pointInterval: 1 * 24 * 3600 * 1000,
+                    */
+                    marker: {
+                        enabled: false,
+                        symbol: 'circle',
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
+                        }
+                    }
+                }
+            },
+            series: [
+              <%- @series.each do |_key, info| %>
+                {
+                  name: '<%= info[:name] %>',
+                  data: <%= info[:data] %>
+                },
+              <%- end %>
+            ]
+        });
+    });
+  </script>
+</div>
