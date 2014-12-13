@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resource :issues, only: [:new, :create] do
       get ':number/move_to/:column_id', to: 'issues#move_to', as: :move_to_column
       get ':number/close', to: 'issues#close', as: :close
+      get ':number/assignee', to: 'issues#assignee', as: :assignee
     end
 
     namespace :graphs do

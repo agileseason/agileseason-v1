@@ -30,6 +30,13 @@ class GithubApi
       client.close_issue(board.github_id, number)
     end
 
+    def assign_yourself(board, number, github_username)
+      # FIX : Get issue - don't work override, error: Wrong number of arguments. Expected 4 to 5, got 3.
+      issue = client.issue(board.github_id, number)
+      # FIX : Don't work - client.update_issue(board.github_id, number, assignee: github_username)
+      client.update_issue(board.github_id, number, issue.title, issue.body, assignee: github_username)
+    end
+
     private
 
     def update_hidden_stats(issue_body, column)

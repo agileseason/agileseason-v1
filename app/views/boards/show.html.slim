@@ -26,8 +26,13 @@ h2 = @board.name
                 .body
                   .state = "[#{issue.state}]"
                   .actions
-                    - if issue.state == "open"
-                      a.close href="#{close_board_issues_url(@board, issue.number)}" close
+                    .title Actions
+                    ul
+                      - if issue.state == "open"
+                        li : a.close href="#{close_board_issues_url(@board, issue.number)}" close
+                      - unless issue.assignee
+                        li : a.assign href="#{assignee_board_issues_url(@board, issue.number)}" assign yourself
+
                   .move_to
                     .title Move To
                     ul.columns

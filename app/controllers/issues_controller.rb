@@ -25,6 +25,11 @@ class IssuesController < ApplicationController
     redirect_to board_url(@board)
   end
 
+  def assignee
+    github_api.assign_yourself(@board, params[:number], current_user.github_username)
+    redirect_to board_url(@board)
+  end
+
   private
 
   def issue_params
