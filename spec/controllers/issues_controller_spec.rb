@@ -19,4 +19,12 @@ RSpec.describe IssuesController, type: :controller do
       expect(response).to redirect_to(board_url(board))
     end
   end
+
+  describe 'GET assign yourself' do
+    before { allow_any_instance_of(GithubApi).to receive(:assign_yourself) }
+    it 'return http success' do
+      get :assignee, board_id: board.id, number: 1
+      expect(response).to redirect_to(board_url(board))
+    end
+  end
 end

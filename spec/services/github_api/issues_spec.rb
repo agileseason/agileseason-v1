@@ -2,6 +2,8 @@ require "rails_helper"
 
 RSpec.describe GithubApi::Issues do
   let(:service) { GithubApi.new("fake_github_token") }
+  let(:board) { build(:board, :with_columns, number_of_columns: 1) }
+  let(:issue) { OpenStruct.new(number: 1) }
 
   describe ".board_issues" do
     subject { service.board_issues(board) }
@@ -26,10 +28,17 @@ RSpec.describe GithubApi::Issues do
   end
 
   describe ".close" do
-    let(:issue) { OpenStruct.new(number: 1) }
-    let(:board) { build(:board, :with_columns, number_of_columns: 1) }
-    before { allow_any_instance_of(Octokit::Client).to receive(:close_issue).and_return(issue) }
     subject { service.close(board, issue.number) }
+    before { allow_any_instance_of(Octokit::Client).to receive(:close_issue).and_return(issue) }
+
+    it { is_expected.to eq issue }
+  end
+
+  describe ".assign_yourself" do
+    subject { service.assign_yourself(board, issue.number, user.github_username) }
+    let(:user) { build(:user) }
+    before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
+    before { allow_any_instance_of(Octokit::Client).to receive(:update_issue).and_return(issue) }
 
     it { is_expected.to eq issue }
   end
