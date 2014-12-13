@@ -19,10 +19,10 @@ h2 = @board.name
                 .header
                   a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
                   .title = issue.title
-                  - if issue.user
+                  - if issue.assignee
                     .assigned
-                      img.avatar src="#{issue.user.avatar_url}"
-                      a.user href="#{issue.user.html_url}" target="_blank" = issue.user.login
+                      img.avatar src="#{issue.assignee.avatar_url}"
+                      a.user href="#{issue.assignee.html_url}" target="_blank" = issue.assignee.login
                   .state = "[#{issue.state}]"
                 .body
                   .move_to
