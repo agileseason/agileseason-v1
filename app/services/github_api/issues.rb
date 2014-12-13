@@ -33,7 +33,7 @@ class GithubApi
       hash = data[:hash]
       column_to_remove = column.board.columns.select { |c| c.order > column.order }.map(&:id)
       hash = TrackStats.remove_columns(hash, column_to_remove)
-      data[:comment] + TrackStats.track(column.id, hash)
+      data[:comment].to_s + TrackStats.track(column.id, hash)
     end
 
     def all_issues(board)
