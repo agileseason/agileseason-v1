@@ -19,6 +19,7 @@ h2 = @board.name
                 .header
                   a.url href="#{issue.html_url}" target='_blank' ##{issue.number}
                   .title = issue.title
+                  .state = "[#{issue.state}]"
                 .body
                   .move_to
                     .title Move To

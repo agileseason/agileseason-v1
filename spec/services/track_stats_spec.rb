@@ -25,6 +25,21 @@ describe TrackStats do
       it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
     end
 
+    context :fix_wrong_hidden_content do
+      subject { TrackStats.track(1, hash) }
+      let(:column_id) { 1 }
+
+      context :nil do
+        let(:hash) { nil }
+        it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
+      end
+
+      context :empty do
+        let(:hash) { {} }
+        it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
+      end
+    end
+
     context :second_column_track do
       let(:column_id_1) { 21 }
       let(:column_id_2) { 22 }
@@ -98,18 +113,22 @@ describe TrackStats do
   describe '.remove_columns' do
     subject { TrackStats.remove_columns(hash, columns_ids) }
     let(:time_s) { Time.current.to_s }
+    let(:columns_ids) { [22, 23] }
 
     context :nothing_to_remove do
       let(:hash) { { track_stats: { columns: { "21" => {} } } } }
-      let(:columns_ids) { [22, 23] }
       it { is_expected.to eq hash }
     end
 
     context :has_to_remove do
       let(:hash) { { track_stats: { columns: { "21" => {}, "22" => {}, "23" => {} } } } }
       let(:expected_hash) { { track_stats: { columns: { "21" => {} } } } }
-      let(:columns_ids) { [22, 23] }
       it { is_expected.to eq expected_hash }
+    end
+
+    context :empty do
+      let(:hash) { {} }
+      it { is_expected.to be_empty }
     end
   end
 end
