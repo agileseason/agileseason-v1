@@ -89,6 +89,13 @@ describe TrackStats do
       it { expect(subject[:tail]).to be_empty }
     end
 
+    context :broken_json do
+      let(:body) { "\n<!---\n@agileseason:{error}\n-->" }
+      it { expect(subject[:comment]).to be_empty }
+      it { expect(subject[:hash]).to be_empty }
+      it { expect(subject[:tail]).to be_empty }
+    end
+
     context :by_symbol do
       let(:body) { "\n<!---\n@agileseason:{\"x\":\"1\"}\n-->" }
       it { expect(subject[:hash][:x]).to eq "1" }

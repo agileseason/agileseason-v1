@@ -47,11 +47,9 @@ class TrackStats
     end
 
     def parse_hash(json)
-      begin
-        JSON.parse(json).with_indifferent_access
-      rescue
-        {}
-      end
+      JSON.parse(json).with_indifferent_access
+    rescue
+      {}
     end
   end
 end
