@@ -19,7 +19,7 @@ class IssuePresenter < Keynote::Presenter
   end
 
   def color(label)
-    if label.color.hex > 16525609 || label.color.hex <= 5446119
+    if label.color.hex > 16_525_609 || label.color.hex <= 5_446_119
       "fff"
     else
       "000"
