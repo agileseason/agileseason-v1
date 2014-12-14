@@ -10,7 +10,7 @@
                 text: ''
             },
             xAxis: {
-                categories: <%= raw(chart_categories) %>,
+                categories: <%= raw(@categories) %>,
                 tickmarkPlacement: 'on',
                 title: {
                     enabled: false
@@ -21,9 +21,6 @@
                         return this.value; // clean, unformatted number for year
                     }
                 }
-                /*
-                type: 'datetime'
-                */
             },
             yAxis: {
                 title: {
@@ -40,15 +37,11 @@
                 showLastLabel: true
             },
             tooltip: {
-                shared: true,
-                valueSuffix: ' issues'
+                pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>{point.tooltipValue}</b> issues<br/>',
+                shared: true
             },
             plotOptions: {
                 area: {
-                    /*
-                    pointStart: <%= point_start.to_time.to_i * 1000 %>,
-                    pointInterval: 1 * 24 * 3600 * 1000,
-                    */
                     marker: {
                         enabled: false,
                         symbol: 'circle',
@@ -65,7 +58,14 @@
               <%- @series.each do |_key, info| %>
                 {
                   name: '<%= info[:name] %>',
-                  data: <%= info[:data] %>
+                  data: [
+                    <% info[:data].each do |data| %>
+                      {
+                        y: <%= data[:issues_cumulative] %>,
+                        tooltipValue: <%= data[:issues] %>
+                      },
+                    <% end %>
+                  ]
                 },
               <%- end %>
             ]
