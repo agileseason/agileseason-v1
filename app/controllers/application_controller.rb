@@ -8,12 +8,10 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate
   helper_method :current_user, :signed_in?
 
-private
+  private
 
   def authenticate
-    unless signed_in?
-      redirect_to sign_in_path
-    end
+    redirect_to root_url unless signed_in?
   end
 
   def signed_in?
