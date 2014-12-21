@@ -7,6 +7,7 @@ class Issue
 
   attribute :title, String
   attribute :body, String
+  attribute :labels, Array[String]
 
   validates :title, presence: true
   validates :body, presence: true

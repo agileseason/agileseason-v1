@@ -2,7 +2,8 @@ class IssuesController < ApplicationController
   before_action :fetch_board
 
   def new
-    @issue = Issue.new
+    labels = github_api.labels(@board).map(&:name)
+    @issue = Issue.new(labels: labels)
   end
 
   def create
@@ -35,6 +36,6 @@ class IssuesController < ApplicationController
   def issue_params
     params
       .require(:issue)
-      .permit(:title, :body)
+      .permit(:title, :body, labels: [])
   end
 end

@@ -14,6 +14,23 @@ RSpec.describe GithubApi::Issues do
     it { expect(subject.first.first).to eq board.columns.first.label_name }
   end
 
+  describe '.create_issue' do
+    subject { service.create_issue(board, issue) }
+    let(:board) { build(:board, :with_columns, number_of_columns: 2) }
+    let(:issue) { OpenStruct.new(title: 'title_1', body: 'body_1', labels: labels) }
+    let(:labels) { ['bug', 'feature', ''] }
+    let(:expected_body) { issue.body + TrackStats.track(board.columns.first.id) }
+    let(:expected_labels) { ['bug', 'feature', board.columns.first.label_name] }
+    before { allow_any_instance_of(Octokit::Client).to receive(:create_issue).and_return(issue) }
+    after { subject }
+
+    it do
+      expect_any_instance_of(Octokit::Client).to(
+        receive(:create_issue)
+          .with(board.github_id, issue.title, expected_body, labels: expected_labels))
+    end
+  end
+
   describe ".move_to" do
     subject { service.move_to(board, column, 1) }
     let(:board) { build(:board, :with_columns, number_of_columns: 1) }
