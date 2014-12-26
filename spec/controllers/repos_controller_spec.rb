@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe ReposController, :type => :controller do
 
   describe 'GET index' do

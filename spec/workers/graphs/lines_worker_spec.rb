@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe Graphs::LinesWorker do
   let(:worker) { Graphs::LinesWorker.new }
 

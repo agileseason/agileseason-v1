@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe IssuesController, type: :controller do
   let(:user) { create(:user) }
   let(:board) { create(:board, :with_columns, user: user) }

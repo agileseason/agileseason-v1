@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe Graphs::CumulativeWorker do
   let(:worker) { Graphs::CumulativeWorker.new }
 
