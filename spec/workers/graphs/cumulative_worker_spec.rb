@@ -1,11 +1,11 @@
 RSpec.describe Graphs::CumulativeWorker do
   let(:worker) { Graphs::CumulativeWorker.new }
 
-  describe ".perform" do
+  describe '.perform' do
     subject { board.board_histories }
     let(:board) { create(:board, :with_columns) }
-    let(:perform) { worker.perform(board.id, "fake_github_token") }
-    let(:issue) { OpenStruct.new(name: "issue_1") }
+    let(:perform) { worker.perform(board.id, 'fake_github_token') }
+    let(:issue) { OpenStruct.new(name: 'issue_1') }
     before { allow_any_instance_of(GithubApi).to receive(:board_issues).and_return(board_issues) }
     before { perform }
 
