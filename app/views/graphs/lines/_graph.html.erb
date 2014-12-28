@@ -51,7 +51,7 @@
                 type: 'area',
                 name: 'Lines',
                 pointInterval: 24 * 3600 * 1000,
-                pointStart: Date.UTC(2006, 0, 1),
+                pointStart: <%= point_start %>,
                 data: <%= raw(@lines) %>
             }]
         });
