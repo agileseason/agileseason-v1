@@ -12,17 +12,24 @@ class IssuePresenter < Keynote::Presenter
     end
   end
 
+  # FIX : Public method only for test - not single responsibility.
+  # FIX : Need extract to gem.
+  def color(label)
+    hex = label.color.hex
+    if hex == 16_777_215 # white
+      '000'
+    elsif hex >= 16_525_609 # red
+      'fff'
+    elsif hex <= 5_446_119 # dark blue
+      'fff'
+    else
+      '000'
+    end
+  end
+
   private
 
   def display_labels(hidden_label_name)
     labels.select { |label| label.name != hidden_label_name }
-  end
-
-  def color(label)
-    if label.color.hex >= 16_525_609 || label.color.hex <= 5_446_119
-      "fff"
-    else
-      "000"
-    end
   end
 end
