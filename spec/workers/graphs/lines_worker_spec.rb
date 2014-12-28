@@ -6,7 +6,7 @@ RSpec.describe Graphs::LinesWorker do
     let(:board) { create(:board, :with_columns) }
     let(:perform) { worker.perform(board.id, 'fake_github_token') }
     let(:lines) { 1091 }
-    let(:repo_history) { }
+    let(:repo_history) {}
     before { allow_any_instance_of(GithubApi).to receive(:repo_lines).and_return(lines) }
     before { repo_history }
     before { perform }
