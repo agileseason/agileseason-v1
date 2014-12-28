@@ -10,7 +10,6 @@ class Issue
   attribute :labels, Array[String]
 
   validates :title, presence: true
-  validates :body, presence: true
 
   def persisted?
     false
