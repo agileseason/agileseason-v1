@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe BoardHistory, type: :model do
   describe "validates" do
     subject { BoardHistory.new }

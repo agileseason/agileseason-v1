@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe Column, type: :model do
   describe ".label_name" do
     let(:column) { build(:column, name: "backlog", order: 1) }

@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe RepoHistory, type: :model do
   describe :validates do
     subject { RepoHistory.new }

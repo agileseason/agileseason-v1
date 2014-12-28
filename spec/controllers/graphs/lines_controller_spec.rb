@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe Graphs::LinesController, type: :controller do
   describe "GET index" do
     let(:user) { create(:user) }

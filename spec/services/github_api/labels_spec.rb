@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe GithubApi::Labels do
   let(:service) { GithubApi.new('fake_github_token') }
   let(:board) { build(:board, columns: [column_1, column_2]) }

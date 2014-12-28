@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe GithubApi::Stats do
   let(:service) { GithubApi.new('github_token_example') }
 

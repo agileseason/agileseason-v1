@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe GithubApi::Issues do
   let(:service) { GithubApi.new("fake_github_token") }
   let(:board) { build(:board, :with_columns, number_of_columns: 1) }

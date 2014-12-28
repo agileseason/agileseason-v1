@@ -1,5 +1,3 @@
-require "rails_helper"
-
 describe TrackStats do
   describe ".hidden_content" do
     subject { TrackStats.hidden_content(hash) }
