@@ -1,0 +1,92 @@
+@import compass/css3/border-radius
+
+@import globals/variables
+
+html,
+body
+  height: 100%
+
+body
+  background: #f7f7f7
+  font-family: Helvetica, Arial, sans-serif
+  margin: 0
+  padding: 0
+
+.container
+  padding: 0px 20px 20px 20px
+
+p
+  line-height: 1.3em
+  margin: 0
+  padding: 0
+
+a
+  color: $link
+  cursor: pointer
+  display: inline
+  text-decoration: none
+
+  &:hover
+    color: $link-hover
+
+.ajax-link
+  color: #999
+
+  &:hover
+    color: #666
+
+.title
+  font-size: 28px
+  font-weight: bold
+  margin: 0
+  padding: 20px 0 10px 0
+  text-align: left
+
+.list
+  list-style: none
+  margin: 0
+  padding: 0
+
+  li
+    margin-bottom: 5px
+
+.button
+  +border-radius(4px)
+  border: none
+  background: #1975A3
+  color: #fff
+  font-size: 14px
+  padding: 5px 10px
+
+  &:hover
+    background: #338CB8
+    color: #fff
+
+form
+  display: inline-block
+
+  .input
+    display: table-row
+    margin-bottom: 10px
+
+.checkbox
+  display: table-row
+
+label
+  display: table-cell
+  padding-bottom: 15px
+  padding-right: 10px
+
+input[type="text"]
+  display: table-cell
+  font-size: 14px
+  padding: 4px
+  width: 300px
+
+.submit-area
+  padding: 20px
+  +border-radius(4px)
+  background: #e8e9e5
+
+abbr[title="required"]
+  display: none !important

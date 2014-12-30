@@ -1,45 +1,43 @@
-h1 Board#show
+= render partial: '/layouts/submenu'
 
-h2 = @board.name
+.board
+  .board-columns
+    - @board.columns.each do |column|
+        .board-column
+          .board-title = column.name
+          .issues
+            - @issues[column.label_name].each do |issue|
+                .issue class="#{issue.state}"
 
-.submenu
-  ul
-    li : a href="#{board_graphs_cumulative_index_url(@board)}" Graphs
-
-.actions
-  a href="#{new_board_issues_url(@board)}" New issue
-
-.columns
-  - @board.columns.each do |column|
-      .column style="width:#{(100.0 / @board.columns.size).to_i - 1}%"
-        .title = column.name
-        .issues
-          - @issues[column.label_name].each do |issue|
-              .issue
-                .header
-                  a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
-                  .title = issue.title
-                  - if issue.assignee
-                    .assigned
-                      img.avatar src="#{issue.assignee.avatar_url}"
-                      a.user href="#{issue.assignee.html_url}" target="_blank" = issue.assignee.login
-                .body
-                  .state = "[#{issue.state}]"
                   .labels
                     = k(:issue, issue).labels_html(column.label_name)
-                  .actions
-                    .title Actions
-                    ul
-                      - if issue.state == "open"
-                        li : a.close href="#{close_board_issues_url(@board, issue.number)}" close
-                      - unless issue.assignee
-                        li : a.assign href="#{assignee_board_issues_url(@board, issue.number)}" assign yourself
 
-                  .move_to
-                    .title Move To
+                  .issue-title
+                    .issue-name = issue.title
+                    a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
+
+                  - if issue.assignee
+                    .assigned
+                      a.user href="#{issue.assignee.html_url}" target="_blank" title="#{issue.assignee.login}"
+                        img.avatar src="#{issue.assignee.avatar_url}"
+
+                  ul.actions
+                    - if issue.state == "open"
+                      li : a.close href="#{close_board_issues_url(@board, issue.number)}" close
+                    - unless issue.assignee
+                      li : a.assign href="#{assignee_board_issues_url(@board, issue.number)}" assign yourself
+
+                  .move-to
+                    p Move To
                     ul.columns
                       - @board.columns.each do |column|
                         li: a href="#{move_to_column_board_issues_url(@board, issue.number, column)}" = column.name
+
                   /.stats
                     .title Stats (hidden)
                     .hash = TrackStats.extract(issue.body)[:hash]
+
+                  .state = issue.state
+
+          .new-issue
+            a.ajax-link href="#{new_board_issues_url(@board)}" New issue

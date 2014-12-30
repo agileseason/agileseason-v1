@@ -1,0 +1,207 @@
+@import compass/css3/border-radius
+@import compass/css3/text-shadow
+@import compass/css3/box-shadow
+@import compass/css3/transform
+@import compass/css3/opacity
+
+@import globals/variables
+
+.p-boards-show
+  .container
+    padding: 0
+
+  .actions
+    margin-bottom: 10px
+
+  .board
+    position: relative
+
+  .board-columns
+    bottom: 0
+    left: 0
+    overflow-x: auto
+    overflow-y: hidden
+    padding: 0 20px 20px
+    position: absolute
+    right: 0
+    top: 0
+    -ms-flex-align: start
+    -moz-box-align: start
+    -webkit-box-align: start
+    -webkit-align-items: flex-start
+    align-items: flex-start
+    display: -moz-box
+    display: -ms-flexbox
+    display: -webkit-box
+    display: -webkit-flex
+    display: flex
+    -moz-box-orient: horizontal
+    -webkit-box-orient: horizontal
+    -ms-flex-direction: row
+    -webkit-flex-direction: row
+    flex-direction: row
+
+  .board-column
+    +border-radius(4px)
+    background: #e8e9e5
+    display: -moz-box
+    display: -ms-flexbox
+    display: -webkit-box
+    display: -webkit-flex
+    display: flex
+    max-height: 100%
+    margin-right: 10px
+    padding: 40px 10px 10px
+    width: 260px
+    -webkit-box-sizing: border-box
+    -moz-box-sizing: border-box
+    box-sizing: border-box
+    -moz-box-orient: vertical
+    -webkit-box-orient: vertical
+    -ms-flex-direction: column
+    -webkit-flex-direction: column
+    flex-direction: column
+    -moz-box-flex: 0
+    -webkit-box-flex: 0
+    -ms-flex: 0 0 260px
+    -webkit-flex: 0 0 260px
+    flex: 0 0 260px
+    position: relative
+
+    &:last-child
+      margin-right: 0
+
+      &:after
+        content: ' '
+        height: 1px
+        margin-left: 260px
+        position: relative
+        width: 10px
+
+  .board-title
+    +text-shadow(0px 1px 1px rgba(255,255,255,0.8))
+    color: $text-light
+    font-size: 16px
+    font-weight: bold
+    margin: 10px 0 20px
+    padding: 0px 0 0 0
+    position: absolute
+    top: 0
+
+  .issues
+    margin-bottom: 20px
+    overflow-y: auto
+
+  .new-issue
+    background: #e8e9e5
+    bottom: 0
+    padding: 10px 0 0 0
+    -moz-box-flex: 0
+    -webkit-box-flex: 0
+    -ms-flex: 0 0 auto
+    -webkit-flex: 0 0 auto
+    flex: 0 0 auto
+    margin-top: -20px
+    position: relative
+
+  .issue
+    background-color: #FFE680
+    +border-radius(3px)
+    +box-shadow(0 1px 0px rgba(100,100,100,0.3))
+    margin-bottom: 10px
+    padding: 8px 10px
+    position: relative
+
+    &.bug
+      background: #FF8484
+
+    &.closed
+      background: #f3f3f2
+      +text-shadow(0 1px 1px rgba(255,255,255,1))
+
+      .issue-title,
+      p
+        color: #999
+
+      a,
+      .labels
+        +opacity(0.7)
+
+    .labels
+      position: absolute
+      top: 0
+      left: 0
+
+    .label
+      +border-radius(0 0 2px 2px)
+      background: #eee
+      color: white
+      display: inline-block
+      font-size: 10px
+      height: 12px
+      margin-right: 3px
+      overflow: hidden
+      padding: 0 4px 1px
+      text-align: center
+      vertical-align: top
+      width: 23px
+
+      &:first-child
+        margin-left: 10px
+
+      &:last-child
+        margin-right: 10px
+
+    .url
+      margin-left: 4px
+      display: inline
+
+    .issue-title
+      color: #444
+      font-size: 16px
+      font-weight: normal
+      margin: 15px 0 5px 0
+      padding: 0
+
+    .issue-name
+      cursor: pointer
+      display: inline
+
+    .state
+      color: $text-light
+      display: block
+      font-size: 9px
+      letter-spacing: 0.1em
+      text-align: right
+      text-transform: uppercase
+
+    .assigned
+      margin-bottom: 5px
+
+      .avatar
+        +border-radius(28px)
+        height: 28px
+        margin-right: 5px
+        width: 28px
+
+      .user
+        vertical-align: top
+        margin-left: 4px
+
+    .actions
+      list-style: none
+      margin: 0
+      padding: 0
+
+      ul
+        margin: 0
+
+    .move-to
+      ul
+        list-style: none
+        margin: 0
+        padding: 0
+
+    .stats
+      font-size: 10px
+      color: #888
