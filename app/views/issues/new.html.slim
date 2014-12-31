@@ -1,11 +1,8 @@
-h1 Issues#new
-p Find me in app/views/issues/new.html.slim
-
 = simple_form_for(@issue, url: board_issues_url(@board)) do |f|
   = f.input :title
   = f.input :body
   = f.input :labels, as: :check_boxes, collection: @issue.labels, checked: false
 
-  = f.button :submit, value: 'Create'
-
-a href="#{board_url(@board)}" Cancel
+  .submit-area
+    = f.button :submit, value: 'Create'
+    a href="#{board_url(@board)}" Cancel

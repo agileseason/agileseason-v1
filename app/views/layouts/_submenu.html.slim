@@ -1,0 +1,4 @@
+ul.l-submenu
+  li.board-name: a href="#{board_url(@board)}" = @board.name
+  li.graph : a href="#{board_graphs_cumulative_index_url(@board)}" Cumulative Flow
+  li.graph : a href="#{board_graphs_lines_url(@board)}" Lines

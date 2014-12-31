@@ -1,0 +1,25 @@
+@import compass/css3/border-radius
+
+$image-path: "pages/p-landing-index"
+
+.p-landing-index
+  text-align: center
+  background: image-url("#{$image-path}/bg.jpg") 10% 0 no-repeat
+  background-size: cover
+  background-attachment: fixed
+
+  .container
+    height: 100%
+    padding: 0
+
+  .pane
+    +border-radius(4px)
+    background: #e8e9e5
+    display: inline-block
+    margin-top: -120px
+    padding: 20px 60px 40px
+    position: relative
+    top: 50%
+
+  .main-title
+    color: #666
