@@ -11,6 +11,7 @@ gem 'jquery-rails'
 gem 'keynote'
 gem 'octokit', '~> 3.5.2'
 gem 'omniauth-github'
+gem 'pry-rails'
 gem 'rails', '4.1.7'
 gem 'sass-rails'
 gem 'sidekiq'
@@ -37,7 +38,6 @@ group :development do
   gem 'capistrano-cookbook', require: false
   gem 'guard'
   gem 'meta_request'
-  gem 'pry-rails'
   gem 'quiet_assets'
   gem 'spring'
 end
