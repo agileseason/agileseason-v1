@@ -57,6 +57,9 @@ GEM
     capistrano-rbenv (2.0.2)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
+    capistrano-sidekiq (0.4.0)
+      capistrano
+      sidekiq
     capybara (2.4.3)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -327,6 +330,7 @@ DEPENDENCIES
   capistrano-cookbook
   capistrano-rails
   capistrano-rbenv
+  capistrano-sidekiq
   capybara
   codeclimate-test-reporter
   coffee-rails
