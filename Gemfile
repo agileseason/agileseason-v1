@@ -36,6 +36,7 @@ group :development do
   gem 'capistrano-bundler'
   gem 'capistrano-rbenv'
   gem 'capistrano-cookbook', require: false
+  gem 'capistrano-sidekiq'
   gem 'guard'
   gem 'meta_request'
   gem 'quiet_assets'
