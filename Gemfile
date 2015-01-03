@@ -11,26 +11,35 @@ gem 'jquery-rails'
 gem 'keynote'
 gem 'octokit', '~> 3.5.2'
 gem 'omniauth-github'
+gem 'pry-rails'
 gem 'rails', '4.1.7'
 gem 'sass-rails'
 gem 'sidekiq'
 gem 'simple_form'
 gem 'slim'
 gem 'slim-rails'
-gem 'sqlite3'
 gem 'state_machine'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
 gem 'virtus'
 
+group :production do
+  gem 'pg'
+  gem 'unicorn'
+end
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'capistrano'
+  gem 'capistrano-rails'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rbenv'
+  gem 'capistrano-cookbook', require: false
+  gem 'capistrano-sidekiq'
   gem 'guard'
   gem 'meta_request'
-  gem 'pry-rails'
   gem 'quiet_assets'
-  #gem 'rack-mini-profiler'
   gem 'spring'
 end
 
@@ -45,6 +54,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda'
   gem 'shoulda-matchers'
+  gem 'sqlite3'
 end
 
 group :test do
