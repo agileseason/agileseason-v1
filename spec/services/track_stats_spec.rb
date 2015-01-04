@@ -7,9 +7,10 @@ describe TrackStats do
       subject { TrackStats.track(column_id) }
       let(:column_id) { 21 }
 
-      it { is_expected.to eq "\n<!---\n"\
-        "@agileseason:{\"track_stats\":{"\
-          "\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
+      it {
+        is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{"\
+          "\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->"
+      }
     end
 
     context :fix_wrong_hidden_content do
@@ -18,16 +19,18 @@ describe TrackStats do
 
       context :nil do
         let(:hash) { nil }
-        it { is_expected.to eq "\n<!---\n"\
-          "@agileseason:{\"track_stats\":{"\
-            "\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
+        it {
+          is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{"\
+            "\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->"
+        }
       end
 
       context :empty do
         let(:hash) { {} }
-        it { is_expected.to eq "\n<!---\n"\
-          "@agileseason:{\"track_stats\":{"\
-            \"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
+        it {
+          is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{"\
+            "\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->"
+        }
       end
     end
 
@@ -37,7 +40,11 @@ describe TrackStats do
       let(:hash) { { track_stats: { columns: { column_id_1 => { in_at: (current - 1.minute).to_s, out_at: nil } } } } }
       subject { TrackStats.track(column_id_2, hash) }
 
-      it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{column_id_1}\":{\"in_at\":\"#{current - 1.minute}\",\"out_at\":\"#{current}\"},\"22\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
+      it {
+        is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{"\
+          "\"#{column_id_1}\":{\"in_at\":\"#{current - 1.minute}\",\"out_at\":\"#{current}\"},"\
+          "\"22\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->"
+      }
     end
 
     context :thrid_column_track do
@@ -56,7 +63,12 @@ describe TrackStats do
       end
       subject { TrackStats.track(column_id_3, hash) }
 
-      it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"21\":{\"in_at\":\"#{current - 2.minute}\",\"out_at\":\"#{current - 1.minute}\"},\"22\":{\"in_at\":\"#{current - 1.minute}\",\"out_at\":\"#{current}\"},\"23\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
+      it {
+        is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{"\
+          "\"21\":{\"in_at\":\"#{current - 2.minute}\",\"out_at\":\"#{current - 1.minute}\"},"\
+          "\"22\":{\"in_at\":\"#{current - 1.minute}\",\"out_at\":\"#{current}\"},"\
+          "\"23\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->"
+      }
     end
 
     context :not_rewrite_in_at do
