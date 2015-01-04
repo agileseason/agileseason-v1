@@ -1,18 +1,5 @@
 describe TrackStats do
-  describe ".hidden_content" do
-    subject { TrackStats.hidden_content(hash) }
-    context :empty do
-      let(:hash) { {} }
-      it { is_expected.to eq "\n<!---\n@agileseason:{}\n-->" }
-    end
-
-    context :not_empty do
-      let(:hash) { { track_stats: { column: 1 } } }
-      it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"column\":1}}\n-->" }
-    end
-  end
-
-  describe ".track" do
+  describe '.track' do
     let(:current) { Time.new(2014, 11, 19) }
     before { allow(Time).to receive(:current).and_return(current) }
 
@@ -73,6 +60,19 @@ describe TrackStats do
       let(:hash) { { track_stats: { columns: { column_id.to_s => { in_at: time_s, out_at: time_s } } } } }
 
       it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{column_id}\":{\"in_at\":\"#{time_s}\",\"out_at\":null}}}}\n-->" }
+    end
+  end
+
+  describe '.hidden_content' do
+    subject { TrackStats.hidden_content(hash) }
+    context :empty do
+      let(:hash) { {} }
+      it { is_expected.to eq "\n<!---\n@agileseason:{}\n-->" }
+    end
+
+    context :not_empty do
+      let(:hash) { { track_stats: { column: 1 } } }
+      it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"column\":1}}\n-->" }
     end
   end
 

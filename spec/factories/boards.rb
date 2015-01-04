@@ -10,7 +10,7 @@ FactoryGirl.define do
       end
       after(:build) do |board, evaluator|
         board.columns = evaluator.number_of_columns.times.each_with_object([]) do |n, columns|
-          columns << FactoryGirl.build(:column, board: board, name: "column_#{n}")
+          columns << FactoryGirl.build(:column, board: board, name: "column_#{n + 1}", order: n + 1)
         end
       end
     end

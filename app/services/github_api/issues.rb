@@ -11,7 +11,7 @@ class GithubApi
 
     def create_issue(board, issue)
       column = board.columns.first
-      body = issue.body + TrackStats.track(column.id)
+      body = issue.body + TrackStats.track([column.id])
       labels = issue.labels.reject(&:blank?) << column.label_name
       client.create_issue(board.github_id, issue.title, body, labels: labels)
     end
@@ -45,7 +45,9 @@ class GithubApi
       hash = data[:hash]
       column_to_remove = column.board.columns.select { |c| c.order > column.order }.map(&:id)
       hash = TrackStats.remove_columns(hash, column_to_remove)
-      data[:comment].to_s + TrackStats.track(column.id, hash)
+      skipped_columns = column.board.columns.select { |c| c.order < column.order }.map(&:id)
+      skipped_columns << column.id
+      data[:comment].to_s + TrackStats.track(skipped_columns, hash)
     end
 
     def all_issues(board)
