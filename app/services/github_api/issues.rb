@@ -23,8 +23,13 @@ class GithubApi
     def move_to(board, column, number)
       issue = client.issue(board.github_id, number)
       body = update_hidden_stats(issue.body, column)
-      client.update_issue(board.github_id, number, issue.title, body,
-        labels: fetch_labels(issue, column))
+      client.update_issue(
+        board.github_id,
+        number,
+        issue.title,
+        body,
+        labels: fetch_labels(issue, column)
+      )
     end
 
     def close(board, number)
