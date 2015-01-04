@@ -110,10 +110,6 @@ Style/ClassAndModuleCamelCase:
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#camelcase-classes'
   Enabled: true
 
-Style/ClassAndModuleChildren:
-  Description: 'Checks style of children classes and modules.'
-  Enabled: true
-
 Style/ClassCheck:
   Description: 'Enforces consistent use of `Object#is_a?` or `Object#kind_of?`.'
   Enabled: true
@@ -159,14 +155,10 @@ Style/DeprecatedHashMethods:
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#hash-key'
   Enabled: true
 
-Style/Documentation:
-  Description: 'Document classes and non-namespace modules.'
-  Enabled: true
-
 Style/DotPosition:
   Description: 'Checks the position of the dot in multi-line method calls.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#consistent-multi-line-chains'
-  Enabled: false
+  Enabled: true
 
 Style/DoubleNegation:
   Description: 'Checks for uses of double negation (!!).'
@@ -181,6 +173,10 @@ Style/ElseAlignment:
   Description: 'Align elses and elsifs correctly.'
   Enabled: true
 
+Style/EmptyElse:
+  Description: 'Avoid empty else-clauses.'
+  Enabled: true
+
 Style/EmptyLineBetweenDefs:
   Description: 'Use empty lines between defs.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#empty-lines-between-methods'
@@ -192,6 +188,10 @@ Style/EmptyLines:
 
 Style/EmptyLinesAroundAccessModifier:
   Description: "Keep blank lines around access modifiers."
+  Enabled: true
+
+Style/EmptyLinesAroundBlockBody:
+  Description: "Keeps track of empty lines around block bodies."
   Enabled: true
 
 Style/EmptyLinesAroundClassBody:
@@ -229,7 +229,7 @@ Style/EvenOdd:
 Style/FileName:
   Description: 'Use snake_case for source file names.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#snake-case-files'
-  Enabled: false
+  Enabled: true
 
 Style/FlipFlop:
   Description: 'Checks for flip flops'
@@ -631,10 +631,7 @@ Style/SpecialGlobalVars:
 Style/StringLiterals:
   Description: 'Checks if uses of quotes match the configured preference.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#consistent-string-literals'
-  Enabled: false
-  EnforcedStyle: double_quotes
-  #EnforcedStyle: single_quotes
-
+  Enabled: true
 
 Style/StringLiteralsInInterpolation:
   Description: >-
@@ -745,14 +742,14 @@ Metrics/ClassLength:
 
 Metrics/CyclomaticComplexity:
   Description: >-
-                 A complexity metric that is strongy correlated to the number
+                 A complexity metric that is strongly correlated to the number
                  of test cases needed to validate a method.
   Enabled: true
 
 Metrics/LineLength:
   Description: 'Limit lines to 80 characters.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#80-character-limits'
-  Enabled: false
+  Enabled: true
 
 Metrics/MethodLength:
   Description: 'Avoid methods longer than 10 lines of code.'
