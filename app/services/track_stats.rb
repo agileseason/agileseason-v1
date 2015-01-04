@@ -2,7 +2,7 @@ class TrackStats
   class << self
     def track(column_ids, hash = nil)
       hash = init_track_hash if hash.blank?
-      column_ids = [column_ids] if column_ids.kind_of?(Fixnum)
+      column_ids = [column_ids] if column_ids.is_a?(Fixnum)
       column_ids.each do |column_id|
         column_data = hash[:track_stats][:columns][column_id.to_s] || in_out_at_hash
         column_data[:out_at] = nil

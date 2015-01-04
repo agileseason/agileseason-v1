@@ -7,7 +7,9 @@ describe TrackStats do
       subject { TrackStats.track(column_id) }
       let(:column_id) { 21 }
 
-      it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
+      it { is_expected.to eq "\n<!---\n"\
+        "@agileseason:{\"track_stats\":{"\
+          "\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
     end
 
     context :fix_wrong_hidden_content do
@@ -16,12 +18,16 @@ describe TrackStats do
 
       context :nil do
         let(:hash) { nil }
-        it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
+        it { is_expected.to eq "\n<!---\n"\
+          "@agileseason:{\"track_stats\":{"\
+            "\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
       end
 
       context :empty do
         let(:hash) { {} }
-        it { is_expected.to eq "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
+        it { is_expected.to eq "\n<!---\n"\
+          "@agileseason:{\"track_stats\":{"\
+            \"columns\":{\"#{column_id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
       end
     end
 

@@ -51,7 +51,9 @@ RSpec.describe GithubApi::Issues do
 
       context 'start from first - success path' do
         let(:move_to_column) { board.columns.first }
-        let(:expected_body) { "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{move_to_column.id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
+        let(:expected_body) { "\n<!---\n"\
+          "@agileseason:{\"track_stats\":{"\
+            "\"columns\":{\"#{move_to_column.id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
 
         it { expect_any_instance_of(Octokit::Client).to receive(:update_issue).with(board.github_id, issue.number, issue.title, expected_body, expected_labels) }
       end
@@ -59,7 +61,10 @@ RSpec.describe GithubApi::Issues do
       context 'start from second - can be' do
         let(:skipped_column) { board.columns.first }
         let(:move_to_column) { board.columns.second }
-        let(:expected_body) { "\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{skipped_column.id}\":{\"in_at\":\"#{current}\",\"out_at\":\"#{current}\"},\"#{move_to_column.id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
+        let(:expected_body) { "\n<!---\n"\
+          "@agileseason:{\"track_stats\":{"\
+            "\"columns\":{\"#{skipped_column.id}\":{\"in_at\":\"#{current}\",\"out_at\":\"#{current}\"},"\
+            "\"#{move_to_column.id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
 
         after { subject }
         it { expect_any_instance_of(Octokit::Client).to receive(:update_issue).with(board.github_id, issue.number, issue.title, expected_body, expected_labels) }
@@ -69,9 +74,16 @@ RSpec.describe GithubApi::Issues do
         let(:start_column) { board.columns.first }
         let(:skipped_column) { board.columns.second }
         let(:move_to_column) { board.columns.third }
-        let(:start_body) { "body_comment.\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{start_column.id}\":{\"in_at\":\"#{current - 1.minute}\",\"out_at\":null}}}}\n-->" }
+        let(:start_body) { "body_comment.\n<!---\n"\
+          "@agileseason:{\"track_stats\":{\"columns\":{"\
+            "\"#{start_column.id}\":{\"in_at\":\"#{current - 1.minute}\",\"out_at\":null}}}}\n-->"
+        }
         let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: start_body, labels: []) }
-        let(:expected_body) { "body_comment.\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{\"#{start_column.id}\":{\"in_at\":\"#{current - 1.minute}\",\"out_at\":\"#{current}\"},\"#{skipped_column.id}\":{\"in_at\":\"#{current}\",\"out_at\":\"#{current}\"},\"#{move_to_column.id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
+        let(:expected_body) { "body_comment.\n<!---\n"\
+          "@agileseason:{\"track_stats\":{\"columns\":{"\
+            "\"#{start_column.id}\":{\"in_at\":\"#{current - 1.minute}\",\"out_at\":\"#{current}\"},"\
+            "\"#{skipped_column.id}\":{\"in_at\":\"#{current}\",\"out_at\":\"#{current}\"},"\
+            "\"#{move_to_column.id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->" }
 
         after { subject }
         it { expect_any_instance_of(Octokit::Client).to receive(:update_issue).with(board.github_id, issue.number, issue.title, expected_body, expected_labels) }
