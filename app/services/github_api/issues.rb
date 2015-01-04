@@ -22,9 +22,14 @@ class GithubApi
 
     def move_to(board, column, number)
       issue = client.issue(board.github_id, number)
-      labels = issue.labels.map(&:name) - board.github_labels << column.label_name
       body = update_hidden_stats(issue.body, column)
-      client.update_issue(board.github_id, number, issue.title, body, labels: labels)
+      client.update_issue(
+        board.github_id,
+        number,
+        issue.title,
+        body,
+        labels: fetch_labels(issue, column)
+      )
     end
 
     def close(board, number)
@@ -40,14 +45,16 @@ class GithubApi
 
     private
 
+    def fetch_labels(issue, column)
+      (issue.labels.map(&:name) - column.board.github_labels) << column.label_name
+    end
+
     def update_hidden_stats(issue_body, column)
       data = TrackStats.extract(issue_body)
       hash = data[:hash]
-      column_to_remove = column.board.columns.select { |c| c.order > column.order }.map(&:id)
-      hash = TrackStats.remove_columns(hash, column_to_remove)
-      skipped_columns = column.board.columns.select { |c| c.order < column.order }.map(&:id)
-      skipped_columns << column.id
-      data[:comment].to_s + TrackStats.track(skipped_columns, hash)
+      hash = TrackStats.remove_columns(hash, column.next_columns.map(&:id))
+      tracked_ids = column.prev_columns.map(&:id) << column.id
+      data[:comment].to_s + TrackStats.track(tracked_ids, hash)
     end
 
     def all_issues(board)
