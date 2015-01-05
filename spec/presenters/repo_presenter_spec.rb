@@ -18,7 +18,7 @@ describe RepoPresenter do
   end
 
   describe '#board' do
-    let(:repo) { OpenStruct.new(github_id: 123) }
+    let(:repo) { OpenStruct.new(id: 123) }
     subject { presenter.board }
 
     context :not_exist do
@@ -26,7 +26,7 @@ describe RepoPresenter do
     end
 
     context :exist do
-      let!(:board) { create(:board, :with_columns, github_id: repo.github_id) }
+      let!(:board) { create(:board, :with_columns, github_id: repo.id) }
       it { is_expected.to_not be_nil }
       it { expect(subject.id).to eq board.id }
     end
