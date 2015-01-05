@@ -17,15 +17,15 @@ class ApplicationController < ActionController::Base
     rescue_from ActionView::Template::Error, with: :runtime_error
   end
 
-  def runtime_error e
+  def runtime_error(e)
     raise e if remote_addr == '127.0.0.1' || !Rails.env.production?
 
     if [
-          ActionController::RoutingError,
-          ActiveRecord::RecordNotFound,
-          AbstractController::ActionNotFound,
-          ActiveSupport::MessageVerifier::InvalidSignature
-        ].include?(e.class)
+        ActionController::RoutingError,
+        ActiveRecord::RecordNotFound,
+        AbstractController::ActionNotFound,
+        ActiveSupport::MessageVerifier::InvalidSignature
+      ].include?(e.class)
       render file: 'public/404.html', status: 404, layout: false
     else
       render file: 'public/500.html', status: 503, layout: false
@@ -69,6 +69,8 @@ class ApplicationController < ActionController::Base
   end
 
   def remote_addr
-    request.headers['HTTP_X_FORWARDED_FOR'] || request.headers['HTTP_X_REAL_IP'] || request.headers['REMOTE_ADDR']
+    request.headers['HTTP_X_FORWARDED_FOR'] ||
+      request.headers['HTTP_X_REAL_IP'] ||
+      request.headers['REMOTE_ADDR']
   end
 end
