@@ -1,4 +1,9 @@
 li
   span.repo-name = repo.full_name
   span.actions
-    a.button.create_board href="#{new_board_url({github_id: repo.id})}" Create Board
+    - if k(:repo, repo).board
+      a href="#{board_url(k(:repo, repo).board)}" Link to Board
+    - elsif k(:repo, repo).board_control?
+      a.button.create_board href="#{new_board_url({github_id: repo.id})}" Create Board
+    - else
+      span Not enough permissions

@@ -1,5 +1,7 @@
 class BoardsController < ApplicationController
   after_action :fetch_repo_history, only: :show
+  before_action :fetch_board, only: :show
+  before_action :check_permissions, only: :create
 
   def index
     if current_user.boards.blank?
@@ -9,7 +11,6 @@ class BoardsController < ApplicationController
   end
 
   def show
-    @board = current_user.boards.find(params[:id])
     @issues = github_api.board_issues(@board)
   end
 
@@ -58,5 +59,12 @@ private
     # FIX : This tasks also add to wenever
     Graphs::LinesWorker.perform_async(@board.id, github_token)
     Graphs::CumulativeWorker.perform_async(@board.id, github_token)
+  end
+
+  def check_permissions
+    unless current_user_admin?(board_params[:github_id])
+      # NOTE : Not enough permissions to create board.
+      raise ActiveRecord::ReadOnlyRecord
+    end
   end
 end
