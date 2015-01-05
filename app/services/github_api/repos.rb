@@ -15,20 +15,13 @@ class GithubApi
     private
 
     def user_repos
-      repos = paginate { |page| client.repos(nil, page: page) }
-      authorized_repos(repos)
+      paginate { |page| client.repos(nil, page: page) }
     end
 
     def org_repos
-      repos = orgs.flat_map do |org|
+      orgs.flat_map do |org|
         paginate { |page| client.org_repos(org[:login], page: page) }
       end
-
-      authorized_repos(repos)
-    end
-
-    def authorized_repos(repos)
-      repos.select { |repo| repo.permissions.admin }
     end
 
     def orgs

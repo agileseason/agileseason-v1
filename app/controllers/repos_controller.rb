@@ -6,7 +6,6 @@ class ReposController < ApplicationController
 private
   def current_user_repos
     return [] unless github_token
-    api = GithubApi.new(github_token)
-    api.repos
+    github_api.repos
   end
 end

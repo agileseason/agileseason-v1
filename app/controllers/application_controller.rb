@@ -8,6 +8,30 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate
   helper_method :current_user, :signed_in?
 
+  unless Rails.env.test?
+    rescue_from Exception, with: :runtime_error
+    rescue_from SyntaxError, with: :runtime_error
+    rescue_from NoMethodError, with: :runtime_error
+    rescue_from ActionController::RoutingError, with: :runtime_error
+    rescue_from AbstractController::ActionNotFound, with: :runtime_error
+    rescue_from ActionView::Template::Error, with: :runtime_error
+  end
+
+  def runtime_error e
+    raise e if remote_addr == '127.0.0.1' || !Rails.env.production?
+
+    if [
+          ActionController::RoutingError,
+          ActiveRecord::RecordNotFound,
+          AbstractController::ActionNotFound,
+          ActiveSupport::MessageVerifier::InvalidSignature
+        ].include?(e.class)
+      render file: 'public/404.html', status: 404, layout: false
+    else
+      render file: 'public/500.html', status: 503, layout: false
+    end
+  end
+
   private
 
   def authenticate
@@ -22,7 +46,29 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.where(remember_token: session[:remember_token]).first
   end
 
+  # FIX : Nees specs.
   def fetch_board
-    @board = current_user.boards.find(params[:board_id])
+    board_id = params[:board_id] || params[:id]
+    board = Board.find(board_id)
+    if board.user == current_user || current_user_reader?(board.github_id)
+      @board = board
+    else
+      raise ActiveRecord::RecordNotFound
+    end
+  end
+
+  # FIX : Nees specs.
+  def current_user_reader?(github_id)
+    github_api.cached_repos.any? { |r| r.id == github_id.to_i }
+  end
+
+  # FIX : Nees specs.
+  def current_user_admin?(github_id)
+    repo = github_api.cached_repos.select { |r| r.id == github_id.to_i }.first
+    k(:repo, repo).board_control?
+  end
+
+  def remote_addr
+    request.headers['HTTP_X_FORWARDED_FOR'] || request.headers['HTTP_X_REAL_IP'] || request.headers['REMOTE_ADDR']
   end
 end
