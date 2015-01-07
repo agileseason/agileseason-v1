@@ -48,8 +48,7 @@ class ApplicationController < ActionController::Base
 
   # FIX : Nees specs.
   def fetch_board
-    board_id = params[:board_id] || params[:id]
-    board = Board.find(board_id)
+    board = Board.find_by(github_name: params[:github_name] || params[:board_github_name])
     if board.user == current_user || current_user_reader?(board.github_id)
       @board = board
     else

@@ -11,4 +11,8 @@ class Board < ActiveRecord::Base
   def github_labels
     columns.map(&:label_name)
   end
+
+  def to_param
+    github_name
+  end
 end

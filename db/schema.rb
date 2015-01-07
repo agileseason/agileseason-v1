@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141209090518) do
+ActiveRecord::Schema.define(version: 20150107181004) do
 
   create_table "board_histories", force: true do |t|
     t.integer  "board_id"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20141209090518) do
     t.integer  "github_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "github_name"
   end
 
   add_index "boards", ["user_id"], name: "index_boards_on_user_id"
