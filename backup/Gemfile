@@ -1,0 +1,4 @@
+source 'http://rubygems.org'
+
+gem 'backup', '~> 4.0.1'
+gem 'dotenv', '~> 0.11.1'
