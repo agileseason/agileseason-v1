@@ -22,6 +22,7 @@ gem 'state_machine'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
 gem 'virtus'
+gem 'whenever'
 
 group :production do
   gem 'pg'
