@@ -1,5 +1,5 @@
 li
-  span.repo-name = repo.full_name
+  a.repo-name href="http://github.com/#{repo.full_name}" target='_blank' = repo.full_name
   span.actions
     - if k(:repo, repo).board
       a href="#{board_url(k(:repo, repo).board)}" Link to Board
