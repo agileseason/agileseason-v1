@@ -1,6 +1,7 @@
 h1 Boards#new
 = simple_form_for(@board) do |f|
   = f.input :github_id, as: :hidden
+  = f.input :github_name, as: :hidden
   = f.input :name
   = f.collection_radio_buttons :type, [['Boards::KanbanBoard', 'Kanban'], ['Boards::ScrumBoard', 'Scrum']], :first, :last
   ul.columns

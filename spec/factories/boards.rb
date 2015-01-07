@@ -3,6 +3,7 @@ FactoryGirl.define do
     name 'test_board'
     type "Boards::KanbanBoard"
     github_id 123
+    github_name 'test_board_repo'
 
     trait :with_columns do
       ignore do

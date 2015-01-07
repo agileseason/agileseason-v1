@@ -4,7 +4,7 @@ RSpec.describe Graphs::LinesController, type: :controller do
     let(:board) { create(:board, :with_columns, user: user) }
     it 'returns http success' do
       stub_sign_in(user)
-      get :index, board_id: board.id
+      get :index, board_github_name: board.github_name
       expect(response).to have_http_status(:success)
     end
   end
