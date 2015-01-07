@@ -8,10 +8,18 @@ Agile board with management stats for github issues
 
 ## Development
 
+### Getting Started
 1. Clone this repository `git clone git@github.com:agileseason/agileseason.git ~/PROJECTS_DIR/agileseason`
 1. Install [pow](http://pow.cx/) and set up app `cd ~/.pow && ln -s ~/PROJECTS_DIR/agileseason`
 1. Run Sidekiq `bundle exec sidekiq`
 
+### Backup
+1. Add to ~/.zshrc
+```
+export BACKUP_DROPBOX_API_KEY='o7a1rzatx7fsri0'
+export BACKUP_DROPBOX_API_SECRET='cw132aylx8kl7k8'
+```
+1. Manually run `bundle exec backup perform --trigger rails_database --config-file ./config.rb`
 
 ## License
 
