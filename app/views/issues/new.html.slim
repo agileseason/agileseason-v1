@@ -4,5 +4,5 @@
   = f.input :labels, as: :check_boxes, collection: @issue.labels, checked: false
 
   .submit-area
-    = f.button :submit, value: 'Create'
     a href="#{board_url(@board)}" Cancel
+    = f.button :submit, value: 'Create'
