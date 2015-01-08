@@ -1,0 +1,56 @@
+@import compass/css3/opacity
+@import compass/css3/border-radius
+@import globals/variables
+
+.l-modal
+  display: none
+
+  & > .overlay
+    +opacity(0.4)
+    background: #000
+    height: 100%
+    left: 0
+    position: fixed
+    top: 0
+    width: 100%
+    z-index: 200
+
+    &.visible
+      +opacity(0.5)
+
+  .modal > .modal-inner
+    +border-radius(6px)
+    background: #fff
+    left: 50%
+    margin-left: -480px
+    overflow: hidden
+    padding-bottom: 30px
+    position: absolute
+    top: 100px
+    width: $modal-width
+    z-index: 205
+
+  .modal-close
+    +opacity(0.4)
+    border-bottom: none
+    cursor: pointer
+    height: 18px
+    position: absolute
+    right: 14px
+    top: 14px
+    width: 16px
+
+    &:before
+      content: "×"
+      display: block
+      font-size: 24px
+      height: 14px
+      line-height: 14px
+      position: absolute
+      width: 14px
+
+    &:hover
+      +opacity(0.6)
+
+  .modal-content
+    padding: 20px
