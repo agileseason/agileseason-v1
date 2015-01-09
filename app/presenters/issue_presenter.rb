@@ -27,6 +27,10 @@ class IssuePresenter < Keynote::Presenter
     end
   end
 
+  def current_column?(columns, current_column)
+    columns.any?{ |column| current_column == column.name.split('] ').last}
+  end
+
   private
 
   def display_labels(hidden_label_name)

@@ -10,25 +10,12 @@ html
     .container
       = yield
 
-  .l-modal
-    .overlay
-    .modal
+    .l-preloader
+      .preloader
 
-      .modal-inner
-        .modal-close
-        .modal-content
-          .title
-            .issue-name Issue title
-            a.url href="#" target="_blank" #125
-
-          ul.modal-board-columns
-            - @board.columns.each do |column|
-              li.modal-board-column
-                a href="#" = column.name
-
-          .issue-content
-            p sdkfjgksd skdjfgkjdskfjg kdsjfg kdsfjgkdjfg
-
-          .issue-actions
-            p gsdfkjhg dkshjfg kdfs
-            p skdjfg kj kdsjfhg jksdfhg
+    .l-modal
+      .overlay
+      .modal
+        .modal-inner
+          .modal-close
+          .modal-content

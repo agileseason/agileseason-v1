@@ -4,10 +4,12 @@ Rails.application.routes.draw do
             only: [:index, :new, :create, :show],
             param: :github_name,
             constraints: { github_name: /[0-9A-Za-z\-_\.]+/ } do
-    resource :issues, only: [:new, :create] do
+
+    resource :issues, only: [:new, :create, :show] do
       get ':number/move_to/:column_id', to: 'issues#move_to', as: :move_to_column
       get ':number/close', to: 'issues#close', as: :close
       get ':number/assignee', to: 'issues#assignee', as: :assignee
+      get ':number/show', to: 'issues#show', as: :'show'
     end
 
     namespace :graphs do

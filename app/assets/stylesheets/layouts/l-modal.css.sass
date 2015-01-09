@@ -3,6 +3,7 @@
 @import globals/variables
 
 .l-modal
+  color: $text-usual
   display: none
 
   & > .overlay
@@ -23,8 +24,8 @@
     background: #fff
     left: 50%
     margin-left: -480px
+    margin-bottom: 40px
     overflow: hidden
-    padding-bottom: 30px
     position: absolute
     top: 100px
     width: $modal-width
@@ -36,8 +37,8 @@
     cursor: pointer
     height: 18px
     position: absolute
-    right: 14px
-    top: 14px
+    right: 5px
+    top: 5px
     width: 16px
 
     &:before
@@ -53,4 +54,4 @@
       +opacity(0.6)
 
   .modal-content
-    padding: 20px
+    //padding: 20px

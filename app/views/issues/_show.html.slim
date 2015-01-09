@@ -1,0 +1,29 @@
+.b-issue-popup
+  ul.modal-board-columns
+    - @board.columns.each do |column|
+      li.modal-board-column class="#{'active' if k(:issue, @issue).current_column?(@issue.labels, column.name)}"
+        a href="#{move_to_column_board_issues_url(@board, @issue.number, column)}" = column.name
+
+  .content
+    .issue-content
+      .title
+        .issue-name = @issue.title.capitalize
+        a.url href="#{@issue.html_url}" target="_blank" ##{@issue.number}
+        //.due-date Feb 12, 13:00
+
+      .issue-description = @issue.body.capitalize.html_safe
+
+    .issue-actions
+      ul.labels
+        - @issue.labels.each do |label|
+          li.label style="background: ##{label.color}" = label.name
+        li.add-label Add label
+
+      - if @issue.assignee
+        = render partial: 'issues/assignee', locals: { issue: @issue }
+      - else
+        .b-assigned
+          a.assign href="#{assignee_board_issues_url(@board, @issue.number)}" Assign yourself
+
+      - if @issue.state == "open"
+        button.button.close href="#{close_board_issues_url(@board, @issue.number)}" Close issue

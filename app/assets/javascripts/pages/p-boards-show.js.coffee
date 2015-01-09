@@ -3,6 +3,9 @@ resize_lock = false
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
 
+  $('.issue-name').click ->
+    $('.l-preloader').show()
+
   resize_height()
 
 $(window).resize ->
