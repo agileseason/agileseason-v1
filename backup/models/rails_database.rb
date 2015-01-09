@@ -8,7 +8,7 @@
 # http://meskyanichi.github.io/backup
 #
 Model.new(:rails_database, 'Backups of the Rails Database') do
-  case ENV['BACKUP_ENV']
+  case ENV['RAILS_ENV']
   when 'development'
     ##
     # SQLite [Database] - Development

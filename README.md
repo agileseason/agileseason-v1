@@ -15,7 +15,7 @@ Agile board with management stats for github issues
 
 ### Backup
 1. Add to `~/.zshrc` rows `export BACKUP_DROPBOX_API_KEY='...'` and `export BACKUP_DROPBOX_API_SECRET='...'`
-1. Manually run `bundle exec backup perform --trigger rails_database --config-file ./config.rb`
+1. Manually run `cd ~/PROJECTS_DIR/agileseason/backup` and `RAILS_ENV='...' bundle exec backup perform --trigger rails_database --config-file ./config.rb`
 
 ## License
 
