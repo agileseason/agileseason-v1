@@ -11,6 +11,18 @@ Model.new(:rails_database, 'Backups of the Rails Database') do
   case ENV['BACKUP_ENV']
   when 'development'
     ##
+    # SQLite [Database] - Development
+    #
+    database SQLite do |db|
+      db.name               = 'development.sqlite3'
+      # Path to database
+      db.path               = '/Users/slash/projects/agileseason/db/'
+      # Optional: Use to set the location of this utility
+      #   if it cannot be found by name in your $PATH
+      db.sqlitedump_utility = '/usr/bin/sqlite3'
+    end
+  else
+    ##
     # PostgreSQL [Database]
     #
     database PostgreSQL do |db|
@@ -21,18 +33,6 @@ Model.new(:rails_database, 'Backups of the Rails Database') do
       db.skip_tables        = []
       db.socket             = DB_CONFIG['socket']
       db.additional_options = ['-xc', '-E=utf8']
-    end
-  else
-    ##
-    # SQLite [Database] - Development
-    #
-    database SQLite do |db|
-      db.name               = 'development.sqlite3'
-      # Path to database
-      db.path               = '/Users/slash/projects/agileseason/db/'
-      # Optional: Use to set the location of this utility
-      #   if it cannot be found by name in your $PATH
-      db.sqlitedump_utility = '/usr/bin/sqlite3'
     end
   end
 
