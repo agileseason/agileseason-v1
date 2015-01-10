@@ -2,12 +2,16 @@
 @import compass/css3/text-shadow
 @import compass/css3/box-shadow
 @import compass/css3/transform
+@import compass/css3/transition
 @import compass/css3/opacity
 @import 'mixins/button'
+@import 'mixins/close'
+@import 'mixins/popover'
 
 @import globals/variables
 
 .p-boards-show
+  background: $board-bg
   .container
     padding: 0
 
@@ -102,28 +106,144 @@
     .add-user
       display: none
 
-  .new-issue
+  .new-issue-form
     display: none
+    margin: 18px 0 0 0
+    min-height: 100px
+    position: relative
+
+    .add-label
+      +border-radius(4px)
+      border: 1px dashed #aaa
+      color: #aaa
+      cursor: pointer
+      display: inline-block
+      float: left
+      font-size: 12px
+      margin: 5px 5px 0 0
+      padding: 2px 10px
+
+      &:before
+        border: none
+        content: '+'
+        font-size: 16px
+        line-height: 12px
+        margin-right: 3px
+
+      &:hover
+        border: 1px dashed #888
+        color: #888
+
+    label
+      display: none
+
+    .popover
+      +popover
+      display: none
+      font-size: 14px
+      height: 220px
+      top: 100%
+      z-index: 1
+      width: 240px
+
+      .close-popover
+        +close
+
+      .labels-block
+        overflow-x: hidden
+        overflow-y: auto
+        padding: 10px
+        height: 200px
+
+      label.check_boxes
+        display: none
+
+      label.label
+        padding: 3px
+        display: block
+        color: #fff
+        +border-radius(4px)
+        background: #aaa
+        margin-bottom: 5px
+        width: 160px
+        +transition(width ease-out 0.2s)
+        position: relative
+
+        &:hover
+          width: 190px
+
+        input
+          display: inline-block
+          position: absolute
+
+        .label-name
+          display: block
+          white-space: nowrap
+          padding-left: 20px
+
+    .issue_body
+      display: none
+
+    .submit-area
+      background: none
+      padding: 0
+
+    .cancel
+      font-size: 12px
+
+    textarea
+      +border-radius(3px)
+      +box-shadow(0 1px 0px rgba(100,100,100,0.3), 0 0 10px rgba(30,80,150,0.05) inset)
+      background-color: $card
+      border: none
+      color: $text-usual
+      font-size: 14px
+      margin-bottom: 5px
+      outline: none
+      padding: 10px
+      position: relative
+      resize: none
+      width: 219px
+
+      &:focus
+        outline: none
+
+  .new-issue
     -moz-box-flex: 0
     -ms-flex: 0 0 auto
     -webkit-box-flex: 0
     -webkit-flex: 0 0 auto
-    flex: 0 0 auto
-    padding: 10px
-    border: 1px dashed #aaa
     border-radius: 4px
-    margin: 7px 0 10px
+    border: 1px dashed #aaa
+    cursor: pointer
+    display: none
+    flex: 0 0 auto
+    margin: 20px 0 10px
+    padding: 10px
+
+    a.ajax-link
+      &:before
+        content: '+'
+        font-size: 20px
+        line-height: 14px
+        margin-right: 3px
 
     &:hover
       border: 1px dashed #888
 
+      a.ajax-link
+        color: $ajax-link-hover
+
   .issue
     +border-radius(3px)
-    +box-shadow(0 1px 0px rgba(100,100,100,0.3))
+    +box-shadow(0 1px 0px rgba(100,100,100,0.3), 0 0 10px rgba(30,80,150,0.05) inset)
     background-color: $card
     margin-bottom: 10px
     padding: 0 10px 10px
     position: relative
+
+    &:first-child
+      margin-top: 5px
 
     &:hover
       background: $card-hover

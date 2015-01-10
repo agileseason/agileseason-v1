@@ -2,9 +2,15 @@
   ul.left
     li.logo AgileSeason
     /li.debug github_token:#{github_token} remember_token:#{session[:remember_token]} user_id:#{current_user.id}
-    li.repos : a href="#{repos_url}" Repositories
-    li.boars : a href="#{boards_url}" Boards
+    li.repos
+      a.ajax-link href="#{repos_url}"
+        span.octicon.octicon-repo
+        span &nbsp;Repositories
+    li.boars
+      a.ajax-link href="#{boards_url}"
+        span Boards&nbsp;
+        span.octicon.octicon-chevron-down
 
   ul.right
     li.user = current_user
-    li.exit : a href="#{sign_out_url}" Exit
+    li.exit : a href="#{sign_out_url}" : span.octicon.octicon-sign-out

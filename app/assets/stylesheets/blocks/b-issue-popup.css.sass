@@ -1,8 +1,10 @@
 @import compass/css3/border-radius
 @import compass/css3/text-shadow
+@import compass/css3/box-shadow
 @import 'globals/variables'
 
 .b-issue-popup
+  +box-shadow(0 0 40px rgba(90,90,90,0.2) inset)
   background: $card
 
   .issue-name
@@ -98,6 +100,7 @@
     position: relative
     padding: 3px 30px
     border: 1px solid #e8e9e5
+    background: #fff
 
     &:hover
       background: #e8e9e5

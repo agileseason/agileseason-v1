@@ -7,9 +7,12 @@
           .board-title
             = column.name.capitalize
 
-          a.new-issue.ajax-link href="#{new_board_issues_url(@board)}" New issue
+          .new-issue.ajax-link
+            a.ajax-link New issue
+          .new-issue-form
+            = render partial: 'issues/new', locals: { board: @board, issue: @issue, labels: @labels }
 
-          .issues
+          .issues.scroller
             - @issues[column.label_name].each do |issue|
                 .issue class="#{issue.state}"
 

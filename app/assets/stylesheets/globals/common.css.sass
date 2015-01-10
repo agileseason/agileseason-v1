@@ -1,4 +1,5 @@
 @import compass/css3/border-radius
+@import compass/css3/text-shadow
 @import 'mixins/button'
 @import globals/variables
 
@@ -95,9 +96,14 @@ input[type="radio"]
 
   .button
     cursor: pointer
-    font-size: 20px
     margin-left: 10px
-    padding: 10px 40px
 
 abbr[title="required"]
   display: none !important
+
+.scroller::-webkit-scrollbar
+  width: 0
+
+.octicon
+  +text-shadow(0 1px 1px rgba(255,255,255,1))
+  color: $text-light

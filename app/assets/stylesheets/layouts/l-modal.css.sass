@@ -1,6 +1,7 @@
 @import compass/css3/opacity
 @import compass/css3/border-radius
-@import globals/variables
+@import 'globals/variables'
+@import 'mixins/close'
 
 .l-modal
   color: $text-usual
@@ -32,26 +33,7 @@
     z-index: 205
 
   .modal-close
-    +opacity(0.4)
-    border-bottom: none
-    cursor: pointer
-    height: 18px
-    position: absolute
-    right: 5px
-    top: 5px
-    width: 16px
-
-    &:before
-      content: "×"
-      display: block
-      font-size: 24px
-      height: 14px
-      line-height: 14px
-      position: absolute
-      width: 14px
-
-    &:hover
-      +opacity(0.6)
+    +close
 
   .modal-content
     //padding: 20px
