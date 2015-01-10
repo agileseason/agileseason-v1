@@ -4,5 +4,15 @@
 =popover
   +border-radius(4px)
   +box-shadow(0 0 20px rgba(100,100,100,0.5))
-  background: #fff
+  background: $popover
   position: absolute
+  z-index: 1
+
+  .octicon.octicon-triangle-up
+    color: $popover
+    display: none
+    left: 50%
+    margin-left: -10px
+    position: absolute
+    text-shadow: 0 -5px 5px rgba(100, 100, 100, 0.1)
+    top: -10px

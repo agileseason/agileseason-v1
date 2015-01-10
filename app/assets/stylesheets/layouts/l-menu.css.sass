@@ -1,5 +1,6 @@
 @import compass/css3/text-shadow
 @import compass/css3/border-radius
+@import 'mixins/popover'
 @import globals/variables
 
 .l-menu
@@ -24,6 +25,9 @@
     display: inline-block
     margin: 0 10px
 
+    &.boards
+      position: relative
+
     &:first-child
       margin-left: 20px
 
@@ -43,3 +47,29 @@
     +text-shadow(0 1px 1px rgba(255,255,255,1))
     color: $text-light
     font-weight: bold
+
+  .popover
+    display: none
+
+    +popover
+    left: 50%
+    margin: 10px 0 0 -90px
+    top: 100%
+
+    .octicon.octicon-triangle-up
+      display: inline-block
+
+    ul
+      padding: 10px 0
+
+      li
+        display: block
+        margin: 0
+
+      a
+        display: block
+        padding: 5px 15px
+
+        &:hover
+          background: $orange
+          color: #fff

@@ -1,3 +1,5 @@
+@import 'globals/variables'
+
 .p-repos-index
   .repos-list
     list-style: none
@@ -10,6 +12,13 @@
     .repo-name
       display: table-cell
       padding: 0 20px 15px 0
+
+      .octicon
+        color: $link
+
+      &:hover
+        .octicon
+          color: $link-hover
 
     .actions
       display: table-cell

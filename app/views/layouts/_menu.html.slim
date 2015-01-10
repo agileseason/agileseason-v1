@@ -3,13 +3,18 @@
     li.logo AgileSeason
     /li.debug github_token:#{github_token} remember_token:#{session[:remember_token]} user_id:#{current_user.id}
     li.repos
-      a.ajax-link href="#{repos_url}"
+      a href="#{repos_url}"
         span.octicon.octicon-repo
         span &nbsp;Repositories
-    li.boars
-      a.ajax-link href="#{boards_url}"
+    li.boards
+      a
         span Boards&nbsp;
         span.octicon.octicon-chevron-down
+
+      .popover
+        .octicon.octicon-triangle-up
+        ul
+          = render partial: 'boards/board', collection: current_user.boards, as: :board
 
   ul.right
     li.user = current_user
