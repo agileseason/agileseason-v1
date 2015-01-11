@@ -1,0 +1,39 @@
+@import compass/css3/opacity
+@import compass/css3/border-radius
+@import 'globals/variables'
+@import 'mixins/close'
+
+.l-modal
+  color: $text-usual
+  display: none
+
+  & > .overlay
+    +opacity(0.4)
+    background: #000
+    height: 100%
+    left: 0
+    position: fixed
+    top: 0
+    width: 100%
+    z-index: 200
+
+    &.visible
+      +opacity(0.5)
+
+  .modal > .modal-inner
+    +border-radius(6px)
+    background: #fff
+    left: 50%
+    margin-left: -480px
+    margin-bottom: 40px
+    overflow: hidden
+    position: absolute
+    top: 100px
+    width: $modal-width
+    z-index: 205
+
+  .modal-close
+    +close
+
+  .modal-content
+    //padding: 20px

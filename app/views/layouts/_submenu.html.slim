@@ -1,4 +1,18 @@
 ul.l-submenu
-  li.board-name: a href="#{board_url(@board)}" = @board.name
-  li.graph : a href="#{board_graphs_cumulative_index_url(@board)}" Cumulative Flow
-  li.graph : a href="#{board_graphs_lines_url(@board)}" Lines
+  li
+    - if params[:controller] == 'boards'
+      span #{@board.name.capitalize} #{k(:board, @board).board_name} board
+    - else
+      a href="#{board_url(@board)}" #{@board.name.capitalize} #{k(:board, @board).board_name} board
+
+  li
+    - if params[:controller] == 'graphs/cumulative'
+      span Cumulative Flow
+    - else
+      a href="#{board_graphs_cumulative_index_url(@board)}" Cumulative Flow
+
+  li
+    - if params[:controller] == 'graphs/lines'
+      span Lines
+    - else
+      a href="#{board_graphs_lines_url(@board)}" Lines

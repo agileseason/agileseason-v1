@@ -1,5 +1,6 @@
 @import compass/css3/border-radius
-
+@import compass/css3/text-shadow
+@import 'mixins/button'
 @import globals/variables
 
 html,
@@ -7,7 +8,7 @@ body
   height: 100%
 
 body
-  background: #f7f7f7
+  background: $body-bg
   font-family: Helvetica, Arial, sans-serif
   margin: 0
   padding: 0
@@ -29,11 +30,16 @@ a
   &:hover
     color: $link-hover
 
+  &.active,
+  &.active:hover
+    color: $text-usual
+    cursor: default
+
 .ajax-link
-  color: #999
+  color: $ajax-link
 
   &:hover
-    color: #666
+    color: $ajax-link-hover
 
 .title
   font-size: 28px
@@ -51,16 +57,7 @@ a
     margin-bottom: 5px
 
 .button
-  +border-radius(4px)
-  border: none
-  background: #1975A3
-  color: #fff
-  font-size: 14px
-  padding: 5px 10px
-
-  &:hover
-    background: #338CB8
-    color: #fff
+  +button
 
 form
   display: inline-block
@@ -83,10 +80,38 @@ input[type="text"]
   padding: 4px
   width: 300px
 
+input[type="radio"]
+  display: inline-block
+  margin-right: 10px
+
+.collection_radio_buttons
+  display: inline-block
+  margin-right: 20px
+
 .submit-area
-  padding: 20px
   +border-radius(4px)
-  background: #e8e9e5
+  background: $submit-area
+  padding: 20px
+  text-align: right
+
+  .button
+    cursor: pointer
+    margin-left: 10px
 
 abbr[title="required"]
   display: none !important
+
+.scroller::-webkit-scrollbar
+  width: 0
+
+.octicon
+  +text-shadow(0 1px 1px rgba(255,255,255,1))
+  color: $text-light
+
+.overlay
+  height: 100%
+  left: 0
+  position: fixed
+  top: 0
+  width: 100%
+  z-index: 1

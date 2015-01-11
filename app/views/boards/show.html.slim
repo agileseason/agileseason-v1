@@ -4,8 +4,15 @@
   .board-columns
     - @board.columns.each do |column|
         .board-column
-          .board-title = column.name
-          .issues
+          .board-title
+            = column.name.capitalize
+
+          .new-issue.ajax-link
+            a.ajax-link New issue
+          .new-issue-form
+            = render partial: 'issues/new', locals: { board: @board, issue: @issue, labels: @labels }
+
+          .issues.scroller
             - @issues[column.label_name].each do |issue|
                 .issue class="#{issue.state}"
 
@@ -13,31 +20,15 @@
                     = k(:issue, issue).labels_html(column.label_name)
 
                   .issue-title
-                    .issue-name = issue.title
+                    a.issue-name data-modal="true" data-remote="true" data-number="#{issue.number}" href="#{show_board_issues_url @board.name, issue.number}"
+                      = issue.title.capitalize
                     a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
+                    /.due-date Feb 12, 13:00
 
                   - if issue.assignee
-                    .assigned
-                      a.user href="#{issue.assignee.html_url}" target="_blank" title="#{issue.assignee.login}"
-                        img.avatar src="#{issue.assignee.avatar_url}"
+                    = render partial: 'issues/assignee', locals: { issue: issue }
 
-                  ul.actions
-                    - if issue.state == "open"
-                      li : a.close href="#{close_board_issues_url(@board, issue.number)}" close
-                    - unless issue.assignee
-                      li : a.assign href="#{assignee_board_issues_url(@board, issue.number)}" assign yourself
-
-                  .move-to
-                    p Move To
-                    ul.columns
-                      - @board.columns.each do |column|
-                        li: a href="#{move_to_column_board_issues_url(@board, issue.number, column)}" = column.name
-
-                  /.stats
-                    .title Stats (hidden)
-                    .hash = TrackStats.extract(issue.body)[:hash]
-
-                  .state = issue.state
-
-          .new-issue
-            a.ajax-link href="#{new_board_issues_url(@board)}" New issue
+                  - if issue.state == "open"
+                    a.state.open href="#{close_board_issues_url(@board, issue.number)}" title="click to close" Close
+                  - elsif issue.state == "closed"
+                    .state Closed

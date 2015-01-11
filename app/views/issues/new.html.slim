@@ -1,8 +1,1 @@
-= simple_form_for(@issue, url: board_issues_url(@board)) do |f|
-  = f.input :title
-  = f.input :body
-  = f.input :labels, as: :check_boxes, collection: @issue.labels, checked: false
-
-  .submit-area
-    = f.button :submit, value: 'Create'
-    a href="#{board_url(@board)}" Cancel
+= render partial: 'new', locals: { board: @board, issue: @issue, labels: '' }

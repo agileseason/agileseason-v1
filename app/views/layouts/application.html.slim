@@ -2,6 +2,7 @@ doctype html
 html
   head
     title Agile Season
+    = stylesheet_link_tag '/octicons/octicons.css', media: 'all', 'data-turbolinks-track' => true
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
@@ -9,3 +10,13 @@ html
     = render partial: 'layouts/menu' if current_user
     .container
       = yield
+
+    .l-preloader
+      .preloader
+
+    .l-modal
+      .overlay
+      .modal
+        .modal-inner
+          .modal-close
+          .modal-content

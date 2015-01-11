@@ -1,0 +1,23 @@
+@import compass/css3/opacity
+
+=close
+  +opacity(0.4)
+  border-bottom: none
+  cursor: pointer
+  height: 18px
+  position: absolute
+  right: 5px
+  top: 5px
+  width: 16px
+
+  &:before
+    content: "×"
+    display: block
+    font-size: 24px
+    height: 14px
+    line-height: 14px
+    position: absolute
+    width: 14px
+
+  &:hover
+    +opacity(0.6)

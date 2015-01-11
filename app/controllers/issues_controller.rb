@@ -16,6 +16,12 @@ class IssuesController < ApplicationController
     end
   end
 
+  def show
+    @issue = github_api.issue(@board, params[:number])
+    @columns = @board.columns
+    render partial: 'show'
+  end
+
   def move_to
     github_api.move_to(@board, @board.columns.find(params[:column_id]), params[:number])
     redirect_to board_url(@board)

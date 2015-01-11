@@ -2,11 +2,16 @@
 @import compass/css3/text-shadow
 @import compass/css3/box-shadow
 @import compass/css3/transform
+@import compass/css3/transition
 @import compass/css3/opacity
+@import 'mixins/button'
+@import 'mixins/close'
+@import 'mixins/popover'
 
 @import globals/variables
 
 .p-boards-show
+  background: $board-bg
   .container
     padding: 0
 
@@ -17,56 +22,59 @@
     position: relative
 
   .board-columns
+    -moz-box-align: start
+    -moz-box-orient: horizontal
+    -ms-flex-align: start
+    -ms-flex-direction: row
+    -webkit-align-items: flex-start
+    -webkit-box-align: start
+    -webkit-box-orient: horizontal
+    -webkit-flex-direction: row
+    align-items: flex-start
     bottom: 0
+    display: -moz-box
+    display: -ms-flexbox
+    display: -webkit-box
+    display: -webkit-flex
+    display: flex
+    flex-direction: row
     left: 0
     overflow-x: auto
     overflow-y: hidden
-    padding: 0 20px 20px
+    padding: 0 20px 10px
     position: absolute
     right: 0
     top: 0
-    -ms-flex-align: start
-    -moz-box-align: start
-    -webkit-box-align: start
-    -webkit-align-items: flex-start
-    align-items: flex-start
-    display: -moz-box
-    display: -ms-flexbox
-    display: -webkit-box
-    display: -webkit-flex
-    display: flex
-    -moz-box-orient: horizontal
-    -webkit-box-orient: horizontal
-    -ms-flex-direction: row
-    -webkit-flex-direction: row
-    flex-direction: row
 
   .board-column
     +border-radius(4px)
-    background: #e8e9e5
+    -moz-box-flex: 0
+    -moz-box-orient: vertical
+    -moz-box-sizing: border-box
+    -ms-flex-direction: column
+    -ms-flex: 0 0 260px
+    -webkit-box-flex: 0
+    -webkit-box-orient: vertical
+    -webkit-box-sizing: border-box
+    -webkit-flex-direction: column
+    -webkit-flex: 0 0 260px
+    box-sizing: border-box
     display: -moz-box
     display: -ms-flexbox
     display: -webkit-box
     display: -webkit-flex
     display: flex
-    max-height: 100%
-    margin-right: 10px
-    padding: 40px 10px 10px
-    width: 260px
-    -webkit-box-sizing: border-box
-    -moz-box-sizing: border-box
-    box-sizing: border-box
-    -moz-box-orient: vertical
-    -webkit-box-orient: vertical
-    -ms-flex-direction: column
-    -webkit-flex-direction: column
     flex-direction: column
-    -moz-box-flex: 0
-    -webkit-box-flex: 0
-    -ms-flex: 0 0 260px
-    -webkit-flex: 0 0 260px
     flex: 0 0 260px
+    margin-right: 10px
+    max-height: 100%
+    padding: 0 20px 0 0
     position: relative
+    width: 260px
+
+    &:first-child
+      .new-issue
+        display: block
 
     &:last-child
       margin-right: 0
@@ -78,46 +86,173 @@
         position: relative
         width: 10px
 
+      .state
+        display: block
+
+        &.open
+          display: inline-block
+
   .board-title
     +text-shadow(0px 1px 1px rgba(255,255,255,0.8))
     color: $text-light
     font-size: 16px
     font-weight: bold
-    margin: 10px 0 20px
-    padding: 0px 0 0 0
-    position: absolute
-    top: 0
+    padding: 0 0 10px
 
   .issues
-    margin-bottom: 20px
+    padding: 0
     overflow-y: auto
 
-  .new-issue
-    background: #e8e9e5
-    bottom: 0
-    padding: 10px 0 0 0
-    -moz-box-flex: 0
-    -webkit-box-flex: 0
-    -ms-flex: 0 0 auto
-    -webkit-flex: 0 0 auto
-    flex: 0 0 auto
-    margin-top: -20px
+    .add-user
+      display: none
+
+  .new-issue-form
+    display: none
+    margin: 18px 0 0 0
+    min-height: 100px
     position: relative
+
+    .add-label
+      +border-radius(4px)
+      border: 1px dashed #aaa
+      color: #aaa
+      cursor: pointer
+      display: inline-block
+      float: left
+      font-size: 12px
+      margin: 5px 5px 0 0
+      padding: 2px 10px
+
+      &:before
+        border: none
+        content: '+'
+        font-size: 16px
+        line-height: 12px
+        margin-right: 3px
+
+      &:hover
+        border: 1px dashed #888
+        color: #888
+
+    label
+      display: none
+
+    .popover
+      +popover
+      display: none
+      font-size: 14px
+      height: 220px
+      top: 100%
+      z-index: 1
+      width: 240px
+
+      .close-popover
+        +close
+
+      .labels-block
+        overflow-x: hidden
+        overflow-y: auto
+        padding: 10px
+        height: 200px
+
+      label.check_boxes
+        display: none
+
+      label.label
+        padding: 3px
+        display: block
+        color: #fff
+        +border-radius(4px)
+        background: #aaa
+        margin-bottom: 5px
+        width: 160px
+        +transition(width ease-out 0.2s)
+        position: relative
+
+        &:hover
+          width: 190px
+
+        input
+          display: inline-block
+          position: absolute
+
+        .label-name
+          display: block
+          white-space: nowrap
+          padding-left: 20px
+
+    .issue_body
+      display: none
+
+    .submit-area
+      background: none
+      padding: 0
+
+    .cancel
+      font-size: 12px
+
+    textarea
+      +border-radius(3px)
+      +box-shadow(0 1px 0px rgba(100,100,100,0.3), 0 0 10px rgba(30,80,150,0.05) inset)
+      background-color: $card
+      border: none
+      color: $text-usual
+      font-size: 14px
+      margin-bottom: 5px
+      outline: none
+      padding: 10px
+      position: relative
+      resize: none
+      width: 219px
+
+      &:focus
+        outline: none
+
+  .new-issue
+    -moz-box-flex: 0
+    -ms-flex: 0 0 auto
+    -webkit-box-flex: 0
+    -webkit-flex: 0 0 auto
+    border-radius: 4px
+    border: 1px dashed #aaa
+    cursor: pointer
+    display: none
+    flex: 0 0 auto
+    margin: 20px 0 10px
+    padding: 10px
+
+    a.ajax-link
+      &:before
+        content: '+'
+        font-size: 20px
+        line-height: 14px
+        margin-right: 3px
+
+    &:hover
+      border: 1px dashed #888
+
+      a.ajax-link
+        color: $ajax-link-hover
 
   .issue
-    background-color: #FFE680
     +border-radius(3px)
-    +box-shadow(0 1px 0px rgba(100,100,100,0.3))
+    +box-shadow(0 1px 0px rgba(100,100,100,0.3), 0 0 10px rgba(30,80,150,0.05) inset)
+    background-color: $card
     margin-bottom: 10px
-    padding: 8px 10px
+    padding: 0 10px 10px
     position: relative
 
+    &:first-child
+      margin-top: 5px
+
+    &:hover
+      background: $card-hover
+
     &.bug
-      background: #FF8484
+      background: $card-bug
 
     &.closed
-      background: #f3f3f2
-      +text-shadow(0 1px 1px rgba(255,255,255,1))
+      background: $card-closed
 
       .issue-title,
       p
@@ -127,66 +262,65 @@
       .labels
         +opacity(0.7)
 
-    .labels
-      position: absolute
-      top: 0
-      left: 0
-
     .label
       +border-radius(0 0 2px 2px)
-      background: #eee
-      color: white
-      display: inline-block
+      background: #eeeeee
+      color: white !important
+      display: inline
       font-size: 10px
-      height: 12px
+      line-height: 13px
       margin-right: 3px
-      overflow: hidden
       padding: 0 4px 1px
-      text-align: center
       vertical-align: top
-      width: 23px
-
-      &:first-child
-        margin-left: 10px
-
-      &:last-child
-        margin-right: 10px
 
     .url
       margin-left: 4px
+      margin-right: 4px
       display: inline
 
+    .due-date
+      +border-radius(2px)
+      background: $orange
+      color: #fff
+      display: inline-block
+      margin: 5px 0 0 0
+      padding: 2px 5px
+      line-height: 12px
+      font-size: 12px
+
+    .b-assigned
+      margin: 10px 0 0
+
     .issue-title
-      color: #444
-      font-size: 16px
+      color: $text-usual
+      font-size: 14px
       font-weight: normal
-      margin: 15px 0 5px 0
-      padding: 0
+      padding: 8px 0 0
+      margin: -5px 0 0 0
+      line-height: 1.3em
 
     .issue-name
       cursor: pointer
       display: inline
+      color: $text-light
+
+      &:hover
+        color: $text-usual
 
     .state
       color: $text-light
-      display: block
+      display: none
       font-size: 9px
       letter-spacing: 0.1em
       text-align: right
       text-transform: uppercase
 
-    .assigned
-      margin-bottom: 5px
-
-      .avatar
-        +border-radius(28px)
-        height: 28px
-        margin-right: 5px
-        width: 28px
-
-      .user
-        vertical-align: top
-        margin-left: 4px
+      &.open
+        +button
+        font-size: 9px
+        margin: 5px 0 0 160px
+        padding: 5px 10px
+        text-align: right
 
     .actions
       list-style: none
