@@ -12,7 +12,6 @@ class BoardsController < ApplicationController
 
   def show
     @issues = github_api.board_issues(@board)
-
     labels = github_api.labels(@board).map(&:name)
     @issue = Issue.new(labels: labels)
 
@@ -79,7 +78,7 @@ private
     labels.each_with_index do |label, label_index|
       colors.each_with_index do |color, color_index|
         if label_index == color_index
-          labels_array << { name: label, color: color}
+          labels_array << { name: label, color: color }
         end
       end
     end

@@ -28,7 +28,7 @@ class IssuePresenter < Keynote::Presenter
   end
 
   def current_column?(columns, current_column)
-    columns.any?{ |column| current_column == column.name.split('] ').last}
+    columns.any? { |column| current_column == column.name.split('] ').last }
   end
 
   private
