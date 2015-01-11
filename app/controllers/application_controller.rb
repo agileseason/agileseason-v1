@@ -20,6 +20,9 @@ class ApplicationController < ActionController::Base
   def runtime_error(e)
     raise e if remote_addr == '127.0.0.1' || !Rails.env.production?
 
+    logger.error(e.message)
+    logger.error(e.backtrace.join('\n'))
+
     if [
         ActionController::RoutingError,
         ActiveRecord::RecordNotFound,
