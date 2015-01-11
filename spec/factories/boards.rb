@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :board do
-    name 'test_board'
+    name 'test board'
     type "Boards::KanbanBoard"
     github_id 123
     github_name 'test_board_repo'
