@@ -13,8 +13,9 @@ class BoardsController < ApplicationController
   def show
     @issues = github_api.board_issues(@board)
     labels = github_api.labels(@board)
-    @issue = Issue.new(labels: labels.map(&:name))
-    @labels = labels_with_colors(labels, labels.map(&:color))
+    label_names = labels.map(&:name)
+    @issue = Issue.new(labels: label_names)
+    @labels = labels_with_colors(label_names, labels.map(&:color))
   end
 
   def new
