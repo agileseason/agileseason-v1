@@ -12,10 +12,8 @@ class BoardsController < ApplicationController
 
   def show
     @issues = github_api.board_issues(@board)
-    labels = github_api.labels(@board)
-    label_names = labels.map(&:name)
-    @issue = Issue.new(labels: label_names)
-    @labels = labels_with_colors(label_names, labels.map(&:color))
+    @labels = github_api.labels(@board)
+    @issue = Issue.new(labels: @labels.map(&:name))
   end
 
   def new
@@ -70,17 +68,5 @@ private
       # NOTE : Not enough permissions to create board.
       raise ActiveRecord::ReadOnlyRecord
     end
-  end
-
-  def labels_with_colors(labels, colors)
-    labels_array = []
-    labels.each_with_index do |label, label_index|
-      colors.each_with_index do |color, color_index|
-        if label_index == color_index
-          labels_array << { name: label, color: color }
-        end
-      end
-    end
-    labels_array
   end
 end
