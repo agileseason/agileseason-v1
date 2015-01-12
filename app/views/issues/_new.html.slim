@@ -7,9 +7,9 @@
       .close-popover
       .labels-block.scroller
         - labels.each do |label|
-          label.label for="#{label[:name]}" style="background: ##{label[:color]};"
-            input type="checkbox" id="#{label[:name]}" name="issue[labels][]" value="#{label[:name]}"
-            .label-name = label[:name]
+          label.label for="#{label.name}" style="background: ##{label.color};"
+            input type="checkbox" id="#{label.name}" name="issue[labels][]" value="#{label.name}"
+            .label-name = label.name
 
   - else
     = f.input :labels, as: :check_boxes, collection: issue.labels, checked: false
