@@ -1,12 +1,12 @@
 class GithubApi
   module Issues
     def board_issues(board)
-      board_labels = board.github_labels.each_with_object({}) { |label, hash| hash[label] = [] }
+      board_hash = board.github_labels.each_with_object({}) { |label, hash| hash[label] = [] }
       all_issues(board).each do |issue|
-        label = issue.labels.find { |e| board_labels.keys.include?(e.name) }
-        board_labels[label.name] << issue if label
+        label_name = find_label_name(board, issue)
+        board_hash[label_name] << issue if label_name
       end
-      board_labels
+      board_hash
     end
 
     def create_issue(board, issue)
@@ -20,8 +20,8 @@ class GithubApi
       client.issue(board.github_id, number)
     end
 
-    def move_to(board, column, number)
-      issue = client.issue(board.github_id, number)
+    # FIX : To many args.
+    def move_to(board, column, number, issue = client.issue(board.github_id, number))
       body = update_hidden_stats(issue.body, column)
       client.update_issue(
         board.github_id,
@@ -44,6 +44,18 @@ class GithubApi
     end
 
     private
+
+    def find_label_name(board, issue)
+      column_names = board.github_labels
+      label = issue.labels.detect { |e| column_names.include?(e.name) }
+      if label
+        label.name
+      elsif issue.state == 'open'
+        column = board.columns.first
+        move_to(board, column, issue.number, issue)
+        column.label_name
+      end
+    end
 
     def fetch_labels(issue, column)
       (issue.labels.map(&:name) - column.board.github_labels) << column.label_name
