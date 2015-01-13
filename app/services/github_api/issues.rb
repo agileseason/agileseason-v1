@@ -3,14 +3,8 @@ class GithubApi
     def board_issues(board)
       board_hash = board.github_labels.each_with_object({}) { |label, hash| hash[label] = [] }
       all_issues(board).each do |issue|
-        label = issue.labels.find { |e| board_hash.keys.include?(e.name) }
-        if label
-          board_hash[label.name] << issue
-        elsif issue.state == 'open'
-          column = board.columns.first
-          move_to(board, column, issue.number, issue)
-          board_hash[column.label_name] << issue
-        end
+        label_name = find_label_name(board, issue)
+        board_hash[label_name] << issue if label_name
       end
       board_hash
     end
@@ -26,7 +20,7 @@ class GithubApi
       client.issue(board.github_id, number)
     end
 
-    # FIX : Try replace number and issue only to issue
+    # FIX : To many args.
     def move_to(board, column, number, issue = client.issue(board.github_id, number))
       body = update_hidden_stats(issue.body, column)
       client.update_issue(
@@ -50,6 +44,18 @@ class GithubApi
     end
 
     private
+
+    def find_label_name(board, issue)
+      column_names = board.github_labels
+      label = issue.labels.find { |e| column_names.include?(e.name) }
+      if label
+        label.name
+      elsif issue.state == 'open'
+        column = board.columns.first
+        move_to(board, column, issue.number, issue)
+        column.label_name
+      end
+    end
 
     def fetch_labels(issue, column)
       (issue.labels.map(&:name) - column.board.github_labels) << column.label_name
