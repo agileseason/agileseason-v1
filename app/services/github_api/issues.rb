@@ -47,7 +47,7 @@ class GithubApi
 
     def find_label_name(board, issue)
       column_names = board.github_labels
-      label = issue.labels.find { |e| column_names.include?(e.name) }
+      label = issue.labels.detect { |e| column_names.include?(e.name) }
       if label
         label.name
       elsif issue.state == 'open'
