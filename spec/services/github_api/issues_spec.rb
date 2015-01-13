@@ -22,8 +22,12 @@ describe GithubApi::Issues do
       let(:label) { OpenStruct.new(name: label_name) }
       let(:state) { 'open' }
       before do
-        allow_any_instance_of(GithubApi::Issues)
-          .to receive(:all_issues).and_return([issue])
+        allow_any_instance_of(Octokit::Client)
+          .to receive(:issues).with(board.github_id).and_return([issue])
+      end
+      before do
+        allow_any_instance_of(Octokit::Client)
+          .to receive(:issues).with(board.github_id, state: :closed).and_return([])
       end
       before do
         allow_any_instance_of(Octokit::Client)
