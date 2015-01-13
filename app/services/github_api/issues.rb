@@ -1,12 +1,18 @@
 class GithubApi
   module Issues
     def board_issues(board)
-      board_labels = board.github_labels.each_with_object({}) { |label, hash| hash[label] = [] }
+      board_hash = board.github_labels.each_with_object({}) { |label, hash| hash[label] = [] }
       all_issues(board).each do |issue|
-        label = issue.labels.find { |e| board_labels.keys.include?(e.name) }
-        board_labels[label.name] << issue if label
+        label = issue.labels.find { |e| board_hash.keys.include?(e.name) }
+        if label
+          board_hash[label.name] << issue
+        elsif issue.state == 'open'
+          column = board.columns.first
+          move_to(board, column, issue.number, issue)
+          board_hash[column.label_name] << issue
+        end
       end
-      board_labels
+      board_hash
     end
 
     def create_issue(board, issue)
@@ -20,8 +26,8 @@ class GithubApi
       client.issue(board.github_id, number)
     end
 
-    def move_to(board, column, number)
-      issue = client.issue(board.github_id, number)
+    # FIX : Try replace number and issue only to issue
+    def move_to(board, column, number, issue = client.issue(board.github_id, number))
       body = update_hidden_stats(issue.body, column)
       client.update_issue(
         board.github_id,

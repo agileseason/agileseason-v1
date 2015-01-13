@@ -1,15 +1,52 @@
 describe GithubApi::Issues do
-  let(:service) { GithubApi.new("fake_github_token") }
+  let(:service) { GithubApi.new('fake_github_token') }
   let(:board) { build(:board, :with_columns, number_of_columns: 1) }
   let(:issue) { OpenStruct.new(number: 1) }
 
-  describe ".board_issues" do
+  describe '.board_issues' do
     subject { service.board_issues(board) }
     let(:board) { build(:board, :with_columns, number_of_columns: 2) }
-    before { allow_any_instance_of(Octokit::Client).to receive(:issues).and_return([]) }
+    let(:column_1) { board.columns.first }
+    let(:column_2) { board.columns.second }
 
-    it { is_expected.to have(2).items }
-    it { expect(subject.first.first).to eq board.columns.first.label_name }
+    context :empty_columns do
+      before { allow_any_instance_of(Octokit::Client).to receive(:issues).and_return([]) }
+
+      it { is_expected.to have(2).items }
+      it { expect(subject.first.first).to eq column_1.label_name }
+      it { expect(subject[column_1.label_name]).to be_empty }
+    end
+
+    context :columns_with_issues do
+      let(:issue) { OpenStruct.new(number: 1, state: state, labels: [label]) }
+      let(:label) { OpenStruct.new(name: label_name) }
+      let(:state) { 'open' }
+      before do
+        allow_any_instance_of(GithubApi::Issues)
+          .to receive(:all_issues).and_return([issue])
+      end
+      before do
+        allow_any_instance_of(Octokit::Client)
+          .to receive(:update_issue)
+      end
+
+      context 'unknown open issues added to first column' do
+        let(:label_name) { 'bug' }
+        it { expect(subject[column_1.label_name]).to eq [issue] }
+      end
+
+      context 'unknown closed issues DON`T added to first column' do
+        let(:state) { 'closed' }
+        let(:label_name) { 'bug' }
+        it { expect(subject[column_1.label_name]).to be_empty }
+      end
+
+      context 'known issues dont move to first column' do
+        let(:label_name) { column_2.label_name }
+        it { expect(subject[column_1.label_name]).to be_empty }
+        it { expect(subject[column_2.label_name]).to eq [issue] }
+      end
+    end
   end
 
   describe '.create_issue' do
