@@ -17,7 +17,7 @@ class TrackStats
     end
 
     def extract(body)
-      /(?<comment>.*)\n<!---\s@agileseason:(?<hash>.*)\s-->(?<tail>.*)/im =~ body
+      /(?<comment>.*)\s<!---\s@agileseason:(?<hash>.*)\s-->(?<tail>.*)/im =~ body.gsub("\r", '')
       { comment: comment, hash: parse_hash(hash), tail: tail }
     end
 

@@ -124,12 +124,12 @@ describe GithubApi::Issues do
         let(:skipped_column) { board.columns.second }
         let(:move_to_column) { board.columns.third }
         let(:start_body) do
-          "body_comment.\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{"\
+          "body_comment.\r\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{"\
             "\"#{start_column.id}\":{\"in_at\":\"#{current - 1.minute}\",\"out_at\":null}}}}\n-->"
         end
         let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: start_body, labels: []) }
         let(:expected_body) do
-          "body_comment.\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{"\
+          "body_comment.\r\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{"\
             "\"#{start_column.id}\":{\"in_at\":\"#{current - 1.minute}\",\"out_at\":\"#{current}\"},"\
             "\"#{skipped_column.id}\":{\"in_at\":\"#{current}\",\"out_at\":\"#{current}\"},"\
             "\"#{move_to_column.id}\":{\"in_at\":\"#{current}\",\"out_at\":null}}}}\n-->"
