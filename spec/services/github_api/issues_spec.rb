@@ -3,7 +3,7 @@ describe GithubApi::Issues do
   let(:board) { build(:board, :with_columns, number_of_columns: 1) }
   let(:issue) { OpenStruct.new(number: 1) }
 
-  describe '.board_issues' do
+  describe '#board_issues' do
     subject { service.board_issues(board) }
     let(:board) { build(:board, :with_columns, number_of_columns: 2) }
     let(:column_1) { board.columns.first }
@@ -53,7 +53,7 @@ describe GithubApi::Issues do
     end
   end
 
-  describe '.create_issue' do
+  describe '#create_issue' do
     subject { service.create_issue(board, issue) }
     let(:board) { build(:board, :with_columns, number_of_columns: 2) }
     let(:issue) { OpenStruct.new(title: 'title_1', body: 'body_1', labels: labels) }
@@ -70,7 +70,7 @@ describe GithubApi::Issues do
     end
   end
 
-  describe '.move_to' do
+  describe '#move_to' do
     subject { service.move_to(board, move_to_column, issue.number) }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
     before { allow_any_instance_of(Octokit::Client).to receive(:update_issue).and_return(issue) }
@@ -144,7 +144,7 @@ describe GithubApi::Issues do
     end
   end
 
-  describe ".close" do
+  describe '#close' do
     subject { service.close(board, issue.number) }
     before { allow_any_instance_of(Octokit::Client).to receive(:close_issue).and_return(issue) }
 
@@ -181,7 +181,7 @@ describe GithubApi::Issues do
     end
   end
 
-  describe ".assign_yourself" do
+  describe '#assign_yourself' do
     subject { service.assign_yourself(board, issue.number, user.github_username) }
     let(:user) { build(:user) }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
