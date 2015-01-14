@@ -116,6 +116,11 @@ describe TrackStats do
       let(:body) { "\n<!---\n@agileseason:{\"x\":\"1\"}\n-->" }
       it { expect(subject[:hash][:x]).to eq "1" }
     end
+
+    context 'Fix error #86 - About missing body after move issue.' do
+      let(:body) { "test\r\n<!---\r\n@agileseason:{\"track_stats\":{\"columns\":{\"21\":{\"in_at\":\"2015-01-12 04:57:06 UTC\",\"out_at\":\"2015-01-12 04:57:51 UTC\"},\"22\":{\"in_at\":\"2015-01-12 04:57:27 UTC\",\"out_at\":\"2015-01-12 04:57:51 UTC\"},\"23\":{\"in_at\":\"2015-01-12 04:57:27 UTC\",\"out_at\":\"2015-01-12 04:57:51 UTC\"},\"24\":{\"in_at\":\"2015-01-12 04:57:51 UTC\",\"out_at\":null}}}}\r\n-->" }
+      it { expect(subject[:comment]).to eq 'test' }
+    end
   end
 
   describe '.current_column' do
