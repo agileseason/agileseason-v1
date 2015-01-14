@@ -151,6 +151,36 @@ describe GithubApi::Issues do
     it { is_expected.to eq issue }
   end
 
+  describe '#archive' do
+    subject { service.archive(board, issue.number) }
+    let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: started_body, labels: []) }
+    let(:in_at) { Time.current }
+    let(:archived_at) { Time.current }
+    let(:started_body) do
+      "body_comment.\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{"\
+        "\"#{board.columns.first.id}\":{\"in_at\":\"#{in_at}\",\"out_at\":null}}}}\n-->"
+    end
+    let(:expected_body) do
+      "body_comment.\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{"\
+        "\"#{board.columns.first.id}\":{\"in_at\":\"#{in_at}\",\"out_at\":null}}},"\
+        "\"archived_at\":\"#{archived_at}\"}\n-->"
+    end
+    before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
+    before { allow_any_instance_of(Octokit::Client).to receive(:update_issue).and_return(issue) }
+    before { allow(Time).to receive(:current).and_return(archived_at) }
+
+    after { subject }
+    it do
+      expect_any_instance_of(Octokit::Client).to receive(:update_issue)
+        .with(
+          board.github_id,
+          issue.number,
+          issue.title,
+          expected_body
+        )
+    end
+  end
+
   describe ".assign_yourself" do
     subject { service.assign_yourself(board, issue.number, user.github_username) }
     let(:user) { build(:user) }

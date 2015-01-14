@@ -36,6 +36,20 @@ class GithubApi
       client.close_issue(board.github_id, number)
     end
 
+    def archive(board, number)
+      issue = client.issue(board.github_id, number)
+      data = TrackStats.extract(issue.body)
+      hash = data[:hash]
+      hash[:archived_at] = Time.current.to_s
+      body = data[:comment].to_s + TrackStats.hidden_content(hash)
+      client.update_issue(
+        board.github_id,
+        number,
+        issue.title,
+        body
+      )
+    end
+
     def assign_yourself(board, number, github_username)
       # FIX : Get issue - don't work override, error: Wrong number of arguments. Expected 4 to 5, got 3.
       issue = client.issue(board.github_id, number)
