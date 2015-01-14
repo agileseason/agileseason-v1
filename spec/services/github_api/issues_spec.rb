@@ -162,8 +162,8 @@ describe GithubApi::Issues do
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
     before { allow_any_instance_of(Octokit::Client).to receive(:update_issue).and_return(issue) }
 
-    context 'open issue' do
-      let(:state) { 'open' }
+    context 'closed issue' do
+      let(:state) { 'closed' }
       let(:archived_at) { Time.current }
       let(:expected_body) do
         "body_comment.\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{"\
@@ -184,8 +184,8 @@ describe GithubApi::Issues do
       end
     end
 
-    context 'closed issue' do
-      let(:state) { 'closed' }
+    context 'open issue' do
+      let(:state) { 'open' }
       after { subject }
       it { expect_any_instance_of(Octokit::Client).to_not receive(:update_issue) }
     end

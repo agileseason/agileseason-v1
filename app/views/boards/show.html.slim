@@ -14,21 +14,22 @@
 
           .issues.scroller
             - @issues[column.label_name].each do |issue|
-                .issue class="#{issue.state}"
+              - next if k(:issue, issue).archived?
+              .issue class="#{issue.state}"
 
-                  .labels
-                    = k(:issue, issue).labels_html(column.label_name)
+                .labels
+                  = k(:issue, issue).labels_html(column.label_name)
 
-                  .issue-title
-                    a.issue-name data-modal="true" data-remote="true" data-number="#{issue.number}" href="#{show_board_issues_url(@board.github_name, issue.number)}"
-                      = issue.title.capitalize
-                    a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
-                    /.due-date Feb 12, 13:00
+                .issue-title
+                  a.issue-name data-modal="true" data-remote="true" data-number="#{issue.number}" href="#{show_board_issues_url(@board.github_name, issue.number)}"
+                    = issue.title.capitalize
+                  a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
+                  /.due-date Feb 12, 13:00
 
-                  - if issue.assignee
-                    = render partial: 'issues/assignee', locals: { issue: issue }
+                - if issue.assignee
+                  = render partial: 'issues/assignee', locals: { issue: issue }
 
-                  - if issue.state == "open"
-                    a.state.open href="#{close_board_issues_url(@board, issue.number)}" title="click to close" Close
-                  - elsif issue.state == "closed"
-                    .state Closed
+                - if issue.state == "open"
+                  a.state.open href="#{close_board_issues_url(@board, issue.number)}" title="click to close" Close
+                - elsif issue.state == "closed"
+                  .state Closed
