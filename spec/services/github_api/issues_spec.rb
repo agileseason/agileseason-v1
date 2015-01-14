@@ -153,7 +153,7 @@ describe GithubApi::Issues do
 
   describe '#archive' do
     subject { service.archive(board, issue.number) }
-    let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: started_body, state: state, labels: []) }
+    let(:issue) { OpenStruct.new(number: 1, body: started_body, state: state) }
     let(:in_at) { Time.current }
     let(:started_body) do
       "body_comment.\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{"\
