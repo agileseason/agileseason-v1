@@ -38,10 +38,10 @@ class GithubApi
 
     def archive(board, number)
       issue = client.issue(board.github_id, number)
+      return if issue.state == 'closed'
       data = TrackStats.extract(issue.body)
-      hash = data[:hash]
-      hash[:archived_at] = Time.current.to_s
-      body = data[:comment].to_s + TrackStats.hidden_content(hash)
+      data[:hash][:archived_at] = Time.current.to_s
+      body = data[:comment].to_s + TrackStats.hidden_content(data[:hash])
       client.update_issue(
         board.github_id,
         number,

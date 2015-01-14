@@ -153,31 +153,41 @@ describe GithubApi::Issues do
 
   describe '#archive' do
     subject { service.archive(board, issue.number) }
-    let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: started_body, labels: []) }
+    let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: started_body, state: state, labels: []) }
     let(:in_at) { Time.current }
-    let(:archived_at) { Time.current }
     let(:started_body) do
       "body_comment.\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{"\
         "\"#{board.columns.first.id}\":{\"in_at\":\"#{in_at}\",\"out_at\":null}}}}\n-->"
     end
-    let(:expected_body) do
-      "body_comment.\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{"\
-        "\"#{board.columns.first.id}\":{\"in_at\":\"#{in_at}\",\"out_at\":null}}},"\
-        "\"archived_at\":\"#{archived_at}\"}\n-->"
-    end
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
     before { allow_any_instance_of(Octokit::Client).to receive(:update_issue).and_return(issue) }
-    before { allow(Time).to receive(:current).and_return(archived_at) }
 
-    after { subject }
-    it do
-      expect_any_instance_of(Octokit::Client).to receive(:update_issue)
-        .with(
-          board.github_id,
-          issue.number,
-          issue.title,
-          expected_body
-        )
+    context 'open issue' do
+      let(:state) { 'open' }
+      let(:archived_at) { Time.current }
+      let(:expected_body) do
+        "body_comment.\n<!---\n@agileseason:{\"track_stats\":{\"columns\":{"\
+          "\"#{board.columns.first.id}\":{\"in_at\":\"#{in_at}\",\"out_at\":null}}},"\
+          "\"archived_at\":\"#{archived_at}\"}\n-->"
+      end
+      before { allow(Time).to receive(:current).and_return(archived_at) }
+
+      after { subject }
+      it do
+        expect_any_instance_of(Octokit::Client).to receive(:update_issue)
+          .with(
+            board.github_id,
+            issue.number,
+            issue.title,
+            expected_body
+          )
+      end
+    end
+
+    context 'closed issue' do
+      let(:state) { 'closed' }
+      after { subject }
+      it { expect_any_instance_of(Octokit::Client).to_not receive(:update_issue) }
     end
   end
 
