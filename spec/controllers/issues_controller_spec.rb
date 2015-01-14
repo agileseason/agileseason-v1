@@ -29,6 +29,14 @@ RSpec.describe IssuesController, type: :controller do
     end
   end
 
+  describe 'GET archive' do
+    before { allow_any_instance_of(GithubApi).to receive(:archive) }
+    it 'return http success' do
+      get :archive, board_github_name: board.github_name, number: 1
+      expect(response).to redirect_to(board_url(board))
+    end
+  end
+
   describe 'GET assign yourself' do
     before { allow_any_instance_of(GithubApi).to receive(:assign_yourself) }
     it 'return http success' do

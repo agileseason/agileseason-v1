@@ -1,6 +1,6 @@
 class IssuePresenter < Keynote::Presenter
   presents :issue
-  delegate :labels, to: :issue
+  delegate :labels, :body, to: :issue
 
   def labels_html(column_name)
     build_html do
@@ -29,6 +29,11 @@ class IssuePresenter < Keynote::Presenter
 
   def current_column?(columns, current_column)
     columns.any? { |column| current_column == column.name.split('] ').last }
+  end
+
+  def archived?
+    data = TrackStats.extract(body)
+    data[:hash][:archived_at].present?
   end
 
   private

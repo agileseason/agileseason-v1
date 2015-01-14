@@ -8,8 +8,9 @@ Rails.application.routes.draw do
     resource :issues, only: [:new, :create, :show] do
       get ':number/move_to/:column_id', to: 'issues#move_to', as: :move_to_column
       get ':number/close', to: 'issues#close', as: :close
+      get ':number/archive', to: 'issues#archive', as: :archive
       get ':number/assignee', to: 'issues#assignee', as: :assignee
-      get ':number/show', to: 'issues#show', as: :'show'
+      get ':number/show', to: 'issues#show', as: :show
     end
 
     namespace :graphs do

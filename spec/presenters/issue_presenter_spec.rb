@@ -26,4 +26,19 @@ describe IssuePresenter do
       it { is_expected.to eq '000' }
     end
   end
+
+  describe '#archived?' do
+    let(:issue) { OpenStruct.new(body: body) }
+    subject { presenter.archived? }
+
+    context :true do
+      let(:body) { "body_comment.\n<!---\n@agileseason:{\"archived_at\":\"#{Time.current}\"}\n-->" }
+      it { is_expected.to eq true }
+    end
+
+    context :false do
+      let(:body) { "body_comment.\n<!---\n@agileseason:{}\n-->" }
+      it { is_expected.to eq false }
+    end
+  end
 end
