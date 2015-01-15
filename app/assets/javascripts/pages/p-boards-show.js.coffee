@@ -12,7 +12,6 @@ $(document).on 'page:change', ->
     $(".ui-draggable-dragging").removeAttr('style')
 
     unless $(".ui-draggable-dragging").data('start_column') == column
-      console.log [$(".ui-draggable-dragging").data('start_column'), column]
       $(".ui-draggable-dragging").prependTo($(@).find('.issues'))
       $(@).removeClass 'over'
       path = "/boards/huboardtest/issues/#{issue}/move_to/#{column}"
