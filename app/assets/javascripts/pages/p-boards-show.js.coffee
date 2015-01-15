@@ -9,15 +9,13 @@ $(document).on 'page:change', ->
   $(".droppable").on "drop", (event, ui) ->
     issue = $(".ui-draggable-dragging").data('number')
     column = $(@).data('column')
+    $(".ui-draggable-dragging").removeAttr('style')
 
-    $(".ui-draggable-dragging")
-      .prependTo($(@).find('.issues'))
-      .removeAttr('style')
-
-    $(@).removeClass 'over'
-
-    path = "/boards/huboardtest/issues/#{issue}/move_to/#{column}"
     unless $(".ui-draggable-dragging").data('start_column') == column
+      console.log [$(".ui-draggable-dragging").data('start_column'), column]
+      $(".ui-draggable-dragging").prependTo($(@).find('.issues'))
+      $(@).removeClass 'over'
+      path = "/boards/huboardtest/issues/#{issue}/move_to/#{column}"
       $.get path
 
   $(".droppable").on "dropout", (event, ui) ->
@@ -36,11 +34,12 @@ $(document).on 'page:change', ->
   $(".draggable").on "dragstart", ( event, ui ) ->
     $(@).before('<div class="empty-issue"></div>')
     $('.empty-issue', $(@).parent()).css 'height', $(@).outerHeight()
-    $(@).data start_column: $(@).parent().data('column')
+    $(@).data start_column: $(@).parents('.board-column').data('column')
 
   $(".draggable").on "dragstop", ( event, ui ) ->
     $(@).removeAttr('style')
     $('.empty-issue').remove()
+    $('.board-column').removeClass 'over'
 
   $(".draggable").on "dragcreate", ( event, ui ) ->
     $(@).parent().scrollTo @
