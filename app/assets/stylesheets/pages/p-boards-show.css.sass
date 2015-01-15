@@ -68,7 +68,7 @@
     flex: 0 0 260px
     margin-right: 10px
     max-height: 100%
-    padding: 0 10px 0 0
+    padding: 30px 10px 0 0
     position: relative
     width: 260px
     vertical-align: top
@@ -98,10 +98,12 @@
     color: $text-light
     font-size: 16px
     font-weight: bold
-    padding: 0 0 10px 10px
+    padding: 0 0 0 10px
+    position: absolute
+    top: 0
 
   .issues
-    padding: 10px
+    padding: 0 10px
     overflow-y: auto
     min-height: 40px
 
@@ -114,7 +116,7 @@
 
   .new-issue-form
     display: none
-    margin: 18px 0 0 10px
+    margin: 0 0 0 10px
     min-height: 100px
     position: relative
 
@@ -224,7 +226,7 @@
     cursor: pointer
     display: none
     flex: 0 0 auto
-    margin: 20px 10px 10px
+    margin: 2px 10px 10px
     padding: 10px
 
     a.ajax-link
@@ -253,6 +255,7 @@
     margin-bottom: 10px
     padding: 0 10px 10px
     position: relative
+    overflow: hidden
 
     &:hover
       cursor: -webkit-grab
@@ -262,9 +265,6 @@
       position: absolute
       width: 240px
       z-index: 1
-
-    &:first-child
-      margin-top: 5px
 
     &:hover
       background: $card-hover
