@@ -68,10 +68,14 @@
     flex: 0 0 260px
     margin-right: 10px
     max-height: 100%
-    padding: 30px 10px 0 0
+    padding: 40px 10px 0 0
     position: relative
     width: 260px
     vertical-align: top
+
+    &.over
+      +border-radius(4px)
+      +box-shadow(0 0 40px rgba(63,63,63,0.1) inset)
 
     &:first-child
       .new-issue
@@ -98,7 +102,7 @@
     color: $text-light
     font-size: 16px
     font-weight: bold
-    padding: 0 0 0 10px
+    padding: 10px 0 0 10px
     position: absolute
     top: 0
 
@@ -107,9 +111,9 @@
     overflow-y: auto
     min-height: 40px
 
-    &.over
-      +border-radius(4px)
-      +box-shadow(0 0 40px rgba(63,63,63,0.1) inset)
+    //&.over
+      //+border-radius(4px)
+      //+box-shadow(0 0 40px rgba(63,63,63,0.1) inset)
 
     .add-user
       display: none

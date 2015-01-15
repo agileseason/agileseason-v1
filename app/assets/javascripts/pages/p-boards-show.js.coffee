@@ -11,7 +11,7 @@ $(document).on 'page:change', ->
     column = $(@).data('column')
 
     $(".ui-draggable-dragging")
-      .prependTo(@)
+      .prependTo($(@).find('.issues'))
       .removeAttr('style')
 
     $(@).removeClass 'over'
