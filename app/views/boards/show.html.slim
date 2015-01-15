@@ -12,7 +12,7 @@
           .new-issue-form
             = render partial: 'issues/new', locals: { board: @board, issue: @issue, labels: @labels }
 
-          .issues.scroller
+          .issues.scroller.droppable data-column="#{column.id}"
             - @issues[column.label_name].each do |issue|
               - next if k(:issue, issue).archived?
               .issue class="#{issue.state}"

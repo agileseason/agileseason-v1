@@ -3,6 +3,48 @@ resize_lock = false
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
 
+  $(".droppable").droppable ->
+    accept: ".issue"
+
+  $(".droppable").on "drop", (event, ui) ->
+    issue = $(".ui-draggable-dragging").data('number')
+    column = $(@).data('column')
+
+    $(".ui-draggable-dragging")
+      .prependTo(@)
+      .removeAttr('style')
+
+    $(@).removeClass 'over'
+
+    path = "/boards/huboardtest/issues/#{issue}/move_to/#{column}"
+    unless $(".ui-draggable-dragging").data('start_column') == column
+      $.get path
+
+  $(".droppable").on "dropout", (event, ui) ->
+    $(@).removeClass 'over'
+
+  $(".droppable").on "dropover", (event, ui) ->
+    $(@).addClass 'over'
+
+  $(".draggable").draggable ->
+    connectToSortable: ".issues",
+    helper: "clone",
+    revert: "valid",
+    snap: true,
+    scrollSensitivity: 100
+
+  $(".draggable").on "dragstart", ( event, ui ) ->
+    $(@).before('<div class="empty-issue"></div>')
+    $('.empty-issue', $(@).parent()).css 'height', $(@).outerHeight()
+    $(@).data start_column: $(@).parent().data('column')
+
+  $(".draggable").on "dragstop", ( event, ui ) ->
+    $(@).removeAttr('style')
+    $('.empty-issue').remove()
+
+  $(".draggable").on "dragcreate", ( event, ui ) ->
+    $(@).parent().scrollTo @
+
   # показать прелоадер перед попапом с данными тикета
   $('.issue-name').click ->
     $('.l-preloader').show()
