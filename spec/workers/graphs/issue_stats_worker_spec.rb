@@ -18,9 +18,9 @@ describe Graphs::IssueStatsWorker do
       let(:issue_1) { OpenStruct.new(number: 1, created_at: Time.current - 1.day, updated_at: Time.current - 6.hours, closed_at: Time.current) }
       let(:issue_2) { OpenStruct.new(number: 2, created_at: Time.current - 1.day, updated_at: Time.current - 6.hours, closed_at: nil) }
       it { expect(subject.map(&:number)).to eq [issue_1.number, issue_2.number] }
-      it { expect(subject.map(&:created_at)).to eq [issue_1.created_at, issue_2.created_at] }
-      it { expect(subject.map(&:updated_at)).to eq [issue_1.updated_at, issue_2.updated_at] }
-      it { expect(subject.map(&:closed_at)).to eq [issue_1.closed_at, issue_2.closed_at] }
+      it { expect(subject.map(&:created_at).map(&:to_s)).to eq [issue_1.created_at, issue_2.created_at].map(&:to_s) }
+      it { expect(subject.map(&:updated_at).map(&:to_s)).to eq [issue_1.updated_at.to_s, issue_2.updated_at].map(&:to_s) }
+      it { expect(subject.map(&:closed_at).map(&:to_s)).to eq [issue_1.closed_at, issue_2.closed_at].map(&:to_s) }
     end
 
     context 'update issue_1.closed_at and add new issue_2' do
@@ -30,9 +30,9 @@ describe Graphs::IssueStatsWorker do
       let(:issue_2) { OpenStruct.new(number: 2, created_at: Time.current - 1.day, updated_at: Time.current - 6.hours, closed_at: nil) }
       it { is_expected.to have(2).items }
       it { expect(subject.map(&:number)).to eq [issue_1.number, issue_2.number] }
-      it { expect(subject.map(&:created_at)).to eq [issue_1.created_at, issue_2.created_at] }
-      it { expect(subject.map(&:updated_at)).to eq [issue_1.updated_at, issue_2.updated_at] }
-      it { expect(subject.map(&:closed_at)).to eq [issue_1.closed_at, issue_2.closed_at] }
+      it { expect(subject.map(&:created_at).map(&:to_s)).to eq [issue_1.created_at, issue_2.created_at].map(&:to_s) }
+      it { expect(subject.map(&:updated_at).map(&:to_s)).to eq [issue_1.updated_at.to_s, issue_2.updated_at].map(&:to_s) }
+      it { expect(subject.map(&:closed_at).map(&:to_s)).to eq [issue_1.closed_at, issue_2.closed_at].map(&:to_s) }
     end
 
     context 'update only if need' do
