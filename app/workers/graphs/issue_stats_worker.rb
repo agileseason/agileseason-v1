@@ -25,7 +25,7 @@ module Graphs
       issues_to_update = issues.select { |issue| issue.number <= last_number }
       issues_to_update.each do |issue|
         issue_stat = @board.issue_stats.find_by(number: issue.number)
-        next if !issue_stat || issue_stat.updated_at == issue.updated_at
+        next if !issue_stat || issue_stat.updated_at.to_i == issue.updated_at.to_i
         issue_stat.update(
           created_at: issue.created_at,
           updated_at: issue.updated_at,
