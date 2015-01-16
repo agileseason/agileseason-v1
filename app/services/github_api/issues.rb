@@ -1,8 +1,12 @@
 class GithubApi
   module Issues
+    def issues(board)
+      open_issues(board) + closed_issues(board)
+    end
+
     def board_issues(board)
       board_hash = board.github_labels.each_with_object({}) { |label, hash| hash[label] = [] }
-      all_issues(board).each do |issue|
+      issues(board).each do |issue|
         label_name = find_label_name(board, issue)
         board_hash[label_name] << issue if label_name
       end
@@ -81,10 +85,6 @@ class GithubApi
       hash = TrackStats.remove_columns(hash, column.next_columns.map(&:id))
       tracked_ids = column.prev_columns.map(&:id) << column.id
       data[:comment].to_s + TrackStats.track(tracked_ids, hash)
-    end
-
-    def all_issues(board)
-      open_issues(board) + closed_issues(board)
     end
 
     def open_issues(board)

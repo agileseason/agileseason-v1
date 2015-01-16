@@ -3,6 +3,22 @@ describe GithubApi::Issues do
   let(:board) { build(:board, :with_columns, number_of_columns: 1) }
   let(:issue) { OpenStruct.new(number: 1) }
 
+  describe '#issues' do
+    subject { service.issues(board) }
+    let(:open_issue) { OpenStruct.new(number: 1) }
+    let(:closed_issue) { OpenStruct.new(number: 2) }
+    before do
+      allow_any_instance_of(Octokit::Client)
+        .to receive(:issues).with(board.github_id).and_return([open_issue])
+    end
+    before do
+      allow_any_instance_of(Octokit::Client)
+        .to receive(:issues).with(board.github_id, state: :closed).and_return([closed_issue])
+    end
+
+    it { is_expected.to eq [open_issue, closed_issue] }
+  end
+
   describe '#board_issues' do
     subject { service.board_issues(board) }
     let(:board) { build(:board, :with_columns, number_of_columns: 2) }
