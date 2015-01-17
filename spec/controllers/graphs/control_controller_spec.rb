@@ -1,5 +1,5 @@
 RSpec.describe Graphs::ControlController, type: :controller do
-  describe "GET index" do
+  describe 'GET index' do
     let(:user) { create(:user) }
     let(:board) { create(:board, :with_columns, user: user) }
     it 'returns http success' do
