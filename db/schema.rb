@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150107181004) do
+ActiveRecord::Schema.define(version: 20150115050901) do
 
   create_table "board_histories", force: true do |t|
     t.integer  "board_id"
@@ -45,6 +45,16 @@ ActiveRecord::Schema.define(version: 20150107181004) do
   end
 
   add_index "columns", ["board_id"], name: "index_columns_on_board_id"
+
+  create_table "issue_stats", force: true do |t|
+    t.integer  "board_id"
+    t.integer  "number"
+    t.datetime "closed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "issue_stats", ["board_id"], name: "index_issue_stats_on_board_id"
 
   create_table "repo_histories", force: true do |t|
     t.integer  "board_id"

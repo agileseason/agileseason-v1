@@ -12,6 +12,12 @@ ul.l-submenu
       a href="#{board_graphs_cumulative_index_url(@board)}" Cumulative Flow
 
   li
+    - if params[:controller] == 'graphs/control'
+      span Control Chart
+    - else
+      a href="#{board_graphs_control_index_url(@board)}" Control Chart
+
+  li
     - if params[:controller] == 'graphs/lines'
       span Lines
     - else

@@ -1,0 +1,73 @@
+<div>
+  <div id="container"></div>
+  <script type="text/javascript" charset="utf-8">
+    $(function () {
+        $('#container').highcharts({
+            chart: {
+                type: 'scatter',
+                zoomType: 'xy',
+                height: 600
+            },
+            title: false,
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    month: '%e. %b',
+                    year: '%b'
+                },
+                title: {
+                    text: 'Issue Transition Date'
+                },
+                startOnTick: true,
+                endOnTick: true,
+                showLastLabel: true
+            },
+            yAxis: {
+                title: {
+                    text: 'Elapsed Time / Work In Prograss (Days)'
+                },
+                min: 0
+            },
+            legend: false,
+            plotOptions: {
+                scatter: {
+                    marker: {
+                        radius: 5,
+                        states: {
+                            hover: {
+                                enabled: true,
+                                lineColor: 'rgb(100,100,100)'
+                            }
+                        }
+                    },
+                    states: {
+                        hover: {
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '',
+                        // FIX : Add link to github issue by number.
+                        pointFormat: 'Issue #{point.number}<br/>WIP: {point.y:.2f} d<br/>Closed: {point.x:%e. %b}'
+                    }
+                }
+            },
+            series: [{
+                name: 'Issue',
+                color: 'rgba(223, 83, 83, .7)',
+                data: [
+                  <% @chart_series_data.each do |e| %>
+                    {
+                      x: <%=e[:x]%>,
+                      y: <%=e[:y]%>,
+                      number: <%=e[:number]%>
+                    },
+                  <% end %>
+                ]
+            }]
+        });
+    });
+  </script>
+</div>
