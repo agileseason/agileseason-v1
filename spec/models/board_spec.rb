@@ -28,4 +28,32 @@ describe Board, type: :model do
     subject { board.issue_stats }
     it { is_expected.to eq [stat_2, stat_1] }
   end
+
+  describe '#kanban?' do
+    subject { board.kanban? }
+
+    context :true do
+      let(:board) { build(:board, :kanban) }
+      it { is_expected.to eq true }
+    end
+
+    context :false do
+      let(:board) { build(:board, :scrum) }
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe '#scrum?' do
+    subject { board.scrum? }
+
+    context :true do
+      let(:board) { build(:board, :scrum) }
+      it { is_expected.to eq true }
+    end
+
+    context :false do
+      let(:board) { build(:board, :kanban) }
+      it { is_expected.to eq false }
+    end
+  end
 end

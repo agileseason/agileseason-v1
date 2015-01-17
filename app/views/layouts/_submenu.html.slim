@@ -5,17 +5,27 @@ ul.l-submenu
     - else
       a href="#{board_url(@board)}" #{@board.name.capitalize} #{k(:board, @board).board_name} board
 
-  li
-    - if params[:controller] == 'graphs/cumulative'
-      span Cumulative Flow
-    - else
-      a href="#{board_graphs_cumulative_index_url(@board)}" Cumulative Flow
+  - if @board.kanban?
+    li
+      - if params[:controller] == 'graphs/cumulative'
+        span Cumulative Flow
+      - else
+        a href="#{board_graphs_cumulative_index_url(@board)}" Cumulative Flow
 
-  li
-    - if params[:controller] == 'graphs/control'
-      span Control Chart
-    - else
-      a href="#{board_graphs_control_index_url(@board)}" Control Chart
+    li
+      - if params[:controller] == 'graphs/control'
+        span Control Chart
+      - else
+        a href="#{board_graphs_control_index_url(@board)}" Control Chart
+
+    li
+      - if params[:controller] == 'graphs/duration'
+        span Forecast Duration
+      - else
+        a href="#{board_graphs_duration_index_url(@board)}" Forecast Duration
+  - else
+    li
+      a href='#coming_soon' Burndown Chart [Coming Soon]
 
   li
     - if params[:controller] == 'graphs/lines'
