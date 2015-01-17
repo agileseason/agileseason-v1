@@ -22,15 +22,15 @@
     position: relative
 
   .board-columns
-    -moz-box-align: start
+    //-moz-box-align: start
     -moz-box-orient: horizontal
-    -ms-flex-align: start
+    //-ms-flex-align: start
     -ms-flex-direction: row
-    -webkit-align-items: flex-start
-    -webkit-box-align: start
+    //-webkit-align-items: flex-start
+    //-webkit-box-align: start
     -webkit-box-orient: horizontal
     -webkit-flex-direction: row
-    align-items: flex-start
+    //align-items: flex-start
     bottom: 0
     display: -moz-box
     display: -ms-flexbox
@@ -41,7 +41,7 @@
     left: 0
     overflow-x: auto
     overflow-y: hidden
-    padding: 0 20px 10px
+    padding: 0 20px 10px 10px
     position: absolute
     right: 0
     top: 0
@@ -68,9 +68,14 @@
     flex: 0 0 260px
     margin-right: 10px
     max-height: 100%
-    padding: 0 20px 0 0
+    padding: 40px 0 0 0
     position: relative
     width: 260px
+    vertical-align: top
+
+    &.over
+      +border-radius(4px)
+      +box-shadow(0 0 40px rgba(63,63,63,0.1) inset)
 
     &:first-child
       .new-issue
@@ -97,18 +102,25 @@
     color: $text-light
     font-size: 16px
     font-weight: bold
-    padding: 0 0 10px
+    padding: 10px 0 0 10px
+    position: absolute
+    top: 0
 
   .issues
-    padding: 0
+    padding: 0 10px
     overflow-y: auto
+    min-height: 40px
+
+    //&.over
+      //+border-radius(4px)
+      //+box-shadow(0 0 40px rgba(63,63,63,0.1) inset)
 
     .add-user
       display: none
 
   .new-issue-form
     display: none
-    margin: 18px 0 0 0
+    margin: 0 0 0 10px
     min-height: 100px
     position: relative
 
@@ -203,7 +215,7 @@
       padding: 10px
       position: relative
       resize: none
-      width: 219px
+      width: 220px
 
       &:focus
         outline: none
@@ -218,7 +230,7 @@
     cursor: pointer
     display: none
     flex: 0 0 auto
-    margin: 20px 0 10px
+    margin: 2px 10px 10px
     padding: 10px
 
     a.ajax-link
@@ -234,16 +246,29 @@
       a.ajax-link
         color: $ajax-link-hover
 
+  .empty-issue
+    +border-radius(4px)
+    min-width: 40px
+    background: #ccc
+    margin-bottom: 10px
+
   .issue
     +border-radius(3px)
-    +box-shadow(0 1px 0px rgba(100,100,100,0.3), 0 0 10px rgba(30,80,150,0.05) inset)
+    +box-shadow(0 1px 0px rgba(100,100,100,0.3))
     background-color: $card
     margin-bottom: 10px
     padding: 0 10px 10px
     position: relative
+    overflow: hidden
 
-    &:first-child
-      margin-top: 5px
+    &:hover
+      cursor: -webkit-grab
+
+    &.ui-draggable-dragging
+      cursor: -webkit-grabbing
+      position: absolute
+      width: 220px
+      z-index: 1
 
     &:hover
       background: $card-hover
@@ -261,6 +286,9 @@
       a,
       .labels
         +opacity(0.7)
+
+    .labels
+      max-height: 13px
 
     .label
       +border-radius(0 0 2px 2px)
@@ -296,7 +324,6 @@
       font-size: 14px
       font-weight: normal
       padding: 8px 0 0
-      margin: -5px 0 0 0
       line-height: 1.3em
 
     .issue-name
