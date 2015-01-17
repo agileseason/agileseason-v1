@@ -1,6 +1,6 @@
 = render partial: '/layouts/submenu'
 
-.board
+.board data-github_name="#{@board.github_name}"
   .board-columns
     - @board.columns.each do |column|
         .board-column.droppable data-column="#{column.id}"
