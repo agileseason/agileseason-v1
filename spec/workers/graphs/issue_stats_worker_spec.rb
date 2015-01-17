@@ -2,7 +2,7 @@ describe Graphs::IssueStatsWorker do
   let(:worker) { Graphs::IssueStatsWorker.new }
   describe '.perform' do
     subject { board.issue_stats }
-    let(:board) { create(:board, :with_columns) }
+    let(:board) { create(:board, :with_columns, created_at: 10.days.ago) }
     let(:arrange) {}
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return(issues) }
     before { arrange }
@@ -11,6 +11,15 @@ describe Graphs::IssueStatsWorker do
     context :empty do
       let(:issues) { [] }
       it { is_expected.to be_empty }
+    end
+
+    context 'not add issues when it closed before board#created_at' do
+      let(:board) { create(:board, :with_columns, created_at: 1.day.ago) }
+      let(:issues) { [issue_1, issue_2] }
+      let(:issue_1) { OpenStruct.new(number: 1, state: 'closed', created_at: 2.days.ago, updated_at: 2.days.ago, closed_at: 2.days.ago) }
+      let(:issue_2) { OpenStruct.new(number: 2, state: 'open', created_at: 2.days.ago, updated_at: 2.days.ago, closed_at: nil) }
+      it { is_expected.to have(1).item }
+      it { expect(subject.first.number).to eq issue_2.number }
     end
 
     context :add_new do
