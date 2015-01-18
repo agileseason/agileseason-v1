@@ -15,7 +15,15 @@ class Graphs::CumulativeController < ApplicationController
   end
 
   def chart_categories
-    @board.board_histories.map(&:collected_on).map(&:strftime)
+    prev_month = nil
+    @board.board_histories.map(&:collected_on).map do |date|
+      if date.month == prev_month
+        date.strftime('%d')
+      else
+        prev_month = date.month
+        date.strftime('%d.%b')
+      end
+    end
   end
 
   def chart_series
