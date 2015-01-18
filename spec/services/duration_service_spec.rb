@@ -15,7 +15,7 @@ describe DurationService do
     end
 
     context 'one closed issue' do
-      let!(:issue) { create(:issue_stat, created_at: 2.day.ago, closed_at: 1.day.ago, board: board) }
+      let!(:issue) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
       let(:expected_duration) { (issue.closed_at - issue.created_at).to_i / 86400 + 1 }
       it { is_expected.to have(1).item }
       it { expect(subject.first.first).to eq expected_duration }
@@ -23,8 +23,8 @@ describe DurationService do
     end
 
     context 'sort by duration' do
-      let!(:issue_1) { create(:issue_stat, created_at: 3.day.ago, closed_at: 1.day.ago, board: board) }
-      let!(:issue_2) { create(:issue_stat, created_at: 2.day.ago, closed_at: 1.day.ago, board: board) }
+      let!(:issue_1) { create(:issue_stat, :closed, created_at: 2.day.ago, board: board) }
+      let!(:issue_2) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
       let(:expected_duration_1) { (issue_1.closed_at - issue_1.created_at).to_i / 86400 + 1 }
       let(:expected_duration_2) { (issue_2.closed_at - issue_2.created_at).to_i / 86400 + 1 }
       it { is_expected.to have(2).item }
@@ -46,7 +46,7 @@ describe DurationService do
     end
 
     context 'one closed issue for 1 day, then forecast 1 day by issue' do
-      let!(:issue_1) { create(:issue_stat, created_at: 1.day.ago, closed_at: 1.day.ago, board: board) }
+      let!(:issue_1) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
       context 'one open issue' do
         let!(:issue_2) { create(:issue_stat, :open, board: board) }
         it { is_expected.to eq 1 }
