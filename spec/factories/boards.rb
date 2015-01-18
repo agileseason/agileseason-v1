@@ -1,9 +1,17 @@
 FactoryGirl.define do
   factory :board do
     name 'test board'
-    type "Boards::KanbanBoard"
+    type 'Boards::KanbanBoard'
     github_id 123
     github_name 'test_board_repo'
+
+    trait :kanban do
+      type 'Boards::KanbanBoard'
+    end
+
+    trait :scrum do
+      type 'Boards::ScrumBoard'
+    end
 
     trait :with_columns do
       ignore do

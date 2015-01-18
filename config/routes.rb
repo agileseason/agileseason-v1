@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       resources :lines, only: [:index]
       resources :cumulative, only: [:index]
       resources :control, only: [:index]
+      resources :duration, only: [:index]
     end
   end
 

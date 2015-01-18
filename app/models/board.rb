@@ -16,4 +16,12 @@ class Board < ActiveRecord::Base
   def to_param
     github_name
   end
+
+  def kanban?
+    type == 'Boards::KanbanBoard'
+  end
+
+  def scrum?
+    type == 'Boards::ScrumBoard'
+  end
 end

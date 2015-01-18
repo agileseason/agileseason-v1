@@ -1,0 +1,42 @@
+<div>
+  <div id="container"></div>
+  <script type="text/javascript" charset="utf-8">
+    $(function () {
+        $('#container').highcharts({
+            chart: {
+                type: 'column',
+                height: 600
+            },
+            title: {
+                text: false
+            },
+            xAxis: {
+                categories: <%= raw(@chart_series_data.map(&:first)) %>,
+                title: {
+                    text: 'Elapsed Days'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Frequency / Issues count'
+                }
+            },
+            legend: false,
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            tooltip: {
+                headerFormat: 'Issues: <b>{point.y}</b><br/>Closed for: <b>{point.x}</b>d<br>',
+                pointFormat: ''
+            },
+            series: [{
+                name: 'Days',
+                data: <%= raw(@chart_series_data.map(&:second)) %>
+            }]
+        });
+    });
+</script>
