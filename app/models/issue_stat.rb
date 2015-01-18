@@ -5,6 +5,7 @@ class IssueStat < ActiveRecord::Base
   validates_uniqueness_of :number, scope: :board_id
 
   scope :closed, -> { where('closed_at is not null') }
+  scope :open, -> { where('closed_at is null') }
 
   def elapsed_time
     (closed_at || Time.current) - created_at

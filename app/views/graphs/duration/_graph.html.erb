@@ -11,13 +11,16 @@
                 text: false
             },
             xAxis: {
-                categories: <%= raw(@chart_series_data.map(&:first)) %>
+                categories: <%= raw(@chart_series_data.map(&:first)) %>,
+                title: {
+                    text: 'Elapsed Days'
+                }
             },
             yAxis: {
                 min: 0,
                 title: {
                     text: 'Frequency / Issues count'
-                },
+                }
             },
             legend: false,
             plotOptions: {
