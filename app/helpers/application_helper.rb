@@ -11,11 +11,10 @@ module ApplicationHelper
 
   def markdown(text)
     if text
-      markdown = Redcarpet::Markdown.new(
-      Redcarpet::Render::HTML.new(prettify: true),
-        { fenced_code_blocks: true,
-          highlight: true,
-          autolink: true })
+      markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(prettify: true),
+        fenced_code_blocks: true,
+        highlight: true,
+        autolink: true)
       markdown.render(text).html_safe
     end
   end
