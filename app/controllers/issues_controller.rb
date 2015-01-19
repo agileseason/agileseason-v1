@@ -18,7 +18,7 @@ class IssuesController < ApplicationController
 
   def show
     @issue = github_api.issue(@board, params[:number])
-    @comments = github_api.get_comments(@board.github_id, params[:number].to_i)
+    @comments = github_api.issue_comments(@board.github_id, params[:number].to_i)
     @columns = @board.columns
     render partial: 'show'
   end
