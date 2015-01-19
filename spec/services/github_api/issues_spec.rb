@@ -5,18 +5,32 @@ describe GithubApi::Issues do
 
   describe '#issues' do
     subject { service.issues(board) }
-    let(:open_issue) { OpenStruct.new(number: 1) }
-    let(:closed_issue) { OpenStruct.new(number: 2) }
     before do
       allow_any_instance_of(Octokit::Client)
-        .to receive(:issues).with(board.github_id).and_return([open_issue])
+        .to receive(:issues).with(board.github_id).and_return(open_issues)
     end
     before do
       allow_any_instance_of(Octokit::Client)
-        .to receive(:issues).with(board.github_id, state: :closed).and_return([closed_issue])
+        .to receive(:issues).with(board.github_id, state: :closed).and_return(closed_issues)
     end
 
-    it { is_expected.to eq [open_issue, closed_issue] }
+    context 'open and closed' do
+      let(:open_issues) { [OpenStruct.new(number: 1)] }
+      let(:closed_issues) { [OpenStruct.new(number: 2)] }
+      it { is_expected.to eq open_issues + closed_issues }
+    end
+
+    context 'without pull request' do
+      let(:open_issues) { [OpenStruct.new(number: 1, pull_request: {})] }
+      let(:closed_issues) { [OpenStruct.new(number: 2, pull_request: {})] }
+      it { is_expected.to be_empty }
+    end
+
+    context 'default sort by updated_at' do
+      let(:open_issues) { [OpenStruct.new(number: 1, updated_at: 1.day.ago)] }
+      let(:closed_issues) { [OpenStruct.new(number: 2, updated_at: 0.day.ago)] }
+      it { is_expected.to eq closed_issues + open_issues }
+    end
   end
 
   describe '#board_issues' do
