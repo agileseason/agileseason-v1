@@ -1,14 +1,12 @@
 @import compass/css3/border-radius
 @import 'globals/variables'
+@import 'mixins/avatar'
 
 .b-assigned
   margin-bottom: 5px
 
   .avatar
-    +border-radius(28px)
-    height: 28px
-    margin-right: 5px
-    width: 28px
+    +avatar
 
   .user
     vertical-align: top

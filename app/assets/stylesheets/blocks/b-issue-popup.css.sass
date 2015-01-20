@@ -1,6 +1,7 @@
 @import compass/css3/border-radius
 @import compass/css3/text-shadow
 @import 'globals/variables'
+@import 'mixins/avatar'
 
 .b-issue-popup
   background: $card
@@ -170,3 +171,39 @@
 
     &:first-child
       margin-top: 0
+
+  .issue-comments
+    margin-top: 40px
+
+  .issue-comment
+    padding: 0 0 30px
+    display: table
+    width: 100%
+
+    &:last-child
+      padding-bottom: 0
+
+  .user-ava
+    display: table-cell
+    width: 33px
+
+  .avatar
+    +avatar
+
+  .comment-body
+    display: table-cell
+    padding: 0px 5px
+    position: relative
+    vertical-align: top
+
+  .date
+    color: #999
+    display: inline-block
+    font-size: 14px
+    margin-bottom: 5px
+
+  .user-ligin
+    color: #999
+    display: inline
+    font-size: 14px
+    font-weight: bold

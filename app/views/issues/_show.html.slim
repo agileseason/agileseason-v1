@@ -13,6 +13,17 @@
 
       .issue-description = @issue.body.capitalize.html_safe
 
+      .issue-comments
+        - @comments.each do |comment|
+          .issue-comment
+            .user-ava
+              a.user href="#{comment.user.html_url}" target="_blank" title="#{comment.user.login}"
+                img.avatar src="#{comment.user.avatar_url}"
+            .comment-body
+              .user-ligin #{comment.user.login}&nbsp;
+              .date = comment.created_at.strftime("%h %d, %H:%M")
+              .comment = markdown(comment.body)
+
     .issue-actions
       ul.labels
         - @issue.labels.each do |label|
