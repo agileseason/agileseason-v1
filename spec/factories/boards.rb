@@ -14,7 +14,7 @@ FactoryGirl.define do
     end
 
     trait :with_columns do
-      ignore do
+      transient do
         number_of_columns 1
       end
       after(:build) do |board, evaluator|
