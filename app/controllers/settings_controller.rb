@@ -2,13 +2,16 @@ class SettingsController < ApplicationController
   before_action :fetch_board
 
   def show
+    # NOTE: The local board does not break submenu.
+    render :show, locals: { board: @board }
   end
 
   def rename
-    if @board.update(board_params)
-      redirect_to board_settings_url(@board), notice: 'Rename successful'
+    board = Board.find(@board.id)
+    if board.update(board_params)
+      redirect_to board_settings_url(board), notice: 'Board successfully renamed.'
     else
-      render :show
+      render :show, locals: { board: board }
     end
   end
 

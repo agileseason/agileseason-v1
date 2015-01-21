@@ -1,7 +1,9 @@
-h3 Settings
-= simple_form_for(:board, url: rename_board_settings_url(@board)) do |f|
+= render partial: '/layouts/submenu'
+= render partial: '/layouts/notice'
+
+h4 Settings
+= simple_form_for(board, url: rename_board_settings_url(board)) do |f|
   = f.input :name
-  = f.input :github_name, disabled: true
   = f.button :submit, value: 'Rename'
 
 /h3 Features Kanban || Scrum
