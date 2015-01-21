@@ -6,5 +6,13 @@ h4 Settings
   = f.input :name
   = f.button :submit, value: 'Rename'
 
-/h3 Features Kanban || Scrum
-/div ...
+- if @board.kanban?
+  h4 Features Kanban
+- else
+  h4 Features Scrum
+  div
+    span Days per iteration:
+    span = @board.days_per_iteration
+  div
+    span Start iteration:
+    span = @board.start_iteration

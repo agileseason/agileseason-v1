@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150115050901) do
+ActiveRecord::Schema.define(version: 20150121055237) do
 
   create_table "board_histories", force: :cascade do |t|
     t.integer  "board_id"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20150115050901) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "github_name", limit: 255
+    t.text     "settings"
   end
 
   add_index "boards", ["user_id"], name: "index_boards_on_user_id"
@@ -65,6 +66,16 @@ ActiveRecord::Schema.define(version: 20150115050901) do
   end
 
   add_index "repo_histories", ["board_id"], name: "index_repo_histories_on_board_id"
+
+  create_table "scrum_settings", force: :cascade do |t|
+    t.integer  "board_id"
+    t.string   "start_iteration"
+    t.integer  "days_per_iteration"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "scrum_settings", ["board_id"], name: "index_scrum_settings_on_board_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",           limit: 255, null: false

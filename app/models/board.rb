@@ -9,6 +9,8 @@ class Board < ActiveRecord::Base
   validates :type, presence: true
   validates :columns, presence: true
 
+  serialize :settings
+
   def github_labels
     columns.map(&:label_name)
   end
@@ -23,5 +25,12 @@ class Board < ActiveRecord::Base
 
   def scrum?
     type == 'Boards::ScrumBoard'
+  end
+
+  def settings
+    if super.nil?
+      self.settings = {}
+    end
+    super
   end
 end
