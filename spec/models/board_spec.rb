@@ -33,12 +33,12 @@ describe Board, type: :model do
     subject { board.kanban? }
 
     context :true do
-      let(:board) { build(:board, :kanban) }
+      let(:board) { build(:kanban_board) }
       it { is_expected.to eq true }
     end
 
     context :false do
-      let(:board) { build(:board, :scrum) }
+      let(:board) { build(:scrum_board) }
       it { is_expected.to eq false }
     end
   end
@@ -47,13 +47,41 @@ describe Board, type: :model do
     subject { board.scrum? }
 
     context :true do
-      let(:board) { build(:board, :scrum) }
+      let(:board) { build(:scrum_board) }
       it { is_expected.to eq true }
     end
 
     context :false do
-      let(:board) { build(:board, :kanban) }
+      let(:board) { build(:kanban_board) }
       it { is_expected.to eq false }
+    end
+  end
+
+  describe '#settings' do
+    subject { board.settings }
+    context :null do
+      let(:board) { build(:board) }
+      it { is_expected.to eq({}) }
+    end
+
+    context :not_null do
+      let(:board) { build(:board, settings: { test: 'test' }) }
+      it { is_expected.to eq({ test: 'test' }) }
+    end
+
+    context :scrum do
+      describe '#days_per_iteration' do
+        subject { board.days_per_iteration }
+        let(:board) { create(:scrum_board, :with_columns) }
+        context :default do
+          it { is_expected.to eq 14 }
+        end
+
+        context :after_edit do
+          before { board.days_per_iteration = 7 }
+          it { is_expected.to eq 7 }
+        end
+      end
     end
   end
 end

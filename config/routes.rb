@@ -13,6 +13,12 @@ Rails.application.routes.draw do
       get ':number/show', to: 'issues#show', as: :show
     end
 
+    resource :settings, only: [:show, :update] do
+      member do
+        patch :rename
+      end
+    end
+
     namespace :graphs do
       resources :lines, only: [:index]
       resources :cumulative, only: [:index]

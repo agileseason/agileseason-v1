@@ -4,17 +4,10 @@ FactoryGirl.define do
     type 'Boards::KanbanBoard'
     github_id 123
     github_name 'test_board_repo'
-
-    trait :kanban do
-      type 'Boards::KanbanBoard'
-    end
-
-    trait :scrum do
-      type 'Boards::ScrumBoard'
-    end
+    settings nil
 
     trait :with_columns do
-      ignore do
+      transient do
         number_of_columns 1
       end
       after(:build) do |board, evaluator|
@@ -22,6 +15,14 @@ FactoryGirl.define do
           columns << FactoryGirl.build(:column, board: board, name: "column_#{n + 1}", order: n + 1)
         end
       end
+    end
+
+    factory :kanban_board, parent: :board, class: 'Boards::KanbanBoard' do
+      type 'Boards::KanbanBoard'
+    end
+
+    factory :scrum_board, parent: :board, class: 'Boards::ScrumBoard' do
+      type 'Boards::ScrumBoard'
     end
   end
 end

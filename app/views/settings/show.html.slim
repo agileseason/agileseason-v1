@@ -1,0 +1,16 @@
+= render partial: '/layouts/submenu'
+= render partial: '/layouts/notice'
+
+h4 Settings
+= simple_form_for(board, url: rename_board_settings_url(board)) do |f|
+  = f.input :name
+  = f.button :submit, value: 'Rename'
+
+- if @board.kanban?
+  h4 Features Kanban
+- else
+  h4 Features Scrum
+  = simple_form_for(@board.scrum_settings, url: board_settings_url(board), method: :patch) do |f|
+    = f.input :days_per_iteration
+    = f.input :start_iteration, collection: ScrumSettings::START_ITERATION_DAYS, include_blank: false
+    = f.button :submit, value: 'Update'
