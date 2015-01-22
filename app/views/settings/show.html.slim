@@ -7,7 +7,7 @@ h4 Settings
   = f.button :submit, value: 'Rename'
 
 - if @board.kanban?
-  h4 Features Kanban
+  /h4 Features Kanban
 - else
   h4 Features Scrum
   = simple_form_for(@board.scrum_settings, url: board_settings_url(board), method: :patch) do |f|
