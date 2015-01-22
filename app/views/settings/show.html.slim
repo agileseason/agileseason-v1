@@ -10,9 +10,7 @@ h4 Settings
   h4 Features Kanban
 - else
   h4 Features Scrum
-  div
-    span Days per iteration:
-    span = @board.days_per_iteration
-  div
-    span Start iteration:
-    span = @board.start_iteration
+  = simple_form_for(@board.scrum_settings, url: board_settings_url(board), method: :patch) do |f|
+    = f.input :days_per_iteration
+    = f.input :start_iteration, collection: ScrumSettings::START_ITERATION_DAYS, include_blank: false
+    = f.button :submit, value: 'Update'

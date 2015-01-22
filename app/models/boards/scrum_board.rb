@@ -18,4 +18,11 @@ class Boards::ScrumBoard < Board
   def start_iteration=(week_day)
     settings[:start_iteration] = week_day
   end
+
+  def scrum_settings
+    ScrumSettings.new(
+      days_per_iteration: days_per_iteration,
+      start_iteration: start_iteration
+    )
+  end
 end
