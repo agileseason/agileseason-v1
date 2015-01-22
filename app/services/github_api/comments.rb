@@ -1,11 +1,7 @@
 class GithubApi
   module Comments
-    def issue_comments(repo, number)
-      comments = []
-      client.issue_comments(repo, number).reverse.each do |comment|
-        comments << comment
-      end
-      comments
+    def issue_comments(board, number)
+      client.issue_comments(board, number).reverse
     end
   end
 end
