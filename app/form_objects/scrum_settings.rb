@@ -31,4 +31,3 @@ class ScrumSettings
     board.save
   end
 end
-
