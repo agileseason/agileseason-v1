@@ -85,8 +85,8 @@ describe GithubApi::Issues do
 
   describe '#create_issue' do
     subject { service.create_issue(board, issue) }
-    let(:board) { build(:board, :with_columns, number_of_columns: 2) }
-    let(:issue) { OpenStruct.new(title: 'title_1', body: 'body_1', labels: labels) }
+    let(:board) { create(:board, :with_columns, number_of_columns: 2) }
+    let(:issue) { OpenStruct.new(number: 1, title: 'title_1', body: 'body_1', labels: labels) }
     let(:labels) { ['bug', 'feature', ''] }
     let(:expected_body) { issue.body + TrackStats.track([board.columns.first.id]) }
     let(:expected_labels) { ['bug', 'feature', board.columns.first.label_name] }
