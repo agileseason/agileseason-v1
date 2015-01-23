@@ -27,7 +27,6 @@
                 },
                 min: 0
             },
-            legend: false,
             plotOptions: {
                 scatter: {
                     marker: {
@@ -49,19 +48,37 @@
                     tooltip: {
                         headerFormat: '',
                         // FIX : Add link to github issue by number.
-                        pointFormat: 'Issue #{point.number}<br/>WIP: {point.y:.2f} d<br/>Closed: {point.x:%e. %b}'
+                        pointFormat: 'Issue #{point.number}<br/>WIP: {point.y:.2f}d<br/>Closed: {point.x:%e. %b}'
                     }
+                },
+                line: {
+                    enableMouseTracking: false
                 }
             },
             series: [{
                 name: 'Issue',
-                color: 'rgba(223, 83, 83, .7)',
+                color: 'rgba(119, 152, 191, .7)',
                 data: [
-                  <% @chart_series_data.each do |e| %>
+                  <% @chart_series_data[:issues].each do |e| %>
                     {
                       x: <%=e[:x]%>,
                       y: <%=e[:y]%>,
                       number: <%=e[:number]%>
+                    },
+                  <% end %>
+                ]
+            },{
+                name: 'Average',
+                type: 'line',
+                color: 'rgba(223, 83, 83, .7)',
+                marker: {
+                    enabled: false
+                },
+                data: [
+                  <% @chart_series_data[:average].each do |e| %>
+                    {
+                      x: <%=e[:x]%>,
+                      y: <%=e[:y]%>
                     },
                   <% end %>
                 ]
