@@ -19,7 +19,9 @@ class GithubApi
       column = board.columns.first
       body = issue.body + TrackStats.track([column.id])
       labels = issue.labels.reject(&:blank?) << column.label_name
-      client.create_issue(board.github_id, issue.title, body, labels: labels)
+      github_issue = client.create_issue(board.github_id, issue.title, body, labels: labels)
+      IssueStatService.create!(board, github_issue)
+      github_issue
     end
 
     def issue(board, number)

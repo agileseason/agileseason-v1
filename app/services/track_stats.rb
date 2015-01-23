@@ -12,6 +12,22 @@ class TrackStats
       hidden_content(hash)
     end
 
+    def track_data(column_ids, hash=nil)
+      hash = { columns: {} } if hash.blank?
+      column_ids = [column_ids] if column_ids.is_a?(Fixnum)
+      column_ids.each do |column_id|
+        column_data = hash[:columns][column_id] || { in_at: Time.current, out_at: nil }
+        column_data[:out_at] = nil
+        hash[:columns][column_id] = column_data
+      end
+      # fill_out_at
+      current_column_id = column_ids.last
+      hash[:columns].each do |key, value|
+        value[:out_at] = Time.current if key != current_column_id && value[:out_at].blank?
+      end
+      hash
+    end
+
     def hidden_content(hash)
       "\n<!---\n@agileseason:#{hash.to_json}\n-->"
     end

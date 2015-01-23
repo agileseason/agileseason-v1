@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150121055237) do
+ActiveRecord::Schema.define(version: 20150123050207) do
 
   create_table "board_histories", force: :cascade do |t|
     t.integer  "board_id"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20150121055237) do
     t.datetime "closed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "track_data"
   end
 
   add_index "issue_stats", ["board_id"], name: "index_issue_stats_on_board_id"

@@ -98,6 +98,8 @@ describe GithubApi::Issues do
         receive(:create_issue)
           .with(board.github_id, issue.title, expected_body, labels: expected_labels))
     end
+    it { is_expected.to eq issue }
+    it { expect{subject}.to change(IssueStat, :count).by(1) }
   end
 
   describe '#move_to' do

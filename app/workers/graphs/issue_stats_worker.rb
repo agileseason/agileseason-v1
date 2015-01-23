@@ -16,14 +16,7 @@ module Graphs
 
     def create_issue_stats(issues)
       new_issues = issues.select { |issue| issue.number > last_number }
-      new_issues.each do |issue|
-        @board.issue_stats.create!(
-          number: issue.number,
-          created_at: issue.created_at,
-          updated_at: issue.updated_at,
-          closed_at: issue.closed_at
-        )
-      end
+      new_issues.each { |issue| IssueStatService.create!(@board, issue) }
     end
 
     def update_issue_stats(issues)
@@ -31,11 +24,7 @@ module Graphs
       issues_to_update.each do |issue|
         issue_stat = @board.issue_stats.find_by(number: issue.number)
         next if !issue_stat || issue_stat.updated_at.to_i == issue.updated_at.to_i
-        issue_stat.update(
-          created_at: issue.created_at,
-          updated_at: issue.updated_at,
-          closed_at: issue.closed_at
-        )
+        IssueStatService.update!(issue_stat, issue)
       end
     end
 
