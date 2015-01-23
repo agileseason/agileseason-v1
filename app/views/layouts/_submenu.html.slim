@@ -1,9 +1,9 @@
 ul.l-submenu
   li
     - if params[:controller] == 'boards'
-      span #{@board.name.capitalize} #{k(:board, @board).board_name} board
+      span #{k(:board, @board).name} board
     - else
-      a href="#{board_url(@board)}" #{@board.name.capitalize} #{k(:board, @board).board_name} board
+      a href="#{board_url(@board)}" #{k(:board, @board).name} board
 
   - if @board.kanban?
     li
