@@ -2,9 +2,9 @@ class IssuePresenter < Keynote::Presenter
   presents :issue
   delegate :labels, :number, to: :issue
 
-  def labels_html(column_name)
+  def labels_html(board)
     build_html do
-      display_labels(column_name).each do |label|
+      display_labels(board).each do |label|
         div class: :label, style: "background-color:##{label.color}; color:##{color(label)}" do
           label.name
         end
@@ -35,9 +35,7 @@ class IssuePresenter < Keynote::Presenter
     IssueStatService.archived?(board, number)
   end
 
-  private
-
-  def display_labels(hidden_label_name)
-    labels.select { |label| label.name != hidden_label_name }
+  def display_labels(board)
+    labels.select { |label| !board.column_labels.include?(label.name) }
   end
 end

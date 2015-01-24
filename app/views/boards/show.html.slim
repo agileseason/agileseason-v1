@@ -18,7 +18,7 @@
               .issue.draggable class="#{issue.state}" data-number="#{issue.number}"
 
                 .labels
-                  = k(:issue, issue).labels_html(column.label_name)
+                  = k(:issue, issue).labels_html(@board)
 
                 .issue-title
                   a.issue-name data-modal="true" data-remote="true" data-number="#{issue.number}" href="#{show_board_issues_url(@board.github_name, issue.number)}"
