@@ -11,9 +11,10 @@ class Board < ActiveRecord::Base
 
   serialize :settings
 
-  def github_labels
-    columns.map(&:label_name)
+  def column_labels
+    @column_labels ||= columns.map(&:label_name)
   end
+  alias :github_labels :column_labels
 
   def to_param
     github_name
