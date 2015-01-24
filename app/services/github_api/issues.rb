@@ -16,10 +16,10 @@ class GithubApi
     end
 
     def create_issue(board, issue)
-      column = board.columns.first
-      body = issue.body + TrackStats.track([column.id])
-      labels = issue.labels.reject(&:blank?) << column.label_name
-      client.create_issue(board.github_id, issue.title, body, labels: labels)
+      labels = issue.labels.reject(&:blank?) << board.columns.first.label_name
+      github_issue = client.create_issue(board.github_id, issue.title, issue.body, labels: labels)
+      IssueStatService.create!(board, github_issue)
+      github_issue
     end
 
     def issue(board, number)
@@ -28,12 +28,12 @@ class GithubApi
 
     # FIX : To many args.
     def move_to(board, column, number, issue = client.issue(board.github_id, number))
-      body = update_hidden_stats(issue.body, column)
+      IssueStatService.move!(board, column, issue)
       client.update_issue(
         board.github_id,
         number,
         issue.title,
-        body,
+        issue.body,
         labels: fetch_labels(issue, column)
       )
     end
@@ -45,15 +45,7 @@ class GithubApi
     def archive(board, number)
       issue = client.issue(board.github_id, number)
       return if issue.state == 'open'
-      data = TrackStats.extract(issue.body)
-      data[:hash][:archived_at] = Time.current.to_s
-      body = data[:comment].to_s + TrackStats.hidden_content(data[:hash])
-      client.update_issue(
-        board.github_id,
-        number,
-        issue.title,
-        body
-      )
+      IssueStatService.archive!(board, issue)
     end
 
     def assign_yourself(board, number, github_username)
@@ -79,14 +71,6 @@ class GithubApi
 
     def fetch_labels(issue, column)
       (issue.labels.map(&:name) - column.board.github_labels) << column.label_name
-    end
-
-    def update_hidden_stats(issue_body, column)
-      data = TrackStats.extract(issue_body)
-      hash = data[:hash]
-      hash = TrackStats.remove_columns(hash, column.next_columns.map(&:id))
-      tracked_ids = column.prev_columns.map(&:id) << column.id
-      data[:comment].to_s + TrackStats.track(tracked_ids, hash)
     end
 
     def open_issues(board)

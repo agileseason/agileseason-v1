@@ -1,8 +1,11 @@
 class IssueStat < ActiveRecord::Base
   belongs_to :board
+  has_many :lifetimes
 
   validates :number, presence: true
   validates_uniqueness_of :number, scope: :board_id
+
+  serialize :track_data
 
   scope :closed, -> { where('closed_at is not null') }
   scope :open, -> { where('closed_at is null') }

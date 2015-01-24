@@ -1,3 +1,7 @@
 ruby:
   enabled: true
   config_file: config/rubocop/default.yml
+
+AllCops:
+  Exclude:
+    - 'db/**/*'

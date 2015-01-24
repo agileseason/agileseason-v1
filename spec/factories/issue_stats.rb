@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :issue_stat do
-    board
+    board nil
     sequence :number do |n|
       n
     end

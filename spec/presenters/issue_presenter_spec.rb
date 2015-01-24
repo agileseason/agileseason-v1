@@ -28,17 +28,12 @@ describe IssuePresenter do
   end
 
   describe '#archived?' do
-    let(:issue) { OpenStruct.new(body: body) }
-    subject { presenter.archived? }
+    let(:issue) { OpenStruct.new(number: 1) }
+    let(:board) { build(:board) }
+    subject { presenter.archived?(board) }
+    before { allow(IssueStatService).to receive(:archived?) }
+    after { subject }
 
-    context :true do
-      let(:body) { "body_comment.\n<!---\n@agileseason:{\"archived_at\":\"#{Time.current}\"}\n-->" }
-      it { is_expected.to eq true }
-    end
-
-    context :false do
-      let(:body) { "body_comment.\n<!---\n@agileseason:{}\n-->" }
-      it { is_expected.to eq false }
-    end
+    it { expect(IssueStatService).to receive(:archived?).with(board, issue.number) }
   end
 end
