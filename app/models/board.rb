@@ -3,7 +3,7 @@ class Board < ActiveRecord::Base
   has_many :columns, -> { order(:order) }
   has_many :repo_histories, -> { order(:collected_on) }
   has_many :board_histories, -> { order(:collected_on) }
-  has_many :issue_stats, -> { order(:number) }
+  has_many :issue_stats
 
   validates :name, presence: true
   validates :type, presence: true

@@ -21,14 +21,6 @@ describe Board, type: :model do
     it { is_expected.to eq board.github_name }
   end
 
-  describe 'check issue_stats order - important for workers' do
-    let(:board) { create(:board, :with_columns) }
-    let!(:stat_1) { create(:issue_stat, board: board, number: 2) }
-    let!(:stat_2) { create(:issue_stat, board: board, number: 1) }
-    subject { board.issue_stats }
-    it { is_expected.to eq [stat_2, stat_1] }
-  end
-
   describe '#kanban?' do
     subject { board.kanban? }
 

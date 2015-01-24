@@ -22,7 +22,7 @@ module Graphs
     private
 
     def issues
-      @issues ||= @board.issue_stats.closed
+      @issues ||= @board.issue_stats.closed.order(:closed_at)
     end
   end
 end

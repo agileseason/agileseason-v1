@@ -32,5 +32,13 @@ describe Graphs::ControlService do
       let!(:closed_issues) { create_list(:issue_stat, 3, :closed, board: board) }
       it { is_expected.to have(2).items }
     end
+
+    context :order do
+      let!(:issue_stat_1) { create(:issue_stat, :closed, number: 1, created_at: 10.days.ago, closed_at: 1.day.ago, board: board) }
+      let!(:issue_stat_2) { create(:issue_stat, :closed, number: 2, created_at: 10.days.ago, closed_at: 3.day.ago, board: board) }
+      let!(:issue_stat_3) { create(:issue_stat, :closed, number: 3, created_at: 10.days.ago, closed_at: 0.day.ago, board: board) }
+      it { expect(subject.first[:x]).to eq issue_stat_2.closed_at.to_js }
+      it { expect(subject.last[:x]).to eq issue_stat_3.closed_at.to_js }
+    end
   end
 end
