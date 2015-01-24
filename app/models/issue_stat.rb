@@ -1,5 +1,6 @@
 class IssueStat < ActiveRecord::Base
   belongs_to :board
+  has_many :lifetimes
 
   validates :number, presence: true
   validates_uniqueness_of :number, scope: :board_id
@@ -15,14 +16,5 @@ class IssueStat < ActiveRecord::Base
 
   def elapsed_days
     elapsed_time / 86400
-  end
-
-  def clean_track_data_for(columns_ids)
-    columns_ids.each do |column_id|
-      if track_data[:columns]
-        track_data[:columns].delete(column_id)
-      end
-    end
-    track_data
   end
 end

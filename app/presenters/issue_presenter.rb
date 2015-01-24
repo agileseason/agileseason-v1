@@ -1,6 +1,6 @@
 class IssuePresenter < Keynote::Presenter
   presents :issue
-  delegate :labels, :body, to: :issue
+  delegate :labels, :number, to: :issue
 
   def labels_html(column_name)
     build_html do
@@ -31,9 +31,8 @@ class IssuePresenter < Keynote::Presenter
     columns.any? { |column| current_column == column.name.split('] ').last }
   end
 
-  def archived?
-    data = TrackStats.extract(body)
-    data[:hash][:archived_at].present?
+  def archived?(board)
+    IssueStatService.archived?(board, number)
   end
 
   private
