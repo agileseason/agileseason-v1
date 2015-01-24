@@ -10,6 +10,23 @@ describe GithubApi::Labels do
   let(:label_4) { OpenStruct.new(name: 'bug') }
   before { allow_any_instance_of(Octokit::Client).to receive(:labels).and_return(labels) }
 
+  describe '.sync_labels' do
+    subject { service.sync_labels(board) }
+    before do
+      allow_any_instance_of(Octokit::Client)
+        .to receive(:labels).and_return([label_3, label_4])
+    end
+    before { allow_any_instance_of(Octokit::Client).to receive(:add_label) }
+    after { subject }
+
+    it do
+      expect_any_instance_of(Octokit::Client)
+        .to receive(:add_label)
+          .with(board.github_id, '[1] backlog', '#eee')
+          .with(board.github_id, '[2] todo', '#eee')
+    end
+  end
+
   describe '.labels' do
     subject { service.labels(board) }
 
@@ -19,6 +36,9 @@ describe GithubApi::Labels do
 
   describe '.labels_all' do
     subject { service.labels_all(board) }
+
     it { is_expected.to have(labels.size).items }
+    it { expect(subject.first).to eq label_1 }
+    it { expect(subject.last).to eq label_3 }
   end
 end
