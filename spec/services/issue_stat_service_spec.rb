@@ -4,9 +4,7 @@ describe IssueStatService do
   describe '.create!' do
     subject { service.create!(board, issue) }
     let(:issue) { OpenStruct.new(number: 1, created_at: Time.current, updated_at: Time.current) }
-    let(:now) { Time.current }
     let(:first_column) { board.columns.first }
-    before { allow(Time).to receive(:current).and_return(now) }
 
     it { is_expected.to be_persisted }
     it { expect(subject.number).to eq issue.number }
@@ -15,7 +13,7 @@ describe IssueStatService do
     it { expect(subject.closed_at).to eq issue.closed_at }
     it { expect{subject}.to change(Lifetime, :count).by(1) }
     it { expect(subject.lifetimes.first.column).to eq first_column }
-    it { expect(subject.lifetimes.first.in_at).to eq now }
+    it { expect(subject.lifetimes.first.in_at).to_not be_nil }
     it { expect(subject.lifetimes.first.out_at).to be_nil }
   end
 
