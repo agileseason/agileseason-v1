@@ -38,4 +38,8 @@ class IssuePresenter < Keynote::Presenter
   def display_labels(board)
     labels.select { |label| !board.column_labels.include?(label.name) }
   end
+
+  def body_empty?
+    body == nil || body.split("<!---").first.blank?
+  end
 end

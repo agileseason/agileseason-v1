@@ -2,6 +2,7 @@
 @import compass/css3/text-shadow
 @import mixins/button
 @import globals/variables
+@import mixins/ajax_link
 
 html,
 body
@@ -41,10 +42,7 @@ a
     cursor: default
 
 .ajax-link
-  color: $ajax-link
-
-  &:hover
-    color: $ajax-link-hover
+  +ajax_link
 
 .title
   font-size: 28px

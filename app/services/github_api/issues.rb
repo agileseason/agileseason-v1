@@ -26,6 +26,15 @@ class GithubApi
       client.issue(board.github_id, number)
     end
 
+    def update_issue(board, number, body, issue = client.issue(board.github_id, number))
+      client.update_issue(
+        board.github_id,
+        number,
+        issue.title,
+        body,
+      )
+    end
+
     # FIX : To many args.
     def move_to(board, column, number, issue = client.issue(board.github_id, number))
       IssueStatService.move!(board, column, issue)

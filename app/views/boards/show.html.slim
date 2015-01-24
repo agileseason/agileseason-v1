@@ -29,6 +29,9 @@
                 - if issue.assignee
                   = render partial: 'issues/assignee', locals: { issue: issue }
 
+                - unless k(:issue, issue).body_empty?
+                  span.octicon.octicon-book
+
                 - if issue.state == "open"
                   a.state.open href="#{close_board_issues_url(@board, issue.number)}" title="click to close" Close
                 - elsif issue.state == "closed"

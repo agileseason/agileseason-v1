@@ -2,6 +2,7 @@
 @import compass/css3/text-shadow
 @import globals/variables
 @import mixins/avatar
+@import mixins/ajax_link
 
 .b-issue-popup
   background: $card
@@ -47,13 +48,13 @@
     margin: 0
     padding: 0
 
-  .label
-    +border-radius(4px)
-    color: #fff !important
-    display: inline-block
-    font-size: 12px
-    margin: 5px 5px 0 0
-    padding: 2px 10px
+    .label
+      +border-radius(4px)
+      color: #fff !important
+      display: inline-block
+      font-size: 12px
+      margin: 5px 5px 0 0
+      padding: 2px 10px
 
   .add-label
     +border-radius(4px)
@@ -202,13 +203,42 @@
       max-width: 100%
 
   .date
-    color: #999
+    color: $lightgrey
     display: inline-block
     font-size: 14px
     margin-bottom: 5px
 
   .user-ligin
-    color: #999
+    color: $lightgrey
     display: inline
     font-size: 14px
     font-weight: bold
+
+  .issue-description
+    .label
+      display: inline
+      color: $lightgrey
+
+    .octicon
+      +ajax_link
+      margin-bottom: 3px
+      vertical-align: bottom
+
+  .description
+    margin-top: 10px
+
+  .edit-form
+    display: none
+
+    textarea
+      +border-radius(4px)
+      border: 1px solid #ddd
+      display: block
+      font-size: inherit
+      margin: 10px 0
+      min-height: 140px
+      outline: none
+      padding: 10px
+      resize: vertical
+      width: 97%
+      width: calc(100% - 22px)

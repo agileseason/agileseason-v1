@@ -3,6 +3,27 @@ resize_lock = false
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
 
+  $('.l-modal').on 'click', '.edit-description', ->
+    $(@).toggleClass 'active'
+    $(@).parent().find('.description').toggle()
+    $(@).parent().find('.edit-form').toggle()
+    #console.log $(@).data('url')
+    #data = '12312312312'
+    #$.get $(@).data('url'), { body: data }
+
+  $('.l-modal').on 'click', '.edit-form .cancel', ->
+    $(@).parents('.issue-description').find('.edit-description').removeClass 'active'
+    $(@).parents('.issue-description').find('.description').show()
+    $(@).parents('.issue-description').find('.edit-form').hide()
+
+  $('.l-modal').on 'click', '.edit-form button', ->
+    body = $('textarea', $(@).parents('.edit-form')).val()
+    console.log body
+    $.get $(@).attr('href'), { body: body }, =>
+      $(@).parents('.issue-description').find('.edit-description').removeClass 'active'
+      $(@).parents('.issue-description').find('.description').html(body).show()
+      $(@).parents('.issue-description').find('.edit-form').hide()
+
   $(".droppable").droppable ->
     accept: ".issue"
 

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       get ':number/archive', to: 'issues#archive', as: :archive
       get ':number/assignee', to: 'issues#assignee', as: :assignee
       get ':number/show', to: 'issues#show', as: :show
+      get ':number/update', to: 'issues#update', as: :update
     end
 
     resource :settings, only: [:show, :update] do

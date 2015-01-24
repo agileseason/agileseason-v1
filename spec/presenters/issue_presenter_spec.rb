@@ -46,4 +46,24 @@ describe IssuePresenter do
 
     it { is_expected.to eq [label_2] }
   end
+
+  describe '#body_empty?' do
+    let(:issue) { OpenStruct.new(body: body) }
+    subject { presenter.body_empty? }
+
+    context 'true with whitespace' do
+      let(:body) { "  \n<!---\n@agileseason:{}\n-->" }
+      it { is_expected.to eq true }
+    end
+
+    context :true do
+      let(:body) { "<!---\n@agileseason:{}\n-->" }
+      it { is_expected.to eq true }
+    end
+
+    context :false do
+      let(:body) { "Some description \n<!---\n@agileseason:{}\n-->" }
+      it { is_expected.to eq false }
+    end
+  end
 end

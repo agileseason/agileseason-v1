@@ -11,7 +11,20 @@
         a.url href="#{@issue.html_url}" target="_blank" ##{@issue.number}
         //.due-date Feb 12, 13:00
 
-      .issue-description = @issue.body.capitalize.html_safe
+      .issue-description
+        .label Description&nbsp;
+        .edit-description.octicon.octicon-pencil
+          /= simple_form_for(@issue, url: renew_board_issues_url(@board, @issue.number)) do |f|
+            /= f.input :body, input_html: { value: @issue.body }, as: :text
+            /.submit-area
+              /a.cancel href="#{board_url(board)}" Cancel
+              /= f.button :submit, value: 'Update'
+        .description = @issue.body.html_safe
+        .edit-form
+          textarea.textarea-description = @issue.body
+          .submit-area
+            a.cancel Cancel
+            button.button remote='true' href="#{update_board_issues_url(@board, @issue.number)}" Update
 
       .issue-comments
         - @comments.each do |comment|
