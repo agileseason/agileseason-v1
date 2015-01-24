@@ -17,6 +17,7 @@ class GithubApi
 
     def create_issue(board, issue)
       column = board.columns.first
+      # FIX: Remove TrackStats.track after check migration to issue_stat#track_data
       body = issue.body + TrackStats.track([column.id])
       labels = issue.labels.reject(&:blank?) << column.label_name
       github_issue = client.create_issue(board.github_id, issue.title, body, labels: labels)
@@ -30,6 +31,12 @@ class GithubApi
 
     # FIX : To many args.
     def move_to(board, column, number, issue = client.issue(board.github_id, number))
+      # Alternative for issue_stat.track_data
+      #hash = TrackStats.remove_columns(hash, column.next_columns.map(&:id))
+      #tracked_ids = column.prev_columns.map(&:id) << column.id
+      #data[:comment].to_s + TrackStats.track(tracked_ids, hash)
+      #
+
       body = update_hidden_stats(issue.body, column)
       client.update_issue(
         board.github_id,

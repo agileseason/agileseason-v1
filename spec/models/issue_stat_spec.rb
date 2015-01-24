@@ -58,4 +58,27 @@ RSpec.describe IssueStat, type: :model do
       it { is_expected.to eq 1.5 }
     end
   end
+
+  describe '#clean_track_data_for' do
+    subject { issue_stat.clean_track_data_for(columns_ids) }
+    let(:issue_stat) { build(:issue_stat, track_data: track_data) }
+    let(:time_s) { Time.current.to_s }
+    let(:columns_ids) { [22, 23] }
+
+    context :empty do
+      let(:track_data) { {} }
+      it { is_expected.to be_empty }
+    end
+
+    context :nothing_to_remove do
+      let(:track_data) { { columns: { 21 => {} } } }
+      it { is_expected.to eq track_data }
+    end
+
+    context :has_to_remove do
+      let(:track_data) { { columns: { 21 => {}, 22 => {}, 23 => {} } } }
+      let(:expected_data) { { columns: { 21 => {} } } }
+      it { is_expected.to eq expected_data }
+    end
+  end
 end
