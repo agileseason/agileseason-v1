@@ -36,4 +36,14 @@ describe IssuePresenter do
 
     it { expect(IssueStatService).to receive(:archived?).with(board, issue.number) }
   end
+
+  describe '#display_labels' do
+    subject { presenter.display_labels(board) }
+    let(:board) { build(:board, :with_columns) }
+    let(:issue) { OpenStruct.new(labels: [label_1, label_2]) }
+    let(:label_1) { OpenStruct.new(name: board.columns.first.label_name) }
+    let(:label_2) { OpenStruct.new(name: 'feature') }
+
+    it { is_expected.to eq [label_2] }
+  end
 end

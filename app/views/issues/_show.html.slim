@@ -26,7 +26,7 @@
 
     .issue-actions
       ul.labels
-        - @issue.labels.each do |label|
+        - k(:issue, @issue).display_labels(@board).each do |label|
           li.label style="background: ##{label.color}" = label.name
         li.add-label Add label
 
