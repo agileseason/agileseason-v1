@@ -2,6 +2,7 @@ class BoardHistory < ActiveRecord::Base
   belongs_to :board
 
   validates :collected_on, presence: true
+  validates :data, presence: true
   validates_uniqueness_of :collected_on, scope: :board_id
 
   serialize :data
