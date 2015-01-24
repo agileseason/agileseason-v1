@@ -10,7 +10,7 @@ class GithubApi
 
     def labels(board)
       columns_names = board.columns.map(&:label_name)
-      labels_all(board).select { |label| !columns_names.include?(label.name) }
+      labels_all(board).select { |label| !columns_names.include?(label.name) }.sort { |a, b| a.name <=> b.name }
     end
 
     def labels_all(board)

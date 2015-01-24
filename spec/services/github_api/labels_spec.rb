@@ -3,21 +3,22 @@ describe GithubApi::Labels do
   let(:board) { build(:board, columns: [column_1, column_2]) }
   let(:column_1) { build(:column, name: 'backlog', order: 1) }
   let(:column_2) { build(:column, name: 'todo', order: 2) }
-  let(:labels) { [label_1, label_2, label_3] }
+  let(:labels) { [label_1, label_2, label_3, label_4] }
   let(:label_1) { OpenStruct.new(name: '[1] backlog') }
   let(:label_2) { OpenStruct.new(name: '[2] todo') }
   let(:label_3) { OpenStruct.new(name: 'feature') }
+  let(:label_4) { OpenStruct.new(name: 'bug') }
   before { allow_any_instance_of(Octokit::Client).to receive(:labels).and_return(labels) }
 
   describe '.labels' do
     subject { service.labels(board) }
 
-    it { is_expected.to have(1).item }
-    it { expect(subject.first).to eq label_3 }
+    it { is_expected.to have(2).item }
+    it { expect(subject.first).to eq label_4 }
   end
 
   describe '.labels_all' do
     subject { service.labels_all(board) }
-    it { is_expected.to have(3).items }
+    it { is_expected.to have(labels.size).items }
   end
 end
