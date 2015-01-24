@@ -1,6 +1,6 @@
 class IssueStat < ActiveRecord::Base
   belongs_to :board
-  has_many :lifetimes
+  has_many :lifetimes, dependent: :delete_all
 
   validates :number, presence: true
   validates_uniqueness_of :number, scope: :board_id
