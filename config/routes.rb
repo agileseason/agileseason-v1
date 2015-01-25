@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :repos, only: [:index]
   resources :boards,
-            only: [:index, :new, :create, :show],
+            except: [:edit],
             param: :github_name,
             constraints: { github_name: /[0-9A-Za-z\-_\.]+/ } do
 

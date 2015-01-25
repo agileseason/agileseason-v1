@@ -1,6 +1,6 @@
 class BoardsController < ApplicationController
   after_action :fetch_repo_history, only: :show
-  before_action :fetch_board, only: :show
+  before_action :fetch_board, only: [:show, :destroy]
   before_action :check_permissions, only: :create
 
   def index
@@ -30,6 +30,15 @@ class BoardsController < ApplicationController
       redirect_to boards_url
     else
       render 'new'
+    end
+  end
+
+  def destroy
+    if current_user.owner?(@board)
+      @board.destroy
+      redirect_to repos_url, notice: "Your board \"#{@board.name}\" was successfully deleted."
+    else
+      raise ActiveRecord::RecordNotFound
     end
   end
 

@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
   # FIX : Nees specs.
   def fetch_board
     board = Board.find_by(github_name: params[:github_name] || params[:board_github_name])
-    if board.user == current_user || current_user_reader?(board.github_id)
+    if current_user.owner?(board) || current_user_reader?(board.github_id)
       @board = board
     else
       raise ActiveRecord::RecordNotFound

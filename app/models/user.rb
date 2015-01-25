@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
     github_username
   end
 
+  def owner?(board)
+    boards.find_by(id: board.id).present?
+  end
+
   private
 
   def generate_remember_token

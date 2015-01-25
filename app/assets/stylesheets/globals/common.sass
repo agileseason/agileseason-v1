@@ -16,6 +16,11 @@ body
 .container
   padding: 0px 20px 20px 20px
 
+title
+  display: block
+  font-weight: bold
+  margin-bottom: 8px
+
 p
   line-height: 1.3em
   margin: 0
@@ -133,9 +138,10 @@ blockquote
   padding: 0 10px
 
 .notice
-  color: #3a87ad
+  +border-radius(0 0 4px 4px)
   background-color: #d9edf7
   border-color: #bce8f1
+  color: #3a87ad
   padding: 14px
   .close
     float: right
