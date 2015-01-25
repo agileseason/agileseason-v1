@@ -27,4 +27,33 @@ describe BoardsController, type: :controller do
       expect(response).to have_http_status(:success)
     end
   end
+
+  describe 'DELETE destroy' do
+    let(:user) { create(:user) }
+    let(:request) { delete(:destroy, github_name: board.github_name) }
+    before do
+      allow_any_instance_of(BoardsController)
+        .to receive(:current_user_reader?).and_return(reader?)
+    end
+    before { stub_sign_in(user) }
+
+    context 'owner' do
+      before { request }
+      let(:reader?) { false }
+      let(:board) { create(:board, :with_columns, user: user) }
+      it { expect(response).to have_http_status(:redirect) }
+    end
+
+    context 'not owner but reader' do
+      let(:reader?) { true }
+      let(:board) { create(:board, :with_columns) }
+      it { expect{request}.to raise_error(ActiveRecord::RecordNotFound) }
+    end
+
+    context 'not owner and not reader' do
+      let(:reader?) { false }
+      let(:board) { create(:board, :with_columns) }
+      it { expect{request}.to raise_error(ActiveRecord::RecordNotFound) }
+    end
+  end
 end

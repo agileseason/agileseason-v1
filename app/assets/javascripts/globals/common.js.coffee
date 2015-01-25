@@ -7,3 +7,6 @@ $(document).on 'page:change', ->
     $(@).parent().find('.popover').hide()
     $(@).parent().removeClass 'active'
     $(@).remove()
+
+  $('.notice .close').on 'click', ->
+    $(@).parent('.notice').remove()

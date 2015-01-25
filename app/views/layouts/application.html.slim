@@ -9,6 +9,7 @@ html
   body class="p-#{controller_name}-#{action_name}" id="#{controller_name}_#{action_name}"
     = render partial: 'layouts/menu' if current_user
     .container
+      = render partial: '/layouts/notice'
       = yield
 
     .l-preloader
