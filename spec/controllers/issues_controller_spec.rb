@@ -19,6 +19,7 @@ RSpec.describe IssuesController, type: :controller do
 
     before { allow_any_instance_of(GithubApi).to receive(:issue_comments).and_return([]) }
     before { allow_any_instance_of(GithubApi).to receive(:issue).and_return([]) }
+    before { allow_any_instance_of(GithubApi).to receive(:labels).and_return([]) }
 
     it 'returns http success' do
       get :show, board_github_name: board.github_name, number: issue.number

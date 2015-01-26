@@ -26,15 +26,6 @@ class GithubApi
       client.issue(board.github_id, number)
     end
 
-    def update_issue(board, number, body, issue = client.issue(board.github_id, number))
-      client.update_issue(
-        board.github_id,
-        number,
-        issue.title,
-        body,
-      )
-    end
-
     # FIX : To many args.
     def move_to(board, column, number, issue = client.issue(board.github_id, number))
       IssueStatService.move!(board, column, issue)
@@ -63,6 +54,25 @@ class GithubApi
       issue = client.issue(board.github_id, number)
       # FIX : Don't work - client.update_issue(board.github_id, number, assignee: github_username)
       client.update_issue(board.github_id, number, issue.title, issue.body, assignee: github_username)
+    end
+
+    def update_issue(board, number, issue_params, issue = client.issue(board.github_id, number))
+      if issue_params[:labels]
+        client.update_issue(
+          board.github_id,
+          number,
+          issue.title,
+          issue.body,
+          labels: issue_params[:labels]
+        )
+      else
+        client.update_issue(
+          board.github_id,
+          number,
+          issue_params[:title] ? issue_params[:title] : issue.title,
+          issue_params[:body] ? issue_params[:body] : issue.body,
+        )
+      end
     end
 
     private

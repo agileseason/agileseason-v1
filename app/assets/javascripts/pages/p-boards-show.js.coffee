@@ -1,28 +1,36 @@
 resize_lock = false
 
+$(document).on 'modal:load', '.b-issue-popup', ->
+  $issue_popup = $(@)
+
+  # открыть редактирование
+  $('.editable .octicon-pencil', $issue_popup).on 'click', ->
+    # скрыть открытые формы редактирования
+    $('.edit-form .cancel').trigger 'click'
+
+    $('.editable', $(@).closest('.edit')).hide()
+    $('.edit-form', $(@).closest('.edit')).show()
+
+  # закрыть редактирование по кнопке
+  $('.edit-form .cancel', $issue_popup).on 'click', ->
+    close_edit_issue_form($(@).parents('.edit'))
+
+  # сабмит
+  $('.edit-form button', $issue_popup).on 'click', ->
+    new_content = $('.field', $(@).parents('.edit-form')).val()
+    $(@).parents('.edit').find('.editable .edit-content').html(new_content)
+
+    close_edit_issue_form($(@).parents('.edit'))
+
+    if $('.editable', $(@).parents('.edit')).hasClass 'description'
+      $.get $(@).attr('href'), { body: new_content }
+
+    else if $('.editable', $(@).parents('.edit')).hasClass 'title'
+      $('.issue-name', '.current-issue').html(new_content)
+      $.get $(@).attr('href'), { title: new_content }
+
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
-
-  $('.l-modal').on 'click', '.edit-description', ->
-    $(@).toggleClass 'active'
-    $(@).parent().find('.description').toggle()
-    $(@).parent().find('.edit-form').toggle()
-    #console.log $(@).data('url')
-    #data = '12312312312'
-    #$.get $(@).data('url'), { body: data }
-
-  $('.l-modal').on 'click', '.edit-form .cancel', ->
-    $(@).parents('.issue-description').find('.edit-description').removeClass 'active'
-    $(@).parents('.issue-description').find('.description').show()
-    $(@).parents('.issue-description').find('.edit-form').hide()
-
-  $('.l-modal').on 'click', '.edit-form button', ->
-    body = $('textarea', $(@).parents('.edit-form')).val()
-    console.log body
-    $.get $(@).attr('href'), { body: body }, =>
-      $(@).parents('.issue-description').find('.edit-description').removeClass 'active'
-      $(@).parents('.issue-description').find('.description').html(body).show()
-      $(@).parents('.issue-description').find('.edit-form').hide()
 
   $(".droppable").droppable ->
     accept: ".issue"
@@ -65,15 +73,14 @@ $(document).on 'page:change', ->
   $(".draggable").on "dragcreate", ( event, ui ) ->
     $(@).parent().scrollTo @
 
-  # показать прелоадер перед попапом с данными тикета
+  # показать прелоадер перед попапом тикета
   $('.issue-name').click ->
     $('.l-preloader').show()
 
   # открыть форму добавления тикета
   $('.new-issue').click ->
-    $(@).next()
-      .show()
-      .find('#issue_title').focus()
+    $(@).next().show()
+    $('#issue_title', $(@).next()).focus()
     $(@).hide()
 
   # закрыть форму тикета
@@ -83,23 +90,38 @@ $(document).on 'page:change', ->
     false
 
   # раскрыть попап с лейблами тикета
-  $('.board-column').on 'click', '.add-label', ->
+  $('.board-column, .l-modal').on 'click', '.add-label', ->
     $(@).parent().prev().show()
     $(@).hide()
 
   # скрыть попап с лейблами тикета
-  $('.board-column').on 'click', '.close-popover', ->
-    $(@).closest('.popover').next().find('.add-label').show()
-    $(@).closest('.popover').hide()
+  $('.board-column, .l-modal').on 'click', '.close-popup', ->
+    $(@).closest('.popup').next().find('.add-label').show()
+    $(@).closest('.popup').hide()
 
-  # указать высоту борда в зависимости от высоты окна браузера
+  # изменить набор лейблов тикета
+  $('.board-column, .l-modal').on 'change', 'label input', ->
+    labels = []
+    html_labels = []
+    $(@).parents('.labels-block').find('input:checked').each ->
+      labels.push $(@).val()
+      html_labels.push('<div class="label" style="' + $(@).parent().attr('style') + '">' + $(@).val() + '</div>')
+    labels.push '[' + $('.current-issue').closest('.board-column').data('column') + '] ' + $('.current-issue').closest('.board-column').data('column-name')
+
+    # обновить текущий список лейблов тикета на борде и в попапе
+    $('.b-issue-labels', '.current-issue, .l-modal').html(html_labels)
+
+    # отправить на сервер набор лейблов
+    $.get $(@).data('url'), { labels: labels }
+
+  # пересчитать высоту борда в зависимости от высоты окна браузера
   resize_height()
 
 $(window).resize ->
   return unless document.body.id == 'boards_show' & !resize_lock
   resize_lock = true
   setTimeout ->
-      # указать высоту борда при ресайзе
+      # пересчитать высоту борда при ресайзе
       resize_height()
     , 400
 
@@ -108,3 +130,7 @@ resize_height = ->
 
   height = $(window).height() - $('.l-menu').outerHeight(true) - $('.l-submenu').outerHeight(true)
   $('.board').height(height)
+
+close_edit_issue_form = ($parent_node) ->
+  $('.editable', $parent_node).show()
+  $('.edit-form', $parent_node).hide()
