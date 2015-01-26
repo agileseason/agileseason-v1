@@ -45,9 +45,9 @@ class IssuesController < ApplicationController
 
   def update
     github_api.update_issue(@board, params[:number],
-      { body: params[:body],
+      body: params[:body],
       title: params[:title],
-      labels: params[:labels] })
+      labels: params[:labels])
     redirect_to board_url(@board)
   end
 
