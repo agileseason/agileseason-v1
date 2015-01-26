@@ -42,5 +42,4 @@ class IssuePresenter < Keynote::Presenter
   def body_empty?
     issue.body == nil || issue.body.split("<!---").first.blank?
   end
-
 end
