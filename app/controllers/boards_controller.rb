@@ -27,7 +27,7 @@ class BoardsController < ApplicationController
     github_api.sync_labels(@board)
 
     if @board.save
-      redirect_to boards_url
+      redirect_to board_url(@board)
     else
       render 'new'
     end
