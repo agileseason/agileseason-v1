@@ -33,8 +33,8 @@ describe DurationService do
     end
   end
 
-  describe '.forecast' do
-    subject { service.forecast }
+  describe '.average_forecast_elapsed_days' do
+    subject { service.average_forecast_elapsed_days }
 
     context 'no issues' do
       it { is_expected.to be_nil }
@@ -47,6 +47,11 @@ describe DurationService do
 
     context 'one closed issue for 1 day, then forecast 1 day by issue' do
       let!(:issue_1) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
+
+      context 'no open issue' do
+        it { is_expected.to eq 0 }
+      end
+
       context 'one open issue' do
         let!(:issue_2) { create(:issue_stat, :open, board: board) }
         it { is_expected.to eq 1 }
@@ -67,11 +72,35 @@ describe DurationService do
       it { is_expected.to eq 2 }
     end
 
-    context 'Rounding - closed [1, 2], open 2 then forecast 1.5 ~ 2 days by issue' do
+    context 'Rounding - closed [1, 2], open 2 then forecast 1.5' do
       let!(:issue_1) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
       let!(:issue_2) { create(:issue_stat, :closed, created_at: 2.day.ago, board: board) }
       let!(:issue_open) { create(:issue_stat, :open, board: board) }
-      it { is_expected.to eq 2 }
+      it { is_expected.to eq 1.5 }
+    end
+
+    context 'Many small issues' do
+      let!(:issue_1) { create(:issue_stat, :closed, created_at: 1.hour.ago, board: board) }
+      let!(:issue_2) { create(:issue_stat, :closed, created_at: 2.hours.ago, board: board) }
+      let!(:issue_3) { create(:issue_stat, :closed, created_at: 3.hours.ago, board: board) }
+      let!(:issue_open) { create(:issue_stat, :open, board: board) }
+      it { is_expected.to eq 0.08 }
+    end
+  end
+
+  describe '.average_elapsed_days' do
+    subject { service.average_elapsed_days }
+
+    context 'no closed issues' do
+      let!(:issue_open) { create(:issue_stat, :open, board: board) }
+      it { is_expected.to be_nil }
+    end
+
+    context 'Rounding - closed [1, 2], open 2 then elapsed 1.50' do
+      let!(:issue_1) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
+      let!(:issue_2) { create(:issue_stat, :closed, created_at: 2.day.ago, board: board) }
+      let!(:issue_open) { create(:issue_stat, :open, board: board) }
+      it { is_expected.to eq 1.5 }
     end
   end
 end

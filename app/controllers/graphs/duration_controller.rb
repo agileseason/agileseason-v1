@@ -3,7 +3,7 @@ class Graphs::DurationController < ApplicationController
 
   def index
     @chart_series_data = fetch_chart_duration_data
-    @forecast_duration = DurationService.new(@board).forecast
+    @duration = DurationService.new(@board)
   end
 
   private

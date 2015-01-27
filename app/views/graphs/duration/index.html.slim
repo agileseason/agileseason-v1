@@ -2,6 +2,18 @@
 
 = render partial: 'graph'
 
+// FIX: move this if's to DurationPresenter
+.notes Total closed issues: #{@duration.total_closed_issues}
+.notes
+  - if @duration.average_elapsed_days
+    | Total average elapsed days: #{@duration.average_elapsed_days}
+  - else
+    | Total average elapsed days: -
+
 .forecast
-  .subtitle Forecast duration by open issues
-  .average Average: #{@forecast_duration} Days
+  .subtitle Forecast duration for #{@duration.total_open_issues} open issues
+  .average
+    - if @duration.average_forecast_elapsed_days.nil?
+      | Average: can't be calculated - no closed issues
+    - else
+      | Average: #{@duration.average_forecast_elapsed_days}..#{@duration.forecast_elapsed_days} days
