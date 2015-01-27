@@ -11,7 +11,7 @@ describe IssueStatService do
     it { expect(subject.created_at).to eq issue.created_at }
     it { expect(subject.updated_at).to eq issue.updated_at }
     it { expect(subject.closed_at).to eq issue.closed_at }
-    it { expect{subject}.to change(Lifetime, :count).by(1) }
+    it { expect { subject }.to change(Lifetime, :count).by(1) }
     it { expect(subject.lifetimes.first.column).to eq first_column }
     it { expect(subject.lifetimes.first.in_at).to_not be_nil }
     it { expect(subject.lifetimes.first.out_at).to be_nil }
@@ -32,7 +32,7 @@ describe IssueStatService do
 
     context 'With IssueStat' do
       let!(:issue_stat) { create(:issue_stat, board: board, number: issue.number) }
-      it { expect{subject}.to change(Lifetime, :count).by(1) }
+      it { expect { subject }.to change(Lifetime, :count).by(1) }
     end
   end
 
@@ -42,7 +42,7 @@ describe IssueStatService do
 
     context :with_issue_stat do
       let!(:issue_stat) { create(:issue_stat, :open, board: board, number: issue.number) }
-      it { expect{subject}.to change(IssueStat, :count).by(0) }
+      it { expect { subject }.to change(IssueStat, :count).by(0) }
       it { is_expected.to_not be_nil }
       it { expect(subject.closed_at).to_not be_nil }
 
@@ -53,7 +53,7 @@ describe IssueStatService do
     end
 
     context :without_issue_stat do
-      it { expect{subject}.to change(IssueStat, :count).by(1) }
+      it { expect { subject }.to change(IssueStat, :count).by(1) }
     end
   end
 
@@ -63,7 +63,7 @@ describe IssueStatService do
 
     context :with_issue_stat do
       let!(:issue_stat) { create(:issue_stat, board: board, number: issue.number, archived_at: nil) }
-      it { expect{subject}.to change(IssueStat, :count).by(0) }
+      it { expect { subject }.to change(IssueStat, :count).by(0) }
 
       context 'lifetime update out_at' do
         let!(:lifetime_1) { create(:lifetime, issue_stat: issue_stat, column: board.columns.first, out_at: nil) }
@@ -78,7 +78,7 @@ describe IssueStatService do
     end
 
     context :without_issue_stat do
-      it { expect{subject}.to change(IssueStat, :count).by(1) }
+      it { expect { subject }.to change(IssueStat, :count).by(1) }
     end
   end
 
