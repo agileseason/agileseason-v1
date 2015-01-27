@@ -36,6 +36,27 @@ describe IssueStatService do
     end
   end
 
+  describe '.close!' do
+    let(:issue) { OpenStruct.new(number: 1) }
+    subject { service.close!(board, issue) }
+
+    context :with_issue_stat do
+      let!(:issue_stat) { create(:issue_stat, :open, board: board, number: issue.number) }
+      it { expect{subject}.to change(IssueStat, :count).by(0) }
+      it { is_expected.to_not be_nil }
+      it { expect(subject.closed_at).to_not be_nil }
+
+      context 'issue already closed' do
+        let(:issue) { OpenStruct.new(number: 1, closed_at: 1.day.ago) }
+        it { expect(subject.closed_at).to eq issue.closed_at }
+      end
+    end
+
+    context :without_issue_stat do
+      it { expect{subject}.to change(IssueStat, :count).by(1) }
+    end
+  end
+
   describe '.archive!' do
     let(:issue) { OpenStruct.new(number: 1) }
     subject { service.archive!(board, issue) }

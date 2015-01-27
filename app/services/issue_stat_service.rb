@@ -32,6 +32,12 @@ class IssueStatService
       issue_stat
     end
 
+    def close!(board, github_issue)
+      issue_stat = find_or_create_issue_stat(board, github_issue)
+      issue_stat.update(closed_at: (github_issue.closed_at || Time.current))
+      issue_stat
+    end
+
     def archive!(board, github_issue)
       issue_stat = find_or_create_issue_stat(board, github_issue)
       leave_all_column(issue_stat)
