@@ -162,8 +162,15 @@ describe GithubApi::Issues do
   describe '#close' do
     subject { service.close(board, issue.number) }
     before { allow_any_instance_of(Octokit::Client).to receive(:close_issue).and_return(issue) }
+    before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
+    before { allow(IssueStatService).to receive(:close!) }
+    after { subject }
 
-    it { is_expected.to eq issue }
+    it do
+      expect_any_instance_of(Octokit::Client)
+        .to receive(:close_issue).with(board.github_id, issue.number)
+    end
+    it { expect(IssueStatService).to receive(:close!).with(board, issue) }
   end
 
   describe '#archive' do
