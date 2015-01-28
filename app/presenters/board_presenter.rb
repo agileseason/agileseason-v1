@@ -1,5 +1,6 @@
 class BoardPresenter < Keynote::Presenter
   presents :board
+  delegate :name, :type, to: :board
 
   def name
     raw("#{board.name.try(:gsub, ' ', '&nbsp;')}&nbsp;#{board_type}")
@@ -8,8 +9,10 @@ class BoardPresenter < Keynote::Presenter
   private
 
   def board_type
-    board.type
-      .split('::').last
-      .split('Board').first.downcase
+    if board.kanban?
+      'kanban'
+    elsif board.scrum?
+      'scrum'
+    end
   end
 end
