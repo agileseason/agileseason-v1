@@ -14,7 +14,7 @@
       .popup
         .octicon.octicon-triangle-up
         ul
-          = render partial: 'boards/board', collection: current_user.boards, as: :board
+          = render partial: 'boards/board', collection: current_user.boards.select(&:persisted?), as: :board
 
   ul.right
     li.user = current_user
