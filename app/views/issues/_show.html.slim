@@ -75,6 +75,6 @@
           a.assign href="#{assignee_board_issues_url(@board, @issue.number)}" Assign yourself
 
       - if @issue.state == 'open'
-        button.button.close href="#{close_board_issues_url(@board, @issue.number)}" Close issue
+        a.button.close href="#{close_board_issues_url(@board, @issue.number)}" Close issue
       - if @issue.state == 'closed'
         a.button.archive href="#{archive_board_issues_url(@board, @issue.number)}" Archive issue
