@@ -71,10 +71,10 @@ describe IssuePresenter do
     let(:issue) { OpenStruct.new(title: title) }
 
     context 'with ABBR' do
-      let(:title) { "some title with ABBR ect" }
+      let(:title) { 'some title with ABBR ect' }
       subject { presenter.first_letter(title) }
 
-      it { is_expected.to eq "Some title with ABBR ect" }
+      it { is_expected.to eq 'Some title with ABBR ect' }
     end
   end
 end
