@@ -60,6 +60,7 @@ $(document).on 'page:change', ->
 
   # изменить набор лейблов тикета
   $('.board-column, .l-modal').on 'change', 'label input', ->
+    console.log 'event:change'
     labels = []
     html_labels = []
     $(@).parents('.labels-block').find('input:checked').each ->
@@ -71,7 +72,7 @@ $(document).on 'page:change', ->
     $('.b-issue-labels', '.current-issue, .l-modal').html(html_labels)
 
     # отправить на сервер набор лейблов
-    $.get $(@).data('url'), { labels: labels }
+    $.get $(@).data('url'), { labels: labels }, -> console.log 'get'
 
   # пересчитать высоту борда в зависимости от высоты окна браузера
   resize_height()

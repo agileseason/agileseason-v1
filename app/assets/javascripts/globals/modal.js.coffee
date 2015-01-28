@@ -16,10 +16,6 @@ $(document).on 'ajax:success', (e, html) =>
       $issue = $(e.target).closest('.issue')
       $issue.addClass 'current-issue'
 
-      #копирую лейблы из тикета в попап тикета
-      labels = $('.b-issue-labels', $issue).html()
-      $('.l-modal:visible').find('.b-issue-labels').html(labels)
-
 $(document).on 'page:change', ->
   # закрыть попап по крестику или по клику мимо попапа
   $('.l-modal').on 'click', '.modal-close, .overlay', ->

@@ -1,5 +1,7 @@
 .b-issue-popup
   .b-issue-labels
+    - k(:issue, @issue).display_labels(@board).each do |label|
+      .label style="background: ##{label.color}" = label.name
 
   .content
     .issue-content
@@ -43,17 +45,12 @@
               .comment = markdown(comment.body)
 
     .issue-actions
-      /ul.labels
-        /- k(:issue, @issue).display_labels(@board).each do |label|
-          /li.label style="background: ##{label.color}" = label.name
-        /li.add-label Add label
-
       .edit-labels
         .popup
           .close-popup
           .labels-block.scroller
             - @labels.each do |label|
-              label.label for="#{label.name}" style="background: ##{label.color};"
+              label.label style="background: ##{label.color};"
                 - if @issue.labels.map(&:name).any? { |l| l == label.name }
                   input[
                     type="checkbox"
