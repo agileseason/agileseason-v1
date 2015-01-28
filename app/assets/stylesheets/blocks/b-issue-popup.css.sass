@@ -1,0 +1,179 @@
+@import compass/css3/border-radius
+@import compass/css3/text-shadow
+@import globals/variables
+@import mixins/avatar
+@import mixins/ajax_link
+@import mixins/close
+
+.b-issue-popup
+  +border-radius(6px)
+  background: $card
+
+  .issue-name
+    display: inline
+    margin-right: 10px
+
+  .content
+    padding: 20px 30px 30px 30px
+
+  .title
+    font-size: 24px
+    padding: 0 0 10px 0
+    position: relative
+
+    .octicon-pencil
+      top: 2px
+
+  .issue-title
+    .field
+      font-size: 24px
+      font-weight: bold
+      margin-top: 0
+      outline: none
+      padding: 5px 10px
+
+  .issue-content
+    display: table-cell
+    vertical-align: top
+    width: 700px
+
+  .issue-actions
+    display: table-cell
+    padding-left: 40px
+    width: 180px
+
+  .b-assigned
+    margin: 20px 0
+
+    a
+      +ajax_link
+
+  .url
+    margin-right: 10px
+
+  .due-date
+    +border-radius(2px)
+    background: $orange
+    color: #fff
+    display: inline-block
+    font-size: 18px
+    line-height: 18px
+    margin: 5px 0 0 0
+    padding: 2px 5px
+
+  .edit-labels
+    position: relative
+
+  .b-issue-labels
+    margin-left: 30px
+
+    .label
+      +border-radius(0 0 4px 4px)
+      font-size: 14px
+      line-height: 18px
+      margin-right: 5px
+      padding: 2px 30px 2px 15px
+      position: relative
+
+      .remove-label
+        +close
+        position: absolute
+        right: 5px
+        top: 3px
+
+  .add-label
+    +ajax_link
+
+  .action-title 
+    margin: 20px 0 10px 0
+
+    &:first-child
+      margin-top: 0
+
+  .issue-comments
+    margin-top: 40px
+
+  .issue-comment
+    padding: 0 0 30px
+    display: table
+    width: 100%
+
+    &:last-child
+      padding-bottom: 0
+
+  .user-ava
+    display: table-cell
+    width: 33px
+
+  .avatar
+    +avatar
+
+  .comment-body
+    display: table-cell
+    padding: 0px 5px
+    position: relative
+    vertical-align: top
+
+    img
+      display: block
+      margin: 0 0 5px
+      max-width: 100%
+
+  .date
+    color: $lightgrey
+    display: inline-block
+    font-size: 14px
+    margin-bottom: 5px
+
+  .user-ligin
+    color: $lightgrey
+    display: inline
+    font-size: 14px
+    font-weight: bold
+
+  .issue-description
+    .label
+      display: inline
+      color: $lightgrey
+
+    .octicon
+      +ajax_link
+      margin-bottom: 3px
+      vertical-align: bottom
+
+  .description
+    margin-top: 10px
+
+    .octicon-pencil
+      margin-top: -3px
+
+  .edit-form
+    display: none
+
+    .cancel
+      +ajax_link
+
+    textarea
+      +border-radius(4px)
+      border: 1px solid #ddd
+      display: block
+      font-size: inherit
+      margin: 10px 0
+      min-height: 60px
+      outline: none
+      padding: 10px
+      resize: vertical
+      width: 97%
+      width: calc(100% - 22px)
+
+  .octicon-pencil
+    +ajax_link
+    position: absolute
+    left: -20px
+
+  .editable
+    position: relative
+
+  .submit-area
+    background: none
+    padding: 0

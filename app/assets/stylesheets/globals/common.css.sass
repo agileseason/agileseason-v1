@@ -2,6 +2,9 @@
 @import compass/css3/text-shadow
 @import mixins/button
 @import globals/variables
+@import mixins/ajax_link
+@import mixins/popup
+@import mixins/close
 
 html,
 body
@@ -41,10 +44,7 @@ a
     cursor: default
 
 .ajax-link
-  color: $ajax-link
-
-  &:hover
-    color: $ajax-link-hover
+  +ajax_link
 
 .title
   font-size: 28px
@@ -143,6 +143,19 @@ blockquote
   border-color: #bce8f1
   color: #3a87ad
   padding: 14px
+
   .close
     float: right
     cursor: pointer
+
+.popup
+  +popup
+  //display: none
+  font-size: 14px
+  height: 220px
+  //top: 100%
+  //z-index: 1
+  width: 240px
+
+  .close-popup
+    +close

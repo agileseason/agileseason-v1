@@ -1,17 +1,35 @@
 .b-issue-popup
-  ul.modal-board-columns
-    - @board.columns.each do |column|
-      li.modal-board-column class="#{'active' if k(:issue, @issue).current_column?(@issue.labels, column.name)}"
-        a href="#{move_to_column_board_issues_url(@board, @issue.number, column)}" = column.name
+  .b-issue-labels
 
   .content
     .issue-content
-      .title
-        .issue-name = @issue.title.capitalize
-        a.url href="#{@issue.html_url}" target="_blank" ##{@issue.number}
-        //.due-date Feb 12, 13:00
+      .edit.issue-title
+        .title.editable
+          .octicon.octicon-pencil
+          .issue-name.edit-content = @issue.title.capitalize
 
-      .issue-description = @issue.body.capitalize.html_safe
+          a.url href="#{@issue.html_url}" target="_blank" ##{@issue.number}
+          //.due-date Feb 12, 13:00
+
+        .edit-form
+          textarea.field = @issue.title.capitalize
+          .submit-area
+            a.cancel Cancel
+            button.button remote='true' href="#{update_board_issues_url(@board, @issue.number)}" Update
+
+      .issue-description.edit
+        .description.editable
+          .octicon.octicon-pencil
+          - if k(:issue, @issue).body_empty?
+            .edit-content.label Description
+          - else
+            .edit-content = markdown(@issue.body.html_safe)
+
+        .edit-form
+          textarea.textarea-description.field = @issue.body
+          .submit-area
+            a.cancel Cancel
+            button.button remote='true' href="#{update_board_issues_url(@board, @issue.number)}" Update
 
       .issue-comments
         - @comments.each do |comment|
@@ -25,10 +43,30 @@
               .comment = markdown(comment.body)
 
     .issue-actions
-      ul.labels
-        - k(:issue, @issue).display_labels(@board).each do |label|
-          li.label style="background: ##{label.color}" = label.name
-        li.add-label Add label
+      /ul.labels
+        /- k(:issue, @issue).display_labels(@board).each do |label|
+          /li.label style="background: ##{label.color}" = label.name
+        /li.add-label Add label
+
+      .edit-labels
+        .popup
+          .close-popup
+          .labels-block.scroller
+            - @labels.each do |label|
+              label.label for="#{label.name}" style="background: ##{label.color};"
+                - if @issue.labels.map(&:name).any? { |l| l == label.name }
+                  input[
+                    type="checkbox"
+                    id="#{label.name}"
+                    value="#{label.name}"
+                    data-url="#{update_board_issues_url(@board, @issue.number)}"
+                    checked="checked"]
+                - else
+                  input type="checkbox" id="#{label.name}" name="issue[labels][]" value="#{label.name}" data-url="#{update_board_issues_url(@board, @issue.number)}"
+                .label-name = label.name
+
+        div
+          .add-label Labels
 
       - if @issue.assignee
         = render partial: 'issues/assignee', locals: { issue: @issue }

@@ -19,6 +19,7 @@ class IssuesController < ApplicationController
   def show
     @issue = github_api.issue(@board, params[:number])
     @comments = github_api.issue_comments(@board.github_id, params[:number].to_i)
+    @labels = github_api.labels(@board)
     render partial: 'show'
   end
 
@@ -39,6 +40,14 @@ class IssuesController < ApplicationController
 
   def assignee
     github_api.assign_yourself(@board, params[:number], current_user.github_username)
+    redirect_to board_url(@board)
+  end
+
+  def update
+    github_api.update_issue(@board, params[:number],
+      body: params[:body],
+      title: params[:title],
+      labels: params[:labels])
     redirect_to board_url(@board)
   end
 

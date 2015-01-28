@@ -56,6 +56,18 @@ class GithubApi
       client.update_issue(board.github_id, number, issue.title, issue.body, assignee: github_username)
     end
 
+    def update_issue(board, number, issue_params, issue = client.issue(board.github_id, number))
+      options = {}
+      options[:labels] = issue_params[:labels] if issue_params[:labels]
+      client.update_issue(
+        board.github_id,
+        number,
+        issue_params[:title] || issue.title,
+        issue_params[:body] || issue.body,
+        options
+      )
+    end
+
     private
 
     def find_label_name(board, issue)

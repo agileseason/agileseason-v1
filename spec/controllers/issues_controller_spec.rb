@@ -19,6 +19,7 @@ RSpec.describe IssuesController, type: :controller do
 
     before { allow_any_instance_of(GithubApi).to receive(:issue_comments).and_return([]) }
     before { allow_any_instance_of(GithubApi).to receive(:issue).and_return([]) }
+    before { allow_any_instance_of(GithubApi).to receive(:labels).and_return([]) }
 
     it 'returns http success' do
       get :show, board_github_name: board.github_name, number: issue.number
@@ -46,6 +47,14 @@ RSpec.describe IssuesController, type: :controller do
     before { allow_any_instance_of(GithubApi).to receive(:assign_yourself) }
     it 'return http success' do
       get :assignee, board_github_name: board.github_name, number: 1
+      expect(response).to redirect_to(board_url(board))
+    end
+  end
+
+  describe 'GET update' do
+    before { allow_any_instance_of(GithubApi).to receive(:update_issue) }
+    it 'return http success' do
+      get :update, board_github_name: board.github_name, number: 1
       expect(response).to redirect_to(board_url(board))
     end
   end

@@ -3,8 +3,8 @@
   = f.input :body, as: :text
 
   - unless labels.empty?
-    .popover
-      .close-popover
+    .popup
+      .close-popup
       .labels-block.scroller
         - labels.each do |label|
           label.label for="#{label.name}" style="background: ##{label.color};"

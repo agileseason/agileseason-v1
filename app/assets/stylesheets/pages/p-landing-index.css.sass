@@ -1,4 +1,6 @@
 @import compass/css3/border-radius
+@import compass/css3/text-shadow
+@import globals/variables
 
 $image-path: "pages/p-landing-index"
 
@@ -14,12 +16,22 @@ $image-path: "pages/p-landing-index"
 
   .pane
     +border-radius(4px)
-    background: #e8e9e5
     display: inline-block
     margin-top: -120px
     padding: 20px 60px 40px
     position: relative
     top: 50%
 
+    a
+      color: $text-usual
+      background: #fff
+      font-size: 18px
+      padding: 15px 30px
+      +border-radius(4px)
+      font-weight: bold
+
   .main-title
-    color: #666
+    color: #fff
+    font-size: 60px
+    font-weight: bold
+    +text-shadow(0 2px 5px rgba(0, 0, 0, 0.5))
