@@ -66,4 +66,15 @@ describe IssuePresenter do
       it { is_expected.to eq false }
     end
   end
+
+  describe '#first_letter' do
+    let(:issue) { OpenStruct.new(title: title) }
+
+    context 'with ABBR' do
+      let(:title) { "some title with ABBR ect" }
+      subject { presenter.first_letter(title) }
+
+      it { is_expected.to eq "Some title with ABBR ect" }
+    end
+  end
 end

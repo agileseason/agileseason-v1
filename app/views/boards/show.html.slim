@@ -5,7 +5,7 @@
     - @board.columns.each do |column|
         .board-column.droppable data-column="#{column.id}" data-column-name="#{column.name}"
           .board-title
-            = column.name.capitalize
+            = column.name
 
           .new-issue.ajax-link
             a.ajax-link New issue
@@ -22,7 +22,7 @@
 
                 .issue-title
                   a.issue-name data-modal="true" data-remote="true" data-number="#{issue.number}" href="#{show_board_issues_url(@board.github_name, issue.number)}"
-                    = issue.title.capitalize
+                    = k(:issue, issue).first_letter(issue.title)
                   a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
                   /.due-date Feb 12, 13:00
 

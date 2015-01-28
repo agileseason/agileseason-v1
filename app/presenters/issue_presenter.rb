@@ -42,4 +42,8 @@ class IssuePresenter < Keynote::Presenter
   def body_empty?
     issue.body == nil || issue.body.split("<!---").first.blank?
   end
+
+  def first_letter(string)
+    string.slice(0,1).capitalize + string.slice(1..-1)
+  end
 end
