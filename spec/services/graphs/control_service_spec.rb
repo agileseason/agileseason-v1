@@ -41,4 +41,36 @@ describe Graphs::ControlService do
       it { expect(subject.last[:x]).to eq issue_stat_3.closed_at.to_js }
     end
   end
+
+  describe '#rolling_average_series_data' do
+    subject { service.rolling_average_series_data }
+
+    context :empty do
+      it { is_expected.to be_empty }
+    end
+
+    context 'One issue' do
+      let!(:closed_issue) { create(:issue_stat, :closed, board: board) }
+      it { is_expected.to have(1).item }
+    end
+
+    describe 'Test grouping issues by rolling window' do
+      let!(:issue_stats) { create_list(:issue_stat, issue_count, :closed, board: board) }
+
+      context 'Issues less than rolling window' do
+        let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW - 1 }
+        it { is_expected.to have(1).item }
+      end
+
+      context 'Issues eq rolling window' do
+        let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW }
+        it { is_expected.to have(1).item }
+      end
+
+      context 'Issues greate than rolling window' do
+        let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW + 1 }
+        it { is_expected.to have(2).item }
+      end
+    end
+  end
 end

@@ -9,6 +9,10 @@ class Graphs::ControlController < ApplicationController
 
   def chart_series_data
     control_service = Graphs::ControlService.new(@board)
-    { issues: control_service.issues_series_data, average: control_service.average_series_data }
+    {
+      issues: control_service.issues_series_data,
+      average: control_service.average_series_data,
+      rolling_average: control_service.rolling_average_series_data
+    }
   end
 end

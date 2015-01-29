@@ -31,6 +31,7 @@
                 scatter: {
                     marker: {
                         radius: 5,
+                        symbol: 'circle',
                         states: {
                             hover: {
                                 enabled: true,
@@ -46,9 +47,20 @@
                         }
                     },
                     tooltip: {
+                        useHtml: true,
+                        headerFormat: '',
+                        // FIX : Add link to github issue by number - need add html_url to IssueStat or repo_url to board.
+                        pointFormat: 'Issue <b>#{point.number}<b/><br/>WIP: <b>{point.y:.2f}</b>d<br/><span style="color:#888">Closed: {point.x:%e. %b}</span>'
+                    }
+                },
+                spline: {
+                    marker: {
+                      symbol: 'diamond'
+                    },
+                    tooltip: {
                         headerFormat: '',
                         // FIX : Add link to github issue by number.
-                        pointFormat: 'Issue #{point.number}<br/>WIP: {point.y:.2f}d<br/>Closed: {point.x:%e. %b}'
+                        pointFormat: 'Rolling Average WIP: <b>{point.y:.2f}d<b/><br/><span style="color:#888">{point.window} Issue window</span>'
                     }
                 },
                 line: {
@@ -56,14 +68,18 @@
                 }
             },
             series: [{
-                name: 'Issue',
-                color: 'rgba(119, 152, 191, .7)',
+                name: 'Rolling Average',
+                type: 'spline',
+                color: 'rgba(22, 63, 109, 1)',
+                marker: {
+                    enabled: false
+                },
                 data: [
-                  <% @chart_series_data[:issues].each do |e| %>
+                  <% @chart_series_data[:rolling_average].each do |e| %>
                     {
                       x: <%=e[:x]%>,
                       y: <%=e[:y]%>,
-                      number: <%=e[:number]%>
+                      window: <%=e[:window]%>
                     },
                   <% end %>
                 ]
@@ -79,6 +95,19 @@
                     {
                       x: <%=e[:x]%>,
                       y: <%=e[:y]%>
+                    },
+                  <% end %>
+                ]
+            },{
+                name: 'Issue',
+                type: 'scatter',
+                color: 'rgba(119, 152, 191, .7)',
+                data: [
+                  <% @chart_series_data[:issues].each do |e| %>
+                    {
+                      x: <%=e[:x]%>,
+                      y: <%=e[:y]%>,
+                      number: <%=e[:number]%>
                     },
                   <% end %>
                 ]
