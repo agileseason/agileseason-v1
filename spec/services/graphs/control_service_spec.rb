@@ -54,19 +54,23 @@ describe Graphs::ControlService do
       it { is_expected.to have(1).item }
     end
 
-    context 'Issues less than rolling window' do
-      let!(:issue_stats) { create_list(:issue_stat, Graphs::ControlService::ROLLING_WINDOW - 1, :closed, board: board) }
-      it { is_expected.to have(1).item }
-    end
+    describe 'Test grouping issues by rolling window' do
+      let!(:issue_stats) { create_list(:issue_stat, issue_count, :closed, board: board) }
 
-    context 'Issues eq rolling window' do
-      let!(:issue_stats) { create_list(:issue_stat, Graphs::ControlService::ROLLING_WINDOW, :closed, board: board) }
-      it { is_expected.to have(1).item }
-    end
+      context 'Issues less than rolling window' do
+        let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW - 1 }
+        it { is_expected.to have(1).item }
+      end
 
-    context 'Issues greate than rolling window' do
-      let!(:issue_stats) { create_list(:issue_stat, Graphs::ControlService::ROLLING_WINDOW + 1, :closed, board: board) }
-      it { is_expected.to have(2).item }
+      context 'Issues eq rolling window' do
+        let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW }
+        it { is_expected.to have(1).item }
+      end
+
+      context 'Issues greate than rolling window' do
+        let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW + 1 }
+        it { is_expected.to have(2).item }
+      end
     end
   end
 end
