@@ -44,6 +44,6 @@ class IssuePresenter < Keynote::Presenter
   end
 
   def first_letter(string)
-    string.slice(0,1).capitalize + string.slice(1..-1)
+    string.slice(0, 1).capitalize + string.slice(1..-1)
   end
 end
