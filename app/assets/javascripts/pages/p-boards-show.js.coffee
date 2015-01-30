@@ -18,6 +18,7 @@ $(document).on 'modal:load', '.b-issue-popup', ->
   # сабмит
   $('.edit-form button', $issue_popup).on 'click', ->
     new_content = $('.field', $(@).parents('.edit-form')).val()
+    new_content = new_content.substr(0,1).toUpperCase() + new_content.substr(1)
     $(@).parents('.edit').find('.editable .edit-content').html(new_content)
 
     close_edit_issue_form($(@).parents('.edit'))

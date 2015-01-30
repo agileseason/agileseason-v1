@@ -8,13 +8,13 @@
       .edit.issue-title
         .title.editable
           .octicon.octicon-pencil
-          .issue-name.edit-content = @issue.title.capitalize
+          .issue-name.edit-content = k(:issue, @issue).first_letter(@issue.title)
 
           a.url href="#{@issue.html_url}" target="_blank" ##{@issue.number}
           //.due-date Feb 12, 13:00
 
         .edit-form
-          textarea.field = @issue.title.capitalize
+          textarea.field = @issue.title
           .submit-area
             a.cancel Cancel
             button.button remote='true' href="#{update_board_issues_url(@board, @issue.number)}" Update
