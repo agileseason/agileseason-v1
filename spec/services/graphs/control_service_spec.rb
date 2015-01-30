@@ -40,6 +40,25 @@ describe Graphs::ControlService do
       it { expect(subject.first[:x]).to eq issue_stat_2.closed_at.to_js }
       it { expect(subject.last[:x]).to eq issue_stat_3.closed_at.to_js }
     end
+
+    context 'Check average value' do
+      let(:first_point) { subject.first[:y].round(2) }
+      let(:last_point) { subject.last[:y].round(2) }
+      context 'One issue' do
+        let!(:closed_issue) { create(:issue_stat, :closed, wip: 2, board: board) }
+        it { is_expected.to have(1).item }
+        it { expect(first_point).to eq 2 }
+        it { expect(last_point).to eq 2 }
+      end
+
+      context 'Two issues' do
+        let!(:issue_stat_1) { create(:issue_stat, :closed, wip: 1, board: board) }
+        let!(:issue_stat_2) { create(:issue_stat, :closed, wip: 2, board: board) }
+        it { is_expected.to have(2).items }
+        it { expect(first_point).to eq 1.5 }
+        it { expect(last_point).to eq 1.5 }
+      end
+    end
   end
 
   describe '#rolling_average_series_data' do
@@ -55,21 +74,67 @@ describe Graphs::ControlService do
     end
 
     describe 'Test grouping issues by rolling window' do
-      let!(:issue_stats) { create_list(:issue_stat, issue_count, :closed, board: board) }
+      context 'Check rolling average groups' do
+        let!(:issue_stats) { create_list(:issue_stat, issue_count, :closed, board: board) }
 
-      context 'Issues less than rolling window' do
-        let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW - 1 }
-        it { is_expected.to have(1).item }
+        context 'Issues less than rolling window' do
+          let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW - 1 }
+          it { is_expected.to have(1).item }
+        end
+
+        context 'Issues eq rolling window' do
+          let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW }
+          it { is_expected.to have(1).item }
+        end
+
+        context 'Issues greate than rolling window' do
+          let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW + 1 }
+          it { is_expected.to have(2).item }
+        end
+      end
+    end
+
+    context 'Check rolling average value' do
+      let(:first_point) { subject.first[:y].round(2) }
+      let(:last_point) { subject.last[:y].round(2) }
+      context 'One issue' do
+        let!(:closed_issue) { create(:issue_stat, :closed, wip: 2, board: board) }
+        it { expect(first_point).to eq 2 }
+        it { expect(last_point).to eq 2 }
       end
 
-      context 'Issues eq rolling window' do
-        let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW }
-        it { is_expected.to have(1).item }
+      context 'Two issues - less than window' do
+        let!(:issue_stat_1) { create(:issue_stat, :closed, wip: 1, board: board) }
+        let!(:issue_stat_2) { create(:issue_stat, :closed, wip: 2, board: board) }
+        it { expect(first_point).to eq 1.5 }
+        it { expect(last_point).to eq 1.5 }
       end
 
-      context 'Issues greate than rolling window' do
-        let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW + 1 }
-        it { is_expected.to have(2).item }
+      context 'Two groups' do
+        let!(:issue_stats_1) do
+          create_list(
+            :issue_stat,
+            Graphs::ControlService::ROLLING_WINDOW,
+            :closed,
+            wip: 10,
+            closed_at: 20.day.ago,
+            board: board
+          )
+        end
+
+        let!(:issue_stats_2) do
+          create_list(
+            :issue_stat,
+            Graphs::ControlService::ROLLING_WINDOW,
+            :closed,
+            wip: 2,
+            closed_at: 1.day.ago,
+            board: board
+          )
+        end
+
+        it { expect(first_point).to eq 10 }
+        it { expect(last_point).to eq 2 }
       end
     end
   end

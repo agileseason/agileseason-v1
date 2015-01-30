@@ -17,7 +17,7 @@ FactoryGirl.define do
 
       after(:build) do |issue_stat, evaluator|
         issue_stat.closed_at = Time.current unless issue_stat.closed_at
-        issue_stat.created_at = evaluator.wip.days.ago unless issue_stat.created_at
+        issue_stat.created_at = issue_stat.closed_at - evaluator.wip.days unless issue_stat.created_at
         issue_stat.updated_at = issue_stat.created_at unless issue_stat.updated_at
       end
     end
