@@ -35,4 +35,4 @@
                 - if issue.state == "open"
                   a.state.open href="#{close_board_issues_url(@board, issue.number)}" title="click to close" Close
                 - elsif issue.state == "closed"
-                  .state Closed
+                  a.button.archive href="#{archive_board_issues_url(@board, issue.number)}" Archive

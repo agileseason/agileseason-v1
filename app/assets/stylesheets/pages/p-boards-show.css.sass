@@ -325,7 +325,6 @@
 
     .state
       color: $text-light
-      display: none
       font-size: 9px
       letter-spacing: 0.1em
       text-align: right
@@ -333,10 +332,20 @@
 
       &.open
         +button
+        display: none
         font-size: 9px
         margin: 5px 0 0 160px
         padding: 5px 10px
         text-align: right
+
+    a.archive
+      +button
+      font-size: 9px
+      letter-spacing: 0.1em
+      margin: 5px 0 0 150px
+      padding: 5px 10px
+      text-align: right
+      text-transform: uppercase
 
     .actions
       list-style: none
