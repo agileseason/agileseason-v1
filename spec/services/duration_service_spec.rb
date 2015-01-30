@@ -23,8 +23,8 @@ describe DurationService do
     end
 
     context 'sort by duration' do
-      let!(:issue_1) { create(:issue_stat, :closed, created_at: 2.day.ago, board: board) }
-      let!(:issue_2) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
+      let!(:issue_1) { create(:issue_stat, :closed, wip: 2, board: board) }
+      let!(:issue_2) { create(:issue_stat, :closed, wip: 1, board: board) }
       let(:expected_duration_1) { (issue_1.closed_at - issue_1.created_at).to_i / 86400 + 1 }
       let(:expected_duration_2) { (issue_2.closed_at - issue_2.created_at).to_i / 86400 + 1 }
       it { is_expected.to have(2).item }
@@ -46,7 +46,7 @@ describe DurationService do
     end
 
     context 'one closed issue for 1 day, then forecast 1 day by issue' do
-      let!(:issue_1) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
+      let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: board) }
 
       context 'no open issue' do
         it { is_expected.to eq 0 }
@@ -64,17 +64,17 @@ describe DurationService do
     end
 
     context 'closed [1, 1, 2, 4], open 2 then forecast 2 days by issue' do
-      let!(:issue_1) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
-      let!(:issue_2) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
-      let!(:issue_3) { create(:issue_stat, :closed, created_at: 2.day.ago, board: board) }
-      let!(:issue_4) { create(:issue_stat, :closed, created_at: 4.day.ago, board: board) }
+      let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_2) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_3) { create(:issue_stat, :closed, wip: 2, board: board) }
+      let!(:issue_4) { create(:issue_stat, :closed, wip: 4, board: board) }
       let!(:issue_open) { create(:issue_stat, :open, board: board) }
       it { is_expected.to eq 2 }
     end
 
     context 'Rounding - closed [1, 2], open 2 then forecast 1.5' do
-      let!(:issue_1) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
-      let!(:issue_2) { create(:issue_stat, :closed, created_at: 2.day.ago, board: board) }
+      let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_2) { create(:issue_stat, :closed, wip: 2, board: board) }
       let!(:issue_open) { create(:issue_stat, :open, board: board) }
       it { is_expected.to eq 1.5 }
     end
@@ -97,8 +97,8 @@ describe DurationService do
     end
 
     context 'Rounding - closed [1, 2], open 2 then elapsed 1.50' do
-      let!(:issue_1) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
-      let!(:issue_2) { create(:issue_stat, :closed, created_at: 2.day.ago, board: board) }
+      let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_2) { create(:issue_stat, :closed, wip: 2, board: board) }
       let!(:issue_open) { create(:issue_stat, :open, board: board) }
       it { is_expected.to eq 1.5 }
     end

@@ -11,7 +11,15 @@ FactoryGirl.define do
     end
 
     trait :closed do
-      closed_at Time.current
+      transient do
+        wip 1
+      end
+
+      after(:build) do |issue_stat, evaluator|
+        issue_stat.closed_at = Time.current unless issue_stat.closed_at
+        issue_stat.created_at = issue_stat.closed_at - evaluator.wip.days unless issue_stat.created_at
+        issue_stat.updated_at = issue_stat.created_at unless issue_stat.updated_at
+      end
     end
   end
 end
