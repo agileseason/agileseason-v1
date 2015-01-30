@@ -1,6 +1,6 @@
 module Graphs
   class ControlService
-    ROLLING_WINDOW = 5
+    ROLLING_WINDOW = 6
 
     def initialize(board)
       @board = board
