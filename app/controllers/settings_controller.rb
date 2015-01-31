@@ -2,12 +2,11 @@ class SettingsController < ApplicationController
   before_action :fetch_board
 
   def show
-    # NOTE: The local board does not break submenu.
     render_show(@board)
   end
 
   def update
-    @settings = ScrumSettings.new(scrum_settings_params)
+    @settings = build_board_settings
     if @settings.save_to(@board)
       redirect_to board_settings_url(@board), notice: 'Settings successfully updated.'
     else
@@ -27,6 +26,7 @@ class SettingsController < ApplicationController
   private
 
   def render_show(board)
+    # NOTE: The local board does not break submenu.
     render :show, locals: { board: board }
   end
 
@@ -40,5 +40,19 @@ class SettingsController < ApplicationController
     params
       .require(:scrum_settings)
       .permit(:days_per_iteration, :start_iteration)
+  end
+
+  def kanban_settings_params
+    params
+      .require(:kanban_settings)
+      .permit(:rolling_average_window)
+  end
+
+  def build_board_settings
+    if @board.kanban?
+      KanbanSettings.new(kanban_settings_params)
+    elsif @board.scrum?
+      ScrumSettings.new(scrum_settings_params)
+    end
   end
 end

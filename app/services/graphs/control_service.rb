@@ -1,7 +1,5 @@
 module Graphs
   class ControlService
-    ROLLING_WINDOW = 6
-
     def initialize(board)
       @board = board
     end
@@ -26,10 +24,11 @@ module Graphs
 
     def rolling_average_series_data
       return [] if issues.blank?
-      issues.each_slice(ROLLING_WINDOW).to_a.map do |slice_issues|
+      rolling_window = @board.kanban_settings.rolling_average_window
+      issues.each_slice(rolling_window).to_a.map do |slice_issues|
         rolling_average_level = average_level(slice_issues)
         issue = slice_issues.last
-        { x: issue.closed_at.to_js, y: rolling_average_level, window: ROLLING_WINDOW }
+        { x: issue.closed_at.to_js, y: rolling_average_level, window: rolling_window }
       end
     end
 

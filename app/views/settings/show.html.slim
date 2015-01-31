@@ -8,8 +8,12 @@
       = f.button :submit, value: 'Rename'
 
     - if @board.kanban?
-      /h4 Features Kanban
-    - else
+      .box
+        h4 Features Kanban
+        = simple_form_for(@board.kanban_settings, url: board_settings_url(board), method: :patch) do |f|
+          = f.input :rolling_average_window
+          = f.button :submit, value: 'Update'
+    - elsif @board.scrum?
       .box
         h4 Features Scrum
         = simple_form_for(@board.scrum_settings, url: board_settings_url(board), method: :patch) do |f|
