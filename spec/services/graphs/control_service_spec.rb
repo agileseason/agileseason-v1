@@ -1,6 +1,6 @@
 describe Graphs::ControlService do
   let(:service) { Graphs::ControlService.new(board) }
-  let(:board) { create(:board, :with_columns) }
+  let(:board) { create(:kanban_board, :with_columns) }
 
   describe '#issues_series_data' do
     subject { service.issues_series_data }
@@ -63,6 +63,8 @@ describe Graphs::ControlService do
 
   describe '#rolling_average_series_data' do
     subject { service.rolling_average_series_data }
+    let(:rolling_window) { 7 }
+    before { board.rolling_average_window = rolling_window }
 
     context :empty do
       it { is_expected.to be_empty }
@@ -78,17 +80,17 @@ describe Graphs::ControlService do
         let!(:issue_stats) { create_list(:issue_stat, issue_count, :closed, board: board) }
 
         context 'Issues less than rolling window' do
-          let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW - 1 }
+          let(:issue_count) { rolling_window - 1 }
           it { is_expected.to have(1).item }
         end
 
         context 'Issues eq rolling window' do
-          let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW }
+          let(:issue_count) { rolling_window }
           it { is_expected.to have(1).item }
         end
 
         context 'Issues greate than rolling window' do
-          let(:issue_count) { Graphs::ControlService::ROLLING_WINDOW + 1 }
+          let(:issue_count) { rolling_window + 1 }
           it { is_expected.to have(2).item }
         end
       end
@@ -114,7 +116,7 @@ describe Graphs::ControlService do
         let!(:issue_stats_1) do
           create_list(
             :issue_stat,
-            Graphs::ControlService::ROLLING_WINDOW,
+            rolling_window,
             :closed,
             wip: 10,
             closed_at: 20.day.ago,
@@ -125,7 +127,7 @@ describe Graphs::ControlService do
         let!(:issue_stats_2) do
           create_list(
             :issue_stat,
-            Graphs::ControlService::ROLLING_WINDOW,
+            rolling_window,
             :closed,
             wip: 2,
             closed_at: 1.day.ago,
