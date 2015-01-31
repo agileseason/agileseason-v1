@@ -31,6 +31,6 @@ describe Boards::ScrumBoard, type: :model do
     subject { board.scrum_settings }
     it { is_expected.to_not be_nil }
     it { expect(subject.days_per_iteration).to eq 14 }
-    it { expect(subject.start_iteration).to eq "monday" }
+    it { expect(subject.start_iteration).to eq 'monday' }
   end
 end

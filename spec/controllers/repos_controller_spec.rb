@@ -1,4 +1,4 @@
-RSpec.describe ReposController, :type => :controller do
+RSpec.describe ReposController, type: :controller do
 
   describe 'GET index' do
     #TODO: extract next 2 lines code to shared context
