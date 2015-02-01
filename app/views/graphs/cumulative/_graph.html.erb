@@ -10,17 +10,11 @@
             title: {
                 text: ''
             },
+            colors: ['#9575cd', '#00b0ff', '#ff5722', '#ffea00', '#00e676', '#7986cb', '#8d6e63', '#aeea00'],
             xAxis: {
-                categories: <%= raw(@categories) %>,
-                tickmarkPlacement: 'on',
+                type: 'datetime',
                 title: {
-                    enabled: false
-                },
-                allowDecimals: false,
-                labels: {
-                    formatter: function () {
-                        return this.value; // clean, unformatted number for year
-                    }
+                    text: 'Time'
                 }
             },
             yAxis: {
@@ -32,17 +26,16 @@
                         return this.value;
                     }
                 },
-                tickInterval: 1,
-                maxPadding: 0,
-                showFirstLabel: false,
-                showLastLabel: true
+                allowDecimals: false
             },
             tooltip: {
-                pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>{point.tooltipValue}</b> issues<br/>',
+                headerFormat: '<span><b>Total: {point.y}</b> issues</span><br/><span style="color:#888">{point.key}<br/></span>',
+                pointFormat: '<span style="color:{series.color}">\u25CF</span><b> {point.issues}</b> - {series.name}<br/>',
                 shared: true
             },
             plotOptions: {
                 area: {
+                    fillOpacity: 1,
                     marker: {
                         enabled: false,
                         symbol: 'circle',
@@ -62,8 +55,9 @@
                   data: [
                     <% info[:data].each do |data| %>
                       {
+                        x: <%= data[:collected_on] %>,
                         y: <%= data[:issues_cumulative] %>,
-                        tooltipValue: <%= data[:issues] %>
+                        issues: <%= data[:issues] %>,
                       },
                     <% end %>
                   ]
