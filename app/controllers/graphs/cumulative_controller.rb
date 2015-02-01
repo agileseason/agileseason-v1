@@ -10,9 +10,9 @@ class Graphs::CumulativeController < ApplicationController
   def chart_series
     @board.board_histories.each_with_object(init_series) do |history, series|
       history.data.each do |column_data|
-        point = column_data.merge({
-          collected_on: history.collected_on.in_time_zone.to_js
-        })
+        point = column_data.merge(
+            collected_on: history.collected_on.in_time_zone.to_js
+        )
         series[column_data[:column_id]][:data] << point
       end
     end
