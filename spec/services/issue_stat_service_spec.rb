@@ -95,11 +95,11 @@ describe IssueStatService do
 
     context :true do
       let(:archived_at) { Time.current }
-      it { is_expected.to_not be_nil }
+      it { is_expected.to eq true }
     end
 
     context :false do
-      it { is_expected.to be_nil }
+      it { is_expected.to eq false }
     end
   end
 end
