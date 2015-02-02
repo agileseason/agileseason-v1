@@ -58,4 +58,18 @@ RSpec.describe IssueStat, type: :model do
       it { is_expected.to eq 1.5 }
     end
   end
+
+  describe '#archived?' do
+    subject { issue_stat.archived? }
+
+    context :false do
+      let(:issue_stat) { build(:issue_stat, archived_at: nil) }
+      it { is_expected.to eq false }
+    end
+
+    context :true do
+      let(:issue_stat) { build(:issue_stat, archived_at: Time.current) }
+      it { is_expected.to eq true }
+    end
+  end
 end

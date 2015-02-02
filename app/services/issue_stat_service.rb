@@ -46,7 +46,7 @@ class IssueStatService
     end
 
     def archived?(board, number)
-      board.issue_stats.find_by(number: number).try(:archived_at)
+      board.issue_stats.find_by(number: number).try(:archived?)
     end
 
     private

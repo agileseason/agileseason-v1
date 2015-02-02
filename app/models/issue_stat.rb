@@ -17,4 +17,8 @@ class IssueStat < ActiveRecord::Base
   def elapsed_days
     elapsed_time / 86400
   end
+
+  def archived?
+    archived_at.present?
+  end
 end
