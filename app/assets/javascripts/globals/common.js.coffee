@@ -8,5 +8,5 @@ $(document).on 'page:change', ->
     $(@).parent().removeClass 'active'
     $(@).remove()
 
-  $('.notice .close').on 'click', ->
-    $(@).parent('.notice').remove()
+  $('.notice').on 'click', ->
+    $(@).remove()

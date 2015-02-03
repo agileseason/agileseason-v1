@@ -24,15 +24,28 @@ module Graphs
 
     def rolling_average_series_data
       return [] if issues.blank?
-      rolling_window = @board.kanban_settings.rolling_average_window
-      issues.each_slice(rolling_window).to_a.map do |slice_issues|
+      rolling_average = issues.each_slice(rolling_window).map do |slice_issues|
         rolling_average_level = average_level(slice_issues)
         issue = slice_issues.last
-        { x: issue.closed_at.to_js, y: rolling_average_level, window: rolling_window }
+        rolling_point(issue, rolling_average_level)
       end
+
+      if rolling_average.first[:x] >= issues.first.closed_at.to_js
+        rolling_average.insert(0, rolling_point(issues.first, 0))
+      end
+
+      rolling_average
     end
 
     private
+
+    def rolling_point(issue, value)
+      { x: issue.closed_at.to_js, y: value, window: rolling_window }
+    end
+
+    def rolling_window
+      @rolling_window ||= @board.kanban_settings.rolling_average_window
+    end
 
     def issues
       @issues ||= @board.issue_stats.closed.order(:closed_at)
