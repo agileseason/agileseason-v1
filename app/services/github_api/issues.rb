@@ -46,8 +46,8 @@ class GithubApi
     def archive(board, number, user = nil)
       issue = client.issue(board.github_id, number)
       return if issue.state == 'open'
-      IssueStatService.archive!(board, issue)
-      Activities::ArchiveActivity.create_for(board, number, user)
+      issue_stat = IssueStatService.archive!(board, issue)
+      Activities::ArchiveActivity.create_for(issue_stat, user)
     end
 
     def assign_yourself(board, number, github_username)

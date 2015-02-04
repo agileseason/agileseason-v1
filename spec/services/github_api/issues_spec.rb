@@ -179,6 +179,7 @@ describe GithubApi::Issues do
     let(:in_at) { Time.current }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
     before { allow(IssueStatService).to receive(:archive!) }
+    before { allow(Activities::ArchiveActivity).to receive(:create_for) }
 
     context 'closed issue' do
       let(:state) { 'closed' }
@@ -187,7 +188,7 @@ describe GithubApi::Issues do
 
       after { subject }
       it { expect(IssueStatService).to receive(:archive!).with(board, issue) }
-      it { expect { subject }.to change(Activities::ArchiveActivity, :count).by(1) }
+      it { expect(Activities::ArchiveActivity).to receive(:create_for) }
     end
 
     context 'open issue' do
