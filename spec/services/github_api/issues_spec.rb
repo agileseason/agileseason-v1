@@ -187,6 +187,7 @@ describe GithubApi::Issues do
 
       after { subject }
       it { expect(IssueStatService).to receive(:archive!).with(board, issue) }
+      it { expect { subject }.to change(Activities::ArchiveActivity, :count).by(1) }
     end
 
     context 'open issue' do

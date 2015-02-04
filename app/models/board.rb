@@ -4,6 +4,7 @@ class Board < ActiveRecord::Base
   has_many :repo_histories, -> { order(:collected_on) }
   has_many :board_histories, -> { order(:collected_on) }
   has_many :issue_stats
+  has_many :activities, -> { order(created_at: :desc) }
 
   validates :name, presence: true
   validates :type, presence: true

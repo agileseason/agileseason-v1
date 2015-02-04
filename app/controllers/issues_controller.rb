@@ -34,7 +34,7 @@ class IssuesController < ApplicationController
   end
 
   def archive
-    issue_stat = github_api.archive(@board, params[:number])
+    issue_stat = github_api.archive(@board, params[:number], current_user)
     respond_to do |format|
       format.html { redirect_to board_url(@board) }
       format.json { render json: { archived: issue_stat && issue_stat.archived? } }
