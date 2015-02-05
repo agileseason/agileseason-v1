@@ -32,12 +32,14 @@ class IssueStatService
       issue_stat
     end
 
+    # FIX : Move close! and add close? to state_machine.
     def close!(board, github_issue)
       issue_stat = find_or_create_issue_stat(board, github_issue)
       issue_stat.update(closed_at: (github_issue.closed_at || Time.current))
       issue_stat
     end
 
+    # FIX : Move archive! and add archive? to state_machine.
     def archive!(board, github_issue)
       issue_stat = find_or_create_issue_stat(board, github_issue)
       leave_all_column(issue_stat)
