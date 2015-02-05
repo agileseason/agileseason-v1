@@ -104,15 +104,19 @@ describe GithubApi::Issues do
 
   describe '#move_to' do
     subject { service.move_to(board, move_to_column, issue.number) }
-    let(:board) { create(:board, :with_columns) }
+    let(:user) { create(:user) }
+    let(:board) { create(:board, :with_columns, user: user) }
     let(:move_to_column) { board.columns.first }
     let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: '', labels: []) }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
     before { allow_any_instance_of(Octokit::Client).to receive(:update_issue).and_return(issue) }
     before { allow(IssueStatService).to receive(:move!) }
+    before { allow(Activities::ColumnChangedActivity).to receive(:create_for) }
 
     after { subject }
     it { expect(IssueStatService).to receive(:move!) }
+    # FIX : Check params .with(...)
+    it { expect(Activities::ColumnChangedActivity).to receive(:create_for) }
 
     context :empty_comment do
       let(:board) { build(:board, :with_columns, number_of_columns: 1) }
@@ -179,6 +183,7 @@ describe GithubApi::Issues do
     let(:in_at) { Time.current }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
     before { allow(IssueStatService).to receive(:archive!) }
+    # FIX : Check params .with(...)
     before { allow(Activities::ArchiveActivity).to receive(:create_for) }
 
     context 'closed issue' do

@@ -11,8 +11,9 @@ class GithubApi
 
   SERVICES_TEAM_NAME = 'Services'
 
-  def initialize(token)
+  def initialize(token, user = nil)
     @token = token
+    @user = user
   end
 
   def client

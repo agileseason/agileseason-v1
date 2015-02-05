@@ -6,5 +6,8 @@ describe Activities::ArchiveActivity, type: :model do
     let(:issue_stat) { create(:issue_stat, board: board) }
 
     it { expect { subject }.to change(Activities::ArchiveActivity, :count).by(1) }
+    it { expect(subject.board).to eq board }
+    it { expect(subject.issue_stat).to eq issue_stat }
+    it { expect(subject.data).to be_nil }
   end
 end

@@ -6,7 +6,7 @@ module ApplicationHelper
   end
 
   def github_api
-    @github_api ||= GithubApi.new(github_token)
+    @github_api ||= GithubApi.new(github_token, current_user)
   end
 
   def markdown(text)
