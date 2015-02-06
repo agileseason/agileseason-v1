@@ -11,6 +11,6 @@ class CreateActivities < ActiveRecord::Migration
     end
     add_foreign_key :activities, :users, on_delete: :cascade
     add_foreign_key :activities, :boards, on_delete: :cascade
-    add_foreign_key :activities, :issue_stat, on_delete: :cascade
+    add_foreign_key :activities, :issue_stats, on_delete: :cascade
   end
 end
