@@ -7,6 +7,15 @@ RSpec.describe IssueStat, type: :model do
     end
   end
 
+  describe '.open' do
+    subject { board.issue_stats.open }
+    let(:board) { create(:board, :with_columns) }
+    let!(:closed_issues) { create(:issue_stat, board: board, closed_at: Time.current) }
+    let!(:open_issue) { create(:issue_stat, board: board, closed_at: nil) }
+    it { is_expected.to have(1).item }
+    it { expect(subject.first).to eq open_issue }
+  end
+
   describe '.closed' do
     subject { board.issue_stats.closed }
     let(:board) { create(:board, :with_columns) }
@@ -16,13 +25,14 @@ RSpec.describe IssueStat, type: :model do
     it { expect(subject.first).to eq closed_issue }
   end
 
-  describe '.open' do
-    subject { board.issue_stats.open }
+  describe '.archived' do
+    subject { board.issue_stats.archived }
     let(:board) { create(:board, :with_columns) }
-    let!(:closed_issues) { create(:issue_stat, board: board, closed_at: Time.current) }
     let!(:open_issue) { create(:issue_stat, board: board, closed_at: nil) }
+    let!(:closed_issue) { create(:issue_stat, board: board, closed_at: Time.current) }
+    let!(:archived_issue) { create(:issue_stat, board: board, archived_at: Time.current) }
     it { is_expected.to have(1).item }
-    it { expect(subject.first).to eq open_issue }
+    it { expect(subject.first).to eq archived_issue }
   end
 
   describe '#elapsed_time' do

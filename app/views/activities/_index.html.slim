@@ -1,0 +1,10 @@
+.b-activities
+  - @board.activities.each do |activity|
+    .activity
+      .author = activity.user.github_username
+      .description
+        = activity.description
+        / FIX : Add url to Issue#show.
+        a.issue href="#{activity.issue_stat.number}" = "##{activity.issue_stat.number}"
+        / FIX : Timezone?
+        .date = "#{activity.created_at.strftime('%d %b')} at #{activity.created_at.strftime('%H:%M')}"

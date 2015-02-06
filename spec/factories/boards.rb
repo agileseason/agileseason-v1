@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :board do
+    user nil
     name 'test board'
     type 'Boards::KanbanBoard'
     github_id 123
