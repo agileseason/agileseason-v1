@@ -7,5 +7,9 @@ module Activities
         issue_stat: issue_stat
       )
     end
+
+    def description
+      "Archived Issue"
+    end
   end
 end

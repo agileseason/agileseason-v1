@@ -4,4 +4,7 @@ class Activity < ActiveRecord::Base
   belongs_to :issue_stat
 
   serialize :data
+
+  def description
+  end
 end

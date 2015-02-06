@@ -31,7 +31,7 @@ class GithubApi
       issue_stat = IssueStatService.move!(board, column, issue)
       # FIX : Add activities if column really changed.
       # FIX : Save info about previous column after #126
-      Activities::ColumnChangedActivity.create_for(issue_stat, column, nil, @user)
+      Activities::ColumnChangedActivity.create_for(issue_stat, nil, column, @user)
       client.update_issue(
         board.github_id,
         number,

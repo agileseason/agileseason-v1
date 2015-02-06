@@ -26,6 +26,8 @@ Rails.application.routes.draw do
       resources :control, only: [:index]
       resources :duration, only: [:index]
     end
+
+    resources :activities, only: [:index]
   end
 
   get '/auth/github/callback', to: 'sessions#create'
