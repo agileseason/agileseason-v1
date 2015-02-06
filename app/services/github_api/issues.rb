@@ -51,6 +51,7 @@ class GithubApi
       return if issue.state == 'open'
       issue_stat = IssueStatService.archive!(board, issue)
       Activities::ArchiveActivity.create_for(issue_stat, @user)
+      issue_stat
     end
 
     def assign_yourself(board, number, github_username)
