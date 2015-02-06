@@ -7,8 +7,9 @@ class IssueStat < ActiveRecord::Base
 
   serialize :track_data
 
-  scope :closed, -> { where('closed_at is not null') }
   scope :open, -> { where('closed_at is null') }
+  scope :closed, -> { where('closed_at is not null') }
+  scope :archived, -> { where('archived_at is not null') }
 
   def elapsed_time
     (closed_at || Time.current) - created_at
