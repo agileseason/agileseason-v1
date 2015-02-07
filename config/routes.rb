@@ -10,9 +10,13 @@ Rails.application.routes.draw do
       get ':number/close', to: 'issues#close', as: :close
       get ':number/archive', to: 'issues#archive', as: :archive
       get ':number/assignee', to: 'issues#assignee', as: :assignee
-      get ':number/show', to: 'issues#show', as: :show
       get ':number/update', to: 'issues#update', as: :update
+
+      get ':number/comment', to: 'comments#create', as: :add_comment
+      get ':number/update_comment', to: 'comments#update', as: :update_comment
+      get ':number/comments', to: 'issues#comments', as: :comments
     end
+
 
     resource :settings, only: [:show, :update] do
       member do

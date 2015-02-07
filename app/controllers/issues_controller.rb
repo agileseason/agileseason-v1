@@ -16,11 +16,9 @@ class IssuesController < ApplicationController
     end
   end
 
-  def show
-    @issue = github_api.issue(@board, params[:number])
-    @comments = github_api.issue_comments(@board.github_id, params[:number].to_i)
-    @labels = github_api.labels(@board)
-    render partial: 'show'
+  def comments
+    comments = github_api.issue_comments(@board, params[:number].to_i)
+    render partial: 'issues/comments', locals: { comments: comments }
   end
 
   def move_to

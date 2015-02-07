@@ -1,0 +1,28 @@
+- comments.each do |comment|
+  .issue-comment
+    .user-ava
+      a.user[
+        href="#{comment.user.html_url}"
+        target="_blank"
+        title="#{comment.user.login}"]
+
+        img.avatar src="#{comment.user.avatar_url}"
+    .comment-body
+      .user-login #{comment.user.login}&nbsp;
+      .date = comment.created_at.strftime("%h %d, %H:%M")
+      .edit
+        .comment.editable.update-comment
+          .edit-content = markdown(comment.body)
+          .edit-link edit
+
+        .edit-form
+          textarea.textarea-comment.field = comment.body
+          /.markup-switcher
+            /span.markup.active markup
+            /span.preview preview
+          .submit-area
+            a.cancel Cancel
+            button.button[
+              remote='true'
+              href="#{update_comment_board_issues_url(@board, comment.id)}"]
+                | Update

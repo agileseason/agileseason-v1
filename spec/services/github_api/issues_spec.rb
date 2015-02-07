@@ -214,4 +214,10 @@ describe GithubApi::Issues do
 
     it { is_expected.to eq issue }
   end
+
+  #describe '#update_issue' do
+    #subject { service.update_issue(board, issue.number, issue_params, issue: issue) }
+    #let(:issue_params) { labels:  }
+    #before { allow_any_instance_of(Octokit::Client).to receive(:update_issue).and_return(issue) }
+  #end
 end
