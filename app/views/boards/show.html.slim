@@ -15,24 +15,35 @@
           .issues.scroller
             - @issues[column.label_name].each do |issue|
               - next if k(:issue, issue).archived?(@board)
-              .issue.draggable class="#{issue.state}" data-number="#{issue.number}"
+              .issue.draggable class="#{issue.state} issue-#{issue.number}" data-number="#{issue.number}"
 
-                .b-issue-labels
-                  = k(:issue, issue).labels_html(@board)
+                = render partial: 'issues/labels', locals: { issue: issue, board: @board }
 
                 .issue-title
-                  a.issue-name data-modal="true" data-remote="true" data-number="#{issue.number}" href="#{show_board_issues_url(@board.github_name, issue.number)}"
+                  a.issue-name.show-issue-modal data-number="#{issue.number}"
                     = k(:issue, issue).first_letter(issue.title)
                   a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
                   /.due-date Feb 12, 13:00
 
+                .issue-data
+                  = render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @labels }
+
                 - if issue.assignee
                   = render partial: 'issues/assignee', locals: { issue: issue }
 
-                - unless k(:issue, issue).body_empty?
-                  span.octicon.octicon-book
+                span.octicon.octicon-book class="#{'show' unless k(:issue, issue).body_empty?}"
+                span.octicon.octicon-comment-discussion class="#{'show' unless issue.comments == 0}"
+
+                - unless issue.all_comments.blank?
+                  span.octicon.octicon-comment
 
                 - if issue.state == "open"
                   a.state.open href="#{close_board_issues_url(@board, issue.number)}" title="click to close" Close
                 - elsif issue.state == "closed"
                   a.button.archive href="#{archive_board_issues_url(@board, issue.number)}" data-type='json' data-remote='true' Archive
+
+.issue-modal
+  .overlay
+  .modal-inner
+    .modal-close
+    .modal-content

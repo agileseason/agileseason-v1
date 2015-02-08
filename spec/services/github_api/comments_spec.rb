@@ -5,15 +5,18 @@ describe GithubApi::Comments do
 
   let(:issue_comments) { [issue_comment_1, issue_comment_2] }
   let(:issue_comment_1) do
-    OpenStruct.new(body: 'some example of code ```return blah;``` and comment')
+    OpenStruct
+      .new(body: 'some example of code ```return blah;``` and comment')
   end
   let(:issue_comment_2) { OpenStruct.new(body: 'some comment') }
 
   describe '#issue_comments' do
     before do
-      allow_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments)
+      allow_any_instance_of(Octokit::Client)
+        .to receive(:issue_comments)
+        .and_return(issue_comments)
     end
-    subject { service.issue_comments(board.github_id, issue.number) }
+    subject { service.issue_comments(board, issue.number) }
     it { is_expected.to have(2).items }
   end
 end

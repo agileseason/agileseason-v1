@@ -1,0 +1,102 @@
+.b-issue-modal class="issue-#{issue.number}" data-number="#{issue.number}"
+
+  = render partial: 'issues/labels', locals: { issue: issue, board: board }
+
+  .content
+    .issue-content
+      .edit.issue-title
+        .title.editable
+          .octicon.octicon-pencil.edit-link
+          .issue-name.edit-content = issue.title.capitalize
+
+          a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
+          //.due-date Feb 12, 13:00
+
+        .edit-form
+          textarea.field = issue.title.capitalize
+          .submit-area
+            a.cancel Cancel
+            button.button[
+              remote='true'
+              href="#{update_board_issues_url(board, issue.number)}"]
+              | Update
+
+      .issue-description.edit
+        .description.editable
+          .octicon.octicon-pencil.edit-link
+          - if k(:issue, issue).body_empty?
+            .edit-content.label Description
+          - else
+            .edit-content = markdown(issue.body.html_safe)
+
+        .edit-form
+          textarea.textarea-description.field = issue.body
+          /.markup-switcher
+            /span.markup.active markup
+            /span.preview preview
+          .submit-area
+            a.cancel Cancel
+            button.button[
+              remote='true'
+              href="#{update_board_issues_url(board, issue.number)}"]
+              | Update
+
+      .edit.add-comment
+        /.user-ava
+          /img.avatar src="#{issue.user.avatar_url}"
+        .editable.create-comment
+          .add.edit-link Add Comment
+        .edit-form
+          textarea.field
+          /.markup-switcher
+            /span.markup.active markup
+            /span.preview preview
+          .submit-area
+            a.cancel Cancel
+            button.button[
+              remote='true'
+              href="#{add_comment_board_issues_url(board, issue.number)}"]
+              | Save
+
+      .issue-comments data-url="#{comments_board_issues_url board, issue.number}"
+        .b-preloader.horizontal
+
+    .issue-actions
+      .edit-labels
+        .popup
+          .close-popup
+          .labels-block.scroller
+            - labels.each do |label|
+              label.label style="background: ##{label.color};"
+                - if issue.labels.map(&:name).any? { |l| l == label.name }
+                  input[
+                    type="checkbox"
+                    id="#{label.name}"
+                    value="#{label.name}"
+                    data-url="#{update_board_issues_url(board, issue.number)}"
+                    checked="checked"]
+                - else
+                  input[
+                    type="checkbox"
+                    id="#{label.name}"
+                    name="issue[labels][]"
+                    value="#{label.name}"
+                    data-url="#{update_board_issues_url(board, issue.number)}"]
+                .label-name = label.name
+
+        div
+          .add-label Labels
+
+      - if issue.assignee
+        = render partial: 'issues/assignee', locals: { issue: issue }
+      - else
+        .b-assigned
+          a.assign href="#{assignee_board_issues_url(board, issue.number)}"
+            | Assign yourself
+
+      - if issue.state == 'open'
+        button.button.close href="#{close_board_issues_url(board, issue.number)}"
+          | Close issue
+      - if issue.state == 'closed'
+        a.button.archive href="#{archive_board_issues_url(board, issue.number)}"
+          | Archive issue

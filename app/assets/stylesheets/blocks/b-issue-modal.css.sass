@@ -1,17 +1,19 @@
 @import compass/css3/border-radius
 @import compass/css3/text-shadow
+@import compass/css3/box-shadow
 @import globals/variables
 @import mixins/avatar
 @import mixins/ajax_link
 @import mixins/close
 
-.b-issue-popup
+.b-issue-modal
+  display: none
   +border-radius(6px)
+  +box-shadow(0 0 40px rgba(63,63,63, 0.3))
   background: $card
 
   .issue-name
     display: inline
-    margin-right: 10px
 
   .content
     padding: 20px 30px 30px 30px
@@ -91,15 +93,26 @@
       margin-top: 0
 
   .issue-comments
-    margin-top: 40px
 
   .issue-comment
-    padding: 0 0 30px
     display: table
+    padding: 0 0 30px
     width: 100%
 
+    &:hover
+      .edit-link
+        display: inline-block
+
     &:last-child
-      padding-bottom: 0
+      padding-bottom: 10px
+
+    .edit-link
+      +ajax_link
+      display: none
+      font-size: 12px
+      font-style: italic
+      margin: 2px 0 0 0
+      position: absolute
 
   .user-ava
     display: table-cell
@@ -114,6 +127,10 @@
     position: relative
     vertical-align: top
 
+    .edit-form
+      textarea
+        margin-top: 0
+
     img
       display: block
       margin: 0 0 5px
@@ -125,7 +142,7 @@
     font-size: 14px
     margin-bottom: 5px
 
-  .user-ligin
+  .user-login
     color: $lightgrey
     display: inline
     font-size: 14px
@@ -174,6 +191,41 @@
   .editable
     position: relative
 
+
+
   .submit-area
     background: none
     padding: 0
+
+  .add-comment
+    padding-top: 10px
+    margin-top: 40px
+    position: relative
+
+    .editable
+      margin-bottom: 35px
+
+    .edit-form
+      padding-left: 40px
+      margin-top: -15px
+      margin-bottom: 5px
+
+    .user-ava
+      position: absolute
+
+    .edit-link
+      +ajax_link
+      margin-top: 10px
+
+  .markup-switcher
+    margin: -30px 0 10px 5px
+
+    span
+      +ajax_link
+      font-size: 12px
+      margin-right: 5px
+
+      &.active
+        +border-radius(3px)
+        background: #ddd
+        padding: 1px 5px
