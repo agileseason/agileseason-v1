@@ -25,7 +25,22 @@ $(document).on 'modal:load', '.b-issue-modal', ->
     $current_issue = $('.current-issue') # миниатюра открытого тикета
 
     if $editable.hasClass 'description'
-      $edit_content.html(new_content)
+      comment = new_content.split("<!--")[0].replace(/\s*\n*/g, '')
+
+      if comment == '' || comment == ' '
+        $edit_content.html('Description').addClass 'label'
+        $('.octicon-book', $current_issue).hide()
+        $('.issue-description .edit-content', $current_issue)
+          .html('Description')
+          .addClass 'label'
+      else
+        $edit_content.html(new_content)
+        $('.octicon-book', $current_issue).show()
+        $edit_content.html(new_content).removeClass 'label'
+        $('.issue-description .edit-content', $current_issue)
+          .html(new_content)
+          .removeClass ('label')
+
       $.get $(@).attr('href'), body: new_content
 
     else if $editable.hasClass 'title'
