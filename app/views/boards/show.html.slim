@@ -31,8 +31,8 @@
                 - if issue.assignee
                   = render partial: 'issues/assignee', locals: { issue: issue }
 
-                - unless k(:issue, issue).body_empty?
-                  span.octicon.octicon-book
+                span.octicon.octicon-book class="#{'show' unless k(:issue, issue).body_empty?}"
+                span.octicon.octicon-comment-discussion class="#{'show' unless issue.comments == 0}"
 
                 - unless issue.all_comments.blank?
                   span.octicon.octicon-comment
