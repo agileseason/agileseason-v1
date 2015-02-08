@@ -4,7 +4,7 @@ class DurationService
   end
 
   def fetch_group
-    @board.issue_stats.closed.each_with_object({}) do |issue, hash|
+    @board.issue_stats.closed.each_with_object({ 0 => 0 }) do |issue, hash|
       duration = issue.elapsed_days.to_i + 1
       count = hash[duration] || 0
       hash[duration] = count + 1

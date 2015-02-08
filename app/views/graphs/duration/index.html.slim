@@ -16,4 +16,4 @@
     - if @duration.average_forecast_elapsed_days.nil?
       | Average: can't be calculated - no closed issues
     - else
-      | Average: #{@duration.average_forecast_elapsed_days}..#{@duration.forecast_elapsed_days} days
+      | Average: #{@duration.average_forecast_elapsed_days.to_i}..#{@duration.forecast_elapsed_days} days

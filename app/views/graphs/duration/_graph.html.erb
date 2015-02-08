@@ -14,7 +14,10 @@
                 categories: <%= raw(@chart_series_data.map(&:first)) %>,
                 title: {
                     text: 'Elapsed Days'
-                }
+                },
+                min: 0,
+                showFirstLabel: false,
+                tickInterval: 5
             },
             yAxis: {
                 min: 0,
