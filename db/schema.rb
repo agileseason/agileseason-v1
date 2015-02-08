@@ -94,6 +94,16 @@ ActiveRecord::Schema.define(version: 20150204051508) do
 
   add_index "repo_histories", ["board_id"], name: "index_repo_histories_on_board_id"
 
+  create_table "scrum_settings", force: :cascade do |t|
+    t.integer  "board_id"
+    t.string   "start_iteration"
+    t.integer  "days_per_iteration"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "scrum_settings", ["board_id"], name: "index_scrum_settings_on_board_id"
+
   create_table "users", force: :cascade do |t|
     t.string   "email",           limit: 255, null: false
     t.string   "github_username", limit: 255, null: false
