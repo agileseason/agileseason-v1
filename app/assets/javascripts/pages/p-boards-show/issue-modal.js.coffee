@@ -27,7 +27,7 @@ $(document).on 'modal:load', '.b-issue-modal', ->
     if $editable.hasClass 'description'
       comment = new_content.split("<!--")[0].replace(/\s*\n*/g, '')
 
-      if comment == '' || comment == ' '
+      if comment == ''
         $edit_content.html('Description').addClass 'label'
         $('.octicon-book', $current_issue).hide()
         $('.issue-description .edit-content', $current_issue)
