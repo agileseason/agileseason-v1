@@ -41,11 +41,14 @@ $(document).on 'modal:load', '.b-issue-modal', ->
           .html(new_content)
           .removeClass ('label')
 
+      $('.issue-description textarea', $current_issue).html(new_content)
+
       $.get $(@).attr('href'), body: new_content
 
     else if $editable.hasClass 'title'
       $edit_content.html(new_content)
       $('.issue-name', $current_issue).html(new_content)
+      $('.issue-title textarea', $current_issue).html(new_content)
       $.get $(@).attr('href'), title: new_content
 
     else if $editable.hasClass 'update-comment'
