@@ -188,7 +188,7 @@ describe GithubApi::Issues do
     before { allow(Activities::ArchiveActivity).to receive(:create_for) }
 
 
-    context 'closed issue', focus: true do
+    context 'closed issue' do
       let(:state) { 'closed' }
       let(:archived_at) { Time.current }
       before { allow(Time).to receive(:current).and_return(archived_at) }
