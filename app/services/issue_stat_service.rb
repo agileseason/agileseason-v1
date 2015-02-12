@@ -53,11 +53,11 @@ class IssueStatService
       board.issue_stats.find_by(number: number).try(:archived?)
     end
 
-    private
-
     def find_or_create_issue_stat(board, github_issue)
       board.issue_stats.find_by(number: github_issue.number) || create!(board, github_issue)
     end
+
+    private
 
     def leave_all_column(issue_stat)
       issue_stat.lifetimes.update_all(out_at: Time.current)

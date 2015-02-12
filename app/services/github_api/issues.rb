@@ -15,6 +15,15 @@ class GithubApi
       board_hash
     end
 
+    def new_board_issues(board)
+      result_hash = board.columns.each_with_object({}) { |column, hash| hash[column.id] = [] }
+      mapper = IssueStatsMapper.new(board)
+      issues(board).each_with_object(result_hash) do |issue, hash|
+        issue_stat = mapper[issue]
+        hash[issue_stat.column.id] << BoardIssue.new(issue, issue_stat)
+      end
+    end
+
     def create_issue(board, issue)
       labels = issue.labels.reject(&:blank?) << board.columns.first.label_name
       github_issue = client.create_issue(board.github_id, issue.title, issue.body, labels: labels)
