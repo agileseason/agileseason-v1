@@ -1,10 +1,10 @@
 class Board < ActiveRecord::Base
   belongs_to :user
-  has_many :columns, -> { order(:order) }
-  has_many :repo_histories, -> { order(:collected_on) }
-  has_many :board_histories, -> { order(:collected_on) }
-  has_many :issue_stats
-  has_many :activities, -> { order(created_at: :desc) }
+  has_many :columns, -> { order(:order) }, dependent: :delete_all
+  has_many :repo_histories, -> { order(:collected_on) }, dependent: :delete_all
+  has_many :board_histories, -> { order(:collected_on) }, dependent: :delete_all
+  has_many :issue_stats, dependent: :delete_all
+  has_many :activities, -> { order(created_at: :desc) }, dependent: :delete_all
 
   validates :name, presence: true
   validates :type, presence: true
