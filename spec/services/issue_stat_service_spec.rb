@@ -15,6 +15,7 @@ describe IssueStatService do
     it { expect(subject.lifetimes.first.column).to eq first_column }
     it { expect(subject.lifetimes.first.in_at).to_not be_nil }
     it { expect(subject.lifetimes.first.out_at).to be_nil }
+    it { expect(subject.column).to eq board.columns.first }
   end
 
   describe '.move' do
@@ -28,6 +29,7 @@ describe IssueStatService do
       it { expect(subject.lifetimes.last.column).to eq column }
       it { expect(subject.lifetimes.last.out_at).to be_nil }
       it { expect(subject.lifetimes.first.out_at).to_not be_nil }
+      it { expect(subject.column).to eq column }
     end
 
     context 'With IssueStat' do

@@ -1,5 +1,6 @@
 class IssueStat < ActiveRecord::Base
   belongs_to :board
+  belongs_to :column
   has_many :lifetimes, dependent: :delete_all
 
   validates :number, presence: true
