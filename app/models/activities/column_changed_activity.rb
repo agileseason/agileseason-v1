@@ -5,7 +5,7 @@ module Activities
         board: issue_stat.board,
         user: user,
         issue_stat: issue_stat,
-        data: { column_from: column_from, column_to: column_to }
+        data: { column_from: column_from.try(:name), column_to: column_to.try(:name) }
       )
     end
 
