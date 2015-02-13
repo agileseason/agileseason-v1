@@ -13,9 +13,8 @@
             = render partial: 'issues/new', locals: { board: @board, issue: @issue, labels: @labels }
 
           .issues.scroller
-            - @issues_new[column.id].each do |board_issue|
-              - issue = board_issue.issue
-              - next if k(:issue, issue).archived?(@board)
+            - @board_issues[column.id].each do |issue|
+              - next if issue.archive?
               .issue.draggable class="#{issue.state} issue-#{issue.number}" data-number="#{issue.number}"
 
                 = render partial: 'issues/labels', locals: { issue: issue, board: @board }

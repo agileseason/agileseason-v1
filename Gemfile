@@ -31,14 +31,15 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'capistrano', '3.2.1'
-  gem 'capistrano-rails'
   gem 'capistrano-bundler'
-  gem 'capistrano-rbenv'
   gem 'capistrano-cookbook', require: false
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv'
   gem 'capistrano-sidekiq'
   gem 'guard'
   gem 'meta_request'
   gem 'quiet_assets'
+  gem 'rack-mini-profiler'
   gem 'spring'
 end
 

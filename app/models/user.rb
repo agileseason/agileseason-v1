@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   end
 
   def owner?(board)
-    boards.find_by(id: board.id).present?
+    board.user_id == id
   end
 
   private
