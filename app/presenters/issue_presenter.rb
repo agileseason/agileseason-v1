@@ -35,6 +35,7 @@ class IssuePresenter < Keynote::Presenter
     IssueStatService.archived?(board, number)
   end
 
+  # FIX : Remove if unnecessary.
   def body_empty?
     issue.body == nil || issue.body.split("<!---").first.blank?
   end
