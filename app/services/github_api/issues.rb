@@ -6,7 +6,7 @@ class GithubApi
         .sort { |a, b| b.updated_at <=> a.updated_at }
     end
 
-    def board_issues(board)
+    def old_board_issues(board)
       board_hash = board.github_labels.each_with_object({}) { |label, hash| hash[label] = [] }
       issues(board).each do |issue|
         label_name = find_label_name(board, issue)
@@ -15,7 +15,7 @@ class GithubApi
       board_hash
     end
 
-    def new_board_issues(board)
+    def board_issues(board)
       result_hash = board.columns.each_with_object({}) { |column, hash| hash[column.id] = [] }
       mapper = IssueStatsMapper.new(board)
       issues(board).each_with_object(result_hash) do |issue, hash|
@@ -46,7 +46,7 @@ class GithubApi
         number,
         issue.title,
         issue.body,
-        labels: fetch_labels(issue, column)
+        labels: issue.labels
       )
     end
 
@@ -94,10 +94,6 @@ class GithubApi
         move_to(board, column, issue.number, issue)
         column.label_name
       end
-    end
-
-    def fetch_labels(issue, column)
-      (issue.labels.map(&:name) - column.board.github_labels) << column.label_name
     end
 
     def open_issues(board)

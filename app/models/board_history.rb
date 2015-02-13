@@ -12,7 +12,7 @@ class BoardHistory < ActiveRecord::Base
     issues_group = board_issues.each_with_object({}) { |pair, mem| mem[pair[0]] = pair[1].try(:size).to_i }
     total_issues = issues_group.sum { |e| e[1] }
     self.data = board.columns.each_with_object([]) do |column, data|
-      count = issues_group[column.label_name]
+      count = issues_group[column.id]
       data << {
         column_id: column.id,
         issues: count,

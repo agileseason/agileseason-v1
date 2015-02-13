@@ -36,7 +36,7 @@ describe GithubApi::Issues do
 
   describe '#board_issues' do
     subject { service.board_issues(board) }
-    let(:board) { build(:board, :with_columns, number_of_columns: 2) }
+    let(:board) { create(:board, :with_columns, number_of_columns: 2) }
     let(:column_1) { board.columns.first }
     let(:column_2) { board.columns.second }
 
@@ -44,13 +44,14 @@ describe GithubApi::Issues do
       before { allow_any_instance_of(Octokit::Client).to receive(:issues).and_return([]) }
 
       it { is_expected.to have(2).items }
-      it { expect(subject.first.first).to eq column_1.label_name }
-      it { expect(subject[column_1.label_name]).to be_empty }
+      it { expect(subject.first.first).to eq column_1.id }
+      it { expect(subject[column_1.id]).to be_empty }
+      it { expect(subject[column_2.id]).to be_empty }
     end
 
     context :columns_with_issues do
-      let(:issue) { OpenStruct.new(number: 1, state: state, labels: [label]) }
-      let(:label) { OpenStruct.new(name: label_name) }
+      let(:issue) { OpenStruct.new(number: 1, state: state) }
+      let!(:issue_stat) { create(:issue_stat, number: issue.number, board: board, column: column) }
       let(:state) { 'open' }
       before do
         allow_any_instance_of(Octokit::Client)
@@ -67,20 +68,16 @@ describe GithubApi::Issues do
 
       context 'unknown open issues added to first column' do
         let(:board) { create(:board, :with_columns) }
-        let(:label_name) { 'bug' }
-        it { expect(subject[column_1.label_name]).to eq [issue] }
-      end
-
-      context 'unknown closed issues DON`T added to first column' do
-        let(:state) { 'closed' }
-        let(:label_name) { 'bug' }
-        it { expect(subject[column_1.label_name]).to be_empty }
+        let(:column) { column_1 }
+        it { expect(subject[column_1.id]).to have(1).item }
+        it { expect(subject[column_1.id].first.issue).to eq issue }
       end
 
       context 'known issues dont move to first column' do
-        let(:label_name) { column_2.label_name }
-        it { expect(subject[column_1.label_name]).to be_empty }
-        it { expect(subject[column_2.label_name]).to eq [issue] }
+        let(:column) { column_2 }
+        it { expect(subject[column_1.id]).to be_empty }
+        it { expect(subject[column_2.id]).to have(1).items }
+        it { expect(subject[column_2.id].first.issue).to eq issue }
       end
     end
   end
