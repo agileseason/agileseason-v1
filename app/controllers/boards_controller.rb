@@ -25,7 +25,6 @@ class BoardsController < ApplicationController
   def create
     @board = current_user.boards.new(board_params)
     @board.columns << build_columns
-    github_api.sync_labels(@board)
 
     if @board.save
       redirect_to board_url(@board)
