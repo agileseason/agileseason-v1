@@ -4,12 +4,7 @@ class IssueStatsMapper
   end
 
   def [](issue)
-    issue_stat = issue_stats_map[issue.number]
-    unless issue_stat
-      issue_stat = IssueStatService.find_or_create_issue_stat(@board, issue)
-      issue_stats_map[issue.number] = issue_stat
-    end
-    issue_stat
+    issue_stats_map[issue.number] || fix_missing(issue)
   end
 
   private
@@ -22,5 +17,14 @@ class IssueStatsMapper
     @issue_stats_map ||= @board.issue_stats.each_with_object({}) do |issue_stat, hash|
       hash[issue_stat.number] = issue_stat
     end
+  end
+
+  def fix_missing(issue)
+    issue_stats_map[issue.number] = IssueStatService.find_or_create_issue_stat(@board, issue) if issue.number > last_number
+  end
+
+  # FIX : Remove duplicates with IssueStatsWroker.
+  def last_number
+    @last_number ||= @board.issue_stats.maximum(:number).to_i
   end
 end
