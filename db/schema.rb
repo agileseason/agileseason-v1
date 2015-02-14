@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150204051508) do
+ActiveRecord::Schema.define(version: 20150212043836) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "user_id"
@@ -68,9 +68,11 @@ ActiveRecord::Schema.define(version: 20150204051508) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "archived_at"
+    t.integer  "column_id"
   end
 
   add_index "issue_stats", ["board_id"], name: "index_issue_stats_on_board_id"
+  add_index "issue_stats", ["column_id"], name: "index_issue_stats_on_column_id"
 
   create_table "lifetimes", force: :cascade do |t|
     t.integer  "issue_stat_id"

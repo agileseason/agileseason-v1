@@ -36,7 +36,7 @@ describe GithubApi::Issues do
 
   describe '#board_issues' do
     subject { service.board_issues(board) }
-    let(:board) { build(:board, :with_columns, number_of_columns: 2) }
+    let(:board) { create(:board, :with_columns, number_of_columns: 2) }
     let(:column_1) { board.columns.first }
     let(:column_2) { board.columns.second }
 
@@ -44,13 +44,14 @@ describe GithubApi::Issues do
       before { allow_any_instance_of(Octokit::Client).to receive(:issues).and_return([]) }
 
       it { is_expected.to have(2).items }
-      it { expect(subject.first.first).to eq column_1.label_name }
-      it { expect(subject[column_1.label_name]).to be_empty }
+      it { expect(subject.first.first).to eq column_1.id }
+      it { expect(subject[column_1.id]).to be_empty }
+      it { expect(subject[column_2.id]).to be_empty }
     end
 
     context :columns_with_issues do
-      let(:issue) { OpenStruct.new(number: 1, state: state, labels: [label]) }
-      let(:label) { OpenStruct.new(name: label_name) }
+      let(:issue) { OpenStruct.new(number: 1, state: state) }
+      let!(:issue_stat) { create(:issue_stat, number: issue.number, board: board, column: column) }
       let(:state) { 'open' }
       before do
         allow_any_instance_of(Octokit::Client)
@@ -67,20 +68,16 @@ describe GithubApi::Issues do
 
       context 'unknown open issues added to first column' do
         let(:board) { create(:board, :with_columns) }
-        let(:label_name) { 'bug' }
-        it { expect(subject[column_1.label_name]).to eq [issue] }
-      end
-
-      context 'unknown closed issues DON`T added to first column' do
-        let(:state) { 'closed' }
-        let(:label_name) { 'bug' }
-        it { expect(subject[column_1.label_name]).to be_empty }
+        let(:column) { column_1 }
+        it { expect(subject[column_1.id]).to have(1).item }
+        it { expect(subject[column_1.id].first.issue).to eq issue }
       end
 
       context 'known issues dont move to first column' do
-        let(:label_name) { column_2.label_name }
-        it { expect(subject[column_1.label_name]).to be_empty }
-        it { expect(subject[column_2.label_name]).to eq [issue] }
+        let(:column) { column_2 }
+        it { expect(subject[column_1.id]).to be_empty }
+        it { expect(subject[column_2.id]).to have(1).items }
+        it { expect(subject[column_2.id].first.issue).to eq issue }
       end
     end
   end
@@ -89,8 +86,8 @@ describe GithubApi::Issues do
     subject { service.create_issue(board, issue) }
     let(:board) { create(:board, :with_columns, number_of_columns: 2) }
     let(:issue) { OpenStruct.new(number: 1, title: 'title_1', body: 'body_1', labels: labels) }
-    let(:labels) { ['bug', 'feature', ''] }
-    let(:expected_labels) { ['bug', 'feature', board.columns.first.label_name] }
+    let(:labels) { ['bug', 'feature'] }
+    let(:expected_labels) { ['bug', 'feature'] }
     before { allow_any_instance_of(Octokit::Client).to receive(:create_issue).and_return(issue) }
     after { subject }
 
@@ -107,7 +104,7 @@ describe GithubApi::Issues do
     subject { service.move_to(board, move_to_column, issue.number) }
     let(:board) { create(:board, :with_columns, user: user) }
     let(:move_to_column) { board.columns.first }
-    let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: '', labels: []) }
+    let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: '', labels: ['feature']) }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
     before { allow_any_instance_of(Octokit::Client).to receive(:update_issue).and_return(issue) }
     before { allow(IssueStatService).to receive(:move!) }
@@ -125,7 +122,7 @@ describe GithubApi::Issues do
 
     context :add_stats_for_missing_columns do
       let(:board) { create(:board, :with_columns, number_of_columns: 3) }
-      let(:expected_labels) { { labels: [move_to_column.label_name] } }
+      let(:expected_labels) { { labels: issue.labels } }
       let(:current) { Time.new(2014, 11, 19) }
       before { allow(Time).to receive(:current).and_return(current) }
       after { subject }

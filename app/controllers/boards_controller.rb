@@ -11,7 +11,7 @@ class BoardsController < ApplicationController
   end
 
   def show
-    @issues = github_api.board_issues(@board)
+    @board_issues = github_api.board_issues(@board)
     @labels = github_api.labels(@board)
     @issue = Issue.new(labels: @labels.map(&:name))
   end
@@ -24,7 +24,6 @@ class BoardsController < ApplicationController
   def create
     @board = current_user.boards.new(board_params)
     @board.columns << build_columns
-    github_api.sync_labels(@board)
 
     if @board.save
       redirect_to board_url(@board)

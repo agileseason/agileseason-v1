@@ -4,7 +4,7 @@ class IssuePresenter < Keynote::Presenter
 
   def labels_html(board)
     build_html do
-      display_labels(board).each do |label|
+      labels.each do |label|
         div class: :label, style: "background-color:##{label.color}; color:##{color(label)}" do
           label.name
         end
@@ -35,10 +35,7 @@ class IssuePresenter < Keynote::Presenter
     IssueStatService.archived?(board, number)
   end
 
-  def display_labels(board)
-    labels.select { |label| !board.column_labels.include?(label.name) }
-  end
-
+  # FIX : Remove if unnecessary.
   def body_empty?
     issue.body == nil || issue.body.split("<!---").first.blank?
   end

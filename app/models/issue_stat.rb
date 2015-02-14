@@ -1,5 +1,6 @@
 class IssueStat < ActiveRecord::Base
   belongs_to :board
+  belongs_to :column
   has_many :lifetimes, dependent: :delete_all
 
   validates :number, presence: true
@@ -17,6 +18,10 @@ class IssueStat < ActiveRecord::Base
 
   def elapsed_days
     elapsed_time / 86400
+  end
+
+  def closed?
+    closed_at.present?
   end
 
   def archived?
