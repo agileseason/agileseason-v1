@@ -24,6 +24,7 @@ $(document).on 'page:change', ->
     $content = $('> .modal-content', $modal)
     $content.children().trigger 'modal:close'
     $modal.hide()
+    $('.b-issue-modal', $modal).remove()
 
     # страница борда
     return unless document.body.id == 'boards_show'

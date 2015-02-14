@@ -4,6 +4,7 @@
 @import globals/variables
 @import mixins/avatar
 @import mixins/ajax_link
+@import mixins/button
 @import mixins/close
 
 .b-issue-modal
@@ -214,7 +215,8 @@
       position: absolute
 
     .edit-link
-      +ajax_link
+      +button
+      display: inline-block
       margin-top: 10px
 
   .markup-switcher

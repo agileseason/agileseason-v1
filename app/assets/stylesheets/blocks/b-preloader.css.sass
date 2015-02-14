@@ -1,7 +1,16 @@
 $image-path: "blocks/b-preloader"
 
-.b-preloader.horizontal
-  background: inline-image("#{$image-path}/horizontal-preloader.gif") no-repeat 0 0
-  height: 11px
-  margin: 0 0 0 40px
-  width: 80px
+.b-preloader
+  background: inline-image("#{$image-path}/button-preloader.gif") no-repeat 0 0
+  height: 10px
+  width: 30px
+  margin: 0 auto
+  display: inline-block
+  vertical-align: top
+
+  &.horizontal
+    background: inline-image("#{$image-path}/horizontal-preloader.gif") no-repeat 0 0 transparent
+    height: 11px
+    margin: 0 0 0 40px
+    width: 80px
+    display: block
