@@ -6,15 +6,6 @@ class GithubApi
         .sort { |a, b| b.updated_at <=> a.updated_at }
     end
 
-    def old_board_issues(board)
-      board_hash = board.github_labels.each_with_object({}) { |label, hash| hash[label] = [] }
-      issues(board).each do |issue|
-        label_name = find_label_name(board, issue)
-        board_hash[label_name] << issue if label_name
-      end
-      board_hash
-    end
-
     def board_issues(board)
       result_hash = board.columns.each_with_object({}) { |column, hash| hash[column.id] = [] }
       mapper = IssueStatsMapper.new(board)
@@ -25,7 +16,12 @@ class GithubApi
     end
 
     def create_issue(board, issue)
-      github_issue = client.create_issue(board.github_id, issue.title, issue.body, labels: issue.labels)
+      github_issue = client.create_issue(
+        board.github_id,
+        issue.title,
+        issue.body,
+        labels: issue.labels
+      )
       IssueStatService.create!(board, github_issue)
       github_issue
     end
@@ -82,18 +78,6 @@ class GithubApi
     end
 
     private
-
-    def find_label_name(board, issue)
-      column_names = board.github_labels
-      label = issue.labels.detect { |e| column_names.include?(e.name) }
-      if label
-        label.name
-      elsif issue.state == 'open'
-        column = board.columns.first
-        move_to(board, column, issue.number, issue)
-        column.label_name
-      end
-    end
 
     def open_issues(board)
       client.issues(board.github_id)

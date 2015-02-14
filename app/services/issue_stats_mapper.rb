@@ -23,13 +23,4 @@ class IssueStatsMapper
       hash[issue_stat.number] = issue_stat
     end
   end
-
-  #def issue_stats_groups
-    #@issue_stats_groups ||= begin
-      #hash = board.columns.each_with_object({}) { |column, hash| hash[column.id] = [] }
-      #board.issue_stats.each do |issue_stat|
-        #hash[issue_stat.column.id] << issue_stat
-      #end
-    #end
-  #end
 end
