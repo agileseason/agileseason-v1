@@ -4,7 +4,10 @@ class AddColumnIdToIssueStats < ActiveRecord::Migration
     add_index :issue_stats, [:column_id]
 
     IssueStat.all.each do |issue_stat|
-      issue_stat.update(column: issue_stat.board.columns.first) if issue_stat.board && !issue_stat.column
+      if issue_stat.board && !issue_stat.column
+        column = issue_stat.closed? ? issue_stat.board.columns.last : issue_stat.board.columns.first
+        issue_stat.update(column: column)
+      end
     end
   end
 

@@ -69,6 +69,20 @@ RSpec.describe IssueStat, type: :model do
     end
   end
 
+  describe '#closed?' do
+    subject { issue_stat.closed? }
+
+    context :false do
+      let(:issue_stat) { build(:issue_stat, closed_at: nil) }
+      it { is_expected.to eq false }
+    end
+
+    context :true do
+      let(:issue_stat) { build(:issue_stat, closed_at: Time.current) }
+      it { is_expected.to eq true }
+    end
+  end
+
   describe '#archived?' do
     subject { issue_stat.archived? }
 

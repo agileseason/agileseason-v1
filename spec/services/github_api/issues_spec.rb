@@ -86,8 +86,8 @@ describe GithubApi::Issues do
     subject { service.create_issue(board, issue) }
     let(:board) { create(:board, :with_columns, number_of_columns: 2) }
     let(:issue) { OpenStruct.new(number: 1, title: 'title_1', body: 'body_1', labels: labels) }
-    let(:labels) { ['bug', 'feature', ''] }
-    let(:expected_labels) { ['bug', 'feature', board.columns.first.label_name] }
+    let(:labels) { ['bug', 'feature'] }
+    let(:expected_labels) { ['bug', 'feature'] }
     before { allow_any_instance_of(Octokit::Client).to receive(:create_issue).and_return(issue) }
     after { subject }
 
@@ -104,7 +104,7 @@ describe GithubApi::Issues do
     subject { service.move_to(board, move_to_column, issue.number) }
     let(:board) { create(:board, :with_columns, user: user) }
     let(:move_to_column) { board.columns.first }
-    let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: '', labels: []) }
+    let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: '', labels: ['feature']) }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
     before { allow_any_instance_of(Octokit::Client).to receive(:update_issue).and_return(issue) }
     before { allow(IssueStatService).to receive(:move!) }
@@ -122,7 +122,7 @@ describe GithubApi::Issues do
 
     context :add_stats_for_missing_columns do
       let(:board) { create(:board, :with_columns, number_of_columns: 3) }
-      let(:expected_labels) { { labels: [move_to_column.label_name] } }
+      let(:expected_labels) { { labels: issue.labels } }
       let(:current) { Time.new(2014, 11, 19) }
       before { allow(Time).to receive(:current).and_return(current) }
       after { subject }

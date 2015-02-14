@@ -25,8 +25,7 @@ class GithubApi
     end
 
     def create_issue(board, issue)
-      labels = issue.labels.reject(&:blank?) << board.columns.first.label_name
-      github_issue = client.create_issue(board.github_id, issue.title, issue.body, labels: labels)
+      github_issue = client.create_issue(board.github_id, issue.title, issue.body, labels: issue.labels)
       IssueStatService.create!(board, github_issue)
       github_issue
     end
