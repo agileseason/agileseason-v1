@@ -29,7 +29,7 @@ module Graphs
     end
 
     def last_number
-      @board.issue_stats.maximum(:number).to_i
+      @last_number ||= @board.issue_stats.maximum(:number).to_i
     end
   end
 end
