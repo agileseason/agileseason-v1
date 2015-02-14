@@ -1,7 +1,7 @@
 describe BoardIssue do
   let(:board_issue) { BoardIssue.new(issue, issue_stat) }
-  let(:issue) { }
-  let(:issue_stat) { }
+  let(:issue) {}
+  let(:issue_stat) {}
 
   describe '#number' do
     subject { board_issue.number }
