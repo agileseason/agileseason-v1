@@ -5,6 +5,8 @@ class Activity < ActiveRecord::Base
 
   serialize :data
 
+  validates :user, presence: true
+
   def description
   end
 end
