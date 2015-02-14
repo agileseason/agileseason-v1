@@ -11,7 +11,7 @@ class GithubApi
       mapper = IssueStatsMapper.new(board)
       issues(board).each_with_object(result_hash) do |issue, hash|
         issue_stat = mapper[issue]
-        hash[issue_stat.column.id] << BoardIssue.new(issue, issue_stat)
+        hash[issue_stat.column.id] << BoardIssue.new(issue, issue_stat) if issue_stat
       end
     end
 
