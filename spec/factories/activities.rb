@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :activity do
-    user nil
+    user
     board nil
     data nil
   end
