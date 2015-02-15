@@ -28,4 +28,34 @@ describe BoardIssue do
       it { is_expected.to eq false }
     end
   end
+
+  describe '#open?' do
+    subject { board_issue.open? }
+    let(:issue) { OpenStruct.new(state: state) }
+
+    context :true do
+      let(:state) { 'open' }
+      it { is_expected.to eq true }
+    end
+
+    context :false do
+      let(:state) { 'closed' }
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe '#closed?' do
+    subject { board_issue.closed? }
+    let(:issue) { OpenStruct.new(state: state) }
+
+    context :true do
+      let(:state) { 'closed' }
+      it { is_expected.to eq true }
+    end
+
+    context :false do
+      let(:state) { 'open' }
+      it { is_expected.to eq false }
+    end
+  end
 end

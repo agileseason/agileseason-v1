@@ -27,20 +27,15 @@ class IssuePresenter < Keynote::Presenter
     end
   end
 
-  def current_column?(columns, current_column)
-    columns.any? { |column| current_column == column.name.split('] ').last }
-  end
-
   def archived?(board)
     IssueStatService.archived?(board, number)
   end
 
-  # FIX : Remove if unnecessary.
   def body_empty?
-    issue.body == nil || issue.body.split("<!---").first.blank?
+    issue.body.blank? || issue.body.strip.start_with?('<!---')
   end
 
-  def first_letter(string)
-    string.slice(0, 1).capitalize + string.slice(1..-1)
+  def title
+    issue.title.slice(0, 1).capitalize + issue.title.slice(1..-1)
   end
 end

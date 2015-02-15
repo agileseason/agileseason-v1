@@ -11,4 +11,12 @@ class BoardIssue
   def archive?
     @issue_stat.archived?
   end
+
+  def open?
+    state == 'open'
+  end
+
+  def closed?
+    state == 'closed'
+  end
 end
