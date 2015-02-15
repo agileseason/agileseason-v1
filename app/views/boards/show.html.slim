@@ -21,7 +21,7 @@
 
                 .issue-title
                   a.issue-name.show-issue-modal data-number="#{issue.number}"
-                    = k(:issue, issue).first_letter(issue.title)
+                    = k(:issue, issue).title
                   a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
                   /.due-date Feb 12, 13:00
 
@@ -31,15 +31,15 @@
                 - if issue.assignee
                   = render partial: 'issues/assignee', locals: { issue: issue }
 
-                span.octicon.octicon-book class="#{'show' unless k(:issue, issue).body_empty?}"
-                span.octicon.octicon-comment-discussion class="#{'show' unless issue.comments == 0}"
+                span.octicon.octicon-book class="#{:show unless k(:issue, issue).body_empty?}"
+                span.octicon.octicon-comment-discussion class="#{:show unless issue.comments == 0}"
 
                 - unless issue.comments.blank?
                   span.octicon.octicon-comment
 
-                - if issue.state == "open"
+                - if issue.open?
                   a.state.open href="#{close_board_issues_url(@board, issue.number)}" title="click to close" Close
-                - elsif issue.state == "closed"
+                - elsif issue.closed?
                   a.button.archive href="#{archive_board_issues_url(@board, issue.number)}" data-type='json' data-remote='true' Archive
 
 .issue-modal
