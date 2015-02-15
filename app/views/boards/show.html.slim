@@ -34,7 +34,7 @@
                 span.octicon.octicon-book class="#{'show' unless k(:issue, issue).body_empty?}"
                 span.octicon.octicon-comment-discussion class="#{'show' unless issue.comments == 0}"
 
-                - unless issue.all_comments.blank?
+                - unless issue.comments.blank?
                   span.octicon.octicon-comment
 
                 - if issue.state == "open"
