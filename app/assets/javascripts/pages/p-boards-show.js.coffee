@@ -58,7 +58,6 @@ $(document).on 'page:change', ->
     $(@).parents('.labels-block').find('input:checked').each ->
       labels.push $(@).val()
       html_labels.push('<div class="label" style="' + $(@).parent().attr('style') + '">' + $(@).val() + '</div>')
-    labels.push '[' + $('.current-issue').closest('.board-column').data('column') + '] ' + $('.current-issue').closest('.board-column').data('column-name')
 
     # обновить текущий список лейблов тикета на борде и в попапе
     $('.b-issue-labels', '.current-issue, .issue-modal').html(html_labels)

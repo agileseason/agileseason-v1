@@ -3,7 +3,7 @@
 .board data-github_name="#{@board.github_name}"
   .board-columns
     - @board.columns.each do |column|
-        .board-column.droppable data-column="#{column.id}" data-column-name="#{column.name}"
+        .board-column.droppable data-column="#{column.id}"
           .board-title
             = column.name
 
