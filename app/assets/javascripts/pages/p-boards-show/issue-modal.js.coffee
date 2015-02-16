@@ -96,10 +96,10 @@ $(document).on 'modal:load', '.b-issue-modal', ->
       $('.issue-comments', $issue_modal)
         .prepend('<div class="b-preloader horizontal"></div><br><br>')
 
-      $.get $(@).attr('href'), comment: new_content, =>
+      $.get $(@).attr('href'), comment: new_content, ->
         # перезагрузить весь список комментариев
         comments_url = $('.issue-comments', $issue_modal).data('url')
-        $.get comments_url, (comments) =>
+        $.get comments_url, (comments) ->
           $('.issue-comments', $issue_modal).html(comments)
           $('.b-preloader', $issue_modal).hide()
 
