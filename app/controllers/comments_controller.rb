@@ -10,4 +10,9 @@ class CommentsController < ApplicationController
     github_api.update_comment(@board, params[:number], params[:comment])
     render nothing: true
   end
+
+  def delete
+    github_api.delete_comment(@board, params[:number])
+    render nothing: true
+  end
 end

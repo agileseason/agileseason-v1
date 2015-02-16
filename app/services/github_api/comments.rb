@@ -11,5 +11,9 @@ class GithubApi
     def update_comment(board, number, comment)
       client.update_comment(board.github_id, number, comment)
     end
+
+    def delete_comment(board, number)
+      client.delete_comment(board.github_id, number)
+    end
   end
 end

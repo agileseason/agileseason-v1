@@ -13,7 +13,10 @@
       .edit
         .comment.editable.update-comment
           .edit-content = markdown(comment.body)
-          .edit-link edit
+          .controls
+            .edit-link edit
+            .delete-link data-delete="#{delete_comment_board_issues_url(@board, comment.id)}"
+              | delete
 
         .edit-form
           textarea.textarea-comment.field = comment.body
@@ -24,5 +27,6 @@
             a.cancel Cancel
             button.button[
               remote='true'
+              data-delete="#{delete_comment_board_issues_url(@board, comment.id)}"
               href="#{update_comment_board_issues_url(@board, comment.id)}"]
                 | Update

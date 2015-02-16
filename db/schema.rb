@@ -40,12 +40,12 @@ ActiveRecord::Schema.define(version: 20150215122549) do
 
   create_table "boards", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "name",        limit: 255
-    t.string   "type",        limit: 255
+    t.string   "name"
+    t.string   "type"
     t.integer  "github_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "github_name", limit: 255
+    t.string   "github_name"
     t.text     "settings"
   end
 
@@ -53,8 +53,8 @@ ActiveRecord::Schema.define(version: 20150215122549) do
 
   create_table "columns", force: :cascade do |t|
     t.integer  "board_id"
-    t.string   "name",       limit: 255
-    t.string   "color",      limit: 255
+    t.string   "name"
+    t.string   "color"
     t.integer  "order"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -100,9 +100,9 @@ ActiveRecord::Schema.define(version: 20150215122549) do
   add_index "repo_histories", ["collected_on", "board_id"], name: "index_repo_histories_on_collected_on_and_board_id", unique: true
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",           limit: 255, null: false
-    t.string   "github_username", limit: 255, null: false
-    t.string   "remember_token",  limit: 255
+    t.string   "email",           null: false
+    t.string   "github_username", null: false
+    t.string   "remember_token"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

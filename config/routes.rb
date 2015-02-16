@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
       get ':number/comment', to: 'comments#create', as: :add_comment
       get ':number/update_comment', to: 'comments#update', as: :update_comment
+      get ':number/delete_comment', to: 'comments#delete', as: :delete_comment
       get ':number/comments', to: 'issues#comments', as: :comments
     end
 

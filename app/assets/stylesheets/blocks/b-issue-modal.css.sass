@@ -101,19 +101,23 @@
     width: 100%
 
     &:hover
-      .edit-link
-        display: inline-block
+      .controls
+        display: block
 
     &:last-child
       padding-bottom: 10px
 
-    .edit-link
-      +ajax_link
+    .controls
       display: none
-      font-size: 12px
-      font-style: italic
       margin: 2px 0 0 0
       position: absolute
+
+      .edit-link,
+      .delete-link
+        +ajax_link
+        display: inline-block
+        font-size: 12px
+        font-style: italic
 
   .user-ava
     display: table-cell
