@@ -1,13 +1,6 @@
 ruby:
   enabled: true
   config_file: config/rubocop/default.yml
-  ignore_file: db/schema.rb
-
-scss:
-  enabled: false
-
-coffee_script:
-  enabled: false
 
 AllCops:
   Exclude:
