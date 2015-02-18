@@ -37,7 +37,7 @@ describe IssueStatsMapper do
           let(:number) { issue_stat.number + 1 }
           it { expect(IssueStatService).to receive(:find_or_create_issue_stat) }
         end
-       end
+      end
 
       context '- closed issues import if number create than max(issue_stats.number)' do
         let(:state) { 'closed' }
