@@ -3,4 +3,4 @@ $(document).on 'page:change', ->
 
 $(document).on 'ready page:load', ->
   $('#board_type_boardskanbanboard').click()
-  $('#board_type_boardsscrumboard').prop('disabled', true);
+  $('#board_type_boardsscrumboard').prop('disabled', true)
