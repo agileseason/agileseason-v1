@@ -1,4 +1,10 @@
 RSpec.describe Column, type: :model do
+  describe :validates do
+    subject { Column.new }
+    it { is_expected.to validate_presence_of :name }
+    it { is_expected.to validate_presence_of :board }
+  end
+
   describe '.label_name' do
     let(:column) { build(:column, name: "backlog", order: 1) }
     subject { column.label_name }

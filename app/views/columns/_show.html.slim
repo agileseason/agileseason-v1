@@ -1,0 +1,12 @@
+.board-column.droppable data-column="#{column.id}"
+  .board-title
+    = column.name
+
+  .new-issue.ajax-link
+    a.ajax-link New issue
+  .inline-form
+    = render partial: 'issues/new', locals: { board: @board, issue: @issue, labels: @labels }
+
+  .issues.scroller
+    - @board_issues[column.id].reject(&:archive?).each do |issue|
+      = render partial: 'issues/show', locals: { issue: issue }

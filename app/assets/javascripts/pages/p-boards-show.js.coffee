@@ -35,11 +35,17 @@ $(document).on 'page:change', ->
     $('#issue_title', $(@).next()).focus()
     $(@).hide()
 
-  # закрыть форму тикета
+  # закрыть форму создания тикета и колонки
   $('.board-column').on 'click', '.cancel', ->
-    $(@).closest('.new-issue-form').prev().show()
-    $(@).closest('.new-issue-form').hide()
+    $(@).closest('.inline-form').prev().show()
+    $(@).closest('.inline-form').hide()
     false
+
+  # открыть форму добавления колонки
+  $('.new-column').click ->
+    $(@).next().show()
+    $('#column_name', $(@).next()).focus()
+    $(@).hide()
 
   # раскрыть попап с лейблами тикета
   $('.board-column, .issue-modal').on 'click', '.add-label', ->

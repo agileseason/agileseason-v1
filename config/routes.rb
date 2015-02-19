@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       get ':number/comments', to: 'issues#comments', as: :comments
     end
 
+    resource :columns, only: [:new, :create]
 
     resource :settings, only: [:show, :update] do
       member do
