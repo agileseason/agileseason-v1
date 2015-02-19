@@ -29,16 +29,16 @@ $(document).on 'page:change', ->
     # страница борда
     return unless document.body.id == 'boards_show'
 
-  # открыть форму добавления тикета
-  $('.new-issue').click ->
+  # открыть форму добавления тикета или колонки
+  $('.new-issue, .new-column').click ->
     $(@).next().show()
-    $('#issue_title', $(@).next()).focus()
+    $('textarea', $(@).next()).first().focus()
     $(@).hide()
 
-  # закрыть форму тикета
+  # закрыть форму создания тикета или колонки
   $('.board-column').on 'click', '.cancel', ->
-    $(@).closest('.new-issue-form').prev().show()
-    $(@).closest('.new-issue-form').hide()
+    $(@).closest('.inline-form').prev().show()
+    $(@).closest('.inline-form').hide()
     false
 
   # раскрыть попап с лейблами тикета

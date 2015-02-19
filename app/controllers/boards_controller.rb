@@ -12,7 +12,9 @@ class BoardsController < ApplicationController
 
   def show
     @board_issues = github_api.board_issues(@board)
+    # FIX : Add cache for labels
     @labels = github_api.labels(@board)
+    # FIX : Move to helper_method and remove @issue
     @issue = Issue.new(labels: @labels.map(&:name))
   end
 

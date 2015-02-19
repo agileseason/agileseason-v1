@@ -1,6 +1,9 @@
 class Column < ActiveRecord::Base
   belongs_to :board
 
+  validates :name, presence: true
+  validates :board, presence: true
+
   def label_name
     "[#{order}] #{name}"
   end
