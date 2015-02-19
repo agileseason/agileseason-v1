@@ -62,7 +62,7 @@ private
     order = 0
     column_params[:name].select { |name| name.present? }.inject([]) do |mem, name|
       order = order + 1
-      column = Column.new(name: name, color: 'fbca04', order: order)
+      column = Column.new(name: name, color: 'fbca04', order: order, board: @board)
       mem << column
     end
   end
