@@ -18,16 +18,25 @@ $(document).on 'page:change', ->
   $issue_modal.on 'click', '.edit-form .cancel', ->
     close_edit_issue_form($(@).parents('.edit'))
 
+  $issue_modal.on 'click', '.delete-link', ->
+    $.get $(@).data('delete')
+    $(@).closest('.issue-comment').remove()
+
   # сабмит редактирования коммента
   $issue_modal.on 'click', '.edit-form button', ->
     $editable = $('.editable', $(@).parents('.edit'))
     return unless $editable.hasClass 'update-comment'
 
-    $edit_content = $('.editable .edit-content', $(@).parents('.edit'))
     new_content = $('.field', $(@).parents('.edit-form')).val()
 
-    $edit_content.html(new_content)
-    $.get $(@).attr('href'), comment: new_content
+    if new_content.replace(/\s*\n*/g, '') == ''
+      $.get $(@).data('delete')
+      $(@).closest('.issue-comment').remove()
+
+    else
+      $edit_content = $('.editable .edit-content', $(@).parents('.edit'))
+      $edit_content.html(new_content)
+      $.get $(@).attr('href'), comment: new_content
     close_edit_issue_form($(@).parents('.edit'))
 
 $(document).on 'modal:load', '.b-issue-modal', ->
@@ -78,26 +87,27 @@ $(document).on 'modal:load', '.b-issue-modal', ->
 
   # сабмит добавления коммента
   $('.add-comment .edit-form button', $issue_modal).click ->
+    new_content = $('.field', $(@).closest('.edit-form')).val()
+
+    unless new_content.replace(/\s*\n*/g, '') == ''
+      $current_issue = $('.current-issue') # миниатюра открытого тикета
+
+      $issue_modal = $('.issue-modal')
+      $('.issue-comments', $issue_modal)
+        .prepend('<div class="b-preloader horizontal"></div><br><br>')
+
+      $.get $(@).attr('href'), comment: new_content, ->
+        # перезагрузить весь список комментариев
+        comments_url = $('.issue-comments', $issue_modal).data('url')
+        $.get comments_url, (comments) ->
+          $('.issue-comments', $issue_modal).html(comments)
+          $('.b-preloader', $issue_modal).hide()
+
+        # отобразить иконку с комментарием в миниатюре
+        $('.octicon-comment-discussion', $current_issue).show()
+
     close_edit_issue_form($(@).parents('.edit'))
 
-    new_content = $('.field', $(@).closest('.edit-form')).val()
-    $current_issue = $('.current-issue') # миниатюра открытого тикета
-
-    $issue_modal = $('.issue-modal')
-    $('.issue-comments', $issue_modal)
-      .prepend('<div class="b-preloader horizontal"></div><br><br>')
-
-    $.get $(@).attr('href'), comment: new_content, =>
-      # перезагрузить весь список комментариев
-      comments_url = $('.issue-comments', $issue_modal).data('url')
-      $.get comments_url, (comments) =>
-        $('.issue-comments', $issue_modal).html(comments)
-        $('.b-preloader', $issue_modal).hide()
-
-      # отобразить иконку с комментарием в миниатюре
-      $('.octicon-comment-discussion', $current_issue).show()
-
 close_edit_issue_form = ($parent_node) ->
-  console.log 'close edit issue form'
   $('.editable', $parent_node).show()
   $('.edit-form', $parent_node).hide()

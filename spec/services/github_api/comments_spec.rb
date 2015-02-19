@@ -19,4 +19,32 @@ describe GithubApi::Comments do
     subject { service.issue_comments(board, issue.number) }
     it { is_expected.to have(2).items }
   end
+
+  describe '#update_comment' do
+    let(:issue_comment_1) do
+      OpenStruct
+        .new(body: 'some comment', id: 123435345)
+    end
+    before do
+      allow_any_instance_of(Octokit::Client)
+        .to receive(:update_comment)
+        .and_return(issue_comment_1)
+    end
+    subject { service.update_comment(board, issue_comment_1.id, 'new comment') }
+    it { is_expected.to eq issue_comment_1 }
+  end
+
+  describe '#delete_comment' do
+    let(:issue_comment_1) do
+      OpenStruct
+        .new(body: 'some comment', id: 14234235345)
+    end
+    before do
+      allow_any_instance_of(Octokit::Client)
+        .to receive(:delete_comment)
+        .and_return(true)
+    end
+    subject { service.delete_comment(board, issue_comment_1.id) }
+    it { is_expected.to eq true }
+  end
 end
