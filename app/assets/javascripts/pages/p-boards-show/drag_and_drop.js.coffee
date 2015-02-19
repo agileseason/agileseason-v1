@@ -27,12 +27,16 @@ $(document).on 'page:change', ->
     helper: "clone",
     revert: "valid",
     snap: true,
-    scrollSensitivity: 100
+    scroll: true
 
   $(".draggable").on "dragstart", ( event, ui ) ->
     $(@).before('<div class="empty-issue"></div>')
     $('.empty-issue', $(@).parent()).css 'height', $(@).outerHeight()
     $(@).data start_column: $(@).parents('.board-column').data('column')
+
+  $(".draggable").on "drag", ( event, ui ) ->
+    ui.position.top -= $(@).parent().scrollTop()
+    $(@).closest('.scroller').scrollTop = $(@).closest('.scroller').scrollHeight
 
   $(".draggable").on "dragstop", ( event, ui ) ->
     $(@).removeAttr('style')
@@ -40,4 +44,3 @@ $(document).on 'page:change', ->
     $('.board-column').removeClass 'over'
 
   $(".draggable").on "dragcreate", ( event, ui ) ->
-    $(@).parent().scrollTo @
