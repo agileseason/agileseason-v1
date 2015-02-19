@@ -29,23 +29,17 @@ $(document).on 'page:change', ->
     # страница борда
     return unless document.body.id == 'boards_show'
 
-  # открыть форму добавления тикета
-  $('.new-issue').click ->
+  # открыть форму добавления тикета или колонки
+  $('.new-issue, .new-column').click ->
     $(@).next().show()
-    $('#issue_title', $(@).next()).focus()
+    $('textarea', $(@).next()).first().focus()
     $(@).hide()
 
-  # закрыть форму создания тикета и колонки
+  # закрыть форму создания тикета или колонки
   $('.board-column').on 'click', '.cancel', ->
     $(@).closest('.inline-form').prev().show()
     $(@).closest('.inline-form').hide()
     false
-
-  # открыть форму добавления колонки
-  $('.new-column').click ->
-    $(@).next().show()
-    $('#column_name', $(@).next()).focus()
-    $(@).hide()
 
   # раскрыть попап с лейблами тикета
   $('.board-column, .issue-modal').on 'click', '.add-label', ->
