@@ -1,4 +1,4 @@
-.board-column.droppable data-column="#{column.id}"
+.board-column.droppable class="#{:last if k(:board, @board).last_column?(column)}" data-column="#{column.id}"
   .board-title
     = column.name
 

@@ -1,9 +1,12 @@
 class BoardPresenter < Keynote::Presenter
   presents :board
-  delegate :name, :type, to: :board
 
   def name
     raw("#{board.name.try(:gsub, ' ', '&nbsp;')}&nbsp;#{board_type}")
+  end
+
+  def last_column?(column)
+    column.order == board.columns.map(&:order).max
   end
 
   private
