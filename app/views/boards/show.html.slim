@@ -8,7 +8,6 @@
       .new-column.ajax-link
         a.ajax-link New Column
       .inline-form
-        /= render partial: 'issues/new', locals: { board: @board, issue: @issue, labels: @labels }
         = render partial: 'columns/new', locals: { board: @board }
 
 .issue-modal

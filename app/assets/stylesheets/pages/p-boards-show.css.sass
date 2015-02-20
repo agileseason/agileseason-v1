@@ -80,6 +80,10 @@
       +border-radius(4px)
       +box-shadow(0 0 40px rgba(63,63,63,0.1) inset)
 
+    &.last
+      a.button.close
+        display: block
+
     &:first-child
       .new-issue
         display: block
@@ -93,12 +97,6 @@
         margin-left: 260px
         position: relative
         width: 10px
-
-      .state
-        display: block
-
-        &.open
-          display: inline-block
 
   .board-title
     +text-shadow(0px 1px 1px rgba(255,255,255,0.8))
@@ -319,23 +317,7 @@
       &:hover
         color: $text-usual
 
-    .state
-      color: $text-light
-      font-size: 9px
-      letter-spacing: 0.1em
-      text-align: right
-      text-transform: uppercase
-
-      &.open
-        +button
-        display: none
-        float: right
-        font-size: 9px
-        margin: 5px 0 0 0
-        padding: 5px 10px
-        text-align: right
-
-    a.archive
+    a.button
       +button
       float: right
       font-size: 9px
@@ -345,20 +327,5 @@
       text-align: right
       text-transform: uppercase
 
-    .actions
-      list-style: none
-      margin: 0
-      padding: 0
-
-      ul
-        margin: 0
-
-    .move-to
-      ul
-        list-style: none
-        margin: 0
-        padding: 0
-
-    .stats
-      font-size: 10px
-      color: #888
+      &.close
+        display: none
