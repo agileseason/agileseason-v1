@@ -1,6 +1,15 @@
 ruby:
-  enabled: true
+  enabled: false
   config_file: config/rubocop/default.yml
+
+coffee_script:
+  enabled: false
+
+java_script:
+  enabled: false
+
+scss:
+  enabled: false
 
 AllCops:
   Exclude:
