@@ -1,7 +1,24 @@
 resize_lock = false
 
+column_menu = ->
+  $('.board-column').on 'click', '.column-menu', ->
+    $(@).addClass('active').prepend('<div class="overlay"></div>')
+    $(@).find('.popup').show()
+
+  $('.board-column .column-menu').on 'click', '.overlay', ->
+    $(@).parent().find('.popup').hide()
+    $(@).parent().removeClass 'active'
+    $(@).remove()
+
+  $('.column-menu .delete').bind 'ajax:success', (e, data) ->
+    if data.result
+      $(".board-column[data-column='#{data.id}']").hide()
+    else
+      alert(data.message)
+
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
+  column_menu()
 
   $('.show-issue-modal').on 'click', ->
     $(@).closest('.issue').addClass 'current-issue'

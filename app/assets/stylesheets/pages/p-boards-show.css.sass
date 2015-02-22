@@ -98,7 +98,21 @@
         position: relative
         width: 10px
 
-  .board-title
+  .column-menu
+    .popup
+      +popup
+      top: 32px
+      height: 42px
+
+      ul
+        list-style-type: none
+        padding-left: 20px
+        a
+          color: $text-light
+          &:hover
+            color: $text-usual
+
+  .title
     +text-shadow(0px 1px 1px rgba(255,255,255,0.8))
     color: $text-light
     font-size: 16px
@@ -106,6 +120,10 @@
     padding: 10px 0 0 10px
     position: absolute
     top: 0
+
+    span
+      margin-left: 6px
+      opacity: 0.5
 
   .issues
     padding: 0 10px

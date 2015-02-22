@@ -1,5 +1,6 @@
 class Column < ActiveRecord::Base
   belongs_to :board
+  has_many :issue_stats
 
   validates :name, presence: true
   validates :board, presence: true
