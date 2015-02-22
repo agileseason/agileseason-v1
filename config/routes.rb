@@ -5,6 +5,8 @@ Rails.application.routes.draw do
             param: :github_name,
             constraints: { github_name: /[0-9A-Za-z\-_\.]+/ } do
 
+    resources :columns, only: [:new, :create, :destroy]
+
     resource :issues, only: [:new, :create, :show] do
       get ':number/move_to/:column_id', to: 'issues#move_to', as: :move_to_column
       get ':number/close', to: 'issues#close', as: :close
@@ -17,8 +19,6 @@ Rails.application.routes.draw do
       get ':number/delete_comment', to: 'comments#delete', as: :delete_comment
       get ':number/comments', to: 'issues#comments', as: :comments
     end
-
-    resource :columns, only: [:new, :create]
 
     resource :settings, only: [:show, :update] do
       member do

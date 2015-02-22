@@ -1,6 +1,11 @@
 .board-column.droppable class="#{:last if k(:board, @board).last_column?(column)}" data-column="#{column.id}"
-  .board-title
-    = column.name
+  .column-menu
+    a.title
+      = column.name
+      span.octicon.octicon-chevron-down
+    .popup
+      ul
+        li: a.delete href="#{board_column_url(@board, column)}" data-confirm='Are you sure?' data-method='delete' data-remote='true' Remove Column...
 
   .new-issue.ajax-link
     a.ajax-link New issue
