@@ -93,11 +93,9 @@
     &:first-child
       margin-top: 0
 
-  .issue-comments
-
   .issue-comment
     display: table
-    padding: 0 0 30px
+    padding: 0 0 40px
     width: 100%
 
     &:hover
@@ -112,12 +110,20 @@
       margin: 2px 0 0 0
       position: absolute
 
-      .edit-link,
       .delete-link
         +ajax_link
         display: inline-block
         font-size: 12px
         font-style: italic
+        padding: 3px 5px
+
+      .edit-link
+        +button
+        display: inline-block
+        font-size: 11px
+        font-style: normal
+        padding: 3px 8px 1px
+        vertical-align: middle
 
   .user-ava
     display: table-cell

@@ -19,8 +19,9 @@ $(document).on 'page:change', ->
     close_edit_issue_form($(@).parents('.edit'))
 
   $issue_modal.on 'click', '.delete-link', ->
-    $.get $(@).data('delete')
-    $(@).closest('.issue-comment').remove()
+    if window.confirm('Delete comment?')
+      $.get $(@).data('delete')
+      $(@).closest('.issue-comment').remove()
 
   # сабмит редактирования коммента
   $issue_modal.on 'click', '.edit-form button', ->
