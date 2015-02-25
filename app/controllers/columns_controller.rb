@@ -27,6 +27,14 @@ class ColumnsController < ApplicationController
     #redirect_to board_url(@board), notice: message, status: 303
   end
 
+  def move_left
+    redirect_to board_url(@board)
+  end
+
+  def move_right
+    redirect_to board_url(@board)
+  end
+
   private
 
   def column_params
