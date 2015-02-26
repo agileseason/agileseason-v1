@@ -17,6 +17,7 @@ class ColumnsController < ApplicationController
 
   def destroy
     column = @board.columns.find(params[:id])
+    # FIX : Replace json on redirect_to or add animation for column hiding.
     if column.issue_stats.blank?
       column.destroy
       render json: { result: true, message: "Column \"#{column.name}\" was successfully deleted.", id: column.id }
@@ -27,7 +28,26 @@ class ColumnsController < ApplicationController
     #redirect_to board_url(@board), notice: message, status: 303
   end
 
+  def move_left
+    move_to(:left)
+  end
+
+  def move_right
+    move_to(:right)
+  end
+
   private
+
+  def move_to(direction)
+    transporter = ColumnTransporter.new(@board.columns.find(params[:id]))
+    if transporter.can_move?
+      notice = 'Column was successfully moved'
+      transporter.send("move_#{direction}")
+    else
+      notice = 'Can\'t move column with issues!'
+    end
+    redirect_to board_url(@board), notice: notice
+  end
 
   def column_params
     params

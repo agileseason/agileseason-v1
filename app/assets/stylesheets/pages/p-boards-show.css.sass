@@ -115,15 +115,22 @@
     .popup
       +popup
       top: 32px
-      height: 42px
+      height: 106px
 
       ul
         list-style-type: none
-        padding-left: 20px
-        a
-          color: $text-light
-          &:hover
-            color: $text-usual
+        padding: 0 20px
+
+        li
+          padding: 4px 0
+          &.delimiter
+            border-bottom: 1px solid #ccc
+            margin: 6px 0
+            padding: 0
+          a
+            color: $text-light
+            &:hover
+              color: $text-usual
 
   .issues
     padding: 0 10px
