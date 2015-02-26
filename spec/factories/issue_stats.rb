@@ -22,5 +22,13 @@ FactoryGirl.define do
         issue_stat.updated_at = issue_stat.created_at unless issue_stat.updated_at
       end
     end
+
+    trait :archived do
+      closed
+
+      after(:build) do |issue_stat, evaluator|
+        issue_stat.archived_at = issue_stat.closed_at unless issue_stat.archived_at
+      end
+    end
   end
 end
