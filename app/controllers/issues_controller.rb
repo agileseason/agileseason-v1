@@ -27,8 +27,11 @@ class IssuesController < ApplicationController
   end
 
   def close
-    github_api.close(@board, params[:number])
-    redirect_to board_url(@board)
+    issue_stat = github_api.close(@board, params[:number])
+    respond_to do |format|
+      format.html { redirect_to board_url(@board) }
+      format.json { render json: { closed: issue_stat.try(:closed?) } }
+    end
   end
 
   def archive

@@ -21,6 +21,5 @@
     span.octicon.octicon-comment
 
   - if issue.open?
-    a.button.close href="#{close_board_issues_url(@board, issue.number)}" title='Click to close' Close
-  - elsif issue.closed?
-    a.button.archive href="#{archive_board_issues_url(@board, issue.number)}" data-type='json' data-remote='true' Archive
+    a.button.close href="#{close_board_issues_url(@board, issue.number)}" data-type='json' data-remote='true' title='Click to close' Close
+  a.button.archive class="#{:hidden unless issue.closed?}" href="#{archive_board_issues_url(@board, issue.number)}" data-type='json' data-remote='true' Archive
