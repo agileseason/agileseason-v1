@@ -86,6 +86,13 @@ $(document).on 'page:change', ->
   $('.issue .archive').on 'ajax:success', (e, data) ->
     $(e.target).parent('.issue').remove() if data && data.archived
 
+  # изменить тикет и открыть архивацию после успешного закрытия
+  $('.issue .close').on 'ajax:success', (e, data) ->
+    if (data && data.closed)
+      $(e.target).parent('.issue').addClass('closed').removeClass('open')
+      $(e.target).next('.archive').removeClass('hidden')
+      $(e.target).remove()
+
   # пересчитать высоту борда в зависимости от высоты окна браузера
   resize_height()
 
