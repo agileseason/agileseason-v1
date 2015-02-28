@@ -42,8 +42,32 @@ $(document).on 'page:change', ->
 
 $(document).on 'modal:load', '.b-issue-modal', ->
   return unless document.body.id == 'boards_show'
-
+  $current_issue = $('.issue[data-number="' + $(@).closest('.b-issue-modal').data('number') + '"]') # миниатюра открытого тикета
   $issue_modal = $('.issue-modal')
+
+  $('.move-to-column li', $issue_modal).each ->
+    $(@).addClass('active') if $(@).data('column') == $current_issue.closest('.board-column').data('column')
+
+  # Перемещение тикета в попапе
+  $('.move-to-column li', $issue_modal).click ->
+    return if $(@).hasClass 'active'
+
+    # класс активной колонки
+    $('.move-to-column li').removeClass 'active'
+    $(@).addClass 'active'
+
+    # перемещение тикета в DOMe
+    $column = $('.board-column[data-column="' + $(@).data('column') + '"]')
+    clone = $current_issue
+    $current_issue.remove()
+    $('.issues', $column).prepend(clone)
+
+    # урл перемещения
+    board_github_name = $('.board').data('github_name')
+    issue = $current_issue.data('number')
+    column = $(@).data('column')
+    path = "/boards/#{board_github_name}/issues/#{issue}/move_to/#{column}"
+    $.get path
 
   # сабмит названия
   $('.issue-title .edit-form button', $issue_modal).click ->
