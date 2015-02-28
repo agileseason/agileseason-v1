@@ -23,6 +23,7 @@ gem 'virtus'
 gem 'whenever'
 
 group :production do
+  gem 'newrelic_rpm'
   gem 'pg'
   gem 'unicorn'
 end

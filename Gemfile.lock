@@ -197,6 +197,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
+    newrelic_rpm (3.9.9.275)
     nokogiri (1.6.5)
       mini_portile (~> 0.6.0)
     notiffany (0.0.3)
@@ -399,6 +400,7 @@ DEPENDENCIES
   jquery-rails
   keynote
   meta_request
+  newrelic_rpm
   octokit (~> 3.5.2)
   omniauth-github
   pg
