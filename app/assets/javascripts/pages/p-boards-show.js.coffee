@@ -20,7 +20,7 @@ $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
   column_menu()
 
-  $(document).on 'click', '.show-issue-modal', ->
+  $('.issues').on 'click', '.show-issue-modal', ->
     $(@).closest('.issue').addClass 'current-issue'
     $issue_data = $(@).closest('.issue').find('.issue-data').html()
     $issue_modal = $('.issue-modal')
