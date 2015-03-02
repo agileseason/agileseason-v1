@@ -15,6 +15,18 @@ class ColumnsController < ApplicationController
     end
   end
 
+  def edit
+  end
+
+  def update
+    @column = @board.columns.find(params[:id])
+    if @column.update(column_params)
+      redirect_to board_url(@board)
+    else
+      render 'edit'
+    end
+  end
+
   def destroy
     column = @board.columns.find(params[:id])
     # FIX : Replace json on redirect_to or add animation for column hiding.
