@@ -1,4 +1,6 @@
 .board-column.droppable class="#{:last if k(:board, @board).last_column?(column)}" data-column="#{column.id}"
+  .inline-form.rename
+    = render partial: 'columns/edit', locals: { board: @board, column: column }
   .column-menu
     a.title
       = column.name
@@ -7,6 +9,8 @@
       ul
         li: a href="#{move_left_board_column_url(@board, column)}" Move Column Left
         li: a href="#{move_right_board_column_url(@board, column)}" Move Column Right
+        li.delimiter
+        li: a.rename href="#rename" Rename Column...
         li.delimiter
         li: a.delete href="#{board_column_url(@board, column)}" data-confirm='Are you sure?' data-method='delete' data-remote='true' Remove Column...
 
