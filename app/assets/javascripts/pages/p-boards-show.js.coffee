@@ -42,6 +42,8 @@ $(document).on 'page:change', ->
     $content.children().trigger 'modal:close'
     $modal.hide()
     $('.b-issue-modal', $modal).remove()
+    # снять отметку текущего тикета
+    $('.current-issue').removeClass('current-issue')
 
     # страница борда
     return unless document.body.id == 'boards_show'
