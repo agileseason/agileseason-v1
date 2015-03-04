@@ -7,7 +7,7 @@
       .edit.issue-title
         .title.editable
           .octicon.octicon-pencil.edit-link
-          .issue-name.edit-content = issue.title.capitalize
+          .issue-name.edit-content #{issue.title}&nbsp;
 
           a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
           //.due-date Feb 12, 13:00
