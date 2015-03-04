@@ -96,16 +96,11 @@
         div
           .add-label Labels
 
-      - if issue.assignee
-        = render partial: 'issues/assignee', locals: { issue: issue }
-      - else
-        .b-assigned
-          a.assign href="#{assignee_board_issues_url(board, issue.number)}"
-            | Assign yourself
+      = render partial: 'issues/assign', locals: { issue: issue }
 
-      - if issue.state == 'open'
+      - if issue.open?
         a.button.close href="#{close_board_issues_url(board, issue.number)}"
           | Close issue
-      - if issue.state == 'closed'
+      - if issue.closed?
         a.button.archive href="#{archive_board_issues_url(board, issue.number)}"
           | Archive issue

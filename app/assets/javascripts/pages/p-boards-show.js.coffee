@@ -74,6 +74,18 @@ $(document).on 'page:change', ->
   $('.inline-form.rename').find('input[type=submit]').on 'click', ->
     $(@).parents('form').submit()
 
+  # FIX : BEGIN COPY-PASET
+  # раскрыть попап с ???
+  $('.board-column, .issue-modal').on 'click', '.assignee', ->
+    $(@).parent().find('.popup').show()
+    $(@).hide()
+
+  # скрыть попап с ???
+  $('.board-column, .issue-modal').on 'click', '.close-popup', ->
+    $popup = $(@).closest('.popup')
+    $popup.parent().find('.assignee').show()
+    $popup.hide()
+  # END COPY-PASTE
 
   # раскрыть попап с лейблами тикета
   $('.board-column, .issue-modal').on 'click', '.add-label', ->
