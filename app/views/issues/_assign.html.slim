@@ -2,12 +2,12 @@
   .popup
     .close-popup
     .users
-      - (0...10).each do |i|
+      - @collaborators.each do |user|
         a.user
           // FIX : Extract to presenter and replace in '.b-assignee' to.
           /a.user href="https://github.com/blackchestnut" target='_blank' title="...Login..."
-          img.avatar src="https://avatars.githubusercontent.com/u/2400100?v=3"
-          span.name User_#{i}
+          img.avatar src="#{user.avatar_url}"
+          span.name = user.login
   a.assignee Assignee
   = render partial: 'issues/assignee', locals: { issue: issue } if issue.assignee
 

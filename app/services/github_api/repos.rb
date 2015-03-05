@@ -12,6 +12,10 @@ class GithubApi
       client.repository(repo_name)
     end
 
+    def collaborators(board)
+      client.collaborators(board.github_id)
+    end
+
     private
 
     def user_repos

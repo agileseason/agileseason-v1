@@ -16,6 +16,8 @@ class BoardsController < ApplicationController
     @labels = github_api.labels(@board)
     # FIX : Move to helper_method and remove @issue
     @issue = Issue.new(labels: @labels.map(&:name))
+    # FIX : Add cache for collaborators
+    @collaborators = github_api.collaborators(@board)
   end
 
   def new
