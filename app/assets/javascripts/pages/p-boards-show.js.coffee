@@ -16,6 +16,9 @@ column_menu = ->
     else
       alert(data.message)
 
+find_issue = (number) ->
+  $(".issue[data-number='#{number}']")
+
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
   column_menu()
@@ -74,6 +77,22 @@ $(document).on 'page:change', ->
   $('.inline-form.rename').find('input[type=submit]').on 'click', ->
     $(@).parents('form').submit()
 
+  $('.board-column, .issue-modal, .b-assign').on 'ajax:success', (e, data) ->
+    number = $(@).find('.b-issue-modal').data('number')
+    find_issue(number).find('.b-assignee-container').each ->
+      $(@).html(data)
+    $(@).find('.b-assignee-container').html(data)
+    $(@).find('.popup').hide() # скрытый эффект - закрывает все popup
+
+  # раскрыть попап с пользователями для назначения
+  $('.board-column, .issue-modal').on 'click', '.assignee', ->
+    $(@).parent().find('.popup').show()
+
+  # скрыть попап с пользователями для назначения
+  $('.board-column, .issue-modal').on 'click', '.close-popup', ->
+    $popup = $(@).closest('.popup')
+    $popup.parent().find('.assignee').show()
+    $popup.hide()
 
   # раскрыть попап с лейблами тикета
   $('.board-column, .issue-modal').on 'click', '.add-label', ->

@@ -1,0 +1,11 @@
+.b-assign
+  .popup
+    .close-popup
+    .users
+      - @collaborators.each do |user|
+        a.user href="#{assignee_board_issues_url(issue.board, issue.number, user.login)}" data-remote='true'
+          img.avatar src="#{user.avatar_url}"
+          span.name = user.login
+  a.assignee Assignee
+  .b-assignee-container
+    = render partial: 'issues/assignee', locals: { assignee: issue.assignee } if issue.assignee

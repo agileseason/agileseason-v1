@@ -204,8 +204,8 @@ describe GithubApi::Issues do
     end
   end
 
-  describe '#assign_yourself' do
-    subject { service.assign_yourself(board, issue.number, user.github_username) }
+  describe '#assign' do
+    subject { service.assign(board, issue.number, user.github_username) }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
     before { allow_any_instance_of(Octokit::Client).to receive(:update_issue).and_return(issue) }
 

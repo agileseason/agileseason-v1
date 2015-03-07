@@ -11,8 +11,8 @@
   .issue-data
     = render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @labels }
 
-  - if issue.assignee
-    = render partial: 'issues/assignee', locals: { issue: issue }
+  .b-assignee-container
+    = render partial: 'issues/assignee', locals: { assignee: issue.assignee } if issue.assignee
 
   span.octicon.octicon-book class="#{:show unless k(:issue, issue).body_empty?}"
   span.octicon.octicon-comment-discussion class="#{:show unless issue.comments == 0}"

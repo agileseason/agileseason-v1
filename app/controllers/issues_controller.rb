@@ -43,8 +43,8 @@ class IssuesController < ApplicationController
   end
 
   def assignee
-    github_api.assign_yourself(@board, params[:number], current_user.github_username)
-    redirect_to board_url(@board)
+    issue = github_api.assign(@board, params[:number], params[:login])
+    render partial: 'issues/assignee', locals: { assignee: issue.assignee }
   end
 
   def update
