@@ -58,7 +58,7 @@ class GithubApi
       issue_stat
     end
 
-    def assign_yourself(board, number, github_username)
+    def assign(board, number, github_username)
       # FIX : Get issue - don't work override, error: Wrong number of arguments. Expected 4 to 5, got 3.
       issue = client.issue(board.github_id, number)
       # FIX : Don't work - client.update_issue(board.github_id, number, assignee: github_username)

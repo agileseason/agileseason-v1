@@ -27,11 +27,12 @@ RSpec.describe IssuesController, type: :controller do
     end
   end
 
-  describe 'GET assign yourself' do
-    before { allow_any_instance_of(GithubApi).to receive(:assign_yourself) }
+  describe 'GET assignee' do
+    let(:issue) { OpenStruct.new(number: 1, assigne: 'fake') }
+    before { allow_any_instance_of(GithubApi).to receive(:assign).and_return(issue) }
     it 'return http success' do
-      get :assignee, board_github_name: board.github_name, number: 1
-      expect(response).to redirect_to(board_url(board))
+      get :assignee, board_github_name: board.github_name, number: 1, login: 'github_user'
+      expect(response).to have_http_status(:success)
     end
   end
 

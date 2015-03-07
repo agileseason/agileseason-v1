@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       get ':number/move_to/:column_id', to: 'issues#move_to', as: :move_to_column
       get ':number/close', to: 'issues#close', as: :close
       get ':number/archive', to: 'issues#archive', as: :archive
-      get ':number/assignee', to: 'issues#assignee', as: :assignee
+      get ':number/assignee/:login', to: 'issues#assignee', as: :assignee
       get ':number/update', to: 'issues#update', as: :update
 
       get ':number/comment', to: 'comments#create', as: :add_comment

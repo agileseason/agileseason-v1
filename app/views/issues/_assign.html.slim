@@ -3,13 +3,12 @@
     .close-popup
     .users
       - @collaborators.each do |user|
-        a.user
-          // FIX : Extract to presenter and replace in '.b-assignee' to.
-          /a.user href="https://github.com/blackchestnut" target='_blank' title="...Login..."
+        a.user href="#{assignee_board_issues_url(issue.board, issue.number, user.login)}" data-remote='true'
           img.avatar src="#{user.avatar_url}"
           span.name = user.login
   a.assignee Assignee
-  = render partial: 'issues/assignee', locals: { issue: issue } if issue.assignee
+  .b-assignee-container
+    = render partial: 'issues/assignee', locals: { assignee: issue.assignee } if issue.assignee
 
     /a.add-user title="add user to the issue"
   /- else
