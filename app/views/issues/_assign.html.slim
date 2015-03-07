@@ -9,8 +9,3 @@
   a.assignee Assignee
   .b-assignee-container
     = render partial: 'issues/assignee', locals: { assignee: issue.assignee } if issue.assignee
-
-    /a.add-user title="add user to the issue"
-  /- else
-      a.assign href="#{assignee_board_issues_url(issue.board, issue.number)}"
-        | Assign yourself
