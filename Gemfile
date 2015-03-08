@@ -1,8 +1,10 @@
 source 'https://rubygems.org'
 
+gem 'attr_extras'
 gem 'awesome_print'
 gem 'coffee-rails'
 gem 'compass-rails'
+gem 'dalli'
 gem 'enumerize'
 gem 'jbuilder', '~> 2.0'
 gem 'jquery-rails'

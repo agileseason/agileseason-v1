@@ -1,12 +1,12 @@
-= simple_form_for(issue, url: board_issues_url(board)) do |f|
+= simple_form_for(issue, url: board_issues_url(board_bag)) do |f|
   = f.input :title, as: :text
   = f.input :body, as: :text
 
-  - unless labels.empty?
+  - unless board_bag.labels.empty?
     .popup
       .close-popup
       .labels-block.scroller
-        - labels.each do |label|
+        - board_bag.labels.each do |label|
           label.label for="#{label.name}" style="background: ##{label.color};"
             input type="checkbox" id="#{label.name}" name="issue[labels][]" value="#{label.name}"
             .label-name = label.name
@@ -15,7 +15,6 @@
     = f.input :labels, as: :check_boxes, collection: issue.labels, checked: false
 
   .submit-area
-    - unless labels.empty?
-      .add-label Add label
-    a.cancel href="#{board_url(board)}" Cancel
+    .add-label Add label
+    a.cancel href="#{board_url(board_bag)}" Cancel
     = f.button :submit, value: 'Create'
