@@ -53,7 +53,9 @@ class ApplicationController < ActionController::Base
   def fetch_board
     board = Board.find_by(github_name: params[:github_name] || params[:board_github_name])
     if current_user.owner?(board) || current_user_reader?(board.github_id)
+      # FIX : Keep @board or @board_bag after experiment.
       @board = board
+      @board_bag = BoardBag.new(github_api, board)
     else
       raise ActiveRecord::RecordNotFound
     end

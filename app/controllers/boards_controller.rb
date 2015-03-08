@@ -11,13 +11,7 @@ class BoardsController < ApplicationController
   end
 
   def show
-    @board_issues = github_api.board_issues(@board)
-    # FIX : Add cache for labels
-    @labels = github_api.labels(@board)
-    # FIX : Move to helper_method and remove @issue
-    @issue = Issue.new(labels: @labels.map(&:name))
-    # FIX : Add cache for collaborators
-    @collaborators = github_api.collaborators(@board)
+    @board_bag = BoardBag.new(github_api, @board)
   end
 
   def new
@@ -74,6 +68,8 @@ private
     Graphs::LinesWorker.perform_async(@board.id, github_token)
     Graphs::CumulativeWorker.perform_async(@board.id, github_token)
     Graphs::IssueStatsWorker.perform_async(@board.id, github_token)
+
+    BoardWorker.perform_async(@board.id, github_token)
   end
 
   def check_permissions
@@ -81,5 +77,9 @@ private
       # NOTE : Not enough permissions to create board.
       raise ActiveRecord::ReadOnlyRecord
     end
+  end
+
+  def issue_new
+    Issue.new(labels: @board_bag.labels.map(&:name))
   end
 end

@@ -2,8 +2,7 @@ class IssuesController < ApplicationController
   before_action :fetch_board
 
   def new
-    labels = github_api.labels(@board).map(&:name)
-    @issue = Issue.new(labels: labels)
+    @issue = @board_bag.build_issue_new
   end
 
   def create

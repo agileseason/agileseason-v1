@@ -9,7 +9,7 @@
     /.due-date Feb 12, 13:00
 
   .issue-data
-    = render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @labels }
+    = render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @board_bag.labels }
 
   .b-assignee-container
     = render partial: 'issues/assignee', locals: { assignee: issue.assignee } if issue.assignee

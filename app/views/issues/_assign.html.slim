@@ -2,7 +2,7 @@
   .popup
     .close-popup
     .users
-      - @collaborators.each do |user|
+      - @board_bag.collaborators.each do |user|
         a.user href="#{assignee_board_issues_url(issue.board, issue.number, user.login)}" data-remote='true'
           img.avatar src="#{user.avatar_url}"
           span.name = user.login

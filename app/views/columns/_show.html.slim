@@ -17,8 +17,8 @@
   .new-issue.ajax-link
     a.ajax-link New issue
   .inline-form
-    = render partial: 'issues/new', locals: { board: @board, issue: @issue, labels: @labels }
+    = render partial: 'issues/new', locals: { board_bag: @board_bag, issue: @board_bag.build_issue_new }
 
   .issues.scroller
-    - @board_issues[column.id].reject(&:archive?).each do |issue|
+    - @board_bag.issues[column.id].reject(&:archive?).each do |issue|
       = render partial: 'issues/show', locals: { issue: issue }
