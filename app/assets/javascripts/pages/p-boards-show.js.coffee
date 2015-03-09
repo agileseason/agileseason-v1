@@ -119,15 +119,14 @@ $(document).on 'page:change', ->
     $.get $(@).data('url'), { labels: labels }
 
   # скрыть тикет после успешной архивации
-  $('.issue .archive').on 'ajax:success', (e, data) ->
-    $(e.target).parent('.issue').remove() if data && data.archived
+  $('.issue .archive').on 'click', ->
+    $(@).parent('.issue').remove()
 
   # изменить тикет и открыть архивацию после успешного закрытия
-  $('.issue .close').on 'ajax:success', (e, data) ->
-    if (data && data.closed)
-      $(e.target).parent('.issue').addClass('closed').removeClass('open')
-      $(e.target).next('.archive').removeClass('hidden')
-      $(e.target).remove()
+  $('.issue .close').on 'click', ->
+    $(@).parent('.issue').addClass('closed').removeClass('open')
+    $(@).next('.archive').removeClass('hidden')
+    $(@).remove()
 
   # пересчитать высоту борда в зависимости от высоты окна браузера
   resize_height()
