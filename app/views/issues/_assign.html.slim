@@ -9,3 +9,6 @@
   a.assignee Assignee
   .b-assignee-container
     = render partial: 'issues/assignee', locals: { assignee: issue.assignee } if issue.assignee
+    .no-one
+      | No one—
+      a.yourself href="#{assignee_board_issues_url(issue.board, issue.number, current_user.login)}" data-remote='true' assign yourself
