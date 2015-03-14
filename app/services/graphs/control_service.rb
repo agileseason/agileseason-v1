@@ -1,6 +1,6 @@
 module Graphs
   class ControlService
-    def initialize(board, board_url='')
+    def initialize(board, board_url = '')
       @board = board
       @board_url = board_url
     end
