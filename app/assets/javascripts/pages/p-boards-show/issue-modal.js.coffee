@@ -52,12 +52,21 @@ $(document).on 'modal:load', '.b-issue-modal', ->
   $('.move-to-column li', $issue_modal).click ->
     return if $(@).hasClass 'active'
 
+    issue = $current_issue.data('number')
+    column = $(@).data('column')
+    board_github_name = $('.board').data('github_name')
+
+    $col_1 = $current_issue.closest('.board-column')
+    $col_2 = $('.board-column[data-column="' + column + '"]')
+    col_1_url = "/boards/#{board_github_name}/columns/#{$col_1.data('column')}"
+    col_2_url = "/boards/#{board_github_name}/columns/#{$col_2.data('column')}"
+
     # класс активной колонки
     $('.move-to-column li').removeClass 'active'
     $(@).addClass 'active'
 
     # перемещение тикета в DOMe
-    $column = $('.board-column[data-column="' + $(@).data('column') + '"]')
+    $column = $('.board-column[data-column="' + column + '"]')
     clone = $current_issue
     $current_issue.remove()
     $('.issues', $column).prepend(clone)
@@ -68,6 +77,12 @@ $(document).on 'modal:load', '.b-issue-modal', ->
     column = $(@).data('column')
     path = "/boards/#{board_github_full_name}/issues/#{issue}/move_to/#{column}"
     $.get path
+
+    # сохранение порядка тиетов в измененных колонках
+    col_1_issues = empty_check($col_1.find('.issues').sortable('serialize'), '')
+    col_2_issues = empty_check($col_2.find('.issues').sortable('serialize'), issue)
+    save_order col_1_url, col_1_issues
+    save_order col_2_url, col_2_issues
 
   # сабмит названия
   $('.issue-title .edit-form button', $issue_modal).click ->
@@ -138,3 +153,18 @@ $(document).on 'modal:load', '.b-issue-modal', ->
 close_edit_issue_form = ($parent_node) ->
   $('.editable', $parent_node).show()
   $('.edit-form', $parent_node).hide()
+
+empty_check = (issues, moving_issue) ->
+  if issues
+    issues
+  else
+    if moving_issue
+      { issues: [moving_issue] }
+    else
+      { issues: ['empty'] }
+
+save_order = (url, data) ->
+  $.ajax
+    url: url,
+    method: 'PATCH',
+    data: data
