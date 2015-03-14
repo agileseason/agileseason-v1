@@ -12,6 +12,10 @@ class IssuePresenter < Keynote::Presenter
     end
   end
 
+  def due_date_at
+    issue.due_date_at.try(:strftime, '%b %d %H:%m')
+  end
+
   # FIX : Public method only for test - not single responsibility.
   # FIX : Need extract to gem.
   def color(label)

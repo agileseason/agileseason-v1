@@ -81,15 +81,32 @@
             line-height: 30px
             vertical-align: top
 
-  .due-date
-    +border-radius(2px)
-    background: $orange
-    color: #fff
+  .due-date-container
     display: inline-block
-    font-size: 18px
-    line-height: 18px
-    margin: 5px 0 0 0
-    padding: 2px 5px
+
+    .popup
+      height: 254px
+      margin-top: -44px
+      padding: 28px
+      width: 272px
+      z-index: 3
+
+      .close-popup
+        +close
+
+      .datepicker
+        margin-bottom: 20px
+
+    .due-date
+      +border-radius(2px)
+      background: $orange
+      color: #fff
+      cursor: pointer
+      display: inline-block
+      font-size: 16px
+      line-height: 18px
+      margin-left: 10px
+      padding: 6px 6px 2px 6px
 
   .edit-labels
     position: relative

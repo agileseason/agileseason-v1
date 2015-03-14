@@ -58,6 +58,7 @@ $(document).on 'page:change', ->
 
   # открыть форму добавления тикета или колонки
   $('.new-issue, .new-column').click ->
+    # сохранение крайней даты
     $(@).next().show()
     $('textarea', $(@).next()).first().focus()
     $(@).hide()
@@ -88,6 +89,26 @@ $(document).on 'page:change', ->
       $(@).html(data)
     $(@).find('.b-assignee-container').html(data)
     $(@).find('.popup').hide() # скрытый эффект - закрывает все popup
+
+  # раскрыть попап с календарем для установки крайней даты
+  $('.board-column, .issue-modal').on 'click', '.due-date', ->
+    $popup = $(@).parent().find('.popup')
+    $popup.show()
+    $('.datepicker', $popup).datepicker({ dateFormat: 'dd-mm-yy' })
+    $('.datepicker', $popup).datepicker('setDate', new Date($(@).data('date')))
+
+  # сохранение крайней даты
+  $('.board-column, .issue-modal, .due-date-container').on 'click', '.button', ->
+    # TODO : update due-date
+    $container = $(@).parents('.due-date-container')
+    date = $container.find('.datepicker').val()
+    #debugger
+    $.ajax
+      url: $container.data('url'),
+      data: { due_date: date },
+      success: ->
+        $container.find('.popup').hide()
+        $container.find('.due-date').html('fff')
 
   # раскрыть попап с пользователями для назначения
   $('.board-column, .issue-modal').on 'click', '.assignee', ->

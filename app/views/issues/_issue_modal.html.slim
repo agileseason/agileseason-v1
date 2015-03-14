@@ -10,7 +10,13 @@
           .issue-name.edit-content #{issue.title}&nbsp;
 
           a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
-          //.due-date Feb 12, 13:00
+          .due-date-container data-url="#{due_date_board_issues_url(board, issue.number)}"
+            .popup
+              .close-popup
+              .datepicker
+              a.button Save
+            .due-date data-date="#{(issue.due_date_at || Time.current).strftime('%m/%d/%Y')}" = k(:issue, issue).due_date_at
+
 
         .edit-form
           textarea.field = issue.title.capitalize
@@ -98,8 +104,6 @@
       = render partial: 'issues/assign', locals: { issue: issue }
 
       - if issue.open?
-        a.button.close href="#{close_board_issues_url(board, issue.number)}"
-          | Close issue
+        a.button.close href="#{close_board_issues_url(board, issue.number)}" Close issue
       - if issue.closed? && !issue.archive?
-        a.button.archive href="#{archive_board_issues_url(board, issue.number)}"
-          | Archive issue
+        a.button.archive href="#{archive_board_issues_url(board, issue.number)}" Archive issue

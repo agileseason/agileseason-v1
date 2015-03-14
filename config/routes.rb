@@ -24,6 +24,7 @@ Rails.application.routes.draw do
       get ':number/update_comment', to: 'comments#update', as: :update_comment
       get ':number/delete_comment', to: 'comments#delete', as: :delete_comment
       get ':number/comments', to: 'issues#comments', as: :comments
+      get ':number/due_date', to: 'issues#due_date', as: :due_date
     end
 
     resource :settings, only: [:show, :update] do
