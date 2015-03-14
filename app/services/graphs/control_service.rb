@@ -1,7 +1,8 @@
 module Graphs
   class ControlService
-    def initialize(board)
+    def initialize(board, board_url = '')
       @board = board
+      @board_url = board_url
     end
 
     def issues_series_data
@@ -9,7 +10,8 @@ module Graphs
         {
           x: issue.closed_at.to_js,
           y: issue.elapsed_days,
-          number: issue.number
+          number: issue.number,
+          url: "#{@board_url}#issue-number=#{issue.number}"
         }
       end
     end

@@ -47,10 +47,10 @@
                         }
                     },
                     tooltip: {
-                        useHtml: true,
                         headerFormat: '',
-                        // FIX : Add link to github issue by number - need add html_url to IssueStat or repo_url to board.
-                        pointFormat: 'Issue <b>#{point.number}<b/><br/>WIP: <b>{point.y:.2f}</b>d<br/><span style="color:#888">Closed: {point.x:%e. %b}</span>'
+                        //hideDelay: 2000, FIX : hideDelay don't work (http://api.highcharts.com/highcharts#plotOptions.scatter.tooltip.hideDelay)
+                        pointFormat: '<a href="{point.url}">Issue #{point.number}</a>' +
+                          '<br/>WIP: <b>{point.y:.2f}</b>d<br/><span style="color:#888">Closed: {point.x:%e. %b}</span>'
                     }
                 },
                 spline: {
@@ -59,7 +59,6 @@
                     },
                     tooltip: {
                         headerFormat: '',
-                        // FIX : Add link to github issue by number.
                         pointFormat: 'Rolling Average WIP: <b>{point.y:.2f}d<b/><br/><span style="color:#888">{point.window} Issue window</span>'
                     }
                 },
@@ -107,7 +106,8 @@
                     {
                       x: <%=e[:x]%>,
                       y: <%=e[:y]%>,
-                      number: <%=e[:number]%>
+                      number: <%=e[:number]%>,
+                      url: '<%=e[:url]%>'
                     },
                   <% end %>
                 ]
