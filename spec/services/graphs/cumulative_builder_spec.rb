@@ -24,7 +24,7 @@ describe Graphs::CumulativeBuilder do
         it { is_expected.to eq column.name }
       end
 
-      describe :data, focus: true do
+      describe :data do
         subject(:data) { column_series[:data] }
         it { is_expected.to have(2).item }
 
