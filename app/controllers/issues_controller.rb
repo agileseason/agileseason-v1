@@ -1,6 +1,13 @@
 class IssuesController < ApplicationController
   before_action :fetch_board
 
+  def show
+    github_issue = github_api.issue(@board, params[:number])
+    issue_stat = @board.issue_stats.find_by(number: params[:number])
+    issue = BoardIssue.new(github_issue, issue_stat)
+    render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @board_bag.labels }
+  end
+
   def new
     @issue = @board_bag.build_issue_new
   end

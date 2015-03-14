@@ -19,24 +19,27 @@ column_menu = ->
 find_issue = (number) ->
   $(".issue[data-number='#{number}']")
 
+open_issue_modal = (modal_html) ->
+  $issue_modal = $('.issue-modal')
+  $('.modal-content', $issue_modal).html(modal_html)
+  $issue_modal.show()
+  $('.b-issue-modal', $issue_modal).show()
+
+  comments_url = $('.issue-comments', $issue_modal).data('url')
+  $.get comments_url, (comments) ->
+    $('.issue-comments', $issue_modal).append(comments)
+    $('.b-preloader', $issue_modal).hide()
+
+  $('.modal-content', $issue_modal).children().trigger 'modal:load'
+
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
   column_menu()
 
   $('.issues').on 'click', '.show-issue-modal', ->
     $(@).closest('.issue').addClass 'current-issue'
-    $issue_data = $(@).closest('.issue').find('.issue-data').html()
-    $issue_modal = $('.issue-modal')
-    $('.modal-content', $issue_modal).html $issue_data
-    $issue_modal.show()
-    $('.b-issue-modal', $issue_modal).show()
-
-    comments_url = $('.issue-comments', $issue_modal).data('url')
-    $.get comments_url, (comments) ->
-      $('.issue-comments', $issue_modal).append(comments)
-      $('.b-preloader', $issue_modal).hide()
-
-    $('.modal-content', $issue_modal).children().trigger 'modal:load'
+    modal_html = $(@).closest('.issue').find('.issue-data').html()
+    open_issue_modal(modal_html)
 
   # закрыть попап по крестику или по клику мимо попапа
   $('.issue-modal').on 'click', '.modal-close, .overlay', ->
@@ -47,6 +50,8 @@ $(document).on 'page:change', ->
     $('.b-issue-modal', $modal).remove()
     # снять отметку текущего тикета
     $('.current-issue').removeClass('current-issue')
+    # убрать #issue-number от прямой ссылки на issue
+    location.hash = ''
 
     # страница борда
     return unless document.body.id == 'boards_show'
@@ -130,6 +135,15 @@ $(document).on 'page:change', ->
 
   # пересчитать высоту борда в зависимости от высоты окна браузера
   resize_height()
+
+  # открыть модальное окно с issue по прямой сслыке
+  if location.hash
+    number = location.hash.match(/issue-number=(\d+)/)?[1]
+    if number
+      $.ajax
+        url: "/boards/#{$('.board').data('github_name')}/issues/#{number}",
+        success: (html) ->
+          open_issue_modal($(html))
 
 $(window).resize ->
   return unless document.body.id == 'boards_show' & !resize_lock

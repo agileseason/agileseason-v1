@@ -41,14 +41,13 @@
               href="#{update_board_issues_url(board, issue.number)}"]
               | Update
 
-      .move-to-column
-        ul
-          - @board.columns.each do |column|
-            li data-column="#{column.id}"
-              a = column.name
-          /- @board.columns.each do |column|
-            /li.modal-board-column class="#{'active' if k(:issue, @issue).current_column?(@issue.labels, column.name)}"
-              /a href="#{move_to_column_board_issues_url(@board, @issue.number, column)}" = column.name
+
+      - unless issue.archive?
+        .move-to-column
+          ul
+            - @board.columns.each do |column|
+              li data-column="#{column.id}"
+                a = column.name
 
       .edit.add-comment
         /.user-ava
@@ -101,6 +100,6 @@
       - if issue.open?
         a.button.close href="#{close_board_issues_url(board, issue.number)}"
           | Close issue
-      - if issue.closed?
+      - if issue.closed? && !issue.archive?
         a.button.archive href="#{archive_board_issues_url(board, issue.number)}"
           | Archive issue
