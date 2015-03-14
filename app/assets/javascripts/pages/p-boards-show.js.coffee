@@ -85,6 +85,7 @@ $(document).on 'page:change', ->
 
   $('.board-column, .issue-modal, .b-assign').on 'ajax:success', (e, data) ->
     number = $(@).find('.b-issue-modal').data('number')
+    # FIX : Find reason what find return two element .b-assignee-container
     find_issue(number).find('.b-assignee-container').each ->
       $(@).html(data)
     $(@).find('.b-assignee-container').html(data)
@@ -99,16 +100,18 @@ $(document).on 'page:change', ->
 
   # сохранение крайней даты
   $('.board-column, .issue-modal, .due-date-container').on 'click', '.button', ->
-    # TODO : update due-date
     $container = $(@).parents('.due-date-container')
     date = $container.find('.datepicker').val()
-    #debugger
     $.ajax
       url: $container.data('url'),
       data: { due_date: date },
-      success: ->
+      success: (date) ->
         $container.find('.popup').hide()
-        $container.find('.due-date').html('fff')
+        $container.find('.due-date').html(date)
+        number = $container.parents('.b-issue-modal').data('number')
+        # FIX : Find reason what find return two element .due-date
+        find_issue(number).find('.due-date').each ->
+          $(@).removeClass('none').html(date)
 
   # раскрыть попап с пользователями для назначения
   $('.board-column, .issue-modal').on 'click', '.assignee', ->

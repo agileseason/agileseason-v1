@@ -15,7 +15,11 @@
               .close-popup
               .datepicker
               a.button Save
-            .due-date data-date="#{(issue.due_date_at || Time.current).strftime('%m/%d/%Y')}" = k(:issue, issue).due_date_at
+            - if issue.due_date_at
+              .due-date data-date="#{issue.due_date_at.strftime('%m/%d/%Y')}" = k(:issue, issue).due_date_at
+            - else
+              .due-date.none
+                span.octicon.octicon-clock
 
 
         .edit-form
