@@ -8,7 +8,7 @@ class Graphs::ControlController < ApplicationController
   private
 
   def chart_series_data
-    control_service = Graphs::ControlService.new(@board)
+    control_service = Graphs::ControlService.new(@board, board_url(@board))
     {
       issues: control_service.issues_series_data,
       average: control_service.average_series_data,
