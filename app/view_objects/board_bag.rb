@@ -18,6 +18,27 @@ class BoardBag
     Issue.new(labels: labels.map(&:name))
   end
 
+  #def issues_of_column column
+    #ordered_issues = []
+
+    #if column.issues
+      #column.issues.split(',').each do |i|
+        #issues[column.id].reject(&:archive?).each do |issue|
+          #if i.to_i == issue.number
+            #ordered_issues << issue
+          #end
+        #end
+      #end
+
+    #else
+      #issues[column.id].reject(&:archive?).each do |issue|
+        #ordered_issues << issue
+      #end
+    #end
+
+    #ordered_issues
+  #end
+
   private
 
   def cache_key(posfix)

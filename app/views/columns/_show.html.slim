@@ -20,5 +20,15 @@
     = render partial: 'issues/new', locals: { board_bag: @board_bag, issue: @board_bag.build_issue_new }
 
   .issues.scroller
-    - @board_bag.issues[column.id].reject(&:archive?).each do |issue|
-      = render partial: 'issues/show', locals: { issue: issue }
+    /= @board_bag.issues_of_column(column).each do |issue|
+      /= render partial: 'issues/show', locals: { issue: issue }
+
+    - if column.issues
+      - column.issues.split(',').each do |i|
+        - @board_bag.issues[column.id].reject(&:archive?).each do |issue|
+          - if i.to_i == issue.number
+            = render partial: 'issues/show', locals: { issue: issue }
+
+    - else
+      - @board_bag.issues[column.id].reject(&:archive?).each do |issue|
+        = render partial: 'issues/show', locals: { issue: issue }
