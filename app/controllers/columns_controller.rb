@@ -20,10 +20,16 @@ class ColumnsController < ApplicationController
 
   def update
     @column = @board.columns.find(params[:id])
-    if @column.update(column_params)
-      redirect_to board_url(@board)
+
+    if params[:issues]
+       @column.update(issues: params[:issues].join(','))
+       render nothing: true
     else
-      render 'edit'
+      if @column.update(column_params)
+        redirect_to board_url(@board)
+      else
+        render 'edit'
+      end
     end
   end
 
@@ -64,6 +70,6 @@ class ColumnsController < ApplicationController
   def column_params
     params
       .require(:column)
-      .permit(:name)
+      .permit(:name, :issues)
   end
 end

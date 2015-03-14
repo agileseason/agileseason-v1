@@ -1,10 +1,27 @@
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
 
-  $('.issues').sortable connectWith: '.issues'
   $('.issues').sortable
-    connectWith: '.issues'
+    connectWith: '.issues',
   $('.issues').disableSelection()
+
+  # сохранение порядка тикетов, если он изменился
+  $('.issues').on 'sortupdate', (event, ui) ->
+    column = $(event.target).closest('.board-column').data('column')
+    board_github_name = $('.board').data('github_name')
+    path = "/boards/#{board_github_name}/columns/#{column}"
+
+    if $(event.target).sortable('serialize')
+      issues = $(event.target).sortable('serialize')
+    else
+      # колонка стала пустой
+      issues =  { issues: ['empty'] }
+      console.log issues
+
+    $.ajax
+      url: path,
+      method: 'PATCH',
+      data: issues
 
   $(".droppable").droppable ->
     accept: ".issue"
