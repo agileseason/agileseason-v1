@@ -61,6 +61,13 @@ class IssuesController < ApplicationController
     redirect_to board_url(@board)
   end
 
+  def due_date
+    due_date_at = params[:due_date].to_datetime # Not to_time, because adding localtime +03
+    issue = @board.issue_stats.find_by(number: params[:number])
+    issue.update(due_date_at: due_date_at)
+    render text: k(:issue, issue).due_date_at
+  end
+
   private
 
   def issue_params

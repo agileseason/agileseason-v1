@@ -6,7 +6,8 @@
     a.issue-name.show-issue-modal data-number="#{issue.number}"
       = k(:issue, issue).title
     a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
-    /.due-date Feb 12, 13:00
+
+  .due-date class="#{:none unless issue.due_date_at}" = k(:issue, issue).due_date_at
 
   .issue-data
     = render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @board_bag.labels }

@@ -1,0 +1,4 @@
+- if issue.open?
+  a.button.close href="#{close_board_issues_url(board, issue.number)}"
+    span.octicon.octicon-issue-closed
+    | Close issue

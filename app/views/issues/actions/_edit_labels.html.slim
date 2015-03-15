@@ -1,0 +1,24 @@
+.edit-labels
+  .popup
+    .close-popup
+    .labels-block.scroller
+      - labels.each do |label|
+        label.label style="background: ##{label.color};"
+          - if issue.labels.map(&:name).any? { |l| l == label.name }
+            input[
+              type="checkbox"
+              id="#{label.name}"
+              value="#{label.name}"
+              data-url="#{update_board_issues_url(board, issue.number)}"
+              checked="checked"]
+          - else
+            input[
+              type="checkbox"
+              id="#{label.name}"
+              name="issue[labels][]"
+              value="#{label.name}"
+              data-url="#{update_board_issues_url(board, issue.number)}"]
+          .label-name = label.name
+
+  div
+    .add-label Labels
