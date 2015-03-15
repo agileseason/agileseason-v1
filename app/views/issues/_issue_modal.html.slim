@@ -10,17 +10,8 @@
           .issue-name.edit-content #{issue.title}&nbsp;
 
           a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
-          .due-date-container data-url="#{due_date_board_issues_url(board, issue.number)}"
-            .popup
-              .close-popup
-              .datepicker
-              a.button Save
-            - if issue.due_date_at
-              .due-date data-date="#{issue.due_date_at.strftime('%m/%d/%Y')}" = k(:issue, issue).due_date_at
-            - else
-              .due-date.none
-                span.octicon.octicon-clock
-
+          .due-date class="#{ :none unless issue.due_date_at }"
+            = k(:issue, issue).due_date_at
 
         .edit-form
           textarea.field = issue.title.capitalize
@@ -107,7 +98,21 @@
 
       = render partial: 'issues/assign', locals: { issue: issue }
 
+      .edit-due-date data-url="#{due_date_board_issues_url(board, issue.number)}"
+        .popup
+          .close-popup
+          .datepicker
+          a.button.save Save
+
+        a.button.set-due-date data-date="#{(issue.due_date_at || DateTime.now).strftime('%m/%d/%Y')}"
+          span.octicon.octicon-clock
+          | Due Date
+
       - if issue.open?
-        a.button.close href="#{close_board_issues_url(board, issue.number)}" Close issue
+        a.button.close href="#{close_board_issues_url(board, issue.number)}"
+          span.octicon.octicon-issue-closed
+          | Close issue
       - if issue.closed? && !issue.archive?
-        a.button.archive href="#{archive_board_issues_url(board, issue.number)}" Archive issue
+        a.button.archive href="#{archive_board_issues_url(board, issue.number)}"
+          span.octicon.octicon-package
+          | Archive issue

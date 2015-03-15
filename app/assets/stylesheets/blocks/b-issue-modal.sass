@@ -46,6 +46,11 @@
     padding-left: 40px
     width: 180px
 
+    .button
+      display: block
+      width: 106px
+      margin-bottom: 8px
+
   .b-assign
     margin: 20px 0
     position: relative
@@ -81,35 +86,36 @@
             line-height: 30px
             vertical-align: top
 
-  .due-date-container
-    display: inline-block
+  .edit-due-date
+    position: relative
 
     .popup
       height: 254px
-      margin-top: -44px
+      margin-top: -28px
       padding: 28px
       width: 272px
-      z-index: 3
 
       .close-popup
         +close
-
       .datepicker
         margin-bottom: 20px
+      .save
+        display: inline-block
+        width: auto
 
-    .due-date
-      +border-radius(2px)
-      background: $orange
-      color: #fff
-      cursor: pointer
-      display: inline-block
-      font-size: 16px
-      line-height: 18px
-      margin-left: 10px
-      padding: 6px 6px 2px 6px
+  .due-date
+    +border-radius(2px)
+    background: $orange
+    color: #fff
+    cursor: pointer
+    display: inline-block
+    font-size: 16px
+    line-height: 18px
+    margin-left: 10px
+    padding: 6px 6px 2px 6px
 
-      &.none
-        //background: $text-muted
+    &.none
+      display: none
 
   .edit-labels
     position: relative

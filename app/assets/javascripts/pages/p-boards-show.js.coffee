@@ -92,23 +92,24 @@ $(document).on 'page:change', ->
     $(@).find('.popup').hide() # скрытый эффект - закрывает все popup
 
   # раскрыть попап с календарем для установки крайней даты
-  $('.board-column, .issue-modal').on 'click', '.due-date', ->
+  $('.board-column, .issue-modal').on 'click', '.set-due-date', ->
     $popup = $(@).parent().find('.popup')
-    $popup.show()
     $('.datepicker', $popup).datepicker({ dateFormat: 'dd-mm-yy' })
     $('.datepicker', $popup).datepicker('setDate', new Date($(@).data('date')))
+    $popup.show()
 
   # сохранение крайней даты
-  $('.board-column, .issue-modal, .due-date-container').on 'click', '.button', ->
-    $container = $(@).parents('.due-date-container')
-    date = $container.find('.datepicker').val()
+  $('.board-column, .issue-modal, .edit-due-date').on 'click', '.button.save', ->
+    $modal = $(@).parents('.issue-modal')
+    date = $modal.find('.datepicker').val()
     $.ajax
-      url: $container.data('url'),
+      url: $modal.find('.edit-due-date').data('url'),
       data: { due_date: date },
       success: (date) ->
-        $container.find('.popup').hide()
-        $container.find('.due-date').html(date)
-        number = $container.parents('.b-issue-modal').data('number')
+        $modal.find('.popup').hide()
+        $modal.find('.due-date').removeClass('none').html(date)
+        # FIX : Extract method for find current issue number
+        number = $modal.find('.b-issue-modal').data('number')
         # FIX : Find reason what find return two element .due-date
         find_issue(number).find('.due-date').each ->
           $(@).removeClass('none').html(date)
