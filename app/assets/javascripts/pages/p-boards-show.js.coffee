@@ -58,7 +58,6 @@ $(document).on 'page:change', ->
 
   # открыть форму добавления тикета или колонки
   $('.new-issue, .new-column').click ->
-    # сохранение крайней даты
     $(@).next().show()
     $('textarea', $(@).next()).first().focus()
     $(@).hide()
