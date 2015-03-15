@@ -8,10 +8,8 @@
         .title.editable
           .octicon.octicon-pencil.edit-link
           .issue-name.edit-content #{issue.title}&nbsp;
-
           a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
-          .due-date class="#{ :none unless issue.due_date_at }"
-            = k(:issue, issue).due_date_at
+          .due-date class="#{ :none unless issue.due_date_at }" = k(:issue, issue).due_date_at
 
         .edit-form
           textarea.field = issue.title.capitalize
@@ -71,8 +69,8 @@
         .b-preloader.horizontal
 
     .issue-actions
-      = render partial: 'issues/actions/edit_labels', locals: { board: board, labels: labels, issue: issue }
-      = render partial: 'issues/actions/assign', locals: { issue: issue }
+      = render partial: 'issues/actions/edit_labels',   locals: { board: board, labels: labels, issue: issue }
+      = render partial: 'issues/actions/assign',        locals: { issue: issue }
       = render partial: 'issues/actions/edit_due_date', locals: { board: board, issue: issue }
-      = render partial: 'issues/actions/close', locals: { board: board, issue: issue }
-      = render partial: 'issues/actions/archive', locals: { board: board, issue: issue }
+      = render partial: 'issues/actions/close',         locals: { board: board, issue: issue }
+      = render partial: 'issues/actions/archive',       locals: { board: board, issue: issue }
