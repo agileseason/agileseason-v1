@@ -71,48 +71,8 @@
         .b-preloader.horizontal
 
     .issue-actions
-      .edit-labels
-        .popup
-          .close-popup
-          .labels-block.scroller
-            - labels.each do |label|
-              label.label style="background: ##{label.color};"
-                - if issue.labels.map(&:name).any? { |l| l == label.name }
-                  input[
-                    type="checkbox"
-                    id="#{label.name}"
-                    value="#{label.name}"
-                    data-url="#{update_board_issues_url(board, issue.number)}"
-                    checked="checked"]
-                - else
-                  input[
-                    type="checkbox"
-                    id="#{label.name}"
-                    name="issue[labels][]"
-                    value="#{label.name}"
-                    data-url="#{update_board_issues_url(board, issue.number)}"]
-                .label-name = label.name
-
-        div
-          .add-label Labels
-
-      = render partial: 'issues/assign', locals: { issue: issue }
-
-      .edit-due-date data-url="#{due_date_board_issues_url(board, issue.number)}"
-        .popup
-          .close-popup
-          .datepicker
-          a.button.save Save
-
-        a.button.set-due-date data-date="#{(issue.due_date_at || DateTime.now).strftime('%m/%d/%Y')}"
-          span.octicon.octicon-clock
-          | Due Date
-
-      - if issue.open?
-        a.button.close href="#{close_board_issues_url(board, issue.number)}"
-          span.octicon.octicon-issue-closed
-          | Close issue
-      - if issue.closed? && !issue.archive?
-        a.button.archive href="#{archive_board_issues_url(board, issue.number)}"
-          span.octicon.octicon-package
-          | Archive issue
+      = render partial: 'issues/actions/edit_labels', locals: { board: board, labels: labels, issue: issue }
+      = render partial: 'issues/actions/assign', locals: { issue: issue }
+      = render partial: 'issues/actions/edit_due_date', locals: { board: board, issue: issue }
+      = render partial: 'issues/actions/close', locals: { board: board, issue: issue }
+      = render partial: 'issues/actions/archive', locals: { board: board, issue: issue }

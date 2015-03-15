@@ -1,0 +1,9 @@
+.edit-due-date data-url="#{due_date_board_issues_url(board, issue.number)}"
+  .popup
+    .close-popup
+    .datepicker
+    a.button.save Save
+
+  a.button.set-due-date data-date="#{(issue.due_date_at || DateTime.now).strftime('%m/%d/%Y')}"
+    span.octicon.octicon-clock
+    | Due Date
