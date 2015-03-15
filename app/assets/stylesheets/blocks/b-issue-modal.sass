@@ -90,15 +90,23 @@
     position: relative
 
     .popup
-      height: 254px
+      height: 320px
       margin-top: -28px
-      padding: 28px
+      padding: 20px
       width: 272px
 
       .close-popup
         +close
+      .header
+        margin-bottom: 12px
+        .date, .time
+          display: inline-block
+          margin-right: 30px
+          width: 86px
+        input
+          width: 86px
       .datepicker
-        margin-bottom: 20px
+        margin-bottom: 12px
       .save
         display: inline-block
         width: auto
@@ -200,11 +208,11 @@
       margin: 0 0 5px
       max-width: 100%
 
-  .date
-    color: $lightgrey
-    display: inline-block
-    font-size: 14px
-    margin-bottom: 5px
+    .date
+      color: $lightgrey
+      display: inline-block
+      font-size: 14px
+      margin-bottom: 5px
 
   .user-login
     color: $lightgrey

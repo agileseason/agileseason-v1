@@ -94,17 +94,23 @@ $(document).on 'page:change', ->
   # раскрыть попап с календарем для установки крайней даты
   $('.board-column, .issue-modal').on 'click', '.set-due-date', ->
     $popup = $(@).parent().find('.popup')
-    $('.datepicker', $popup).datepicker({ dateFormat: 'dd-mm-yy' })
-    $('.datepicker', $popup).datepicker('setDate', new Date($(@).data('date')))
+    $datepicker = $('.datepicker', $popup)
+    $datepicker.datepicker({
+      dateFormat: 'dd/mm/yy',
+      onSelect: ->
+        $popup.find('.date input').val($(@).val())
+    })
+    $datepicker.datepicker('setDate', new Date($(@).data('date')))
     $popup.show()
 
   # сохранение крайней даты
   $('.board-column, .issue-modal, .edit-due-date').on 'click', '.button.save', ->
     $modal = $(@).parents('.issue-modal')
-    date = $modal.find('.datepicker').val()
+    date = $modal.find('.date input').val()
+    time = $modal.find('.time input').val()
     $.ajax
       url: $modal.find('.edit-due-date').data('url'),
-      data: { due_date: date },
+      data: { due_date: "#{date} #{time}" },
       success: (date) ->
         $modal.find('.popup').hide()
         $modal.find('.due-date').removeClass('none').html(date)
