@@ -12,4 +12,4 @@ html
       = render partial: '/layouts/notice'
       = yield
 
-    = render partial: 'layouts/yandex_metrika'
+    = render partial: 'layouts/yandex_metrika' if Rails.env.production?
