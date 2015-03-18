@@ -88,6 +88,8 @@ $(document).on 'page:change', ->
     find_issue(number).find('.b-assignee-container').each ->
       $(@).html(data)
     $(@).find('.b-assignee-container').html(data)
+    $(@).find('.b-assign .check').removeClass('octicon octicon-check')
+    $('.check', $(e.target)).addClass('octicon octicon-check')
     $(@).find('.popup').hide() # скрытый эффект - закрывает все popup
 
   # раскрыть попап с календарем для установки крайней даты
