@@ -91,4 +91,12 @@ describe Board, type: :model do
       end
     end
   end
+
+  describe '#find_stat' do
+    let(:board) { create(:board, :with_columns) }
+    let(:issue) { OpenStruct.new(number: 1) }
+    let!(:issue_stat) { create(:issue_stat, board: board, number: issue.number) }
+    subject { board.find_stat(issue) }
+    it { is_expected.to eq issue_stat }
+  end
 end

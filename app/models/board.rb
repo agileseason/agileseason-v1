@@ -35,4 +35,8 @@ class Board < ActiveRecord::Base
     end
     super
   end
+
+  def find_stat(issue)
+    issue_stats.find_by(number: issue.number)
+  end
 end

@@ -49,8 +49,10 @@ class IssuesController < ApplicationController
   end
 
   def assignee
-    issue = github_api.assign(@board, params[:number], params[:login])
-    render partial: 'issues/assignee', locals: { assignee: issue.assignee }
+    issue = github_api.assign(@board, params[:number], login_diff)
+    render partial: 'issues/assignee', locals: {
+      issue: BoardIssue.new(issue, @board.find_stat(issue))
+    }
   end
 
   def update
@@ -74,5 +76,11 @@ class IssuesController < ApplicationController
     params
       .require(:issue)
       .permit(:title, :body, labels: [])
+  end
+
+  def login_diff
+    # FIX : Need issues cache...
+    login_prev = github_api.issue(@board, params[:number]).try(:assignee).try(:login)
+    params[:login] unless login_prev == params[:login]
   end
 end
