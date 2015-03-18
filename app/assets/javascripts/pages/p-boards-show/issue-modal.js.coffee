@@ -112,7 +112,8 @@ $(document).on 'modal:load', '.b-issue-modal', ->
 
   # сабмит добавления коммента
   $('.add-comment .edit-form button', $issue_modal).click ->
-    new_content = $('.field', $(@).closest('.edit-form')).val()
+    $comment_textarea = $('.field', $(@).closest('.edit-form'))
+    new_content = $comment_textarea.val()
 
     unless new_content.replace(/\s*\n*/g, '') == ''
       $current_issue = $('.current-issue') # миниатюра открытого тикета
@@ -127,6 +128,7 @@ $(document).on 'modal:load', '.b-issue-modal', ->
         $.get comments_url, (comments) ->
           $('.issue-comments', $issue_modal).html(comments)
           $('.b-preloader', $issue_modal).hide()
+          $comment_textarea.val('')
 
         # отобразить иконку с комментарием в миниатюре
         $('.octicon-comment-discussion', $current_issue).show()
