@@ -8,10 +8,6 @@ class IssuesController < ApplicationController
     render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @board_bag.labels }
   end
 
-  def new
-    @issue = @board_bag.build_issue_new
-  end
-
   def create
     @issue = Issue.new(issue_params)
     if @issue.valid?

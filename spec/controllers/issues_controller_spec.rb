@@ -3,14 +3,6 @@ RSpec.describe IssuesController, type: :controller do
   let(:board) { create(:board, :with_columns, user: user) }
   before { stub_sign_in(user) }
 
-  describe 'GET new' do
-    before { allow_any_instance_of(GithubApi).to receive(:labels).and_return([]) }
-    it 'returns http success' do
-      get :new, board_github_name: board.github_name
-      expect(response).to have_http_status(:success)
-    end
-  end
-
   describe 'GET close' do
     before { allow_any_instance_of(GithubApi).to receive(:close) }
     it 'return http success' do
