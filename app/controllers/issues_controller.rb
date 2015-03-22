@@ -16,10 +16,10 @@ class IssuesController < ApplicationController
   def create
     @issue = Issue.new(issue_params)
     if @issue.valid?
-      github_api.create_issue(@board, @issue)
-      redirect_to board_url(@board)
+      issue = github_api.create_issue(@board, @issue)
+      render partial: 'issues/show', locals: { issue: BoardIssue.new(issue, @board.find_stat(issue)) }
     else
-      render 'new'
+      render nothing: true
     end
   end
 

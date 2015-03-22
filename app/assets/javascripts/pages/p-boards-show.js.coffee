@@ -32,9 +32,28 @@ open_issue_modal = (modal_html) ->
 
   $('.modal-content', $issue_modal).children().trigger 'modal:load'
 
+new_issue_forms = ->
+  $('form.new_issue').on 'submit', ->
+    $form = $(@)
+    if $form.data('blocked')
+      false
+    else
+      $form.data('blocked', true)
+
+  $('form.new_issue').on 'ajax:success', (e, data) ->
+    $form = $(@)
+    $form.removeData('blocked')
+    return if data == ''
+    $form.find('.cancel').trigger('click') # закрываем форму
+    $form.find('textarea').val('') # в данном случае нужно очищать поле ввода
+    $issues = $('.issues', $form.closest('.board-column'))
+    $issues.html(data + $issues.html())
+
+
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
   column_menu()
+  new_issue_forms()
 
   $('.issues').on 'click', '.show-issue-modal', ->
     $(@).closest('.issue').addClass 'current-issue'
@@ -82,7 +101,7 @@ $(document).on 'page:change', ->
   $('.inline-form.rename').find('input[type=submit]').on 'click', ->
     $(@).parents('form').submit()
 
-  $('.board-column, .issue-modal, .b-assign').on 'ajax:success', (e, data) ->
+  $('.issue-modal').on 'ajax:success', (e, data) ->
     number = $(@).find('.b-issue-modal').data('number')
     # FIX : Find reason what find return two element .b-assignee-container
     find_issue(number).find('.b-assignee-container').each ->
