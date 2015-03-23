@@ -38,21 +38,21 @@ class ApplicationController < ActionController::Base
   private
 
   def authenticate
-    redirect_to root_url unless signed_in?
+    redirect_to root_url if !signed_in? && !readonly?
   end
 
   def signed_in?
-    current_user.present?
+    current_user.persisted?
   end
 
   def current_user
-    @current_user ||= User.where(remember_token: session[:remember_token]).first
+    @current_user ||= User.where(remember_token: session[:remember_token]).first || guest
   end
 
   # FIX : Nees specs.
   def fetch_board
     board = Board.find_by(github_name: params[:github_name] || params[:board_github_name])
-    if current_user.owner?(board) || current_user_reader?(board.github_id)
+    if current_user.owner?(board) || current_user_reader?(board.github_id) || shared_board(board)
       # FIX : Keep @board or @board_bag after experiment.
       @board = board
       @board_bag = BoardBag.new(github_api, board)
@@ -76,5 +76,19 @@ class ApplicationController < ActionController::Base
     request.headers['HTTP_X_FORWARDED_FOR'] ||
       request.headers['HTTP_X_REAL_IP'] ||
       request.headers['REMOTE_ADDR']
+  end
+
+  private
+
+  def shared_board(board)
+    readonly? && params[:token] == board.id.to_s
+  end
+
+  def readonly?
+    request.path.start_with?('/readonly')
+  end
+
+  def guest
+    @guest ||= User.new(id: 0, github_username: 'Guest')
   end
 end
