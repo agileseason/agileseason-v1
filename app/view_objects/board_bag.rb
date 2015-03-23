@@ -1,5 +1,5 @@
 class BoardBag
-  pattr_initialize :github_api, :board
+  pattr_initialize :github_api, :board, :is_readonly
   delegate :github_name, :columns, :to_param, to: :board
 
   def collaborators
@@ -25,12 +25,14 @@ class BoardBag
   end
 
   def cached_collaborators
+    return [] if @is_readonly
     Rails.cache.fetch(cache_key(:collaborators), expires_in: 20.minutes) do
       @github_api.collaborators(@board)
     end
   end
 
   def cached_labels
+    return [] if @is_readonly
     Rails.cache.fetch(cache_key(:labels), expires_in: 20.minutes) do
       @github_api.labels(@board)
     end

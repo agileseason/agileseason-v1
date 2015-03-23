@@ -38,24 +38,24 @@ class ApplicationController < ActionController::Base
   private
 
   def authenticate
-    redirect_to root_url if !signed_in? && !readonly?
+    redirect_to root_url unless signed_in?
   end
 
   def signed_in?
-    current_user.persisted?
+    current_user.present?
   end
 
   def current_user
-    @current_user ||= User.where(remember_token: session[:remember_token]).first || guest
+    @current_user ||= User.where(remember_token: session[:remember_token]).first
   end
 
   # FIX : Nees specs.
   def fetch_board
     board = Board.find_by(github_name: params[:github_name] || params[:board_github_name])
-    if current_user.owner?(board) || current_user_reader?(board.github_id) || shared_board(board)
+    if current_user.owner?(board) || current_user_reader?(board.github_id) || readonly?
       # FIX : Keep @board or @board_bag after experiment.
       @board = board
-      @board_bag = BoardBag.new(github_api, board)
+      @board_bag = BoardBag.new(github_api, board, readonly?)
     else
       raise ActiveRecord::RecordNotFound
     end
@@ -80,15 +80,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def shared_board(board)
-    readonly? && params[:token] == board.id.to_s
-  end
-
   def readonly?
     request.path.start_with?('/readonly')
-  end
-
-  def guest
-    @guest ||= User.new(id: 0, github_username: 'Guest')
   end
 end

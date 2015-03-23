@@ -11,7 +11,6 @@ class BoardsController < ApplicationController
   end
 
   def show
-    @board_bag = BoardBag.new(github_api, @board)
   end
 
   def new
