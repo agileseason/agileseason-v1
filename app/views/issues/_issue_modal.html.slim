@@ -68,9 +68,10 @@
       .issue-comments data-url="#{comments_board_issues_url board, issue.number}"
         .b-preloader.horizontal
 
-    .issue-actions
-      = render partial: 'issues/actions/edit_labels',   locals: { board: board, labels: labels, issue: issue }
-      = render partial: 'issues/actions/assign',        locals: { issue: issue }
-      = render partial: 'issues/actions/edit_due_date', locals: { board: board, issue: issue }
-      = render partial: 'issues/actions/close',         locals: { board: board, issue: issue }
-      = render partial: 'issues/actions/archive',       locals: { board: board, issue: issue }
+    - if enough_permissions?(board)
+      .issue-actions
+        = render partial: 'issues/actions/edit_labels',   locals: { board: board, labels: labels, issue: issue }
+        = render partial: 'issues/actions/assign',        locals: { issue: issue }
+        = render partial: 'issues/actions/edit_due_date', locals: { board: board, issue: issue }
+        = render partial: 'issues/actions/close',         locals: { board: board, issue: issue }
+        = render partial: 'issues/actions/archive',       locals: { board: board, issue: issue }

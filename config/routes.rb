@@ -1,13 +1,6 @@
 Rails.application.routes.draw do
   resources :repos, only: [:index]
 
-  scope '/readonly' do
-    resources :boards,
-              only: :show,
-              param: :github_name,
-              constraints: { github_name: /[0-9A-Za-z\-_\.]+/ }
-  end
-
   resources :boards,
             except: [:edit],
             param: :github_name,

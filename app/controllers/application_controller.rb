@@ -52,10 +52,10 @@ class ApplicationController < ActionController::Base
   # FIX : Nees specs.
   def fetch_board
     board = Board.find_by(github_name: params[:github_name] || params[:board_github_name])
-    if current_user.owner?(board) || current_user_reader?(board.github_id) || readonly?
+    if enough_permissions?(board) || board.public?
       # FIX : Keep @board or @board_bag after experiment.
       @board = board
-      @board_bag = BoardBag.new(github_api, board, readonly?)
+      @board_bag = BoardBag.new(github_api, board)
     else
       raise ActiveRecord::RecordNotFound
     end
@@ -78,9 +78,9 @@ class ApplicationController < ActionController::Base
       request.headers['REMOTE_ADDR']
   end
 
-  private
+  helper_method :enough_permissions?
 
-  def readonly?
-    request.path.start_with?('/readonly')
+  def enough_permissions?(board)
+    current_user.owner?(board) || current_user_reader?(board.github_id)
   end
 end
