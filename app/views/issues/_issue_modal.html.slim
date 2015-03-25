@@ -68,7 +68,7 @@
       .issue-comments data-url="#{comments_board_issues_url board, issue.number}"
         .b-preloader.horizontal
 
-    - if enough_permissions?(board)
+    - if can? :update, @board
       .issue-actions
         = render partial: 'issues/actions/edit_labels',   locals: { board: board, labels: labels, issue: issue }
         = render partial: 'issues/actions/assign',        locals: { issue: issue }

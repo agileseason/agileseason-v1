@@ -1,4 +1,7 @@
 class BoardsController < ApplicationController
+  load_and_authorize_resource
+  skip_authorize_resource only: [:new, :create]
+
   after_action :fetch_repo_history, only: :show
   before_action :fetch_board, only: [:show, :destroy]
   before_action :check_permissions, only: :create
@@ -72,7 +75,7 @@ private
   end
 
   def check_permissions
-    unless current_user_admin?(board_params[:github_id])
+    unless current_user.repo_admin?(board_params[:github_id])
       # NOTE : Not enough permissions to create board.
       raise ActiveRecord::ReadOnlyRecord
     end
