@@ -48,22 +48,23 @@
               li data-column="#{column.id}"
                 a = column.name
 
-      .edit.add-comment
-        /.user-ava
-          /img.avatar src="#{issue.user.avatar_url}"
-        .editable.create-comment
-          .add.edit-link Add Comment
-        .edit-form
-          textarea.field
-          /.markup-switcher
-            /span.markup.active markup
-            /span.preview preview
-          .submit-area
-            a.cancel Cancel
-            button.button[
-              remote='true'
-              href="#{add_comment_board_issues_url(board, issue.number)}"]
-              | Save
+      - if can? :update, @board
+        .edit.add-comment
+          /.user-ava
+            /img.avatar src="#{issue.user.avatar_url}"
+          .editable.create-comment
+            .add.edit-link Add Comment
+          .edit-form
+            textarea.field
+            /.markup-switcher
+              /span.markup.active markup
+              /span.preview preview
+            .submit-area
+              a.cancel Cancel
+              button.button[
+                remote='true'
+                href="#{add_comment_board_issues_url(board, issue.number)}"]
+                | Save
 
       .issue-comments data-url="#{comments_board_issues_url board, issue.number}"
         .b-preloader.horizontal
