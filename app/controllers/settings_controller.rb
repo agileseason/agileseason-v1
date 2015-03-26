@@ -48,8 +48,16 @@ class SettingsController < ApplicationController
       .permit(:rolling_average_window)
   end
 
+  def danger_settings_params
+    params
+      .require(:danger_settings)
+      .permit(:is_public)
+  end
+
   def build_board_settings
-    if @board.kanban?
+    if params[:danger_settings]
+      DangerSettings.new(danger_settings_params)
+    elsif @board.kanban?
       KanbanSettings.new(kanban_settings_params)
     elsif @board.scrum?
       ScrumSettings.new(scrum_settings_params)
