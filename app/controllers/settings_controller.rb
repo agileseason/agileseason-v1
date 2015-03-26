@@ -31,27 +31,27 @@ class SettingsController < ApplicationController
   end
 
   def board_params
-    params
-      .require(:board)
-      .permit(:name)
+    params.
+      require(:board).
+      permit(:name)
   end
 
   def scrum_settings_params
-    params
-      .require(:scrum_settings)
-      .permit(:days_per_iteration, :start_iteration)
+    params.
+      require(:scrum_settings).
+      permit(:days_per_iteration, :start_iteration)
   end
 
   def kanban_settings_params
-    params
-      .require(:kanban_settings)
-      .permit(:rolling_average_window)
+    params.
+      require(:kanban_settings).
+      permit(:rolling_average_window)
   end
 
   def danger_settings_params
-    params
-      .require(:danger_settings)
-      .permit(:is_public)
+    params.
+      require(:danger_settings).
+      permit(:is_public)
   end
 
   def build_board_settings

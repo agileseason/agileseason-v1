@@ -48,17 +48,17 @@ describe BoardsController, type: :controller do
           to receive(:cached_repos).and_return([repo])
       end
       let(:board) { create(:board, :with_columns) }
-      it { expect{request}.to raise_error(CanCan::AccessDenied) }
+      it { expect { request }.to raise_error(CanCan::AccessDenied) }
     end
 
     context 'not owner and not reader' do
       let(:board) { create(:board, :with_columns) }
-      it { expect{request}.to raise_error(CanCan::AccessDenied) }
+      it { expect { request }.to raise_error(CanCan::AccessDenied) }
     end
 
     context 'not owner and not reader and public board' do
       let(:board) { create(:board, :with_columns, settings: { is_public: true }) }
-      it { expect{request}.to raise_error(CanCan::AccessDenied) }
+      it { expect { request }.to raise_error(CanCan::AccessDenied) }
     end
   end
 end
