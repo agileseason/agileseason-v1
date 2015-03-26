@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'attr_extras'
 gem 'awesome_print'
+gem 'cancancan', '~> 1.10'
 gem 'coffee-rails'
 gem 'compass-rails'
 gem 'dalli'

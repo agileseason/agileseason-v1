@@ -1,7 +1,10 @@
 class BoardsController < ApplicationController
-  after_action :fetch_repo_history, only: :show
-  before_action :fetch_board, only: [:show, :destroy]
-  before_action :check_permissions, only: :create
+  load_and_authorize_resource
+  skip_authorize_resource only: [:new, :create]
+
+  before_action :check_permissions,  only: [:create]
+  before_action :fetch_board,        only: [:show, :destroy]
+  after_action  :fetch_repo_history, only: [:show]
 
   def index
     if current_user.boards.blank?
@@ -11,7 +14,6 @@ class BoardsController < ApplicationController
   end
 
   def show
-    @board_bag = BoardBag.new(github_api, @board)
   end
 
   def new
@@ -31,12 +33,9 @@ class BoardsController < ApplicationController
   end
 
   def destroy
-    if current_user.owner?(@board)
-      @board.destroy
-      redirect_to repos_url, notice: "Your board \"#{@board.name}\" was successfully deleted."
-    else
-      raise ActiveRecord::RecordNotFound
-    end
+    authorize! :destroy, @board
+    @board.destroy
+    redirect_to repos_url, notice: "Your board \"#{@board.name}\" was successfully deleted."
   end
 
 private
@@ -73,7 +72,7 @@ private
   end
 
   def check_permissions
-    unless current_user_admin?(board_params[:github_id])
+    unless current_user.repo_admin?(board_params[:github_id])
       # NOTE : Not enough permissions to create board.
       raise ActiveRecord::ReadOnlyRecord
     end

@@ -39,6 +39,8 @@ class ApplicationController < ActionController::Base
 
   def authenticate
     redirect_to root_url unless signed_in?
+    # FIX : Find best place for this.
+    current_user.github_api = github_api
   end
 
   def signed_in?
@@ -51,25 +53,15 @@ class ApplicationController < ActionController::Base
 
   # FIX : Nees specs.
   def fetch_board
-    board = Board.find_by(github_name: params[:github_name] || params[:board_github_name])
-    if current_user.owner?(board) || current_user_reader?(board.github_id)
-      # FIX : Keep @board or @board_bag after experiment.
-      @board = board
-      @board_bag = BoardBag.new(github_api, board)
-    else
-      raise ActiveRecord::RecordNotFound
-    end
+    @board ||= Board.find_by(github_name: params[:github_name] || params[:board_github_name])
+    authorize!(:read, @board)
+    # FIX : Keep @board or @board_bag after experiment.
+    @board_bag = BoardBag.new(github_api, @board)
   end
 
-  # FIX : Nees specs.
-  def current_user_reader?(github_id)
-    github_api.cached_repos.any? { |r| r.id == github_id.to_i }
-  end
-
-  # FIX : Nees specs.
-  def current_user_admin?(github_id)
-    repo = github_api.cached_repos.select { |r| r.id == github_id.to_i }.first
-    k(:repo, repo).board_control?
+  def fetch_board_for_update
+    fetch_board
+    authorize!(:update, @board)
   end
 
   def remote_addr

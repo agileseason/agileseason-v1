@@ -1,5 +1,5 @@
 class SettingsController < ApplicationController
-  before_action :fetch_board
+  before_action :fetch_board_for_update
 
   def show
     render_show(@board)
@@ -31,25 +31,33 @@ class SettingsController < ApplicationController
   end
 
   def board_params
-    params
-      .require(:board)
-      .permit(:name)
+    params.
+      require(:board).
+      permit(:name)
   end
 
   def scrum_settings_params
-    params
-      .require(:scrum_settings)
-      .permit(:days_per_iteration, :start_iteration)
+    params.
+      require(:scrum_settings).
+      permit(:days_per_iteration, :start_iteration)
   end
 
   def kanban_settings_params
-    params
-      .require(:kanban_settings)
-      .permit(:rolling_average_window)
+    params.
+      require(:kanban_settings).
+      permit(:rolling_average_window)
+  end
+
+  def danger_settings_params
+    params.
+      require(:danger_settings).
+      permit(:is_public)
   end
 
   def build_board_settings
-    if @board.kanban?
+    if params[:danger_settings]
+      DangerSettings.new(danger_settings_params)
+    elsif @board.kanban?
       KanbanSettings.new(kanban_settings_params)
     elsif @board.scrum?
       ScrumSettings.new(scrum_settings_params)

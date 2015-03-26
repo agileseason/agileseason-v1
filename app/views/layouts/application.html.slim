@@ -7,7 +7,7 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   body class="p-#{controller_name}-#{action_name}" id="#{controller_name}_#{action_name}"
-    = render partial: 'layouts/menu' if current_user
+    = render partial: 'layouts/menu' if signed_in?
     .container
       = render partial: '/layouts/notice'
       = yield

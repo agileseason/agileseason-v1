@@ -1,5 +1,6 @@
 class IssuesController < ApplicationController
-  before_action :fetch_board
+  before_action :fetch_board, only: [:comments]
+  before_action :fetch_board_for_update, expect: [:comments]
 
   def show
     github_issue = github_api.issue(@board, params[:number])
@@ -28,6 +29,7 @@ class IssuesController < ApplicationController
   end
 
   def move_to
+    authorize!(:update, @board)
     github_api.move_to(@board, @board.columns.find(params[:column_id]), params[:number])
     redirect_to board_url(@board)
   end

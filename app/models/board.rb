@@ -39,4 +39,18 @@ class Board < ActiveRecord::Base
   def find_stat(issue)
     issue_stats.find_by(number: issue.number)
   end
+
+  def public?
+    settings[:is_public]
+  end
+
+  def public=(value)
+    settings[:is_public] = value
+  end
+
+  def danger_settings
+    DangerSettings.new(
+      is_public: public?
+    )
+  end
 end

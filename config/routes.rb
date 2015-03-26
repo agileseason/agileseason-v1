@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :repos, only: [:index]
+
   resources :boards,
             except: [:edit],
             param: :github_name,

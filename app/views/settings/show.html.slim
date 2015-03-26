@@ -21,7 +21,14 @@
           = f.input :start_iteration, collection: ScrumSettings::START_ITERATION_DAYS, include_blank: false
           = f.button :submit, value: 'Update'
 
-  - if current_user.owner?(@board)
+
+  - if can? :destroy, @board
+    .box.danger
+      title Make this board public
+      p Make this repository visible to anyone. Work only for public repository.
+      = simple_form_for(@board.danger_settings, url: board_settings_url(board), method: :patch) do |f|
+        = f.input :is_public, as: :boolean
+        = f.button :submit, value: 'Update'
     .box.danger
       title Delete this board
       p Once you delete a board, there is no going back. Please be certain.
