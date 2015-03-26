@@ -31,11 +31,8 @@ describe BoardsController, type: :controller do
 
   describe 'DELETE destroy' do
     let(:user) { create(:user) }
+    let(:repo) { OpenStruct.new(id: board.github_id) }
     let(:request) { delete(:destroy, github_name: board.github_name) }
-    before do
-      allow_any_instance_of(BoardsController)
-        .to receive(:current_user_reader?).and_return(reader?)
-    end
     before { stub_sign_in(user) }
 
     context 'owner' do
@@ -46,15 +43,22 @@ describe BoardsController, type: :controller do
     end
 
     context 'not owner but reader' do
-      let(:reader?) { true }
+      before do
+        allow_any_instance_of(GithubApi).
+          to receive(:cached_repos).and_return([repo])
+      end
       let(:board) { create(:board, :with_columns) }
-      it { expect{request}.to raise_error(ActiveRecord::RecordNotFound) }
+      it { expect{request}.to raise_error(CanCan::AccessDenied) }
     end
 
     context 'not owner and not reader' do
-      let(:reader?) { false }
       let(:board) { create(:board, :with_columns) }
-      it { expect{request}.to raise_error(ActiveRecord::RecordNotFound) }
+      it { expect{request}.to raise_error(CanCan::AccessDenied) }
+    end
+
+    context 'not owner and not reader and public board' do
+      let(:board) { create(:board, :with_columns, settings: { is_public: true }) }
+      it { expect{request}.to raise_error(CanCan::AccessDenied) }
     end
   end
 end

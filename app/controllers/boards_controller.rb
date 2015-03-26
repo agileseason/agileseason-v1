@@ -2,9 +2,9 @@ class BoardsController < ApplicationController
   load_and_authorize_resource
   skip_authorize_resource only: [:new, :create]
 
-  after_action :fetch_repo_history, only: :show
-  before_action :fetch_board, only: [:show, :destroy]
-  before_action :check_permissions, only: :create
+  before_action :check_permissions,  only: [:create]
+  before_action :fetch_board,        only: [:show, :destroy]
+  after_action  :fetch_repo_history, only: [:show]
 
   def index
     if current_user.boards.blank?
@@ -33,12 +33,9 @@ class BoardsController < ApplicationController
   end
 
   def destroy
-    if current_user.owner?(@board)
-      @board.destroy
-      redirect_to repos_url, notice: "Your board \"#{@board.name}\" was successfully deleted."
-    else
-      raise ActiveRecord::RecordNotFound
-    end
+    authorize! :destroy, @board
+    @board.destroy
+    redirect_to repos_url, notice: "Your board \"#{@board.name}\" was successfully deleted."
   end
 
 private
