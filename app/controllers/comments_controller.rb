@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :fetch_board
+  before_action :fetch_board_update
 
   def create
     github_api.add_comment(@board, params[:number], params[:comment])
