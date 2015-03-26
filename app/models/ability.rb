@@ -37,15 +37,19 @@ class Ability
 
   def board_ability
     can :manage, Board do |board|
-      board.user_id == @user.id
+      owner?(board)
     end
 
     can [:read, :update], Board do |board|
-      @user.github_api.cached_repos.any? { |r| r.id == board.github_id }
+      owner?(board) || @user.github_api.cached_repos.any? { |repo| repo.id == board.github_id }
     end
 
     can :read, Board do |board|
       board.public?
     end
+  end
+
+  def owner?(board)
+    @user.id == board.user_id
   end
 end
