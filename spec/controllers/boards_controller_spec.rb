@@ -40,6 +40,7 @@ describe BoardsController, type: :controller do
       let(:reader?) { false }
       let(:board) { create(:board, :with_columns, user: user) }
       it { expect(response).to have_http_status(:redirect) }
+      it { expect(Board.where(id: board.id).count).to be_zero }
     end
 
     context 'not owner but reader' do
