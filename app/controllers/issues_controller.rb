@@ -1,6 +1,6 @@
 class IssuesController < ApplicationController
   before_action :fetch_board, only: [:comments]
-  before_action :fetch_board_for_update, expect: [:comments]
+  before_action :fetch_board_for_update, except: [:comments]
 
   def show
     github_issue = github_api.issue(@board, params[:number])
