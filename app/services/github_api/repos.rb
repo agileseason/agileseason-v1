@@ -24,7 +24,7 @@ class GithubApi
 
     def org_repos
       orgs.flat_map do |org|
-        paginate { |page| client.org_repos(org[:login], page: page) }
+        paginate { |page| client.org_repos(org[:login], page: page).select { |repo| repo.permissions.push } }
       end
     end
 
