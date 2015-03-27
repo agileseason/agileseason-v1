@@ -1,6 +1,6 @@
 class Column < ActiveRecord::Base
   belongs_to :board
-  has_many :issue_stats, dependent: :delete_all
+  has_many :issue_stats, dependent: :destroy
 
   validates :name, presence: true
   validates :board, presence: true
