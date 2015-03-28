@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
   private
 
   def find_user
-    if user = User.where(github_username: github_username).first
+    if user = User.where(github_username: github_username_auth).first
       # TODO mixpanel sign_in
     end
 
@@ -24,8 +24,8 @@ class SessionsController < ApplicationController
 
   def create_user
     user = User.create!(
-      github_username: github_username,
-      email: github_email_address,
+      github_username: github_username_auth,
+      email: github_email_address_auth,
     )
     flash[:signed_up] = true
     user
@@ -33,7 +33,7 @@ class SessionsController < ApplicationController
 
   def create_session_for(user)
     session[:remember_token] = user.remember_token
-    session[:github_token] = github_token
+    session[:github_token] = github_token_auth
   end
 
   def destroy_session
@@ -41,15 +41,17 @@ class SessionsController < ApplicationController
     session[:github_token] = nil
   end
 
-  def github_username
+  private
+
+  def github_username_auth
     request.env['omniauth.auth']['info']['nickname']
   end
 
-  def github_email_address
+  def github_email_address_auth
     request.env['omniauth.auth']['info']['email']
   end
 
-  def github_token
+  def github_token_auth
     request.env['omniauth.auth']['credentials']['token']
   end
 end

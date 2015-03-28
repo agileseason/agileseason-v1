@@ -38,9 +38,9 @@ class ApplicationController < ActionController::Base
   private
 
   def authenticate
-    redirect_to root_url unless signed_in?
     # FIX : Find best place for this.
-    current_user.github_api = github_api
+    current_user.github_api = github_api if github_token
+    redirect_to root_url unless signed_in?
   end
 
   def signed_in?
