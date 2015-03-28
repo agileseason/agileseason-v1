@@ -40,7 +40,11 @@ class ApplicationController < ActionController::Base
   def authenticate
     # FIX : Find best place for this.
     current_user.github_api = github_api if github_token
-    redirect_to root_url unless signed_in?
+
+    unless signed_in?
+      save_return_url
+      redirect_to root_url
+    end
   end
 
   def signed_in?
@@ -68,5 +72,9 @@ class ApplicationController < ActionController::Base
     request.headers['HTTP_X_FORWARDED_FOR'] ||
       request.headers['HTTP_X_REAL_IP'] ||
       request.headers['REMOTE_ADDR']
+  end
+
+  def save_return_url
+    session[:return_url] = request.url unless request.url == root_url
   end
 end

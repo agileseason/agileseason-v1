@@ -4,7 +4,12 @@ class SessionsController < ApplicationController
   def create
     user = find_user || create_user
     create_session_for(user)
-    redirect_to boards_url
+    if session[:return_url]
+      redirect_to session[:return_url]
+      session[:return_url] = nil
+    else
+      redirect_to boards_url
+    end
   end
 
   def destroy
