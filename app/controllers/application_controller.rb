@@ -43,6 +43,7 @@ class ApplicationController < ActionController::Base
 
     unless signed_in?
       save_return_url
+      # FIX : Add notice 'Sign In First'
       redirect_to root_url
     end
   end
