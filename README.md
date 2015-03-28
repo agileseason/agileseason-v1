@@ -7,6 +7,8 @@ Agile Season
 
 Agile board with management stats for github issues
 
+Look at the our development board for example - http://agileseason.com/boards/agileseason
+
 ## Development
 
 ### Getting Started
