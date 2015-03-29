@@ -4,8 +4,8 @@ describe RepoPresenter do
   let!(:board_1) { create(:board, :with_columns, name: 'second_board', user: user) }
   let!(:board_2) { create(:board, :with_columns, name: 'first_board', user: user) }
   let!(:board_3) { build(:board, name: 'third', user: user) }
-  let!(:board_4) { create(:board, :with_columns, name: 'other_board', github_name: 'other_board') }
-  let(:repo_4) { OpenStruct.new(name: board_4.name) }
+  let!(:board_4) { create(:board, :with_columns, name: 'other_board', github_id: 123) }
+  let(:repo_4) { OpenStruct.new(id: board_4.github_id) }
   before do
     allow_any_instance_of(GithubApi).
       to receive(:cached_repos).and_return([repo_4])

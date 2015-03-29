@@ -12,7 +12,7 @@ class UserPresenter < Keynote::Presenter
 
   def joined_boards
     @joined_boards ||= Board.
-      where(github_name: github_api.cached_repos.map(&:name)).
+      where(github_id: github_api.cached_repos.map(&:id)).
       where.not(id: owned_boards.map(&:id))
   end
 end
