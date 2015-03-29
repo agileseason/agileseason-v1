@@ -11,6 +11,8 @@ class UserPresenter < Keynote::Presenter
   end
 
   def joined_boards
-    @joined_boards ||= Board.where(github_name: github_api.cached_repos.map(&:name))
+    @joined_boards ||= Board.
+      where(github_name: github_api.cached_repos.map(&:name)).
+      where.not(id: owned_boards.map(&:id))
   end
 end
