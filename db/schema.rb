@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 20150401181522) do
     t.integer  "order"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "issues"
+    t.text     "issues"
   end
 
   add_index "columns", ["board_id"], name: "index_columns_on_board_id"

@@ -22,7 +22,7 @@ class ColumnsController < ApplicationController
     @column = @board.columns.find(params[:id])
 
     if params[:issues]
-       @column.update(issues: params[:issues].join(','))
+       @column.update(issues: params[:issues])
        render nothing: true
     else
       if @column.update(column_params)
