@@ -11,21 +11,6 @@ describe User, type: :model do
     it { is_expected.to eq user.github_username }
   end
 
-  describe '#owner?' do
-    subject { user.owner?(board) }
-    let(:user) { create(:user) }
-
-    context :true do
-      let!(:board) { create(:board, :with_columns, user: user) }
-      it { is_expected.to eq true }
-    end
-
-    context :false do
-      let!(:board) { create(:board, :with_columns) }
-      it { is_expected.to eq false }
-    end
-  end
-
   describe '#repo_admin?' do
     let(:repo) { OpenStruct.new(id: 1, permissions: permissions) }
     let(:permissions) { OpenStruct.new(admin: is_admin) }

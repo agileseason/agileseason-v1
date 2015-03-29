@@ -11,11 +11,6 @@ class User < ActiveRecord::Base
     github_username
   end
 
-  # FIX : remove after check ability
-  def owner?(board)
-    board.user_id == id
-  end
-
   def repo_admin?(github_id)
     repo = github_api.cached_repos.select { |r| r.id == github_id.to_i }.first
     repo && repo.permissions.admin # try don't work before directly call method
