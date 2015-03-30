@@ -18,7 +18,7 @@ class BoardBag
     Issue.new(labels: labels.map(&:name))
   end
 
-  def issues_of_column column
+  def column_issues column
     if column.issues
       ordered_issues = []
       column.issues.each do |i|

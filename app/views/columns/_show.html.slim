@@ -20,5 +20,5 @@
     = render partial: 'issues/new', locals: { board_bag: @board_bag, issue: @board_bag.build_issue_new }
 
   .issues.scroller
-    - @board_bag.issues_of_column(column).each do |i|
+    - @board_bag.column_issues(column).each do |i|
       = render partial: 'issues/show', locals: { issue: i }
