@@ -67,12 +67,12 @@ describe BoardBag do
     before do
       allow_any_instance_of(GithubApi).
         to receive(:board_issues).
-          and_return(
-            { column_1.id => [github_issue_1, github_issue_2, github_issue_3] }
-          )
+        and_return(
+          column_1.id => [github_issue_1, github_issue_2, github_issue_3]
+        )
     end
 
-    context 'with column.issues', focus: true do
+    context 'with column.issues' do
       let(:issues) { [github_issue_2.number, github_issue_1.number] }
       it { is_expected.to have(2).items }
       it { expect(subject.first).to eq github_issue_2 }
