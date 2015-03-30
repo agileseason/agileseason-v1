@@ -20,16 +20,14 @@ class BoardBag
 
   def column_issues column
     if column.issues
-      ordered_issues = []
-      column.issues.each do |i|
-        issues[column.id].reject(&:archive?).each do |issue|
-          if i.to_i == issue.number
-            ordered_issues << issue
-          end
-        end
-      end
-      ordered_issues
-
+      column.issues.each_with_object([]) { |number, ordered_issues|
+        ordered_issues.concat(issues[column.id].select { |issue|
+          number.to_i == issue.number && !issue.archive?
+        })
+      }.
+      concat(issues[column.id].
+        select { |issue| !column.issues.include?(issue.number) }
+      )
     else
       issues[column.id].reject(&:archive?)
     end
