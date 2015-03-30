@@ -19,7 +19,6 @@ class BoardBag
   end
 
   def issues_of_column column
-
     if column.issues
       ordered_issues = []
       column.issues.each do |i|
