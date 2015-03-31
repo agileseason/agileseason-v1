@@ -8,4 +8,8 @@ class BoardBagFetcher < BoardBag
   def refresh_labels
     Rails.cache.write(cache_key(:labels), @github_api.labels(@board), expires_in: 20.minutes)
   end
+
+  def refresh_issues
+    Rails.cache.write(cache_key(:board_issues), @github_api.board_issues(@board), expires_in: 5.minutes)
+  end
 end
