@@ -20,20 +20,25 @@ class BoardBag
 
   def column_issues column
     if column.issues
-      column.issues.each_with_object([]) { |number, ordered_issues|
-        ordered_issues.concat(issues[column.id].select { |issue|
-          number.to_i == issue.number && !issue.archive?
-        })
-      }.
-      concat(issues[column.id].
-        select { |issue| !column.issues.include?(issue.number) }
-      )
+      ordered_issues(column).concat unordered_issues(column)
     else
       issues[column.id].reject(&:archive?)
     end
   end
 
   private
+
+  def ordered_issues column
+    column.issues.each_with_object([]) do |number, array|
+      array << issues[column.id].find do |issue|
+        number.to_i == issue.number && !issue.archive?
+      end
+    end
+  end
+
+  def unordered_issues column
+    issues[column.id].select { |issue| !column.issues.include?(issue.number.to_s) }
+  end
 
   def cache_key(posfix)
     [@board, "board_bag_#{posfix}"]
