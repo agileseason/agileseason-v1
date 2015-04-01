@@ -4,7 +4,8 @@ FactoryGirl.define do
     name 'test board'
     type 'Boards::KanbanBoard'
     github_id 123
-    github_name 'test_board_repo'
+    github_name 'test-board-repo'
+    github_full_name 'test/test-board-repo'
     settings nil
 
     trait :with_columns do

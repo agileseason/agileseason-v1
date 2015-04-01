@@ -4,6 +4,8 @@ describe Board, type: :model do
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :type }
     it { is_expected.to validate_presence_of :columns }
+    it { is_expected.to validate_presence_of :github_name }
+    it { is_expected.to validate_presence_of :github_full_name }
   end
 
   describe '.activities' do
