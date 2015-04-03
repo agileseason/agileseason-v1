@@ -20,7 +20,7 @@ class BoardBag
 
   def column_issues column
     if column.issues
-      ordered_issues(column).concat unordered_issues(column)
+      ordered_issues(column) + unordered_issues(column)
     else
       issues[column.id].reject(&:archive?)
     end
@@ -30,14 +30,15 @@ class BoardBag
 
   def ordered_issues column
     column.issues.each_with_object([]) do |number, array|
-      array << issues[column.id].find do |issue|
-        number.to_i == issue.number && !issue.archive?
-      end
+      one_issue = issues[column.id].find { |issue| number.to_i == issue.number && !issue.archive? }
+      array << one_issue if one_issue.present?
     end
   end
 
   def unordered_issues column
-    issues[column.id].select { |issue| !column.issues.include?(issue.number.to_s) }
+    issues[column.id].select do |issue|
+      !ordered_issues(column).include?(issue) && !issue.archive?
+    end
   end
 
   def cache_key(posfix)

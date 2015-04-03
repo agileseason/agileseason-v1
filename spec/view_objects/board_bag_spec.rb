@@ -73,7 +73,7 @@ describe BoardBag do
     end
 
     context 'with column.issues' do
-      let(:issues) { [github_issue_2.number, github_issue_3.number] }
+      let(:issues) { [github_issue_2.number.to_s, github_issue_3.number.to_s] }
       it { is_expected.to have(2).items }
       it { expect(subject.first).to eq github_issue_2 }
     end
