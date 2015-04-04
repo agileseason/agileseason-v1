@@ -6,15 +6,23 @@ RSpec.describe IssuesController, type: :controller do
   describe 'GET new' do
     before { allow_any_instance_of(GithubApi).to receive(:labels).and_return([]) }
     it 'returns http success' do
-      get :new, board_github_name: board.github_name
+      get :new, board_github_full_name: board.github_full_name
       expect(response).to have_http_status(:success)
+    end
+  end
+
+  describe 'GET comments' do
+    before { allow_any_instance_of(GithubApi).to receive(:issue_comments).and_return([]) }
+    it 'return http success' do
+      get :comments, board_github_full_name: board.github_full_name, number: 1
+      expect(response).to render_template(partial: '_comments')
     end
   end
 
   describe 'GET close' do
     before { allow_any_instance_of(GithubApi).to receive(:close) }
     it 'return http success' do
-      get :close, board_github_name: board.github_name, number: 1
+      get :close, board_github_full_name: board.github_full_name, number: 1
       expect(response).to redirect_to(board_url(board))
     end
   end
@@ -22,7 +30,7 @@ RSpec.describe IssuesController, type: :controller do
   describe 'GET archive' do
     before { allow_any_instance_of(GithubApi).to receive(:archive) }
     it 'return http success' do
-      get :archive, board_github_name: board.github_name, number: 1
+      get :archive, board_github_full_name: board.github_full_name, number: 1
       expect(response).to redirect_to(board_url(board))
     end
   end
@@ -32,7 +40,7 @@ RSpec.describe IssuesController, type: :controller do
     before { allow_any_instance_of(GithubApi).to receive(:assign).and_return(issue) }
     before { allow_any_instance_of(GithubApi).to receive(:issue).and_return(issue) }
     it 'return http success' do
-      get :assignee, board_github_name: board.github_name, number: 1, login: 'github_user'
+      get :assignee, board_github_full_name: board.github_full_name, number: 1, login: 'github_user'
       expect(response).to have_http_status(:success)
     end
   end
@@ -40,7 +48,7 @@ RSpec.describe IssuesController, type: :controller do
   describe 'GET update' do
     before { allow_any_instance_of(GithubApi).to receive(:update_issue) }
     it 'return http success' do
-      get :update, board_github_name: board.github_name, number: 1
+      get :update, board_github_full_name: board.github_full_name, number: 1
       expect(response).to redirect_to(board_url(board))
     end
   end

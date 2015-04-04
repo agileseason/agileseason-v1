@@ -24,4 +24,13 @@ describe BoardBag do
 
     it { expect_any_instance_of(GithubApi).to receive(:labels) }
   end
+
+  describe '#build_issue_new' do
+    before { allow_any_instance_of(GithubApi).to receive(:labels).and_return(labels) }
+    let(:labels) { [OpenStruct.new(name: 'label_1')] }
+    subject { bag.build_issue_new }
+    it { is_expected.to_not be_nil }
+    it { is_expected.to be_a(Issue) }
+    its(:labels) { is_expected.to eq ['label_1'] }
+  end
 end
