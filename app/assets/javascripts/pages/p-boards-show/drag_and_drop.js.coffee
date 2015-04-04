@@ -8,8 +8,8 @@ $(document).on 'page:change', ->
   # сохранение порядка тикетов, если он изменился
   $('.issues').on 'sortupdate', (event, ui) ->
     column = $(event.target).closest('.board-column').data('column')
-    board_github_name = $('.board').data('github_name')
-    path = "/boards/#{board_github_name}/columns/#{column}"
+    board = $('.board').data('github_full_name')
+    path = "/boards/#{board}/columns/#{column}"
 
     if $(event.target).sortable('serialize')
       issues = $(event.target).sortable('serialize')
@@ -29,7 +29,7 @@ $(document).on 'page:change', ->
     issue_number = $(".ui-sortable-helper").data('number')
     column_number = $(@).data('column')
     $current_issue = $('.issue[data-number="' + issue_number + '"]')
-    board = $('.board').data('github_name')
+    board = $('.board').data('github_full_name')
 
     unless $(".ui-draggable-dragging").data('start_column') == column_number
       $(".ui-draggable-dragging").prependTo($(@).find('.issues'))

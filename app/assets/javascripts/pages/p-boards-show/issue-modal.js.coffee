@@ -54,12 +54,12 @@ $(document).on 'modal:load', '.b-issue-modal', ->
 
     issue = $current_issue.data('number')
     column = $(@).data('column')
-    board_github_name = $('.board').data('github_name')
+    board = $('.board').data('github_full_name')
 
     $col_1 = $current_issue.closest('.board-column')
     $col_2 = $('.board-column[data-column="' + column + '"]')
-    col_1_url = "/boards/#{board_github_name}/columns/#{$col_1.data('column')}"
-    col_2_url = "/boards/#{board_github_name}/columns/#{$col_2.data('column')}"
+    col_1_url = "/boards/#{board}/columns/#{$col_1.data('column')}"
+    col_2_url = "/boards/#{board}/columns/#{$col_2.data('column')}"
 
     # класс активной колонки
     $('.move-to-column li').removeClass 'active'
@@ -72,10 +72,7 @@ $(document).on 'modal:load', '.b-issue-modal', ->
     $('.issues', $column).prepend(clone)
 
     # урл перемещения
-    board_github_full_name = $('.board').data('github_full_name')
-    issue = $current_issue.data('number')
-    column = $(@).data('column')
-    path = "/boards/#{board_github_full_name}/issues/#{issue}/move_to/#{column}"
+    path = "/boards/#{board}/issues/#{issue}/move_to/#{column}"
     $.get path
 
     # сохранение порядка тиетов в измененных колонках
