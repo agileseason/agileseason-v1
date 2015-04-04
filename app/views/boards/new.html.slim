@@ -1,6 +1,7 @@
 = simple_form_for(@board) do |f|
   = f.input :github_id, as: :hidden
   = f.input :github_name, as: :hidden
+  = f.input :github_full_name, as: :hidden
   = f.input :name
   .columns
     .label-column Type

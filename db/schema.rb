@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150314111428) do
+ActiveRecord::Schema.define(version: 20150401181522) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "user_id"
@@ -40,13 +40,14 @@ ActiveRecord::Schema.define(version: 20150314111428) do
 
   create_table "boards", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "name",        limit: 255
-    t.string   "type",        limit: 255
+    t.string   "name",             limit: 255
+    t.string   "type",             limit: 255
     t.integer  "github_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "github_name", limit: 255
+    t.string   "github_name",      limit: 255
     t.text     "settings"
+    t.string   "github_full_name", limit: 500
   end
 
   add_index "boards", ["user_id"], name: "index_boards_on_user_id"

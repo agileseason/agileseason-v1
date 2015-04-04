@@ -31,7 +31,7 @@ class IssuesController < ApplicationController
   def move_to
     authorize!(:update, @board)
     github_api.move_to(@board, @board.columns.find(params[:column_id]), params[:number])
-    redirect_to board_url(@board)
+    render nothing: true
   end
 
   def close

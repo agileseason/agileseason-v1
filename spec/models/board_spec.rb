@@ -4,9 +4,11 @@ describe Board, type: :model do
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :type }
     it { is_expected.to validate_presence_of :columns }
+    it { is_expected.to validate_presence_of :github_name }
+    it { is_expected.to validate_presence_of :github_full_name }
   end
 
-  describe '.activities' do
+  describe '#activities' do
     subject { board.activities }
     let(:board) { build_stubbed(:board) }
 
@@ -21,19 +23,11 @@ describe Board, type: :model do
     end
   end
 
-  describe '.column_labels' do
-    let(:column_1) { build(:column, name: "backlog", order: 1) }
-    let(:column_2) { build(:column, name: "todo", order: 2) }
-    let(:board) { build(:board, columns: [column_1, column_2]) }
-    subject { board.column_labels }
-    it { is_expected.to eq ["[1] backlog", "[2] todo"] }
-  end
-
-  describe '.to_param' do
+  describe '#to_param' do
     let(:board) { build(:board, github_name: 'agileseason') }
     subject { board.to_param }
 
-    it { is_expected.to eq board.github_name }
+    it { is_expected.to eq board.github_full_name }
   end
 
   describe '#kanban?' do

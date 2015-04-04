@@ -10,8 +10,9 @@ RSpec.describe ActivitiesController, type: :controller do
     before { stub_sign_in(user) }
 
     it 'returns http success' do
-      get :index, board_github_name: board.github_name
+      get :index, board_github_full_name: board.github_full_name
       expect(response).to have_http_status(:success)
+      expect(response).to render_template(partial: '_index')
     end
   end
 end

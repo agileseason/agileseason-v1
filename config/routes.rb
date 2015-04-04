@@ -3,8 +3,8 @@ Rails.application.routes.draw do
 
   resources :boards,
             except: [:edit],
-            param: :github_name,
-            constraints: { github_name: /[0-9A-Za-z\-_\.]+/ } do
+            param: :github_full_name,
+            constraints: { github_full_name: /[0-9A-Za-z\-_\.]+(\/|%2F)[0-9A-Za-z\-_\.]+/ } do
 
     resources :columns do
       member do

@@ -63,10 +63,10 @@ $(document).on 'modal:load', '.b-issue-modal', ->
     $('.issues', $column).prepend(clone)
 
     # урл перемещения
-    board_github_name = $('.board').data('github_name')
+    board_github_full_name = $('.board').data('github_full_name')
     issue = $current_issue.data('number')
     column = $(@).data('column')
-    path = "/boards/#{board_github_name}/issues/#{issue}/move_to/#{column}"
+    path = "/boards/#{board_github_full_name}/issues/#{issue}/move_to/#{column}"
     $.get path
 
   # сабмит названия

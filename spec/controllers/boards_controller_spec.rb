@@ -24,7 +24,7 @@ describe BoardsController, type: :controller do
     before { stub_sign_in(user) }
 
     it 'returns http success' do
-      get :show, github_name: board.github_name
+      get :show, github_full_name: board.github_full_name
       expect(response).to have_http_status(:success)
     end
   end
@@ -32,7 +32,7 @@ describe BoardsController, type: :controller do
   describe 'DELETE destroy' do
     let(:user) { create(:user) }
     let(:repo) { OpenStruct.new(id: board.github_id) }
-    let(:request) { delete(:destroy, github_name: board.github_name) }
+    let(:request) { delete(:destroy, github_full_name: board.github_full_name) }
     before { stub_sign_in(user) }
 
     context 'owner' do

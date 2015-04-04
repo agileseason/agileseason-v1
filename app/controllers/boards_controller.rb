@@ -18,7 +18,12 @@ class BoardsController < ApplicationController
 
   def new
     repo = github_api.cached_repos.select { |r| r.id == params[:github_id].to_i }.first
-    @board = Board.new(name: repo.name, github_id: repo.id, github_name: repo.name)
+    @board = Board.new(
+      name: repo.name,
+      github_id: repo.id,
+      github_name: repo.name,
+      github_full_name: repo.full_name
+    )
   end
 
   def create
@@ -41,16 +46,16 @@ class BoardsController < ApplicationController
 private
 
   def board_params
-    params
-      .require(:board)
-      .permit(:name, :type, :github_id, :github_name)
+    params.
+      require(:board).
+      permit(:name, :type, :github_id, :github_name, :github_full_name)
   end
 
   def column_params
-    params
-      .require(:board)
-      .require(:column)
-      .permit(name: [])
+    params.
+      require(:board).
+      require(:column).
+      permit(name: [])
   end
 
   def build_columns
