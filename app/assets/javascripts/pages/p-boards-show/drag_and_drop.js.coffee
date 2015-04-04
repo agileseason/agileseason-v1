@@ -12,8 +12,8 @@ $(document).on 'page:change', ->
     unless $(".ui-draggable-dragging").data('start_column') == column
       $(".ui-draggable-dragging").prependTo($(@).find('.issues'))
       $(@).removeClass 'over'
-      board_github_name = $('.board').data('github_name')
-      path = "/boards/#{board_github_name}/issues/#{issue}/move_to/#{column}"
+      board_github_full_name = $('.board').data('github_full_name')
+      path = "/boards/#{board_github_full_name}/issues/#{issue}/move_to/#{column}"
       $.get path
 
   $(".droppable").on "dropout", (event, ui) ->

@@ -1,6 +1,6 @@
 = render partial: '/layouts/submenu'
 
-.board data-github_name="#{@board_bag.github_name}"
+.board data-github_full_name="#{@board_bag.github_full_name}"
   .board-columns
     - @board_bag.columns.each do |column|
       = render partial: 'columns/show', locals: { column: column }

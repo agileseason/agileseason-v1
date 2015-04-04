@@ -173,7 +173,7 @@ $(document).on 'page:change', ->
     number = location.hash.match(/issue-number=(\d+)/)?[1]
     if number
       $.ajax
-        url: "/boards/#{$('.board').data('github_name')}/issues/#{number}",
+        url: "/boards/#{$('.board').data('github_full_name')}/issues/#{number}",
         success: (html) ->
           open_issue_modal($(html))
 
