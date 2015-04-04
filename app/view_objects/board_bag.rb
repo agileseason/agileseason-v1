@@ -1,6 +1,6 @@
 class BoardBag
   pattr_initialize :github_api, :board
-  delegate :github_name, :columns, :to_param, to: :board
+  delegate :github_name, :github_full_name, :columns, :to_param, to: :board
 
   def issues
     @issues ||= cached(:board_issues, 5.minutes) { @github_api.board_issues(@board) }

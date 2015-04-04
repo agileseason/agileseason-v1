@@ -20,7 +20,7 @@ class Board < ActiveRecord::Base
   alias :github_labels :column_labels
 
   def to_param
-    github_name
+    github_full_name
   end
 
   def kanban?
