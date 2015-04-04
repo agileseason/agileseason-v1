@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
 
   # FIX : Nees specs.
   def fetch_board
-    @board ||= Board.find_by(github_full_name: params[:github_full_name] || params[:board_github_full_name])
+    @board ||= Board.find_by(github_full_name: params_github_full_name)
     authorize!(:read, @board)
     # FIX : Keep @board or @board_bag after experiment.
     @board_bag = BoardBag.new(github_api, @board)
@@ -67,6 +67,10 @@ class ApplicationController < ActionController::Base
   def fetch_board_for_update
     fetch_board
     authorize!(:update, @board)
+  end
+
+  def params_github_full_name
+    params[:github_full_name] || params[:board_github_full_name]
   end
 
   def remote_addr

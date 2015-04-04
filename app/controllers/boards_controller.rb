@@ -46,16 +46,16 @@ class BoardsController < ApplicationController
 private
 
   def board_params
-    params
-      .require(:board)
-      .permit(:name, :type, :github_id, :github_name, :github_full_name)
+    params.
+      require(:board).
+      permit(:name, :type, :github_id, :github_name, :github_full_name)
   end
 
   def column_params
-    params
-      .require(:board)
-      .require(:column)
-      .permit(name: [])
+    params.
+      require(:board).
+      require(:column).
+      permit(name: [])
   end
 
   def build_columns
