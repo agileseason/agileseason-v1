@@ -1,46 +1,45 @@
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
 
+  $('.issues').sortable
+    connectWith: '.issues',
+  $('.issues').disableSelection()
+
+  # сохранение порядка тикетов, если он изменился
+  $('.issues').on 'sortupdate', (event, ui) ->
+    column = $(event.target).closest('.board-column').data('column')
+    board = $('.board').data('github_full_name')
+    path = "/boards/#{board}/columns/#{column}"
+
+    if $(event.target).sortable('serialize')
+      issues = $(event.target).sortable('serialize')
+    else
+      # колонка стала пустой
+      issues =  { issues: ['empty'] }
+
+    $.ajax
+      url: path,
+      method: 'PATCH',
+      data: issues
+
   $(".droppable").droppable ->
     accept: ".issue"
 
   $(".droppable").on "drop", (event, ui) ->
-    issue = $(".ui-draggable-dragging").data('number')
-    column = $(@).data('column')
-    $(".ui-draggable-dragging").removeAttr('style')
+    issue_number = $(".ui-sortable-helper").data('number')
+    column_number = $(@).data('column')
+    $current_issue = $('.issue[data-number="' + issue_number + '"]')
+    board = $('.board').data('github_full_name')
 
-    unless $(".ui-draggable-dragging").data('start_column') == column
+    unless $(".ui-draggable-dragging").data('start_column') == column_number
       $(".ui-draggable-dragging").prependTo($(@).find('.issues'))
       $(@).removeClass 'over'
-      board_github_full_name = $('.board').data('github_full_name')
-      path = "/boards/#{board_github_full_name}/issues/#{issue}/move_to/#{column}"
-      $.get path
+      move_to_path = "/boards/#{board}/issues/#{issue_number}/move_to/#{column_number}"
+      $.get move_to_path
 
   $(".droppable").on "dropout", (event, ui) ->
     $(@).removeClass 'over'
 
   $(".droppable").on "dropover", (event, ui) ->
     $(@).addClass 'over'
-
-  $(".draggable").draggable ->
-    connectToSortable: ".issues",
-    helper: "clone",
-    revert: "valid",
-    snap: true,
-    scroll: true
-
-  $(".draggable").on "dragstart", ( event, ui ) ->
-    $(@).before('<div class="empty-issue"></div>')
-    $('.empty-issue', $(@).parent()).css 'height', $(@).outerHeight()
-    $(@).data start_column: $(@).parents('.board-column').data('column')
-
-  $(".draggable").on "drag", ( event, ui ) ->
-    ui.position.top -= $(@).parent().scrollTop()
-    $(@).closest('.scroller').scrollTop = $(@).closest('.scroller').scrollHeight
-
-  $(".draggable").on "dragstop", ( event, ui ) ->
-    $(@).removeAttr('style')
-    $('.empty-issue').remove()
-    $('.board-column').removeClass 'over'
-
-  $(".draggable").on "dragcreate", ( event, ui ) ->
+    $(@).find('.issues').css('height', $(@).height())

@@ -18,7 +18,28 @@ class BoardBag
     Issue.new(labels: labels.map(&:name))
   end
 
+  def column_issues(column)
+    if column.issues
+      ordered_issues(column) + unordered_issues(column)
+    else
+      issues[column.id].reject(&:archive?)
+    end
+  end
+
   private
+
+  def ordered_issues(column)
+    column.issues.each_with_object([]) do |number, array|
+      one_issue = issues[column.id].find { |issue| number.to_i == issue.number && !issue.archive? }
+      array << one_issue if one_issue.present?
+    end
+  end
+
+  def unordered_issues(column)
+    issues[column.id].select do |issue|
+      !ordered_issues(column).include?(issue) && !issue.archive?
+    end
+  end
 
   def cache_key(posfix)
     [@board, "board_bag_#{posfix}"]

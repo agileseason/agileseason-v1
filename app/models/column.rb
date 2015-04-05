@@ -5,6 +5,8 @@ class Column < ActiveRecord::Base
   validates :name, presence: true
   validates :board, presence: true
 
+  serialize :issues
+
   def label_name
     "[#{order}] #{name}"
   end
