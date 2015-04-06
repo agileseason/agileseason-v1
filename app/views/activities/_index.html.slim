@@ -6,9 +6,10 @@
       span.user = activity.user.github_username
       | &nbsp;
       = activity.description
-      / FIX : Add url to Issue#show.
-      a href="#{board_url(@board)}#issue-number=#{activity.issue_stat.number}"
-        | &nbsp;##{activity.issue_stat.number}
+      | &nbsp;
+      a.issue-url data-number="#{activity.issue_stat.number}"
+        | issue
+      span &nbsp;##{activity.issue_stat.number}
       / FIX : Timezone?
-      / I think timezome mast be set up on server, Daria
+      / I think timezome mast be set up on server — Daria
       .date = "#{activity.created_at.strftime('%B %-d')} at #{activity.created_at.strftime('%H:%M')}"

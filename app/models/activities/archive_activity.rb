@@ -9,7 +9,7 @@ module Activities
     end
 
     def description
-      'Archived Issue'
+      'archived'
     end
   end
 end

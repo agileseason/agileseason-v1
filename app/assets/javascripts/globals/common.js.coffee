@@ -29,3 +29,7 @@ $(document).on 'page:change', ->
   $('.b-activities').on 'click', '.overlay', ->
     $(@).parent().removeClass 'active'
     $(@).remove()
+
+  # open issue popup
+  $('.b-activities').on 'click', '.issue-url', ->
+    $('.show-issue-modal[data-number="' + $(@).data('number') + '"]').trigger 'click'

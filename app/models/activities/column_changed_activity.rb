@@ -11,7 +11,7 @@ module Activities
 
     def description
       # FIX : Add column from after save it.
-      "Move to '#{column_to}' Issue"
+      "move to '#{column_to}'"
     end
 
     private
