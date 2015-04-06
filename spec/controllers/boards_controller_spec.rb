@@ -2,8 +2,11 @@ describe BoardsController, type: :controller do
   render_views
 
   describe 'GET new' do
-    let(:repo) { OpenStruct.new(id: 1, name: 'foo') }
-    before { allow_any_instance_of(GithubApi).to receive(:repos).and_return([repo]) }
+    let(:repo) { OpenStruct.new(id: 1, name: 'foo', full_name: 'bar/foo') }
+    before do
+      allow_any_instance_of(GithubApi).
+        to receive(:cached_repos).and_return([repo])
+    end
     before { stub_sign_in }
 
     it 'returns http success' do
