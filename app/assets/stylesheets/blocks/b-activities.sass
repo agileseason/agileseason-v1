@@ -1,0 +1,64 @@
+@import compass/css3/transition
+@import mixins/date
+
+.b-activities
+  +transition(right ease 0.1s)
+  border-top: 1px solid #eee
+  border-left: 1px solid #eee
+  background: #fff
+  height: 100%
+  height: calc(100% - 38px)
+  overflow-x: hidden
+  overflow-y: auto
+  position: fixed
+  right: -300px
+  top: 38px
+  width: 300px
+
+  &.active
+    right: 0
+
+  .activity
+    padding: 20px
+    position: relative
+    z-index: 2
+
+    &:after
+      background: #eee
+      bottom: 0
+      content: ' '
+      height: 1px
+      left: 20px
+      position: absolute
+      width: 260px
+
+    &:last-child
+      &:after
+        display: none
+
+    .type
+      display: inline-block
+      height: 28px
+      margin-right: 10px
+      vertical-align: top
+      width: 28px
+
+    .description
+      display: inline-block
+      width: 260px
+      vertical-align: top
+
+    .date
+      +date
+      margin-top: 5px
+
+    .user
+      font-weight: bold
+
+  .no-activities
+    text-align: center
+    margin-top: 40px
+    color: #ccc
+
+  .b-preloader.horizontal
+    margin: 40px auto

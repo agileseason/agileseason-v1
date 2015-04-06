@@ -1,10 +1,14 @@
-.b-activities
-  - @board.activities.each do |activity|
-    .activity
-      .author = activity.user.github_username
-      .description
-        = activity.description
-        / FIX : Add url to Issue#show.
-        a.issue href="#{board_url(@board)}#issue-number=#{activity.issue_stat.number}" = "##{activity.issue_stat.number}"
-        / FIX : Timezone?
-        .date = "#{activity.created_at.strftime('%d %b')} at #{activity.created_at.strftime('%H:%M')}"
+- @board.activities.each do |activity|
+  .activity
+    /type will be a special github icon
+    /a.type
+    .description
+      span.user = activity.user.github_username
+      | &nbsp;
+      = activity.description
+      / FIX : Add url to Issue#show.
+      a href="#{board_url(@board)}#issue-number=#{activity.issue_stat.number}"
+        | &nbsp;##{activity.issue_stat.number}
+      / FIX : Timezone?
+      / I think timezome mast be set up on server, Daria
+      .date = "#{activity.created_at.strftime('%B %-d')} at #{activity.created_at.strftime('%H:%M')}"
