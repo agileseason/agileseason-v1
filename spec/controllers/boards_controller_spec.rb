@@ -40,6 +40,10 @@ describe BoardsController, type: :controller do
     let(:user) { create(:user) }
     let(:repo) { OpenStruct.new(id: board.github_id) }
     let(:request) { delete(:destroy, github_full_name: board.github_full_name) }
+    before do
+      allow_any_instance_of(GithubApi).
+        to receive(:cached_repos).and_return([repo])
+    end
     before { stub_sign_in(user) }
 
     context 'owner' do
@@ -51,10 +55,6 @@ describe BoardsController, type: :controller do
     end
 
     context 'not owner but reader' do
-      before do
-        allow_any_instance_of(GithubApi).
-          to receive(:cached_repos).and_return([repo])
-      end
       let(:board) { create(:board, :with_columns) }
       it { expect { request }.to raise_error(CanCan::AccessDenied) }
     end
