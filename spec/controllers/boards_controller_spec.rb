@@ -24,6 +24,10 @@ describe BoardsController, type: :controller do
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([issue]) }
     before { allow_any_instance_of(GithubApi).to receive(:labels).and_return([label_1, label_2]) }
     before { allow_any_instance_of(GithubApi).to receive(:collaborators).and_return([]) }
+    before do
+      allow_any_instance_of(GithubApi).
+        to receive(:cached_repos).and_return([])
+    end
     before { stub_sign_in(user) }
 
     it 'returns http success' do
