@@ -44,6 +44,7 @@ describe BoardsController, type: :controller do
       allow_any_instance_of(GithubApi).
         to receive(:cached_repos).and_return([repo])
     end
+
     before { stub_sign_in(user) }
 
     context 'owner' do

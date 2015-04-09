@@ -9,17 +9,13 @@ class IssuesController < ApplicationController
     render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @board_bag.labels }
   end
 
-  def new
-    @issue = @board_bag.build_issue_new
-  end
-
   def create
     @issue = Issue.new(issue_params)
     if @issue.valid?
-      github_api.create_issue(@board, @issue)
-      redirect_to board_url(@board)
+      issue = github_api.create_issue(@board, @issue)
+      render partial: 'issues/show', locals: { issue: BoardIssue.new(issue, @board.find_stat(issue)), column: Column.find(1) }
     else
-      render 'new'
+      render nothing: true
     end
   end
 

@@ -1,4 +1,4 @@
-= simple_form_for(issue, url: board_issues_url(board_bag)) do |f|
+= simple_form_for(issue, url: board_issues_url(board_bag), remote: true) do |f|
   = f.input :title, as: :text
   = f.input :body, as: :text
 
