@@ -25,7 +25,6 @@ class IssuesController < ApplicationController
   end
 
   def move_to
-    authorize!(:update, @board)
     github_api.move_to(@board, @board.columns.find(params[:column_id]), params[:number])
     render nothing: true
   end
