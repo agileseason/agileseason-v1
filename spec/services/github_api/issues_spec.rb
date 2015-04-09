@@ -106,7 +106,6 @@ describe GithubApi::Issues do
     let(:move_to_column) { board.columns.first }
     let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: '', labels: ['feature']) }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
-    before { allow_any_instance_of(Octokit::Client).to receive(:update_issue).and_return(issue) }
     before { allow(IssueStatService).to receive(:move!) }
     before { allow(Activities::ColumnChangedActivity).to receive(:create_for) }
 
@@ -114,50 +113,6 @@ describe GithubApi::Issues do
     it { expect(IssueStatService).to receive(:move!) }
     # FIX : Check params .with(...)
     it { expect(Activities::ColumnChangedActivity).to receive(:create_for) }
-
-    context :empty_comment do
-      let(:board) { build(:board, :with_columns, number_of_columns: 1) }
-      it { is_expected.to_not be_nil }
-    end
-
-    context :add_stats_for_missing_columns do
-      let(:board) { create(:board, :with_columns, number_of_columns: 3) }
-      let(:expected_labels) { { labels: issue.labels } }
-      let(:current) { Time.new(2014, 11, 19) }
-      before { allow(Time).to receive(:current).and_return(current) }
-      after { subject }
-
-      context 'start from first - success path' do
-        let(:move_to_column) { board.columns.first }
-        it do
-          expect_any_instance_of(Octokit::Client).to receive(:update_issue)
-            .with(board.github_id, issue.number, issue.title, issue.body, expected_labels)
-        end
-      end
-
-      context 'start from second - can be' do
-        let(:skipped_column) { board.columns.first }
-        let(:move_to_column) { board.columns.second }
-        after { subject }
-        it do
-          expect_any_instance_of(Octokit::Client).to receive(:update_issue)
-            .with(board.github_id, issue.number, issue.title, issue.body, expected_labels)
-        end
-      end
-
-      context 'start from first but move_to third' do
-        let(:start_column) { board.columns.first }
-        let(:skipped_column) { board.columns.second }
-        let(:move_to_column) { board.columns.third }
-        let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: 'body_commnet', labels: []) }
-
-        after { subject }
-        it do
-          expect_any_instance_of(Octokit::Client).to receive(:update_issue)
-            .with(board.github_id, issue.number, issue.title, issue.body, expected_labels)
-        end
-      end
-    end
   end
 
   describe '#close' do
