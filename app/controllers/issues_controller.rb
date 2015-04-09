@@ -13,7 +13,11 @@ class IssuesController < ApplicationController
     @issue = Issue.new(issue_params)
     if @issue.valid?
       issue = github_api.create_issue(@board, @issue)
-      render partial: 'issues/show', locals: { issue: BoardIssue.new(issue, @board.find_stat(issue)), column: @board.columns.first }
+      render partial: 'issues/show',
+        locals: {
+          issue: BoardIssue.new(issue, @board.find_stat(issue)),
+          column: @board.columns.first
+        }
     else
       render nothing: true
     end
