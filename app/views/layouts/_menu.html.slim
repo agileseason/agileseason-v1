@@ -19,5 +19,6 @@
   ul.right
     li.user = current_user
     li.exit : a href="#{sign_out_url}" : span.octicon.octicon-sign-out
-    li.activities-link data-url="#{board_activities_url @board}"
-      a : span.octicon.octicon-megaphone
+    - if @board
+      li.activities-link data-url="#{board_activities_url @board}"
+        a : span.octicon.octicon-megaphone
