@@ -36,13 +36,6 @@ class GithubApi
       # FIX : Add activities if column really changed.
       # FIX : Save info about previous column after #126
       Activities::ColumnChangedActivity.create_for(issue_stat, nil, column, @user)
-      client.update_issue(
-        board.github_id,
-        number,
-        issue.title,
-        issue.body,
-        labels: issue.labels
-      )
     end
 
     def close(board, number)
