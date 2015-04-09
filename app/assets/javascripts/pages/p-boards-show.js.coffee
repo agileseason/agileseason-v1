@@ -55,7 +55,7 @@ $(document).on 'page:change', ->
   column_menu()
   new_issue_forms()
 
-  $('.issues').on 'click', '.show-issue-modal', ->
+  $('.issues').on 'click', '.issue.draggable', ->
     $(@).closest('.issue').addClass 'current-issue'
     modal_html = $(@).closest('.issue').find('.issue-data').html()
     open_issue_modal(modal_html)
