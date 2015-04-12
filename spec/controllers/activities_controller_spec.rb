@@ -8,7 +8,7 @@ RSpec.describe ActivitiesController, type: :controller do
     let!(:activity_1) { create(:archive_activity, board: board, user: user, issue_stat: issue_stat) }
     before { stub_sign_in(user) }
 
-    it 'returns http success' do
+    it 'no params[:page]' do
       get :index, board_github_full_name: board.github_full_name
       expect(response).to have_http_status(:success)
       expect(response).to render_template(partial: '_index')
@@ -17,9 +17,7 @@ RSpec.describe ActivitiesController, type: :controller do
     before(:each) do
       40.times do
         FactoryGirl.create(:column_changed_activity,
-          board_id: board.id,
-          user_id: user.id,
-          issue_stat_id: issue_stat.id)
+          board_id: board.id, user_id: user.id, issue_stat_id: issue_stat.id)
       end
     end
 

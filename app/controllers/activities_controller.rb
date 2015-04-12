@@ -13,8 +13,9 @@ class ActivitiesController < ApplicationController
   end
 
 private
+
   def paginate_activities
-    if @activities.count/20 >= params[:page].to_i
+    if @activities.count / 20 >= params[:page].to_i
       render partial: 'index'
     else
       render nothing: true
