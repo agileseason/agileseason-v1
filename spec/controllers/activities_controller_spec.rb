@@ -16,10 +16,11 @@ RSpec.describe ActivitiesController, type: :controller do
 
     before(:each) do
       40.times do
-        FactoryGirl.create(:column_changed_activity,
-          { board_id: board.id,
-            user_id: user.id,
-            issue_stat_id: issue_stat.id })
+        FactoryGirl.create(
+          :column_changed_activity,
+          board_id: board.id,
+          user_id: user.id,
+          issue_stat_id: issue_stat.id)
       end
     end
 
