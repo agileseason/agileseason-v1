@@ -12,7 +12,7 @@ class ActivitiesController < ApplicationController
     end
   end
 
-private
+  private
 
   def paginate_activities
     if @activities.count / 20 >= params[:page].to_i
