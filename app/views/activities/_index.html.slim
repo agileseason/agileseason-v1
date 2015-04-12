@@ -4,9 +4,7 @@
     /a.type
     .description
       span.user = activity.user.github_username
-      | &nbsp;
-      = activity.description
-      | &nbsp;
+      |  #{activity.description} 
       a.issue-url data-number="#{activity.issue_stat.number}"
         | issue
       span &nbsp;##{activity.issue_stat.number}
