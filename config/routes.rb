@@ -39,6 +39,7 @@ Rails.application.routes.draw do
       resources :cumulative, only: [:index]
       resources :control, only: [:index]
       resources :frequency, only: [:index]
+      resources :forecast, only: [:index]
     end
 
     resources :activities, only: [:index]

@@ -6,6 +6,7 @@ ul.l-submenu
       a href="#{board_url(@board)}" #{k(:board, @board).name} board
 
   - if @board.kanban?
+    // FIX : Remove copy-paste from li... @blackchestnut
     li
       - if params[:controller] == 'graphs/cumulative'
         span Cumulative Flow
@@ -17,6 +18,12 @@ ul.l-submenu
         span Control Chart
       - else
         a href="#{board_graphs_control_index_url(@board)}" Control Chart
+
+    li
+      - if params[:controller] == 'graphs/forecast'
+        span Forecast Duration
+      - else
+        a href="#{board_graphs_forecast_index_url(@board)}" Forecast Duration
 
     li
       - if params[:controller] == 'graphs/frequency'
