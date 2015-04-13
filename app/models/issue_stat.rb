@@ -1,7 +1,7 @@
 class IssueStat < ActiveRecord::Base
   belongs_to :board, touch: true
   belongs_to :column
-  has_many :lifetimes, dependent: :delete_all
+  has_many :lifetimes, dependent: :destroy
 
   validates :number, presence: true, uniqueness: { scope: :board_id }
 
