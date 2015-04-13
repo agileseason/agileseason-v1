@@ -10,6 +10,4 @@
       a.issue-url data-number="#{activity.issue_stat.number}"
         | issue
       span &nbsp;##{activity.issue_stat.number}
-      / FIX : Timezone?
-      / I think timezome mast be set up on server — Daria
       .date = "#{activity.created_at.strftime('%B %-d')} at #{activity.created_at.strftime('%H:%M')}"
