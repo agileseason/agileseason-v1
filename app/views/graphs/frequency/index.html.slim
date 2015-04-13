@@ -2,7 +2,7 @@
 
 = render partial: 'graph'
 
-// FIX: move this if's to DurationPresenter
+// FIX: move this if's to FrequencyPresenter
 .notes Total closed issues: #{@duration.total_closed_issues}
 .notes
   - if @duration.average_elapsed_days
@@ -10,6 +10,7 @@
   - else
     | Total average elapsed days: -
 
+// FIX : Remove it block with style. @blackchestnut
 .forecast
   .subtitle Forecast duration for #{@duration.total_open_issues} open issues
   .average
