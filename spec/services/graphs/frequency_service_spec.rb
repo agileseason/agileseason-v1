@@ -1,6 +1,6 @@
-describe DurationService do
+describe FrequencyService do
   let(:board) { create(:board, :with_columns) }
-  let(:service) { DurationService.new(board) }
+  let(:service) { FrequencyService.new(board) }
   let(:zero_point) { [0, 0] }
 
   describe '.fetch_group' do

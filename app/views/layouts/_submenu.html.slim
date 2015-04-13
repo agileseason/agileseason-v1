@@ -19,10 +19,10 @@ ul.l-submenu
         a href="#{board_graphs_control_index_url(@board)}" Control Chart
 
     li
-      - if params[:controller] == 'graphs/duration'
-        span Forecast Duration
+      - if params[:controller] == 'graphs/frequency'
+        span Frequency
       - else
-        a href="#{board_graphs_duration_index_url(@board)}" Forecast Duration
+        a href="#{board_graphs_frequency_index_url(@board)}" Frequency
   - else
     li
       a href='#coming_soon' Burndown Chart [Coming Soon]

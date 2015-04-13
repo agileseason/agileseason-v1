@@ -1,4 +1,4 @@
-class DurationService
+class FrequencyService
   def initialize(board)
     @board = board
   end
