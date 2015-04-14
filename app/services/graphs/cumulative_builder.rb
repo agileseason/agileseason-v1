@@ -2,11 +2,16 @@ module Graphs
   class CumulativeBuilder
     def initialize(board, interval = :all)
       @board = board
-      @date_from = interval == :month ? Date.today.prev_month : @board.created_at.to_date.prev_day
+      @interval = interval
     end
 
     def series
-      fix_single_points(series_by_history)
+      @series ||= fix_single_points(series_by_history)
+    end
+
+    def min_y
+      return 0 if @interval == :all
+      series.try(:[], @board.columns.last.id).try(:[], :data).try(:first).try(:[], :issues).to_i
     end
 
     private
@@ -46,7 +51,11 @@ module Graphs
     end
 
     def histories_by_interval
-      @board.board_histories.where('collected_on >= ?', @date_from)
+      @board.board_histories.where('collected_on >= ?', date_from)
+    end
+
+    def date_from
+      @interval == :month ? Date.today.prev_month : @board.created_at.to_date.prev_day
     end
   end
 end

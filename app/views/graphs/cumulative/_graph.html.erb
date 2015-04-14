@@ -27,7 +27,8 @@
                         return this.value;
                     }
                 },
-                allowDecimals: false
+                allowDecimals: false,
+                min: <%= @builder.min_y %>
             },
             tooltip: {
                 headerFormat: '<span><b>Total: {point.y}</b> issues</span><br/><span style="color:#888">{point.key}<br/></span>',
@@ -50,7 +51,7 @@
                 }
             },
             series: [
-              <%- @series.each do |_key, info| %>
+              <%- @builder.series.each do |_key, info| %>
                 {
                   name: '<%= info[:name] %>',
                   data: [

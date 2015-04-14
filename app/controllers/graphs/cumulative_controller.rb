@@ -2,7 +2,7 @@ class Graphs::CumulativeController < ApplicationController
   before_action :fetch_board
 
   def index
-    @series = Graphs::CumulativeBuilder.new(@board, interval).series
+    @builder = Graphs::CumulativeBuilder.new(@board, interval)
   end
 
   private
