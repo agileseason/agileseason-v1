@@ -1,6 +1,6 @@
 module Graphs
   class CumulativeBuilder
-    def initialize(board, interval)
+    def initialize(board, interval = :all)
       @board = board
       @date_from = interval == :month ? Date.today.prev_month : @board.created_at.to_date.prev_day
     end
