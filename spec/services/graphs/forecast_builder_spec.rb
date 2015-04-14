@@ -18,7 +18,7 @@ describe Graphs::ForecastBuilder do
       it { expect(subject.first[:y]).to eq 0.0 }
       it { expect(subject.last[:issues]).to eq 0 }
       it { expect(subject.last[:y]).to eq 0.0 }
-   end
+    end
 
     context 'with issues' do
       let(:column_1) { board.columns.first }

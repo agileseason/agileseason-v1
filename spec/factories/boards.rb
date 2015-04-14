@@ -25,7 +25,7 @@ FactoryGirl.define do
       end
       after(:build) do |board, evaluator|
         n = 0
-        board.columns = evaluator.names.map() do |name|
+        board.columns = evaluator.names.map do |name|
           n += 1
           FactoryGirl.build(:column, board: board, name: name, order: n)
         end
