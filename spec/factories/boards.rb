@@ -19,6 +19,19 @@ FactoryGirl.define do
       end
     end
 
+    trait :set_columns do
+      transient do
+        names ['To Do']
+      end
+      after(:build) do |board, evaluator|
+        n = 0
+        board.columns = evaluator.names.map() do |name|
+          n += 1
+          FactoryGirl.build(:column, board: board, name: name, order: n)
+        end
+      end
+    end
+
     factory :kanban_board, parent: :board, class: 'Boards::KanbanBoard' do
       type 'Boards::KanbanBoard'
     end

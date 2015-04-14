@@ -3,6 +3,7 @@ module Graphs
     before_action :fetch_board
 
     def index
+      @builder = Graphs::ForecastBuilder.new(@board)
     end
   end
 end

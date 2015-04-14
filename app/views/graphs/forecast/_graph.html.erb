@@ -13,7 +13,7 @@
         },
         colors: ['#9575cd', '#00b0ff', '#ff5722', '#ffea00', '#00e676', '#7986cb', '#8d6e63', '#aeea00'],
         xAxis: {
-          categories: <%= raw ['Backlog', 'Todo', 'Test', 'Done'] %>,
+          categories: <%= raw @builder.categories %>,
           title: {
             text: ''
           }
@@ -41,18 +41,34 @@
           }
         },
         tooltip: {
-          headerFormat: 'Issues: <b>{series.name}</b><br/>Closed for: <b>{point.y}</b>d<br>',
-          pointFormat: ''
+          headerFormat: '<b>{point.key}</b><br/>',
+          pointFormat: '{point.tooltip}',
         },
         series: [
           {
             name: 'Average days',
             colorByPoint: true,
-            data: <%= [2.5,1,2,1] %>
+            data: [
+              <% @builder.series_forecast.each do |data| %>
+                {
+                  issues: <%= data[:issues] %>,
+                  tooltip: '<%= raw data[:tooltip] %>',
+                  y: <%= data[:y] %>
+                },
+              <% end %>
+            ]
           }, {
             name: 'Before',
             color: '#bdbdbd',
-            data: <%= [4,3,1,0] %>
+            data: [
+              <% @builder.series_prev.each do |data| %>
+                {
+                  issues: <%= data[:issues] %>,
+                  tooltip: 'Delay from previous columns',
+                  y: <%= data[:y] %>
+                },
+              <% end %>
+            ]
           },
         ]
       });
