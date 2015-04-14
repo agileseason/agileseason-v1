@@ -19,14 +19,14 @@ module Graphs
     end
 
     def series_forecast
-      series = @board.columns.each_with_object([]) do |column, series|
+      series = @board.columns.each_with_object([]) do |column, array|
         issues = column.issue_stats.open.count
         forecast_day = (issues * forecast_wip).round(2)
         data = {
           issues: issues,
           y: forecast_day
         }
-        series << data
+        array << data
       end
       build_tooltip(series)
       series
@@ -36,11 +36,14 @@ module Graphs
 
     def build_tooltip(series)
       total_y = 0
+      index = 0
       series.reverse_each do |hash|
         issues = hash[:issues]
         y = hash[:y]
         total_y += y
-        hash[:tooltip] = "Open Issues: <b>#{issues}</b><br/>By Average: <b>#{y}</b>d<br/>With previous delay: <b>#{total_y}</b>d"
+        hash[:tooltip] = "Open Issues: <b>#{issues}</b><br/>By Average: <b>#{y}</b>d"
+        hash[:tooltip] += "<br/>With previous delay: <b>#{total_y.round(2)}</b>d" unless index == 0
+        index += 1
       end
     end
 
