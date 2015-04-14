@@ -9,7 +9,8 @@ RSpec.describe ActivitiesController, type: :controller do
     before { stub_sign_in(user) }
 
     before(:each) do
-      create_list(:column_changed_activity,
+      create_list(
+        :column_changed_activity,
         40,
         board_id: board.id,
         user_id: user.id,
