@@ -20,7 +20,7 @@ $(document).on 'page:change', ->
       .addClass 'active'
 
     url = $(@).data('url')
-    $.get url, {}, (activities) ->
+    $.get url, { page: 1 }, (activities) ->
       $('.b-preloader', $activities).remove()
       if activities.length > 0
         $activities.append(activities)
@@ -39,13 +39,15 @@ $(document).on 'page:change', ->
 $(document).on 'slider:load', '.b-activities', ->
   $('.b-activities').scroll ->
     if $(@).scrollTop() + $(@).innerHeight() >= $(@)[0].scrollHeight && $(@).data('paginate') == true
-
       $(@).append '<div class="b-preloader horizontal"></div>'
+      $(@).data(paginate: false)
+
       $.get $(@).data('url'), { page: $(@).data('page') }, (data) =>
         if data.length > 0
           $(@).data(page: $(@).data('page') + 1)
           $('.b-preloader', @).remove()
-          $(@).prepend data
+          $(@).append data
+          $(@).data(paginate: true)
         else
           $(@).data(paginate: false)
           $('.b-preloader', @).remove()

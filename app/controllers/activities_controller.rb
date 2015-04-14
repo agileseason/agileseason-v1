@@ -2,20 +2,14 @@ class ActivitiesController < ApplicationController
   before_action :fetch_board
 
   def index
-    @activities = @board.activities.paginate(page: params[:page], per_page: 20)
-
-    if params[:page]
-      paginate_activities
-
-    else
-      render partial: 'index'
-    end
+    @activities = @board.activities.paginate(page: params[:page])
+    paginate_activities
   end
 
   private
 
   def paginate_activities
-    if @activities.count / 20 >= params[:page].to_i
+    if @activities.next_page
       render partial: 'index'
     else
       render nothing: true
