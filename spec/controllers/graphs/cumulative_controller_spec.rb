@@ -2,10 +2,22 @@ RSpec.describe Graphs::CumulativeController, type: :controller do
   describe "GET index" do
     let(:user) { create(:user) }
     let(:board) { create(:board, :with_columns, user: user) }
+    before { stub_sign_in(user) }
 
     it 'returns http success' do
-      stub_sign_in(user)
       get :index, board_github_full_name: board.github_full_name
+      expect(response).to have_http_status(:success)
+      expect(response).to render_template(:index)
+    end
+
+    it 'with interval: month' do
+      get :index, board_github_full_name: board.github_full_name, interval: :month
+      expect(response).to have_http_status(:success)
+      expect(response).to render_template(:index)
+    end
+
+    it 'with interval: all' do
+      get :index, board_github_full_name: board.github_full_name, interval: :all
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:index)
     end

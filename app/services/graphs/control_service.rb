@@ -18,7 +18,7 @@ module Graphs
 
     def average_series_data
       return [] if issues.blank?
-      average_level = average_level(issues)
+      average_level = StatsCalc.average_wip(issues)
       [issues.first, issues.last].uniq.compact.map do |issue|
         { x: issue.closed_at.to_js, y: average_level }
       end
@@ -27,7 +27,7 @@ module Graphs
     def rolling_average_series_data
       return [] if issues.blank?
       rolling_average = issues.each_slice(rolling_window).map do |slice_issues|
-        rolling_average_level = average_level(slice_issues)
+        rolling_average_level = StatsCalc.average_wip(slice_issues)
         issue = slice_issues.last
         rolling_point(issue, rolling_average_level)
       end
@@ -51,11 +51,6 @@ module Graphs
 
     def issues
       @issues ||= @board.issue_stats.closed.order(:closed_at)
-    end
-
-    def average_level(issues)
-      elapsed_days = issues.map(&:elapsed_days)
-      elapsed_days.sum / elapsed_days.size
     end
   end
 end

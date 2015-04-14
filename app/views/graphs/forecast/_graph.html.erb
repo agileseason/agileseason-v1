@@ -1,0 +1,77 @@
+<div>
+  <div id="container"></div>
+  <script type="text/javascript" charset="utf-8">
+    $(function () {
+      $('#container').highcharts({
+        chart: {
+          height: 600,
+          marginTop: 40,
+          type: 'column'
+        },
+        title: {
+          text: false
+        },
+        colors: ['#9575cd', '#00b0ff', '#ff5722', '#ffea00', '#00e676', '#7986cb', '#8d6e63', '#aeea00'],
+        xAxis: {
+          categories: <%= raw @builder.categories %>,
+          title: {
+            text: ''
+          }
+        },
+        yAxis: {
+          title: {
+            text: 'Estimated days'
+          },
+          allowDecimals: false
+          <%#,%>
+          <%#labels: {%>
+              <%#formatter: function () {%>
+                  <%#return this.value;%>
+              <%#}%>
+          <%#},%>
+        },
+        legend: false,
+        plotOptions: {
+          column: {
+            borderWidth: 0,
+            groupPadding: 0,
+            pointPadding: 0,
+            shadow: false,
+            stacking: 'normal'
+          }
+        },
+        tooltip: {
+          headerFormat: '<b>{point.key}</b><br/>',
+          pointFormat: '{point.tooltip}',
+        },
+        series: [
+          {
+            name: 'Average days',
+            colorByPoint: true,
+            data: [
+              <% @builder.series_forecast.each do |data| %>
+                {
+                  issues: <%= data[:issues] %>,
+                  tooltip: '<%= raw data[:tooltip] %>',
+                  y: <%= data[:y] %>
+                },
+              <% end %>
+            ]
+          }, {
+            name: 'Before',
+            color: '#bdbdbd',
+            data: [
+              <% @builder.series_prev.each do |data| %>
+                {
+                  issues: <%= data[:issues] %>,
+                  tooltip: 'Delay from previous columns',
+                  y: <%= data[:y] %>
+                },
+              <% end %>
+            ]
+          },
+        ]
+      });
+    });
+  </script>
+</div>

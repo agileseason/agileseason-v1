@@ -4,8 +4,9 @@
     $(function () {
         $('#container').highcharts({
             chart: {
-                zoomType: 'x',
-                height: 600
+                marginTop: 40,
+                height: 600,
+                zoomType: 'x'
             },
             title: {
                 text: ''
@@ -21,7 +22,8 @@
                 title: {
                     text: 'Lines'
                 },
-                min: 0
+                min: 0,
+                minTickInterval: 1
             },
             legend: {
                 enabled: false
@@ -36,7 +38,13 @@
                         ]
                     },
                     marker: {
-                        radius: 2
+                      enabled: false,
+                      states: {
+                          hover: {
+                              enabled: true,
+                              radius: 5
+                          }
+                      }
                     },
                     lineWidth: 1,
                     states: {

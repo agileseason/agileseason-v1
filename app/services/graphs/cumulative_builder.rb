@@ -1,7 +1,8 @@
 module Graphs
   class CumulativeBuilder
-    def initialize(board)
+    def initialize(board, interval = :all)
       @board = board
+      @date_from = interval == :month ? Date.today.prev_month : @board.created_at.to_date.prev_day
     end
 
     def series
@@ -28,7 +29,7 @@ module Graphs
     end
 
     def series_by_history
-      @board.board_histories.each_with_object(init_series) do |history, series|
+      histories_by_interval.each_with_object(init_series) do |history, series|
         history.data.each do |column_data|
           point = column_data.merge(
               collected_on: history.collected_on.in_time_zone.to_js
@@ -42,6 +43,10 @@ module Graphs
       @board.columns.each_with_object({}) do |column, hash|
         hash[column.id] = { name: column.name, data: [] }
       end
+    end
+
+    def histories_by_interval
+      @board.board_histories.where('collected_on >= ?', @date_from)
     end
   end
 end
