@@ -20,7 +20,7 @@ gem 'redcarpet'
 gem 'sass-rails'
 gem 'sidekiq'
 gem 'simple_form'
-gem 'slim-rails', github: 'zlfera/slim-rails' # FIX : Try remove specify repo, when slim-rails will be work with rails-4.2.0
+gem 'slim-rails'
 gem 'state_machine'
 gem 'turbolinks'
 gem 'uglifier'
