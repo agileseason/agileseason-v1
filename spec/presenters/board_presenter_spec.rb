@@ -1,7 +1,9 @@
 describe BoardPresenter do
   let(:presenter) { present(:board, board) }
+
   describe '#name' do
     subject { presenter.name }
+
     context 'unknown type' do
       let(:board) { build(:board, name: 'test', type: nil) }
       it { is_expected.to eq "#{board.name}&nbsp;" }

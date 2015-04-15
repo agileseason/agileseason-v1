@@ -1,4 +1,4 @@
-describe RepoPresenter do
+describe UserPresenter do
   let(:presenter) { present(:user, user) }
   let(:user) { create(:user) }
   let!(:board_1) { create(:board, :with_columns, name: 'second_board', user: user) }

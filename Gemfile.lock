@@ -408,7 +408,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-ui-rails
-  keynote
+  keynote (~> 0.3.0)
   meta_request
   newrelic_rpm
   octokit
