@@ -28,7 +28,7 @@ RSpec.describe ActivitiesController, type: :controller do
 
     context 'no next page of activities' do
       before do
-        get :index, board_github_full_name: board.github_full_name, page: 3
+        get :index, board_github_full_name: board.github_full_name, page: 4
       end
 
       it { expect(response).to have_http_status(:success) }
