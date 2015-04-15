@@ -1,4 +1,5 @@
 RSpec.describe LandingController, type: :controller do
+  render_views
 
   describe 'GET index' do
     it 'returns http success' do
