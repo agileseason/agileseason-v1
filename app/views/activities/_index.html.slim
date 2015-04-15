@@ -1,12 +1,10 @@
-- @board.activities.each do |activity|
+- @activities.each do |activity|
   .activity
     /type will be a special github icon
     /a.type
     .description
       span.user = activity.user.github_username
-      | &nbsp;
-      = activity.description
-      | &nbsp;
+      |  #{activity.description} 
       a.issue-url data-number="#{activity.issue_stat.number}"
         | issue
       span &nbsp;##{activity.issue_stat.number}

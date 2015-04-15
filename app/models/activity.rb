@@ -7,6 +7,8 @@ class Activity < ActiveRecord::Base
 
   validates :user, presence: true
 
+  self.per_page = 20
+
   def description
   end
 end

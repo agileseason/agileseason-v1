@@ -26,6 +26,7 @@ gem 'turbolinks'
 gem 'uglifier'
 gem 'virtus'
 gem 'whenever'
+gem 'will_paginate'
 
 group :production do
   gem 'newrelic_rpm'

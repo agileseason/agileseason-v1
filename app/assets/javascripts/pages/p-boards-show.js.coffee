@@ -49,7 +49,6 @@ new_issue_forms = ->
     $issues = $('.issues', $form.closest('.board-column'))
     $issues.append(data)
 
-
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
   column_menu()

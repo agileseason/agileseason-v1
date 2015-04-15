@@ -379,6 +379,7 @@ GEM
       equalizer (~> 0.0, >= 0.0.9)
     whenever (0.9.4)
       chronic (>= 0.6.3)
+    will_paginate (3.0.7)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -440,3 +441,4 @@ DEPENDENCIES
   unicorn
   virtus
   whenever
+  will_paginate
