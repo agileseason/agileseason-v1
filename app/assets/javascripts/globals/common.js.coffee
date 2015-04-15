@@ -12,7 +12,7 @@ $(document).on 'page:change', ->
     $(@).remove()
 
   # open activities slider
-  $('.l-menu').on 'click', '.activities-link', ->
+  $('.l-submenu').on 'click', '.activities-link', ->
     $activities = $('.b-activities')
     $activities
       .trigger 'slider:load'

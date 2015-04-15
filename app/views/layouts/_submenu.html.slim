@@ -1,4 +1,8 @@
 ul.l-submenu
+  - if can? :update, @board
+    li.settings
+      a href="#{board_settings_url(@board)}" title='Board Settings' : span.octicon.octicon-gear
+
   li
     - if params[:controller] == 'boards'
       span #{k(:board, @board).name} board
@@ -30,6 +34,7 @@ ul.l-submenu
         span Frequency
       - else
         a href="#{board_graphs_frequency_index_url(@board)}" Frequency
+
   - else
     li
       a href='#coming_soon' Burndown Chart [Coming Soon]
@@ -40,6 +45,5 @@ ul.l-submenu
     - else
       a href="#{board_graphs_lines_url(@board)}" Lines
 
-  - if can? :update, @board
-    li.settings
-      a href="#{board_settings_url(@board)}" title='Board Settings' : span.octicon.octicon-gear
+  li.activities-link data-url="#{board_activities_url @board}"
+    a: span.octicon.octicon-megaphone
