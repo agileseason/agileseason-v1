@@ -12,6 +12,7 @@ html
       = render partial: '/layouts/notice'
       = yield
 
-    .b-activities data-paginate="true" data-page="2" data-url="#{board_activities_url @board}"
+    - if @board
+      .b-activities data-paginate="true" data-page="2" data-url="#{board_activities_url @board}"
 
     = render partial: 'layouts/yandex_metrika' if Rails.env.production?
