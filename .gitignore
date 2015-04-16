@@ -32,3 +32,5 @@ bower.json
 dump.rdb
 app/assets/images/.DS_Store
 app/assets/images/layouts/.DS_Store
+
+.env
