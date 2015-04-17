@@ -34,9 +34,9 @@ $(document).on 'page:change', ->
           progressBar.text 'Uploading done'
           # extract key and generate URL from response
           key = $(data.jqXHR.responseXML).find('Key').text()
-          url = $('#aws_test').data('direct_url') + key
-          image_url = '![' + key + '](' + url + ')\n'
-          form.parents('.issue-description').find('textarea').append("![#{key}](#{image_url})\n")
+          image_url = "![#{key}](#{url}/#{key})\n"
+          #form.parents('.issue-description').find('textarea').append("![#{key}](#{image_url})\n")
+          progressBar.after("<p>#{image_url}</p>")
           return
         fail: (e, data) ->
           submitButton.prop 'disabled', false

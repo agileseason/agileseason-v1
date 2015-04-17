@@ -9,6 +9,7 @@ class S3Api
         presigned_post(
           key: "uploads/#{SecureRandom.uuid}/${filename}",
           #content_type_starts_with: 'image/',
+          content_type: 'image',
           acl: 'public-read',
           #content_length_range: 0..1024,
           success_action_status: '201'
