@@ -22,3 +22,7 @@
   .issues.scroller
     - @board_bag.column_issues(column).each do |i|
       = render partial: 'issues/show', locals: { issue: i, column: column }
+
+  .uploads style='float:left;'
+    = form_for('/', html: { class: 'directUpload' }) do |f|
+      = f.file_field :img
