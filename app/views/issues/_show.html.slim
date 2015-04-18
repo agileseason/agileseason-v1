@@ -3,7 +3,7 @@
   = render partial: 'issues/labels', locals: { issue: issue, board: @board }
 
   .issue-title
-    a.issue-name.show-issue-modal data-number="#{issue.number}"
+    span.issue-name.show-issue-modal data-number="#{issue.number}"
       = k(:issue, issue).title
     a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
 

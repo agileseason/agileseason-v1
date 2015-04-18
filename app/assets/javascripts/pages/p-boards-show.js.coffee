@@ -54,10 +54,11 @@ $(document).on 'page:change', ->
   column_menu()
   new_issue_forms()
 
-  $('.issues').on 'click', '.issue.draggable', ->
-    $(@).closest('.issue').addClass 'current-issue'
-    modal_html = $(@).closest('.issue').find('.issue-data').html()
-    open_issue_modal(modal_html)
+  $('.issues').on 'click', '.issue.draggable', (e) ->
+    unless $(e.target).is('a, .button')
+      $(@).closest('.issue').addClass 'current-issue'
+      modal_html = $(@).closest('.issue').find('.issue-data').html()
+      open_issue_modal(modal_html)
 
   # закрыть попап по крестику или по клику мимо попапа
   $('.issue-modal').on 'click', '.modal-close, .overlay', ->
@@ -178,7 +179,7 @@ $(document).on 'page:change', ->
     $(@).parent('.issue').remove()
 
   # изменить тикет и открыть архивацию после успешного закрытия
-  $('.issue .close').on 'click', ->
+  $('.board').on 'click', '.issue .close', ->
     $(@).parent('.issue').addClass('closed').removeClass('open')
     $(@).next('.archive').removeClass('hidden')
     $(@).remove()
