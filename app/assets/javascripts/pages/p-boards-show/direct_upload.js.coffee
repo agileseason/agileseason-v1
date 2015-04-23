@@ -1,11 +1,13 @@
 window.init_direct_upload = ($elements, url, form_data) ->
   $elements.each (i, elem) ->
     fileInput = $(elem)
-    form = $(fileInput.parents('form:first'))
-    submitButton = form.find('input[type="submit"]')
-    progressBar = $('<div class=\'bar\'></div>')
-    barContainer = $('<div class=\'progress\'></div>').append(progressBar)
-    fileInput.after barContainer
+    $form = $(fileInput.parents('form:first')).first()
+    $submitButton = $form.find('input[type="file"]')
+    $textarea = $form.parents('.edit-form').find('textarea')
+    $progress = $form.find('.progress')
+    #progressBar = $('<div class=\'bar\'></div>')
+    #barContainer = $('<div class=\'progress\'></div>').append(progressBar)
+    #fileInput.after barContainer
     fileInput.fileupload
       fileInput: fileInput
       url: url
@@ -16,28 +18,33 @@ window.init_direct_upload = ($elements, url, form_data) ->
       dataType: 'XML'
       replaceFileInput: false
       progressall: (e, data) ->
-        progress = parseInt(data.loaded / data.total * 100, 10)
-        progressBar.css 'width', progress + '%'
+        #progress = parseInt(data.loaded / data.total * 100, 10)
+        #progressBar.css 'width', progress + '%'
 
       start: (e) ->
-        submitButton.prop 'disabled', true
-        progressBar.css('background', 'green').css('display', 'block').css('width', '0%').text 'Loading...'
+        #$submitButton.prop 'disabled', true
+        $submitButton.hide()
+        $progress.show()
 
       done: (e, data) ->
-        submitButton.prop 'disabled', false
-        progressBar.text 'Uploading done'
+        #$submitButton.prop 'disabled', false
+        #progressBar.text 'Uploading done'
         # extract key and generate URL from response
         key = $(data.jqXHR.responseXML).find('Key').text()
-        image_url = "![#{key}](#{url}/#{key})\n"
-        #form.parents('.issue-description').find('textarea').append("![#{key}](#{image_url})\n")
-        progressBar.after("<p>#{image_url}</p>")
+        image_url = "![#{key}](#{url}/#{key})"
+        debugger
+        $textarea.append("#{image_url}\n")
+        $submitButton.show()
+        $progress.hide()
 
       fail: (e, data) ->
-        submitButton.prop 'disabled', false
-        progressBar.css('background', 'red').text 'Failed'
+        #$submitButton.prop 'disabled', false
+        #progressBar.css('background', 'red').text 'Failed'
+        $progress.hide()
+        $submitButton.show()
 
 
-$(document).on 'page:change', ->
+$(document).on 'modal:load', '.b-issue-modal', ->
   return unless document.body.id == 'boards_show'
 
   url = $('.board').data('direct_post_url')
