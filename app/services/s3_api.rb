@@ -15,11 +15,7 @@ class S3Api
           success_action_status: '201'
         )
     end
-  end
 
-  private
-
-  class << self
     def client
       @client ||= Aws::S3::Resource.new(
         credentials: Aws::Credentials.new(
