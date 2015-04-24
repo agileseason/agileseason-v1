@@ -1,0 +1,4 @@
+.upload
+  = form_for('/', html: { class: 'directUpload' }) do |f|
+    = f.file_field :img
+    .progress Uploading...
