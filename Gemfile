@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'attr_extras'
 gem 'awesome_print'
+gem 'aws-sdk'
 gem 'browser-timezone-rails'
 gem 'cancancan', '~> 1.10'
 gem 'coffee-rails'
@@ -53,6 +54,7 @@ end
 group :development, :test do
   gem 'capybara'
   gem 'database_cleaner'
+  gem 'dotenv-rails'
   gem 'factory_girl_rails'
   gem 'guard-rspec'
   gem 'rb-fsevent'

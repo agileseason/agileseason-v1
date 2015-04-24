@@ -1,5 +1,4 @@
 .b-issue-modal class="issue-#{issue.number}" data-number="#{issue.number}"
-
   = render partial: 'issues/labels', locals: { issue: issue, board: board }
 
   .content
@@ -30,16 +29,17 @@
 
         .edit-form
           textarea.textarea-description.field = issue.body
+          = render partial: 'issues/upload'
           /.markup-switcher
             /span.markup.active markup
             /span.preview preview
+
           .submit-area
             a.cancel Cancel
             button.button[
               remote='true'
               href="#{update_board_issues_url(board, issue.number)}"]
               | Update
-
 
       - unless issue.archive?
         .move-to-column
@@ -56,6 +56,7 @@
             .add.edit-link Add Comment
           .edit-form
             textarea.field
+            = render partial: 'issues/upload'
             /.markup-switcher
               /span.markup.active markup
               /span.preview preview

@@ -9,3 +9,5 @@
 //= require highcharts.js
 //= require turbolinks
 //= require_tree .
+// --- fileupload loaded after all
+//= require vendor/jquery.fileupload

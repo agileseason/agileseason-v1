@@ -1,9 +1,14 @@
 = render partial: '/layouts/submenu'
 
-.board data-github_full_name="#{@board_bag.github_full_name}"
+.board [
+    data-github_full_name="#{@board_bag.github_full_name}"
+    data-direct_post_url="#{@direct_post.url}"
+    data-direct_post_form_data="#{@direct_post.fields.to_json}"
+  ]
   .board-columns
     - @board_bag.columns.each do |column|
       = render partial: 'columns/show', locals: { column: column }
+
     .board-column
       .new-column.ajax-link
         a.ajax-link New Column
