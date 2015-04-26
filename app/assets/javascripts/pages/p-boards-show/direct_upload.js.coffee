@@ -23,6 +23,8 @@ window.init_direct_upload = ($elements, url, form_data) ->
         $submitButton.hide()
         $progress.show()
         $info.hide()
+        $textarea.removeClass('dragenter')
+        $form.parents('.upload').removeClass('dragenter')
 
       done: (e, data) ->
         key = $(data.jqXHR.responseXML).find('Key').text()
@@ -40,10 +42,12 @@ window.init_direct_upload = ($elements, url, form_data) ->
         $info.show()
         $submitButton.show()
 
-    $fileInput.on 'dragenter', ->
+    $textarea.on 'dragenter', ->
+      $textarea.addClass('dragenter')
       $form.parents('.upload').addClass('dragenter')
 
-    $fileInput.on 'dragleave', ->
+    $textarea.on 'dragleave', ->
+      $textarea.removeClass('dragenter')
       $form.parents('.upload').removeClass('dragenter')
 
 $(document).on 'modal:load', '.b-issue-modal', ->
