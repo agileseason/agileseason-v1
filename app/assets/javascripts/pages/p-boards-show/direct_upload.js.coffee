@@ -5,6 +5,7 @@ window.init_direct_upload = ($elements, url, form_data) ->
     $submitButton = $form.find('input[type="file"]')
     $textarea = $form.parents('.edit-form').find('textarea')
     $progress = $form.find('.progress')
+    $info = $form.find('.info')
 
     $fileInput.fileupload
       fileInput: $fileInput
@@ -21,6 +22,7 @@ window.init_direct_upload = ($elements, url, form_data) ->
       start: (e) ->
         $submitButton.hide()
         $progress.show()
+        $info.hide()
 
       done: (e, data) ->
         key = $(data.jqXHR.responseXML).find('Key').text()
@@ -29,13 +31,20 @@ window.init_direct_upload = ($elements, url, form_data) ->
         text = $textarea.val()
         $textarea.focus().val("").val("#{text}#{image_url}\n")
 
-        $submitButton.show()
         $progress.hide()
+        $submitButton.show()
+        $info.show()
 
       fail: (e, data) ->
         $progress.hide()
+        $info.show()
         $submitButton.show()
 
+    $fileInput.on 'dragenter', ->
+      $form.parents('.upload').addClass('dragenter')
+
+    $fileInput.on 'dragleave', ->
+      $form.parents('.upload').removeClass('dragenter')
 
 $(document).on 'modal:load', '.b-issue-modal', ->
   return unless document.body.id == 'boards_show'
