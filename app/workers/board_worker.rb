@@ -1,5 +1,6 @@
 class BoardWorker
   include Sidekiq::Worker
+  sidekiq_options retry: 10
 
   def perform(board_id, github_token)
     @board = Board.find(board_id)
