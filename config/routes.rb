@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   resources :repos, only: [:index]
+  resource :docs, only: [] do
+    get :cumulative, on: :member
+    get :control, on: :member
+  end
 
   resources :boards,
             except: [:edit],
