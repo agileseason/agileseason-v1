@@ -18,11 +18,16 @@ class BoardBag
     Issue.new(labels: labels.map(&:name))
   end
 
+  # FIX : Refactoring this method.
   def column_issues(column)
     if column.issues
       ordered_issues(column) + unordered_issues(column)
     else
-      issues[column.id].reject(&:archive?)
+      if issues[column.id]
+        issues[column.id].reject(&:archive?)
+      else
+        []
+      end
     end
   end
 

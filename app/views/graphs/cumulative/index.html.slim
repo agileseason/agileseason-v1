@@ -1,8 +1,12 @@
 = render partial: '/layouts/submenu'
 
-= render partial: 'graph'
+.graph
+  = render partial: 'graph'
 
-.intervals
-  span Interval:
-  a href="#{board_graphs_cumulative_index_url(@board, interval: :month)}" Month
-  a href="#{board_graphs_cumulative_index_url(@board)}" All Times
+  .footer
+    .intervals
+      span Interval:
+      a href="#{board_graphs_cumulative_index_url(@board, interval: :month)}" Month
+      a href="#{board_graphs_cumulative_index_url(@board)}" All Times
+
+    a.help href="#{cumulative_docs_url}" How to read this chart

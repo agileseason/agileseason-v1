@@ -1,3 +1,6 @@
 = render partial: '/layouts/submenu'
 
-= render partial: 'graph'
+.graph
+  = render partial: 'graph'
+  .footer
+    a.help href="#{control_docs_url}" How to read this chart
