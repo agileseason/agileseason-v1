@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   resources :repos, only: [:index]
   resource :docs, only: [] do
@@ -48,6 +50,8 @@ Rails.application.routes.draw do
 
     resources :activities, only: [:index]
   end
+
+  mount Sidekiq::Web => '/sidekiq', constraints: SidekiqConstraint.new
 
   get '/auth/github/callback', to: 'sessions#create'
   get '/sign_out', to: 'sessions#destroy'
