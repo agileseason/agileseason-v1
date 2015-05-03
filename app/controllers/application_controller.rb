@@ -53,7 +53,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= User.where(remember_token: session[:remember_token]).first
+    @current_user ||= User.find_by(remember_token: session[:remember_token])
   end
 
   # FIX : Nees specs.

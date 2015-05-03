@@ -32,4 +32,21 @@ describe User, type: :model do
       it { is_expected.to eq false }
     end
   end
+
+  describe '#admin?' do
+    subject { user.admin? }
+    let(:user) { build(:user, id: id) }
+
+    context 'admins' do
+      [User::BLACKCHESTNUT_ID, User::SFOLT_ID].each do |id|
+        let(:id) { id }
+        it { is_expected.to eq true }
+      end
+    end
+
+    context 'simple user' do
+      let(:id) { 5 }
+      it { is_expected.to eq false }
+    end
+  end
 end

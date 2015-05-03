@@ -21,6 +21,7 @@ gem 'redcarpet'
 gem 'sass-rails'
 gem 'sidekiq'
 gem 'simple_form'
+gem 'sinatra', require: nil
 gem 'slim-rails'
 gem 'state_machine'
 gem 'turbolinks'

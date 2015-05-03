@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
 
   attr_accessor :github_api
 
+  BLACKCHESTNUT_ID = 1
+  SFOLT_ID = 2
+  ADMINS = [BLACKCHESTNUT_ID, SFOLT_ID].freeze
+
   def to_s
     github_username
   end
@@ -14,6 +18,10 @@ class User < ActiveRecord::Base
   def repo_admin?(github_id)
     repo = github_api.cached_repos.select { |r| r.id == github_id.to_i }.first
     repo && repo.permissions.admin # try don't work before directly call method
+  end
+
+  def admin?
+    ADMINS.include?(id)
   end
 
   private
