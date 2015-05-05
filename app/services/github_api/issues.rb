@@ -70,6 +70,12 @@ class GithubApi
       )
     end
 
+    def search_issues(board, query)
+      client.search_issues(
+        "#{query} type:issue repo:#{board.github_full_name}"
+      ).items
+    end
+
     private
 
     def open_issues(board)

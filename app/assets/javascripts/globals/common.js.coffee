@@ -1,12 +1,28 @@
 $(document).on 'page:change', ->
   $('.l-menu').on 'click', '.boards', ->
-    $(@).addClass('active').prepend('<div class="overlay"></div>')
     $(@).find('.popup').show()
 
   $('.l-menu .boards').on 'click', '.overlay', ->
     $(@).parent().find('.popup').hide()
-    $(@).parent().removeClass 'active'
     $(@).remove()
+
+  $('.l-menu .search input').on 'keyup', (e) ->
+    if e.keyCode == 13
+      query = $(e.target).val()
+      return if query == ''
+
+      $search_container = $(@).parents('.search')
+      $popup = $search_container.find('.popup')
+      $popup.find('.content').html('<p>Search...</p>')
+
+      url = "#{$search_container.data('url')}?query=#{query}"
+      $.get url, (search_result) ->
+        $popup.find('.content')
+          .html(search_result)
+        $popup.show()
+
+  $('.l-menu .search .popup .close-popup').on 'click', ->
+    $(@).parents('.popup').hide()
 
   $('.notice').on 'click', ->
     $(@).remove()
@@ -33,7 +49,8 @@ $(document).on 'page:change', ->
     $(@).remove()
 
   # open issue popup
-  $('.b-activities').on 'click', '.issue-url', ->
+  $('.b-activities, .search').on 'click', '.issue-url', ->
+    # FIX : Need open all issues, not just visible! (Use Issues#show)
     $('.show-issue-modal[data-number="' + $(@).data('number') + '"]').trigger 'click'
 
 $(document).on 'slider:load', '.b-activities', ->

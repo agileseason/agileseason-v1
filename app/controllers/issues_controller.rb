@@ -9,6 +9,11 @@ class IssuesController < ApplicationController
     render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @board_bag.labels }
   end
 
+  def search
+    issues = github_api.search_issues(@board, params[:query])
+    render partial: 'search_result', locals: { issues: issues }
+  end
+
   def create
     @issue = Issue.new(issue_params)
     if @issue.valid?

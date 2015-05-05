@@ -1,0 +1,6 @@
+- if issues.blank?
+  p We couldn't find any issues
+- else
+  ul
+    - issues.each do |issue|
+      li : a.issue-url data-number="#{issue.number}" = issue.title

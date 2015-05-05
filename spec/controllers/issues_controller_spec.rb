@@ -3,6 +3,14 @@ RSpec.describe IssuesController, type: :controller do
   let(:board) { create(:board, :with_columns, user: user) }
   before { stub_sign_in(user) }
 
+  describe 'GET search' do
+    before { allow_any_instance_of(GithubApi).to receive(:search_issues).and_return([]) }
+    it 'return http success' do
+      get :search, board_github_full_name: board.github_full_name, query: 'test'
+      expect(response).to render_template(partial: '_search_result')
+    end
+  end
+
   describe 'GET comments' do
     before { allow_any_instance_of(GithubApi).to receive(:issue_comments).and_return([]) }
     it 'return http success' do
