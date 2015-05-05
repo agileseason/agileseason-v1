@@ -175,9 +175,8 @@ describe GithubApi::Issues do
     after { subject }
     it { is_expected.to be_empty }
     it do
-      expect_any_instance_of(Octokit::Client).
-        to receive(:search_issues).
-          with("#{query} type:issue repo:#{board.github_full_name}")
+      expect_any_instance_of(Octokit::Client).to receive(:search_issues).
+        with("#{query} type:issue repo:#{board.github_full_name}")
     end
   end
 end
