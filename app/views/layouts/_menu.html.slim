@@ -14,6 +14,13 @@
         .octicon.octicon-triangle-up
         ul
           = render partial: 'boards/board', collection: k(:user, current_user).boards, as: :board
+    - if @board && @board.persisted?
+      li.search data-url="#{search_board_issues_url(@board)}"
+        input type='text'
+        span.octicon.octicon-search
+        .popup
+          .content
+          .close-popup
 
   ul.right
     li.user = current_user
