@@ -166,4 +166,18 @@ describe GithubApi::Issues do
 
     it { is_expected.to eq issue }
   end
+
+  describe '#search_issues' do
+    subject { service.search_issues(board, query) }
+    let(:query) { 'test in:title' }
+    let(:result) { OpenStruct.new(items: []) }
+    before { allow_any_instance_of(Octokit::Client).to receive(:search_issues).and_return(result) }
+    after { subject }
+    it { is_expected.to be_empty }
+    it do
+      expect_any_instance_of(Octokit::Client).
+        to receive(:search_issues).
+          with("#{query} type:issue repo:#{board.github_full_name}")
+    end
+  end
 end
