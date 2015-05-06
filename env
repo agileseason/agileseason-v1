@@ -1,0 +1,4 @@
+export S3_BUCKET_NAME='agile-season-development'                        # Agile Season S3 Storage (development)
+export AWS_ACCESS_KEY_ID='AKIAJZOEZTKIUNSE63NA'                         #
+export AWS_SECRET_ACCESS_KEY='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' #
+
