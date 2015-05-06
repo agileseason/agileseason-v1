@@ -3,4 +3,5 @@
 - else
   ul
     - issues.each do |issue|
-      li : a.issue-url data-number="#{issue.number}" = issue.title
+      li
+        a.issue-url data-number="#{issue.number}" #{issue.title} ##{issue.number}

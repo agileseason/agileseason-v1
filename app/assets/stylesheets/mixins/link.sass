@@ -1,0 +1,25 @@
+@import globals/variables
+
+=link
+  color: $link
+  cursor: pointer
+  display: inline
+  text-decoration: none
+
+  &:hover
+    color: $link-hover
+
+  &.active,
+  &.active:hover
+    color: $text-usual
+    cursor: default
+
+=ajax_link
+  color: $ajax-link
+  cursor: pointer
+
+  &:hover
+    color: $ajax-link-hover
+
+  &.active
+    color: $ajax-link-hover

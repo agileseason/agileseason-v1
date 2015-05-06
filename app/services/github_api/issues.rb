@@ -72,7 +72,7 @@ class GithubApi
 
     def search_issues(board, query)
       client.search_issues(
-        "#{query} type:issue repo:#{board.github_full_name}"
+        "#{query.gsub('@', 'assignee:')} type:issue repo:#{board.github_full_name}"
       ).items
     end
 
