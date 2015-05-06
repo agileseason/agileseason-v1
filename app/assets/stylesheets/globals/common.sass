@@ -2,7 +2,7 @@
 @import compass/css3/text-shadow
 @import mixins/button
 @import globals/variables
-@import mixins/ajax_link
+@import mixins/link
 @import mixins/popup
 @import mixins/close
 
@@ -30,18 +30,7 @@ p
   padding: 0
 
 a
-  color: $link
-  cursor: pointer
-  display: inline
-  text-decoration: none
-
-  &:hover
-    color: $link-hover
-
-  &.active,
-  &.active:hover
-    color: $text-usual
-    cursor: default
+  +link
 
 .ajax-link
   +ajax_link

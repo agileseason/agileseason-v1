@@ -6,6 +6,13 @@ $(document).on 'page:change', ->
     $(@).parent().find('.popup').hide()
     $(@).remove()
 
+  $('.l-menu .search input').on 'click', ->
+    $popup = $(@).parents('.search').find('.popup')
+    unless $popup.is(':visible')
+      $popup.find('.content').html('')
+      $popup.find('.help').show()
+      $popup.show()
+
   $('.l-menu .search input').on 'keyup', (e) ->
     if e.keyCode == 13
       query = $(e.target).val()
@@ -14,6 +21,7 @@ $(document).on 'page:change', ->
       $search_container = $(@).parents('.search')
       $popup = $search_container.find('.popup')
       $popup.find('.content').html('<p>Search...</p>')
+      $popup.find('.help').hide()
 
       url = "#{$search_container.data('url')}?query=#{query}"
       $.get url, (search_result) ->
