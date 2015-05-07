@@ -69,7 +69,6 @@ private
   end
 
   def fetch_repo_history
-    # FIX : This tasks also add to wenever
     Graphs::LinesWorker.perform_async(@board.id, github_token)
     Graphs::CumulativeWorker.perform_async(@board.id, github_token)
     Graphs::IssueStatsWorker.perform_async(@board.id, github_token)

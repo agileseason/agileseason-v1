@@ -20,6 +20,7 @@ gem 'rails', '4.2.1'
 gem 'redcarpet'
 gem 'sass-rails'
 gem 'sidekiq'
+gem 'sidekiq-unique-jobs'
 gem 'simple_form'
 gem 'sinatra', require: nil
 gem 'slim-rails'

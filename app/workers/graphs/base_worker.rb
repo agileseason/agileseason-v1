@@ -1,7 +1,8 @@
 module Graphs
   class BaseWorker
     include Sidekiq::Worker
-    sidekiq_options retry: 5
+    sidekiq_options Sidekiq::UNIQUE_OPTIONS
+    sidekiq_options retry: 2
 
     def fill_missing_days(entry_histories)
       to_copy = entry_histories.last
