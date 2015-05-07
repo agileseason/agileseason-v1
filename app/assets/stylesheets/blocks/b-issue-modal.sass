@@ -158,6 +158,89 @@
     &:first-child
       margin-top: 0
 
+  .move-to-column
+    margin-bottom: 40px
+
+    ul
+      list-style: none
+      padding: 0
+      margin: 20px 0 10px
+      display: -webkit-box
+      display: -moz-box
+      display: -webkit-flexbox
+      width: 100%
+
+      li
+        -webkit-box-flex: 1
+        -moz-box-flex: 1
+        -webkit-flex: 1
+
+        &:last-child
+          a
+            +border-radius(0 3px 3px 0)
+            border-right: 1px solid #eee
+
+            &:after,
+            &:before
+              display: none
+
+        &:first-child
+          a
+            +border-radius(3px 0 0 3px)
+
+        &:hover
+          a
+            background: #eee
+
+          a
+            &:after
+              border-color: transparent transparent transparent #eee
+
+        &.active
+          &:hover
+            a
+              color: #fff
+              cursor: default
+
+          a
+            +border-radius(3px)
+            background: $orange
+            color: #fff
+            border: 1px solid $orange
+            border-right: none
+
+            &:after
+              border-color: transparent transparent transparent $orange
+
+        a
+          +ajax_link
+          display: block
+          position: relative
+          padding: 2px 5px 2px 10px
+          border: 1px solid #eee
+          border-right: none
+
+          &:after, &:before
+            content: " "
+            width: 0
+            height: 0
+            border-style: solid
+            position: absolute
+
+          &:after
+            border-width: 11px 0 11px 9px
+            border-color: transparent transparent transparent #fff
+            right: -8px
+            top: 0px
+            z-index: 2
+
+          &:before
+            border-width: 12px 0 12px 10px
+            border-color: transparent transparent transparent #eeeeee
+            right: -9px
+            top: -1px
+            z-index: 1
+
   .issue-comment
     display: table
     padding: 0 0 40px
