@@ -2,7 +2,7 @@
 @import compass/css3/box-shadow
 @import compass/css3/text-shadow
 @import globals/variables
-@import mixins/link
+//@import mixins/ajax_link
 @import mixins/avatar
 @import mixins/button
 @import mixins/close
@@ -13,7 +13,6 @@
   +border-radius(6px)
   +box-shadow(0 0 40px rgba(63,63,63, 0.3))
   background: $card
-  display: none
 
   .issue-name
     display: inline
@@ -22,28 +21,18 @@
     padding: 20px 30px 30px 30px
 
   .title
-    font-size: 24px
+    font-size: 28px
+    font-weight: normal
     padding: 0 0 10px 0
     position: relative
 
-    .octicon-pencil
-      top: 2px
-
-  .issue-title
-    .field
-      font-size: 24px
-      font-weight: bold
-      margin-top: 0
-      outline: none
-      padding: 5px 10px
-
   .issue-content
-    display: table-cell
+    display: inline-block
     vertical-align: top
-    width: 700px
+    width: 670px
 
   .issue-actions
-    display: table-cell
+    display: inline-block
     padding-left: 40px
     width: 180px
 
@@ -57,7 +46,7 @@
     position: relative
 
     a
-      +ajax_link
+      //+ajax_link
 
     .no-one
       font-size: 14px
@@ -101,16 +90,21 @@
 
       .close-popup
         +close
+
       .header
         margin-bottom: 12px
+
         .date, .time
           display: inline-block
           margin-right: 30px
           width: 86px
+
         input
           width: 86px
+
       .datepicker
         margin-bottom: 12px
+
       .save
         display: inline-block
         width: auto
@@ -119,12 +113,10 @@
     +border-radius(2px)
     background: $orange
     color: #fff
-    cursor: pointer
     display: inline-block
-    font-size: 16px
-    line-height: 18px
-    margin-left: 10px
-    padding: 6px 6px 2px 6px
+    font-size: 12px
+    padding: 2px 6px 2px 6px
+    vertical-align: top
 
     &.none
       display: none
@@ -150,13 +142,18 @@
         top: 3px
 
   .add-label
-    +ajax_link
+    //+ajax_link
 
   .action-title
     margin: 20px 0 10px 0
 
     &:first-child
       margin-top: 0
+
+  .issue-comment
+    display: table
+    padding: 0 0 40px
+    width: 100%
 
   .move-to-column
     margin-bottom: 40px
@@ -213,7 +210,7 @@
               border-color: transparent transparent transparent $orange
 
         a
-          +ajax_link
+          //+ajax_link
           display: block
           position: relative
           padding: 2px 5px 2px 10px
@@ -241,58 +238,25 @@
             top: -1px
             z-index: 1
 
-  .issue-comment
-    display: table
-    padding: 0 0 40px
-    width: 100%
-
-    &:hover
-      .controls
-        display: block
-
-    &:last-child
-      padding-bottom: 20px
-
-    .controls
-      display: none
-      margin: 2px 0 0 0
-      position: absolute
-
-      .delete-link
-        +ajax_link
-        display: inline-block
-        font-size: 12px
-        font-style: italic
-        padding: 3px 5px
-
-      .edit-link
-        +button
-        display: inline-block
-        font-size: 11px
-        font-style: normal
-        padding: 3px 8px 1px
-        vertical-align: middle
-
   .user-ava
-    display: table-cell
+    display: inline-block
     width: 33px
+    position: absolute
 
   .avatar
     +avatar
 
   .comment-body
-    display: table-cell
-    padding: 0px 5px
+    padding: 0px 5px 0 43px
     position: relative
-    vertical-align: top
 
     pre
-      width: 632px
+      width: 622px
 
       code
+        word-wrap: normal
         display: block
         overflow-x: auto
-        word-wrap: normal
 
     .edit-form
       textarea
@@ -308,6 +272,25 @@
       display: inline-block
       margin-bottom: 5px
 
+    .controls
+      +date
+
+  .issue-comments
+    .b-preloader
+      margin-bottom: 20px
+
+  .add-comment
+    background: #fefefe
+    border-radius: 6px
+    border: 1px solid #ccc
+    color: #999
+    display: inline-block
+    line-height: 10px
+    min-height: 20px
+    padding: 15px 10px 5px 10px
+    vertical-align: middle
+    width: calc(100% - 20px)
+
   .user-login
     color: $lightgrey
     display: inline
@@ -315,102 +298,9 @@
     font-weight: bold
 
   .issue-description
-    .label
+    .blank-description
       display: inline
       color: $lightgrey
-
-    .octicon
-      +ajax_link
-      margin-bottom: 3px
-      vertical-align: bottom
-
-  .description
-    margin-top: 10px
-
-    pre
-      width: 675px
-
-      code
-        display: block
-        overflow-x: auto
-        word-wrap: normal
-    img
-      max-width: 100%
-
-    .octicon-pencil
-      margin-top: -3px
-
-  .edit-form
-    display: none
-
-    .cancel
-      +ajax_link
-
-    textarea
-      +border-radius(4px 4px 0 0)
-      border-top: 1px solid #ddd
-      border-right: 1px solid #ddd
-      border-left: 1px solid #ddd
-      border-bottom: 1px dashed #ddd
-      display: block
-      font-size: inherit
-      margin: 10px 0 0 0
-      min-height: 60px
-      outline: none
-      padding: 10px
-      resize: vertical
-      width: 97%
-      width: calc(100% - 22px)
-
-      &.dragenter
-        border-color: $link
-
-  .octicon-pencil
-    +ajax_link
-    position: absolute
-    left: -20px
-
-  .editable
-    position: relative
-
-
-
-  .submit-area
-    background: none
-    padding: 0
-
-  .add-comment
-    padding-top: 10px
-    position: relative
-
-    .editable
-      margin-bottom: 35px
-
-    .edit-form
-      padding-left: 40px
-      margin-top: -15px
-      margin-bottom: 5px
-
-    .user-ava
-      position: absolute
-
-    .edit-link
-      +button
-      display: inline-block
-      margin-top: 10px
-
-  .markup-switcher
-    margin: -30px 0 10px 5px
-
-    span
-      +ajax_link
-      font-size: 12px
-      margin-right: 5px
-
-      &.active
-        +border-radius(3px)
-        background: #ddd
-        padding: 1px 5px
 
   .upload
     +border-radius(0 0 4px 4px)

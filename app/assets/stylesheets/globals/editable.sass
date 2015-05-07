@@ -1,0 +1,43 @@
+@import mixins/button
+
+.editable-form,
+.add-comment
+  font-size: 16px
+  font-weight: normal
+
+  .form-overlay
+    position: fixed
+    height: 100%
+    width: 100%
+    top: 0
+    left: 0
+    z-index: 20
+
+  form
+    display: block
+    position: relative
+    z-index: 21
+
+  textarea
+    display: block
+    width: calc(100% - 20px)
+    padding: 10px
+    background: none
+    min-height: 140px
+    font-size: 16px
+    font-weight: normal
+    background: #FAFAE9
+    border: 1px solid #eee
+    border-radius: 3px
+
+  .attach-images
+    font-size: 14px
+    float: left
+
+  .controls
+    text-align: right
+    padding: 15px 0
+
+    .preview
+      //+grey_button
+      margin-right: 5px

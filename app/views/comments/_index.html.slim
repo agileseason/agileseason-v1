@@ -10,23 +10,19 @@
     .comment-body
       .user-login #{comment.user.login}&nbsp;
       .date = comment.created_at.strftime("%h %d, %H:%M")
-      .edit
-        .comment.editable.update-comment
-          .edit-content = markdown(comment.body)
-          .controls
-            .edit-link edit
-            .delete-link data-delete="#{delete_comment_board_issues_url(@board, comment.id)}"
-              | delete
 
-        .edit-form
-          textarea.textarea-comment.field = comment.body
-          /.markup-switcher
-            /span.markup.active markup
-            /span.preview preview
-          .submit-area
-            a.cancel Cancel
-            button.button[
-              remote='true'
-              data-delete="#{delete_comment_board_issues_url(@board, comment.id)}"
-              href="#{update_comment_board_issues_url(@board, comment.id)}"]
-                | Update
+      span.controls
+        | &mdash; 
+        a.edit edit
+
+        | &nbsp;or&nbsp;
+
+        a.delete data-url="#{delete_comment_board_issues_url(@board, comment.id)}"
+          | delete
+
+      .comment[
+        data-url="#{update_comment_board_issues_url(@board, comment.id)}"
+        data-delete="#{delete_comment_board_issues_url(@board, comment.id)}"]
+        = markdown(comment.body)
+        /= comment.body
+      = render partial: 'issues/editable_form'

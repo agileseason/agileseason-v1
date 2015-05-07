@@ -1,9 +1,11 @@
 $(document).on 'page:change', ->
   $('.l-menu').on 'click', '.boards', ->
+    $(@).addClass('active').prepend('<div class="overlay"></div>')
     $(@).find('.popup').show()
 
   $('.l-menu .boards').on 'click', '.overlay', ->
     $(@).parent().find('.popup').hide()
+    $(@).parent().removeClass 'active'
     $(@).remove()
 
   $('.l-menu .search input').on 'click', ->
@@ -59,7 +61,7 @@ $(document).on 'page:change', ->
   # open issue popup
   $('.b-activities, .search').on 'click', '.issue-url', ->
     # FIX : Need open all issues, not just visible! (Use Issues#show)
-    $('.show-issue-modal[data-number="' + $(@).data('number') + '"]').trigger 'click'
+    $('.issue-name[data-number="' + $(@).data('number') + '"]').trigger 'click'
 
 $(document).on 'slider:load', '.b-activities', ->
   $('.b-activities').scroll ->
