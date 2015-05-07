@@ -11,14 +11,6 @@ RSpec.describe IssuesController, type: :controller do
     end
   end
 
-  describe 'GET comments' do
-    before { allow_any_instance_of(GithubApi).to receive(:issue_comments).and_return([]) }
-    it 'return http success' do
-      get :comments, board_github_full_name: board.github_full_name, number: 1
-      expect(response).to render_template(partial: '_comments')
-    end
-  end
-
   describe 'GET close' do
     before { allow_any_instance_of(GithubApi).to receive(:close) }
     it 'return http success' do

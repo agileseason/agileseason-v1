@@ -3,6 +3,14 @@ RSpec.describe CommentsController, type: :controller do
   let(:board) { create(:board, :with_columns, user: user) }
   before { stub_sign_in(user) }
 
+  describe 'GET index' do
+    before { allow_any_instance_of(GithubApi).to receive(:issue_comments).and_return([]) }
+    it 'return http success' do
+      get :index, board_github_full_name: board.github_full_name, number: 1
+      expect(response).to render_template(partial: '_index')
+    end
+  end
+
   describe 'GET create' do
     before { allow_any_instance_of(GithubApi).to receive(:add_comment) }
     it 'return http success' do

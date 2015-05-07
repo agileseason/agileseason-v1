@@ -1,6 +1,5 @@
 class IssuesController < ApplicationController
-  before_action :fetch_board, only: [:comments]
-  before_action :fetch_board_for_update, except: [:comments]
+  before_action :fetch_board_for_update
 
   def show
     github_issue = github_api.issue(@board, params[:number])
@@ -28,11 +27,6 @@ class IssuesController < ApplicationController
     else
       render nothing: true
     end
-  end
-
-  def comments
-    comments = github_api.issue_comments(@board, params[:number].to_i)
-    render partial: 'issues/comments', locals: { comments: comments }
   end
 
   def move_to
