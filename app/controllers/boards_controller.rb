@@ -4,7 +4,7 @@ class BoardsController < ApplicationController
 
   before_action :check_permissions,  only: [:create]
   before_action :fetch_board,        only: [:show, :destroy]
-  after_action  :fetch_repo_history, only: [:show]
+  after_action  :fetch_repo_history, only: [:show], unless: -> { Rails.env.test? }
 
   def index
     if current_user.boards.blank?
