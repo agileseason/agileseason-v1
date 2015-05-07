@@ -1,3 +1,8 @@
+window.build_s3_image_url = (url, key) ->
+  sanitize_key = encodeURIComponent(key)
+  sanitize_key = sanitize_key.replace(/([(){}\[\]#+-.!])/g, "\\$1")
+  "![#{key}](#{url}/#{sanitize_key})"
+
 window.init_direct_upload = ($elements, url, form_data) ->
   $elements.each (i, elem) ->
     $fileInput = $(elem)
@@ -28,7 +33,7 @@ window.init_direct_upload = ($elements, url, form_data) ->
 
       done: (e, data) ->
         key = $(data.jqXHR.responseXML).find('Key').text()
-        image_url = "![#{key}](#{url}/#{key})"
+        image_url = window.build_s3_image_url(url, key)
 
         text = $textarea.val()
         $textarea.focus().val("").val("#{text}#{image_url}\n")
