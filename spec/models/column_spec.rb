@@ -60,7 +60,7 @@ RSpec.describe Column, type: :model do
     end
 
     context 'not nil' do
-      let(:issues) { ["1"] }
+      let(:issues) { ['1'] }
       it { is_expected.to eq issues }
     end
   end
