@@ -19,4 +19,9 @@ class Column < ActiveRecord::Base
   def prev_columns
     board.columns.select { |c| c.order < order }
   end
+
+  def issues
+    self['issues'] = [] if self['issues'].nil?
+    self['issues']
+  end
 end

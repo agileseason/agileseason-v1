@@ -56,4 +56,18 @@ RSpec.describe Column, type: :model do
       it { is_expected.to eq [column_1, column_2] }
     end
   end
+
+  describe '#issues' do
+    subject { column.issues }
+    let(:column) { build(:column, issues: issues) }
+    context 'is nil' do
+      let(:issues) { nil }
+      it { is_expected.to eq [] }
+    end
+
+    context 'not nil' do
+      let(:issues) { ["1"] }
+      it { is_expected.to eq issues }
+    end
+  end
 end
