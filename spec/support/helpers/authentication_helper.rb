@@ -1,5 +1,5 @@
 module AuthenticationHelper
-  GITHUB_TOKEN = 'githubtoken'
+  GITHUB_TOKEN = 'fake_token'
 
   def stub_sign_in(user = create(:user))
     session[:remember_token] = user.remember_token
