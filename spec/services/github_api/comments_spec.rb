@@ -1,5 +1,5 @@
 describe GithubApi::Comments do
-  let(:service) { GithubApi.new('fake_github_token') }
+  let(:service) { GithubApi.new('fake_token') }
   let(:board) { build(:board, github_id: 1) }
   let(:issue) { OpenStruct.new(number: 1) }
 

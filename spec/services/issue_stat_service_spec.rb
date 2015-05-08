@@ -7,15 +7,16 @@ describe IssueStatService do
     let(:first_column) { board.columns.first }
 
     it { is_expected.to be_persisted }
-    it { expect(subject.number).to eq issue.number }
-    it { expect(subject.created_at).to eq issue.created_at }
-    it { expect(subject.updated_at).to eq issue.updated_at }
-    it { expect(subject.closed_at).to eq issue.closed_at }
+    its(:number) { is_expected.to eq issue.number }
+    its(:created_at) { is_expected.to eq issue.created_at }
+    its(:updated_at) { is_expected.to eq issue.updated_at }
+    its(:closed_at) { is_expected.to eq issue.closed_at }
     it { expect { subject }.to change(Lifetime, :count).by(1) }
     it { expect(subject.lifetimes.first.column).to eq first_column }
     it { expect(subject.lifetimes.first.in_at).to_not be_nil }
     it { expect(subject.lifetimes.first.out_at).to be_nil }
     it { expect(subject.column).to eq board.columns.first }
+    it { expect(subject.column.issues).to eq [issue.number.to_s] }
   end
 
   describe '.move' do

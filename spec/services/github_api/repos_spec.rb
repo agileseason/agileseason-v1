@@ -1,5 +1,5 @@
 describe GithubApi::Repos do
-  let(:service) { GithubApi.new('fake_github_token', user) }
+  let(:service) { GithubApi.new('fake_token', user) }
   let(:user) { build_stubbed(:user) }
 
   describe '#collaborators' do

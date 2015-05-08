@@ -1,5 +1,5 @@
 describe GithubApi::Labels do
-  let(:service) { GithubApi.new('fake_github_token') }
+  let(:service) { GithubApi.new('fake_token') }
   let(:board) { build(:board, columns: [column_1, column_2]) }
   let(:column_1) { build(:column, name: 'backlog', order: 1) }
   let(:column_2) { build(:column, name: 'todo', order: 2) }
