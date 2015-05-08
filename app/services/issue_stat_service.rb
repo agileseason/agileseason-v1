@@ -1,17 +1,22 @@
 class IssueStatService
   class << self
     def create!(board, github_issue)
+      column = board.columns.first
       issue_stat = board.issue_stats.create!(
         number: github_issue.number,
-        column: board.columns.first,
+        column: column,
         created_at: github_issue.created_at,
         updated_at: github_issue.updated_at,
         closed_at: github_issue.closed_at,
       )
+
       issue_stat.lifetimes.create!(
-        column: board.columns.first,
+        column: column,
         in_at: Time.current,
       )
+
+      column.update(issues: column.issues.unshift(github_issue.number.to_s))
+
       issue_stat
     end
 
