@@ -1,5 +1,5 @@
 describe GithubApi::Issues do
-  let(:service) { GithubApi.new('fake_github_token', user) }
+  let(:service) { GithubApi.new('fake_token', user) }
   let(:user) { build_stubbed(:user) }
   let(:board) { build(:board, :with_columns, number_of_columns: 1) }
   let(:issue) { OpenStruct.new(number: 1) }

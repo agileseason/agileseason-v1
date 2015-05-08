@@ -1,5 +1,5 @@
 describe Board, type: :model do
-  describe :validates do
+  describe 'validations' do
     subject { Board.new }
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :type }

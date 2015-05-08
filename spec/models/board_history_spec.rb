@@ -1,5 +1,5 @@
 RSpec.describe BoardHistory, type: :model do
-  describe 'validates' do
+  describe 'validations' do
     subject { BoardHistory.new }
     it { is_expected.to validate_presence_of(:collected_on) }
     it { is_expected.to validate_presence_of(:data) }

@@ -1,5 +1,5 @@
 RSpec.describe GithubApi::Stats do
-  let(:service) { GithubApi.new('github_token_example') }
+  let(:service) { GithubApi.new('github_example') }
 
   describe '.repo_lines' do
     subject { service.repo_lines(board) }
@@ -7,7 +7,7 @@ RSpec.describe GithubApi::Stats do
     before { allow_any_instance_of(Octokit::Client).to receive(:code_frequency_stats).and_return(code_frequency_stats) }
 
     context :no_stats do
-      let(:code_frequency_stats) { "" }
+      let(:code_frequency_stats) { '' }
       it { is_expected.to be_zero }
     end
 

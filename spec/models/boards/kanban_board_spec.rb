@@ -1,7 +1,7 @@
 describe Boards::ScrumBoard, type: :model do
   let(:board) { build(:kanban_board) }
 
-  describe '.rolling_average_window' do
+  describe '#rolling_average_window' do
     subject { board.rolling_average_window }
 
     context 'default' do
@@ -14,7 +14,7 @@ describe Boards::ScrumBoard, type: :model do
     end
   end
 
-  describe '.kanban_settings' do
+  describe '#kanban_settings' do
     subject { board.kanban_settings }
     it { is_expected.to_not be_nil }
     it { expect(subject.rolling_average_window).to_not be_zero }

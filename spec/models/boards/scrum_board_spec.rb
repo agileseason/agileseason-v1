@@ -1,7 +1,7 @@
 describe Boards::ScrumBoard, type: :model do
   let(:board) { build(:scrum_board) }
 
-  describe '.days_per_iteration' do
+  describe '#days_per_iteration' do
     subject { board.days_per_iteration }
 
     context 'default' do
@@ -14,7 +14,7 @@ describe Boards::ScrumBoard, type: :model do
     end
   end
 
-  describe '.start_iteration' do
+  describe '#start_iteration' do
     subject { board.start_iteration }
 
     context 'default' do
@@ -27,7 +27,7 @@ describe Boards::ScrumBoard, type: :model do
     end
   end
 
-  describe '.scrum_settings' do
+  describe '#scrum_settings' do
     subject { board.scrum_settings }
     it { is_expected.to_not be_nil }
     it { expect(subject.days_per_iteration).to eq 14 }
