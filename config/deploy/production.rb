@@ -13,4 +13,4 @@ set :unicorn_worker_count, 2
 set :enable_ssl, false
 
 set :sidekiq_processes, 1
-set :sidekiq_concurrency, 4
+set :sidekiq_concurrency, 2
