@@ -60,5 +60,7 @@ namespace :deploy do
       # end
     end
   end
-
 end
+
+after 'deploy:started',   'sidekiq:stop'
+after 'deploy:published', 'sidekiq:start'
