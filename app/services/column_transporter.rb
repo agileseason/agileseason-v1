@@ -1,34 +1,35 @@
 class ColumnTransporter
   def initialize(column)
     @column = column
+    @columns = column.board.columns
   end
 
   def can_move?
-    !@column.issue_stats.where(archived_at: nil).any?
+    @column.issue_stats.where(archived_at: nil).blank?
   end
 
   def move_left
-    all_columns.each { |column| column.order *= 10 }
-    column_to_move = all_columns.detect { |column| column.id == @column.id }
-    column_to_move.order -= 11
-    normolize_order
+    move_to(:left)
   end
 
   def move_right
-    all_columns.each { |column| column.order *= 10 }
-    column_to_move = all_columns.detect { |column| column.id == @column.id }
-    column_to_move.order += 11
-    normolize_order
+    move_to(:right)
   end
 
   private
 
-  def all_columns
-    @all_columns ||= @column.board.columns
+  def move_to(direction)
+    @columns.each do |column|
+      column.order *= 10
+      column.order += order_diff(direction) if column.id == @column.id
+    end
+
+    @columns.sort_by(&:order).each_with_index do |column, index|
+      column.update(order: index + 1)
+    end
   end
 
-  def normolize_order
-    all_columns.sort_by(&:order).each_with_index { |column, index| column.order = index + 1 }
-    all_columns.map(&:save)
+  def order_diff(direction)
+    direction == :left ? -11 : 11
   end
 end
