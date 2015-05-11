@@ -184,10 +184,15 @@ open_form = ($editable_node) ->
   #close_active_form()
 
   setTimeout ->
+      if $editable_node.data('initial')
+        initial_data = $editable_node.data('initial').trim()
+      else
+        initial_data = $editable_node.html().trim()
+
       $editable_node
         .hide()
         .next().show().addClass('active')
-        .find('textarea').focus().val($editable_node.html().trim())
+        .find('textarea').focus().val(initial_data)
     , 300
 
 close_active_form = ->

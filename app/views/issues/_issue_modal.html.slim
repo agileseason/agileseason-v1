@@ -15,8 +15,8 @@
           .description.editable.blank-description data-url="#{update_board_issues_url(board, issue.number)}"
             | Description
         - else
-          .description.editable data-url="#{update_board_issues_url(board, issue.number)}"
-            = issue.body.html_safe
+          .description.editable data-url="#{update_board_issues_url(board, issue.number)}" data-initial="#{issue.body}"
+            = markdown(issue.body.html_safe)
         = render partial: 'issues/editable_form'
 
       - unless issue.archive?

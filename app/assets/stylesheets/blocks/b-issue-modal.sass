@@ -14,6 +14,7 @@
   background: $card
 
   .issue-name
+    cursor: pointer
     display: inline
 
   .content
@@ -41,6 +42,10 @@
     .editable-form.active + a,
     .editable-form.active + a + .due-date
       display: none
+
+  .description
+    cursor: pointer
+    word-break: break-all
 
   .issue-content
     display: inline-block
@@ -165,6 +170,9 @@
     padding: 0 0 40px
     width: 100%
 
+  .comment
+    word-break: break-all
+
   .move-to-column
     margin-bottom: 40px
 
@@ -262,11 +270,6 @@
     pre
       width: 622px
 
-      code
-        word-wrap: normal
-        display: block
-        overflow-x: auto
-
     .edit-form
       textarea
         margin-top: 0
@@ -283,6 +286,11 @@
 
     .controls
       +date
+
+  code
+    word-wrap: normal
+    display: block
+    overflow-x: auto
 
   .issue-comments
     .b-preloader
