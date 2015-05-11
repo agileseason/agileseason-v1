@@ -26,6 +26,23 @@
     padding: 0 0 10px 0
     position: relative
 
+    .upload,
+    .preview
+      display: none
+
+    .editable-form
+      textarea
+        font-size: 28px
+        height: 28px
+        min-height: 20px
+
+      &.active
+        margin-bottom: 40px
+
+    .editable-form.active + a,
+    .editable-form.active + a + .due-date
+      display: none
+
   .issue-content
     display: inline-block
     vertical-align: top
@@ -303,21 +320,25 @@
       color: $lightgrey
 
   .upload
-    +border-radius(0 0 4px 4px)
-    position: relative
-    color: $text-light
-    border-top: 0
-    border-left: 1px solid #ddd
-    border-right: 1px solid #ddd
-    border-bottom: 1px solid #ddd
-    padding: 6px
-    margin-bottom: 10px
+    font-size: 14px
+    display: inline-block
+    margin: 17px 0 0 0
+    cursor: pointer
+    width: 220px
 
-    &.dragenter
-      border-color: $link
+    &:hover
+      a
+        color: $link-hover
 
     .progress
       display: none
+      margin: 0
+      vertical-align: bottom
+
+      .b-preloader
+        display: inline-block
+        vertical-align: bottom
+        margin: 0
 
     input
       cursor: pointer
@@ -325,5 +346,4 @@
       left: 0
       opacity: 0.00001
       position: absolute
-      top: 0
-      width: 100%
+      top: -10px

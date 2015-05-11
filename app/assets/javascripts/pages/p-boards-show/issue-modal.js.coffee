@@ -8,13 +8,15 @@ $(document).on 'page:change', ->
     return unless document.body.id == 'boards_show'
     console.log 'modal:load'
 
+    init_uploading()
+
     $current_issue = $('.issue[data-number="' + $(@).closest('.b-issue-modal').data('number') + '"]') # миниатюра открытого тикета
     $issue_modal = $('.issue-modal')
 
     load_comments()
 
     $('.b-issue-modal').click (e) ->
-      unless $(e.target).is('.editable-form.active textarea, .editable-form.active .save, .preview, .attach-images, controls')
+      unless $(e.target).is('.editable-form.active textarea, .editable-form.active .save, .preview, .attach-images, controls, .upload, .upload input')
         close_active_form()
 
     $('.editable').click ->
@@ -72,6 +74,8 @@ $(document).on 'page:change', ->
     ################################################################################
     $('.issue-comments').on 'comments:load', ->
       console.log 'comments:load'
+
+      init_uploading()
 
       $('.delete', @).click ->
         if window.confirm('Delete comment?')
@@ -209,3 +213,7 @@ save_order = (url, data) ->
     method: 'PATCH',
     data: data
 
+init_uploading = ->
+  url = $('.board').data('direct_post_url')
+  form_data = $('.board').data('direct_post_form_data')
+  window.init_direct_upload($('.directUpload').find('input:file'), url, form_data)

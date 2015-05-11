@@ -5,10 +5,11 @@ window.build_s3_image_url = (url, key) ->
 
 window.init_direct_upload = ($elements, url, form_data) ->
   $elements.each (i, elem) ->
+    console.log [i, elem]
     $fileInput = $(elem)
     $form = $($fileInput.parents('form:first')).first()
     $submitButton = $form.find('input[type="file"]')
-    $textarea = $form.parents('.edit-form').find('textarea')
+    $textarea = $form.parents('.editable-form').find('textarea')
     $progress = $form.find('.progress')
     $info = $form.find('.info')
 
@@ -54,10 +55,3 @@ window.init_direct_upload = ($elements, url, form_data) ->
     $textarea.on 'dragleave', ->
       $textarea.removeClass('dragenter')
       $form.parents('.upload').removeClass('dragenter')
-
-$(document).on 'modal:load', '.b-issue-modal', ->
-  return unless document.body.id == 'boards_show'
-
-  url = $('.board').data('direct_post_url')
-  form_data = $('.board').data('direct_post_form_data')
-  window.init_direct_upload($('.directUpload').find('input:file'), url, form_data)

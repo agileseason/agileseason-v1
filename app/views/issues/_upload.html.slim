@@ -1,7 +1,7 @@
 .upload
   = form_for('/', html: { class: 'directUpload' }) do |f|
-    .info
-      span Attach images by dragging &amp; dropping or&nbsp;
-      a href='#' selecting them
-    .progress Uploading...
+    label.info for='_img'
+      /span Attach images by dragging &amp; dropping or&nbsp;
+      a Attach images
+    .progress Uploading <span class='b-preloader horizontal inline'></span>
     = f.file_field :img
