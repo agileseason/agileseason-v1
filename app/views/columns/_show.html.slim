@@ -14,6 +14,11 @@
         li.delimiter
         li: a.delete href="#{board_column_url(@board, column)}" data-confirm='Are you sure?' data-method='delete' data-remote='true' Remove Column...
 
+  .wip
+    .size class="#{k(column).wip_status}" title='Work in progress limit' = column.issues.size
+    .inline-form
+      = render partial: 'columns/wip', locals: { board: @board, column: column }
+
   .new-issue.ajax-link
     a.ajax-link New issue
   .inline-form

@@ -1,5 +1,14 @@
 resize_lock = false
 
+column_wip_form = ->
+  $('.board-column').on 'click', '.wip', ->
+    $form = $(@).find('.inline-form')
+    $form.show()
+    false
+  # FIX : Find reason ignoring submit
+  $('.wip input[type="submit"]').on 'click', ->
+    $(@).parents('form').submit()
+
 column_menu = ->
   $('.board-column').on 'click', '.column-menu', ->
     $(@).addClass('active').prepend('<div class="overlay"></div>')
@@ -52,6 +61,7 @@ new_issue_forms = ->
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
   column_menu()
+  column_wip_form()
   new_issue_forms()
 
   $('.issues').on 'click', '.issue.draggable', (e) ->

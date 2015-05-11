@@ -118,7 +118,6 @@
     .popup
       +popup
       top: 32px
-      height: 142px
 
       ul
         list-style-type: none
@@ -134,6 +133,45 @@
             color: $text-light
             &:hover
               color: $text-usual
+
+  .wip
+    .size
+      +border-radius(4px)
+      background-color: #e3e3e3
+      color: $text-light
+      cursor: pointer
+      font-size: 11px
+      padding: 6px 10px
+      position: absolute
+      right: 10px
+      top: 4px
+      &.warning
+        background-color: #ffab40
+        //color: #e65100
+        color: #fff
+      &.alert
+        background-color: #ff5252
+        //color: #ac0000
+        color: #fff
+
+    .inline-form
+      margin-bottom: 10px
+      label
+        display: table-cell
+      input[type="text"]
+        width: 186px
+        margin-bottom: 5px
+    //.popup
+      +popup
+      top: 32px
+      left: 224px
+      display: block
+      padding: 14px
+      form
+        width: 100%
+        .input,
+        input[type="text"]
+          width: 100%
 
   .issues
     padding: 0 10px

@@ -54,6 +54,12 @@ class ColumnsController < ApplicationController
     move_to(:right)
   end
 
+  def wip
+    @settings = WipColumnSettings.new(column_settings)
+    @settings.save_to(@board.columns.find(params[:id]))
+    redirect_to board_url(@board), notice: 'Column WIP limit successfully updated.'
+  end
+
   private
 
   def move_to(direction)
@@ -71,5 +77,11 @@ class ColumnsController < ApplicationController
     params
       .require(:column)
       .permit(:name, :issues)
+  end
+
+  def column_settings
+    params.
+      require(:wip_column_settings).
+      permit(:min, :max)
   end
 end

@@ -4,5 +4,6 @@ FactoryGirl.define do
     color '#eee'
     order 1
     board nil
+    settings nil
   end
 end

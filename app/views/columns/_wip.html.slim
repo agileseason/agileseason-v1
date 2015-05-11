@@ -1,0 +1,8 @@
+= simple_form_for(column.wip_settings, url: wip_board_column_url(board, column), method: :patch) do |f|
+  = f.input :min, placeholder: 'none'
+  = f.input :max, placeholder: 'none'
+
+  .submit-area
+    a.cancel href="#{board_url(board)}" Cancel
+    = f.button :submit, value: 'Update'
+
