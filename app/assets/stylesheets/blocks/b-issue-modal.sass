@@ -2,7 +2,6 @@
 @import compass/css3/box-shadow
 @import compass/css3/text-shadow
 @import globals/variables
-//@import mixins/ajax_link
 @import mixins/avatar
 @import mixins/button
 @import mixins/close
@@ -61,9 +60,6 @@
   .b-assign
     margin: 20px 0
     position: relative
-
-    a
-      //+ajax_link
 
     .no-one
       font-size: 14px
@@ -158,9 +154,6 @@
         right: 5px
         top: 3px
 
-  .add-label
-    //+ajax_link
-
   .action-title
     margin: 20px 0 10px 0
 
@@ -227,7 +220,6 @@
               border-color: transparent transparent transparent $orange
 
         a
-          //+ajax_link
           display: block
           position: relative
           padding: 2px 5px 2px 10px
@@ -318,32 +310,3 @@
     .blank-description
       display: inline
       color: $lightgrey
-
-  .upload
-    font-size: 14px
-    display: inline-block
-    margin: 17px 0 0 0
-    cursor: pointer
-    width: 220px
-
-    &:hover
-      a
-        color: $link-hover
-
-    .progress
-      display: none
-      margin: 0
-      vertical-align: bottom
-
-      .b-preloader
-        display: inline-block
-        vertical-align: bottom
-        margin: 0
-
-    input
-      cursor: pointer
-      height: 40px
-      left: 0
-      opacity: 0.00001
-      position: absolute
-      top: -10px
