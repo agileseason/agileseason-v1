@@ -22,7 +22,8 @@ class ColumnsController < ApplicationController
     @column = @board.columns.find(params[:id])
 
     if params[:issues]
-       @column.update(issues: params[:issues].uniq)
+      issue_ids = params[:issues].reject{ |n| n == 'empty' }.uniq
+       @column.update(issues: issue_ids)
        render nothing: true
     else
       if @column.update(column_params)
