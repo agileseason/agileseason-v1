@@ -1,7 +1,9 @@
 .editable-form style='display: none;'
   form
     textarea
+    .preview-textarea
     .controls
-      a.preview Preview
+      a.write Edit
+      a.preview data-url="#{preview_url}" Preview
       a.button.save Save
   = render partial: 'issues/upload'

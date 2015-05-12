@@ -18,6 +18,21 @@
     position: relative
     z-index: 21
 
+    .write,
+    .preview-textarea
+      display: none
+
+    &.preview-mode
+      .write
+        display: inline-block
+
+      .preview-textarea
+        display: block
+
+      .preview,
+      textarea
+        display: none
+
   textarea
     display: block
     width: calc(100% - 20px)
@@ -43,7 +58,8 @@
     display: inline-block
     float: right
 
-    .preview
+    .preview,
+    .write
       //+grey_button
       margin-right: 5px
 

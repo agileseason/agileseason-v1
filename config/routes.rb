@@ -60,4 +60,6 @@ Rails.application.routes.draw do
   get '/awstest', to: 'awstest#index'
 
   root 'landing#index'
+
+  post 'preview', to: 'markdown#preview', as: :preview
 end

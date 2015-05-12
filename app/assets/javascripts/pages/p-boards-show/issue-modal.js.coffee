@@ -16,7 +16,7 @@ $(document).on 'page:change', ->
     load_comments()
 
     $('.b-issue-modal').click (e) ->
-      unless $(e.target).is('.editable-form.active textarea, .editable-form.active .save, .preview, .attach-images, controls, .upload, .upload input')
+      unless $(e.target).is('.editable-form.active textarea, .editable-form.active .save, .preview, .attach-images, controls, .upload, .upload input, .write')
         close_active_form()
 
     $('.editable').click ->
@@ -24,6 +24,17 @@ $(document).on 'page:change', ->
         open_new_comment_form($(@))
       else
         open_form($(@))
+
+    $('.preview', $issue_modal).click ->
+      string = $('textarea', $(@).closest('form')).val()
+      console.log string
+
+      $.post $(@).data('url'), string: string, (markdown) =>
+        $(@).closest('form').addClass('preview-mode')
+        $('.preview-textarea', $(@).closest('form')).html(markdown)
+
+    $('.write').click ->
+      $(@).closest('form').removeClass('preview-mode')
 
     $('.editable-form').click (e) ->
       if $(e.target).is('.editable-form.active .save')
@@ -55,7 +66,8 @@ $(document).on 'page:change', ->
           $('.octicon-book', $current_issue).hide()
 
         else
-          $editable_node.html(new_content).removeClass 'blank-description'
+          $.post $('.preview', @).data('url'), string: new_content, (markdown) ->
+            $editable_node.html(markdown).removeClass 'blank-description'
           $('.octicon-book', $current_issue).show()
 
         $.get url, body: new_content
@@ -85,6 +97,17 @@ $(document).on 'page:change', ->
 
           $(@).closest('.issue-comment').remove()
 
+      $('.preview', $issue_modal).click ->
+        string = $('textarea', $(@).closest('form')).val()
+        console.log string
+
+        $.post $(@).data('url'), string: string, (markdown) =>
+          $(@).closest('form').addClass('preview-mode')
+          $('.preview-textarea', $(@).closest('form')).html(markdown)
+
+      $('.write').click ->
+        $(@).closest('form').removeClass('preview-mode')
+
       $('.edit', @).click ->
         console.log 'edit:click'
         open_form($(@).closest('.controls').next())
@@ -112,8 +135,9 @@ $(document).on 'page:change', ->
 
         else
           $.get url, comment: new_content, -> console.log 'comment saved'
-          $editable_node.html(new_content)
-          close_active_form()
+          $.post $('.preview', @).data('url'), string: new_content, (markdown) ->
+            $editable_node.html(markdown)
+            close_active_form()
 
     ################################################################################
     # move-to events in issue modal
@@ -167,7 +191,7 @@ load_comments = ->
     setTimeout ->
         $issue_comments.html(comments)
         $issue_comments.trigger 'comments:load'
-      , 200
+      , 500
 
 open_new_comment_form = ($editable_node) ->
   console.log 'open new comment form'
@@ -185,7 +209,7 @@ open_form = ($editable_node) ->
 
   setTimeout ->
       if $editable_node.data('initial')
-        initial_data = $editable_node.data('initial').trim()
+        initial_data = $editable_node.data('initial').toString().trim()
       else
         initial_data = $editable_node.html().trim()
 
