@@ -6,6 +6,10 @@ html
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
+
+    link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/solarized_light.min.css"
+    script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"
+
   body class="p-#{controller_name}-#{action_name}" id="#{controller_name}_#{action_name}"
     = render partial: 'layouts/menu' if signed_in?
     .container

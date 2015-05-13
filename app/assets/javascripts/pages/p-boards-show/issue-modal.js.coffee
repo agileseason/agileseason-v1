@@ -8,6 +8,9 @@ $(document).on 'page:change', ->
     return unless document.body.id == 'boards_show'
     console.log 'modal:load'
 
+    $('pre code').each (i, block) ->
+      hljs.highlightBlock block
+
     init_uploading()
 
     $current_issue = $('.issue[data-number="' + $(@).closest('.b-issue-modal').data('number') + '"]') # миниатюра открытого тикета
@@ -86,6 +89,9 @@ $(document).on 'page:change', ->
     ################################################################################
     $('.issue-comments').on 'comments:load', ->
       console.log 'comments:load'
+
+      $('pre code').each (i, block) ->
+        hljs.highlightBlock block
 
       init_uploading()
 
