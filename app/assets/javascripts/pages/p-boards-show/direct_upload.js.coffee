@@ -5,7 +5,6 @@ window.build_s3_image_url = (url, key) ->
 
 window.init_direct_upload = ($elements, url, form_data) ->
   $elements.each (i, elem) ->
-    console.log [i, elem]
     $fileInput = $(elem)
     $form = $($fileInput.parents('form:first')).first()
     $submitButton = $form.find('input[type="file"]')

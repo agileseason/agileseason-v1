@@ -6,7 +6,7 @@ $(document).on 'page:change', ->
 ################################################################################
   $('.issue-modal').on 'modal:load', ->
     return unless document.body.id == 'boards_show'
-    console.log 'modal:load'
+    #console.log 'modal:load'
 
     $('pre code').each (i, block) ->
       hljs.highlightBlock block
@@ -30,7 +30,6 @@ $(document).on 'page:change', ->
 
     $('.preview', $issue_modal).click ->
       string = $('textarea', $(@).closest('form')).val()
-      console.log string
 
       $.post $(@).data('url'), string: string, (markdown) =>
         $(@).closest('form').addClass('preview-mode')
@@ -44,7 +43,7 @@ $(document).on 'page:change', ->
         $(@).trigger('form:save')
 
     $('.editable-form').on 'form:save', ->
-      console.log 'form:save'
+      #console.log 'form:save'
 
       $form = $(@)
       $editable_node = $(@).prev()
@@ -56,10 +55,10 @@ $(document).on 'page:change', ->
       # issue name save
       if $(@).prev().hasClass 'issue-name'
         $editable_node.html(new_content)
-        console.log 'title:submit'
+        #console.log 'title:submit'
         $('.issue-name', $current_issue).html(new_content)
 
-        $.get url, title: new_content, -> console.log 'save title'
+        $.get url, title: new_content
         close_active_form()
 
       # description save
@@ -88,7 +87,7 @@ $(document).on 'page:change', ->
     # comments are loaded in issue modal
     ################################################################################
     $('.issue-comments').on 'comments:load', ->
-      console.log 'comments:load'
+      #console.log 'comments:load'
 
       $('pre code').each (i, block) ->
         hljs.highlightBlock block
@@ -105,7 +104,6 @@ $(document).on 'page:change', ->
 
       $('.preview', $issue_modal).click ->
         string = $('textarea', $(@).closest('form')).val()
-        console.log string
 
         $.post $(@).data('url'), string: string, (markdown) =>
           $(@).closest('form').addClass('preview-mode')
@@ -115,19 +113,17 @@ $(document).on 'page:change', ->
         $(@).closest('form').removeClass('preview-mode')
 
       $('.edit', @).click ->
-        console.log 'edit:click'
         open_form($(@).closest('.controls').next())
         $('.editable-form', $(@).closest('.comment-body')).trigger 'comment_form:load'
 
       $('.editable-form').on 'comment_form:load', ->
-        console.log 'comment_form:load'
+        #console.log 'comment_form:load'
 
         $('.editable-form', '.issue-comments').click (e) ->
           if $(e.target).is('.editable-form.active .save')
             $(@).trigger('comment:save')
 
       $('.editable-form', '.issue-comments').on 'comment:save', ->
-        console.log 'comment:save'
         $form = $(@)
         $editable_node = $(@).prev()
         $current_issue = $('.current-issue') # миниатюра открытого тикета
@@ -140,7 +136,7 @@ $(document).on 'page:change', ->
           close_active_form()
 
         else
-          $.get url, comment: new_content, -> console.log 'comment saved'
+          $.get url, comment: new_content
           $.post $('.preview', @).data('url'), string: new_content, (markdown) ->
             $editable_node.html(markdown)
             close_active_form()
@@ -186,8 +182,7 @@ $(document).on 'page:change', ->
       save_order col_2_url, col_2_issues
 
 load_comments = ->
-  console.log 'load comments'
-
+  #console.log 'load comments'
   $issue_comments = $('.issue-comments')
   comments_url = $issue_comments.data('url')
 
@@ -200,8 +195,7 @@ load_comments = ->
       , 500
 
 open_new_comment_form = ($editable_node) ->
-  console.log 'open new comment form'
-
+  #console.log 'open new comment form'
   setTimeout ->
       $editable_node
         .hide()
@@ -210,9 +204,7 @@ open_new_comment_form = ($editable_node) ->
     , 300
 
 open_form = ($editable_node) ->
-  console.log 'open form'
-  #close_active_form()
-
+  #console.log 'open form'
   setTimeout ->
       if $editable_node.data('initial')
         initial_data = $editable_node.data('initial').toString().trim()
@@ -226,7 +218,7 @@ open_form = ($editable_node) ->
     , 300
 
 close_active_form = ->
-  console.log 'close active form'
+  #console.log 'close active form'
   if $('.editable-form.active').length > 0
     $('.editable-form.active')
       .hide()

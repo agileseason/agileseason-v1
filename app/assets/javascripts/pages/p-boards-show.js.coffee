@@ -59,7 +59,7 @@ $(document).on 'page:change', ->
     $(@).parents('form').submit()
 
   $('.issue-modal').on 'ajax:success', (e, data) ->
-    console.log 'modal ajax:success'
+    #console.log 'modal ajax:success'
     number = $(@).find('.b-issue-modal').data('number')
     # FIX : Find reason what find return two element .b-assignee-container
     find_issue(number).find('.b-assignee-container').each ->
