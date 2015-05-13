@@ -4,7 +4,7 @@ RSpec.describe MarkdownController, type: :controller do
   before { stub_sign_in(user) }
 
   describe '#preview' do
-    before { post :preview, { :string => '#Title' }}
+    before { post :preview, string: '#Title' }
 
     it 'return http success' do
       expect(response).to be_successful
