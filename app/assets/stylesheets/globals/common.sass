@@ -118,16 +118,6 @@ abbr[title="required"]
   width: 100%
   z-index: 1
 
-pre
-  +border-radius(4px)
-  background: #f7f7f7
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace
-  font-size: 15px
-  line-height: 1.45
-  margin: 5px 0
-  padding: 10px
-  word-break: normal
-
 blockquote
   border-left: 4px solid #ddd
   color: #999
@@ -153,3 +143,33 @@ blockquote
 
 .hljs
   background: #f7f7f7 !important
+
+pre
+  +border-radius(4px)
+  background: #f7f7f7
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace
+  font-size: 15px
+  line-height: 1.45
+  margin: 10px 0
+  padding: 10px
+  word-break: normal
+
+code
+  background: #f7f7f7
+
+code
+  +border-radius(4px)
+  font-size: 15px
+  padding: 2px 4px
+
+pre
+  code
+    display: block
+    overflow-x: auto
+    word-wrap: normal
+
+ul, ol
+  padding-left: 17px
+
+  li
+    margin-bottom: 10px
