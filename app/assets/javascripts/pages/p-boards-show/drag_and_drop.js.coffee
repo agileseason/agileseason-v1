@@ -31,11 +31,17 @@ $(document).on 'page:change', ->
     $current_issue = $('.issue[data-number="' + issue_number + '"]')
     board = $('.board').data('github_full_name')
 
+    # FIX : Where data-start_colum set? Now this condition always true.
     unless $(".ui-draggable-dragging").data('start_column') == column_number
       $(".ui-draggable-dragging").prependTo($(@).find('.issues'))
       $(@).removeClass 'over'
       move_to_path = "/boards/#{board}/issues/#{issue_number}/move_to/#{column_number}"
-      $.get move_to_path
+      $.ajax
+        url: move_to_path
+        success: (badges) ->
+          for i, badge of badges
+            wip = $("#column_#{badge.column_id}").find('.wip')
+            wip.find('.badge_container').html(badge.html)
 
   $(".droppable").on "dropout", (event, ui) ->
     $(@).removeClass 'over'

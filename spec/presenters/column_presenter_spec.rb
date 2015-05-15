@@ -1,10 +1,12 @@
 describe ColumnPresenter do
   let(:presenter) { ColumnPresenter.new(:column, column) }
-  let(:column) { build(:column, settings: settings, issues: issues) }
+  let(:column) { build(:column, settings: settings, issue_stats: issues) }
   let(:issues) { [] }
 
   describe '#wip_status' do
     subject { presenter.wip_status }
+    let(:min) { nil }
+    let(:max) { nil }
 
     context 'normal' do
       context 'not set any limits' do
@@ -14,7 +16,7 @@ describe ColumnPresenter do
 
       context 'less than max' do
         let(:settings) { WipColumnSettings.new(min: min, max: max) }
-        let(:issues) { [OpenStruct.new] }
+        let(:issues) { [IssueStat.new] }
 
         context 'min nil' do
           let(:min) { nil }
@@ -28,10 +30,17 @@ describe ColumnPresenter do
           it { is_expected.to eq :normal }
         end
       end
+
+      context 'eq max' do
+        let(:max) { 1 }
+        let(:issues) { [IssueStat.new] }
+        let(:settings) { WipColumnSettings.new(min: min, max: max) }
+        it { is_expected.to eq :normal }
+      end
     end
 
     context 'warning' do
-      let(:issues) { [OpenStruct.new] }
+      let(:issues) { [IssueStat.new] }
 
       context 'less than min' do
         let(:settings) { { min: 2, max: max } }
@@ -49,7 +58,7 @@ describe ColumnPresenter do
     end
 
     context 'alert' do
-      let(:issues) { [OpenStruct.new, OpenStruct.new] }
+      let(:issues) { [IssueStat.new, IssueStat.new] }
 
       context 'greate than max' do
         let(:settings) { { min: min, max: 1 } }
