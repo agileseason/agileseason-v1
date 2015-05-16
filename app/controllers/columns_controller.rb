@@ -61,6 +61,14 @@ class ColumnsController < ApplicationController
     redirect_to board_url(@board), notice: 'Column WIP limit successfully updated.'
   end
 
+  def update_settings
+    column = @board.columns.find(params[:id])
+    # FIX : Remove potential memory leak through .to_sym
+    column.settings[params[:name].to_sym] = params[:value].to_i
+    column.save!
+    render nothing: true
+  end
+
   private
 
   def move_to(direction)

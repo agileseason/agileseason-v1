@@ -5,6 +5,7 @@
   ]
   .inline-form.rename
     = render partial: 'columns/edit', locals: { board: @board, column: column }
+  / FIX : Extract to partial 'columns/_menu'.
   .column-menu
     a.title
       = column.name
@@ -14,9 +15,34 @@
         li: a href="#{move_left_board_column_url(@board, column)}" Move Column Left
         li: a href="#{move_right_board_column_url(@board, column)}" Move Column Right
         li.delimiter
+        li
+          label WIP Min
+          input.js-patch [
+            name='min'
+            type='input'
+            data-url="#{update_settings_board_column_url(@board, column)}"
+            placeholder='none'
+            value="#{column.wip_settings.min}"
+          ]
+        li
+          label WIP Max
+          input.js-patch [
+            name='max'
+            type='input'
+            data-url="#{update_settings_board_column_url(@board, column)}"
+            placeholder='none'
+            value="#{column.wip_settings.max}"
+          ]
+        li.delimiter
         li: a.rename href="#rename" Rename Column...
         li.delimiter
-        li: a.delete href="#{board_column_url(@board, column)}" data-confirm='Are you sure?' data-method='delete' data-remote='true' Remove Column...
+        li
+          a.delete [
+            href="#{board_column_url(@board, column)}"
+            data-confirm='Are you sure?'
+            data-method='delete'
+            data-remote='true'
+          ] Remove Column...
 
   .wip
     .badge_container

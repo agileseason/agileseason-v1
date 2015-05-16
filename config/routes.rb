@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         get :move_left
         get :move_right
         patch :wip
+        patch :update_settings
       end
     end
 
