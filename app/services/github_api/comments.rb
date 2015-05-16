@@ -1,7 +1,7 @@
 class GithubApi
   module Comments
     def issue_comments(board, number)
-      client.issue_comments(board.github_id, number).reverse
+      client.issue_comments(board.github_id, number)
     end
 
     def add_comment(board, number, comment)

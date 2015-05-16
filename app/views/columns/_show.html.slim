@@ -1,4 +1,8 @@
-.board-column.droppable id="column_#{column.id}" class="#{:last if k(:board, @board).last_column?(column)}" data-column="#{column.id}"
+.board-column.droppable [
+    class="#{:last if k(:board, @board).last_column?(column)}"
+    data-column="#{column.id}"
+    id="column_#{column.id}"
+  ]
   .inline-form.rename
     = render partial: 'columns/edit', locals: { board: @board, column: column }
   .column-menu

@@ -32,7 +32,7 @@ Rails.application.routes.draw do
       get ':number/comment', to: 'comments#create', as: :add_comment
       get ':number/update_comment', to: 'comments#update', as: :update_comment
       get ':number/delete_comment', to: 'comments#delete', as: :delete_comment
-      get ':number/comments', to: 'issues#comments', as: :comments
+      get ':number/comments', to: 'comments#index', as: :comments
       get ':number/due_date', to: 'issues#due_date', as: :due_date
     end
 
@@ -61,4 +61,6 @@ Rails.application.routes.draw do
   get '/awstest', to: 'awstest#index'
 
   root 'landing#index'
+
+  post 'preview', to: 'markdown#preview', as: :preview
 end
