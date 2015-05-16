@@ -1,5 +1,11 @@
 class CommentsController < ApplicationController
-  before_action :fetch_board_for_update
+  before_action :fetch_board_for_update, except: [:comments]
+  before_action :fetch_board, only: [:comments]
+
+  def index
+    comments = github_api.issue_comments(@board, params[:number].to_i)
+    render partial: 'index', locals: { comments: comments }
+  end
 
   def create
     github_api.add_comment(@board, params[:number], params[:comment])

@@ -4,71 +4,34 @@
   .content
     .issue-content
       .edit.issue-title
-        .title.editable
-          .octicon.octicon-pencil.edit-link
-          .issue-name.edit-content #{issue.title}&nbsp;
+        .title
+          .issue-name.editable data-url="#{update_board_issues_url(board, issue.number)}" #{issue.title}
+          = render partial: 'issues/editable_form'
           a.url href="#{issue.html_url}" target="_blank" ##{issue.number}
           .due-date class="#{ :none unless issue.due_date_at }" = k(:issue, issue).due_date_at
 
-        .edit-form
-          textarea.field = issue.title.capitalize
-          .submit-area
-            a.cancel Cancel
-            button.button[
-              remote='true'
-              href="#{update_board_issues_url(board, issue.number)}"]
-              | Update
-
-      .issue-description.edit
-        .description.editable
-          .octicon.octicon-pencil.edit-link
-          - if k(:issue, issue).body_empty?
-            .edit-content.label Description
-          - else
-            .edit-content = markdown(issue.body.html_safe)
-
-        .edit-form
-          textarea.textarea-description.field = issue.body
-          = render partial: 'issues/upload'
-          /.markup-switcher
-            /span.markup.active markup
-            /span.preview preview
-
-          .submit-area
-            a.cancel Cancel
-            button.button[
-              remote='true'
-              href="#{update_board_issues_url(board, issue.number)}"]
-              | Update
+      .issue-description
+        - if k(:issue, issue).body_empty?
+          .description.editable.blank-description data-url="#{update_board_issues_url(board, issue.number)}"
+            | Description
+        - else
+          .description.editable data-url="#{update_board_issues_url(board, issue.number)}" data-initial="#{issue.body}"
+            = markdown(issue.body.html_safe)
+        = render partial: 'issues/editable_form'
 
       - unless issue.archive?
         .move-to-column
           ul
             - @board.columns.each do |column|
-              li data-column="#{column.id}"
+              li data-column="#{column.id}" class="#{issue.issue_stat.column_id == column.id ? 'active' : ''}"
                 a = column.name
 
-      - if can? :update, @board
-        .edit.add-comment
-          /.user-ava
-            /img.avatar src="#{issue.user.avatar_url}"
-          .editable.create-comment
-            .add.edit-link Add Comment
-          .edit-form
-            textarea.field
-            = render partial: 'issues/upload'
-            /.markup-switcher
-              /span.markup.active markup
-              /span.preview preview
-            .submit-area
-              a.cancel Cancel
-              button.button[
-                remote='true'
-                href="#{add_comment_board_issues_url(board, issue.number)}"]
-                | Save
-
       .issue-comments data-url="#{comments_board_issues_url board, issue.number}"
-        .b-preloader.horizontal
+
+      - if can? :update, @board
+        .add-comment.editable data-url="#{add_comment_board_issues_url(board, issue.number)}"
+          | Add a comment or upload an image…
+        = render partial: 'issues/editable_form'
 
     - if can? :update, @board
       .issue-actions

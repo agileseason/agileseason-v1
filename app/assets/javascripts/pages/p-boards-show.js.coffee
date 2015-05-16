@@ -1,54 +1,5 @@
 resize_lock = false
 
-column_menu = ->
-  $('.board-column').on 'click', '.column-menu', ->
-    $(@).addClass('active').prepend('<div class="overlay"></div>')
-    $(@).find('.popup').show()
-
-  $('.board-column .column-menu').on 'click', '.overlay', ->
-    $(@).parent().find('.popup').hide()
-    $(@).parent().removeClass 'active'
-    $(@).remove()
-
-  $('.column-menu .delete').bind 'ajax:success', (e, data) ->
-    if data.result
-      $(".board-column[data-column='#{data.id}']").hide()
-    else
-      alert(data.message)
-
-find_issue = (number) ->
-  $(".issue[data-number='#{number}']")
-
-open_issue_modal = (modal_html) ->
-  $issue_modal = $('.issue-modal')
-  $('.modal-content', $issue_modal).html(modal_html)
-  $issue_modal.show()
-  $('.b-issue-modal', $issue_modal).show()
-
-  comments_url = $('.issue-comments', $issue_modal).data('url')
-  $.get comments_url, (comments) ->
-    $('.issue-comments', $issue_modal).append(comments)
-    $('.b-preloader', $issue_modal).hide()
-
-  $('.modal-content', $issue_modal).children().trigger 'modal:load'
-
-new_issue_forms = ->
-  $('form.new_issue').on 'submit', ->
-    $form = $(@)
-    if $form.data('blocked')
-      false
-    else
-      $form.data('blocked', true)
-
-  $('form.new_issue').on 'ajax:success', (e, data) ->
-    $form = $(@)
-    $form.removeData('blocked')
-    return if data == ''
-    $form.find('.cancel').trigger('click') # закрываем форму
-    $form.find('textarea').val('') # в данном случае нужно очищать поле ввода
-    $issues = $('.issues', $form.closest('.board-column'))
-    $issues.prepend(data)
-
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
   column_menu()
@@ -57,8 +8,14 @@ $(document).on 'page:change', ->
   $('.issues').on 'click', '.issue.draggable', (e) ->
     unless $(e.target).is('a, .button')
       $(@).closest('.issue').addClass 'current-issue'
-      modal_html = $(@).closest('.issue').find('.issue-data').html()
-      open_issue_modal(modal_html)
+
+      $issue_modal = $('.issue-modal')
+      $modal_content = $('.modal-content', $issue_modal)
+      $issue_modal.show()
+      $modal_content.html('<div class="b-issue-modal" style="text-align: center;"><div class="b-preloader horizontal modal-preloader"></div></div>')
+
+      $.get $(@).data('url'), {}, (issue_modal) ->
+        $modal_content.html(issue_modal).trigger 'modal:load'
 
   # закрыть попап по крестику или по клику мимо попапа
   $('.issue-modal').on 'click', '.modal-close, .overlay', ->
@@ -102,6 +59,7 @@ $(document).on 'page:change', ->
     $(@).parents('form').submit()
 
   $('.issue-modal').on 'ajax:success', (e, data) ->
+    #console.log 'modal ajax:success'
     number = $(@).find('.b-issue-modal').data('number')
     # FIX : Find reason what find return two element .b-assignee-container
     find_issue(number).find('.b-assignee-container').each ->
@@ -124,7 +82,7 @@ $(document).on 'page:change', ->
     $popup.show()
 
   # сохранение крайней даты
-  $('.board-column, .issue-modal, .edit-due-date').on 'click', '.button.save', ->
+  $('.board-column, .issue-modal').on 'click', '.edit-due-date .button.save', ->
     $modal = $(@).parents('.issue-modal')
     date = $modal.find('.date input').val()
     time = $modal.find('.time input').val()
@@ -209,3 +167,40 @@ resize_height = ->
 
   height = $(window).height() - $('.l-menu').outerHeight(true) - $('.l-submenu').outerHeight(true)
   $('.board').height(height)
+
+column_menu = ->
+  $('.board-column').on 'click', '.column-menu', ->
+    $(@).addClass('active').prepend('<div class="overlay"></div>')
+    $(@).find('.popup').show()
+
+  $('.board-column .column-menu').on 'click', '.overlay', ->
+    $(@).parent().find('.popup').hide()
+    $(@).parent().removeClass 'active'
+    $(@).remove()
+
+  $('.column-menu .delete').bind 'ajax:success', (e, data) ->
+    if data.result
+      $(".board-column[data-column='#{data.id}']").hide()
+    else
+      alert(data.message)
+
+find_issue = (number) ->
+  $(".issue[data-number='#{number}']")
+
+new_issue_forms = ->
+  $('form.new_issue').on 'submit', ->
+    $form = $(@)
+    if $form.data('blocked')
+      false
+    else
+      $form.data('blocked', true)
+
+  $('form.new_issue').on 'ajax:success', (e, data) ->
+    $form = $(@)
+    $form.removeData('blocked')
+    return if data == ''
+    $form.find('.cancel').trigger('click') # закрываем форму
+    $form.find('textarea').val('') # в данном случае нужно очищать поле ввода
+    $issues = $('.issues', $form.closest('.board-column'))
+    $issues.append(data)
+

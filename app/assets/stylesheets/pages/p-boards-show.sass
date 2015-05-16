@@ -4,8 +4,10 @@
 @import compass/css3/transform
 @import compass/css3/transition
 @import compass/css3/opacity
+@import globals/variables
 @import mixins/button
 @import mixins/close
+@import mixins/link
 @import mixins/popup
 
 @import globals/variables
@@ -320,9 +322,8 @@
       background: $orange
       color: #fff
       display: inline-block
-      padding: 6px 6px 4px 6px
-      line-height: 12px
-      font-size: 12px
+      padding: 2px 6px 2px 6px
+      font-size: 10px
       float: right
 
       &.none
@@ -361,3 +362,44 @@
 
       &.close
         display: none
+
+  .issue-modal
+    color: $text-usual
+    display: none
+    bottom: 0
+    height: 100%
+    left: 0
+    overflow-y: auto
+    position: fixed
+    right: 0
+    top: 0
+    width: 100%
+
+    & > .overlay
+      +opacity(0.4)
+      height: 100%
+      left: 0
+      position: fixed
+      top: 0
+      width: 100%
+      z-index: 200
+
+      &.visible
+        +opacity(0.5)
+
+    .modal-inner
+      left: 50%
+      margin-left: -480px
+      margin-bottom: 40px
+      position: absolute
+      top: 100px
+      width: $modal-width
+      z-index: 205
+
+    .modal-close
+      +close
+
+  .modal-preloader
+    background-position: 50% 50%
+    min-height: 200px
+    width: 100%
