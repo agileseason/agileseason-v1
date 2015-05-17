@@ -12,7 +12,7 @@ Look at the our development board for example - [agileseason.com](http://agilese
 ## Features List
 
 - [x] Agile board with custom colomns
-- [x] Drag and drop issues between columns and sort
+- [x] Drag and drop issues between columns
 - [x] Search and sort issues
 - [x] Attach images by drag & drop
 - [ ] Roadmap
