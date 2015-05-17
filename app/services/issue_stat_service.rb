@@ -28,7 +28,7 @@ class IssueStatService
       )
     end
 
-    def move!(board, column, issue_stat)
+    def move!(column, issue_stat)
       issue_stat.update!(column: column)
       leave_all_column(issue_stat)
       issue_stat.lifetimes.create!(

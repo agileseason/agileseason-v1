@@ -60,7 +60,7 @@ describe ColumnPresenter do
         let(:max) { 1 }
 
         context 'min nil' do
-          let(:min) { }
+          let(:min) {}
           it { is_expected.to eq :alert }
         end
 
