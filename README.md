@@ -7,7 +7,36 @@ Agile Season
 
 Agile board with management stats for github issues
 
-Look at the our development board for example - http://agileseason.com/boards/agileseason/agileseason
+Look at the our development board for example - [agileseason.com](http://agileseason.com/boards/agileseason/agileseason)
+
+## Features List
+
+- [x] Agile board with custom colomns
+- [x] Drag and drop issues between columns and sort
+- [x] Search and sort issues
+- [x] Attach images by drag & drop
+- [ ] Roadmap
+- [ ] Timeline
+
+### Kanban
+
+- [ ] WIP limit on columns
+
+#### Graphs
+
+- [x] Cumulative Flow
+- [x] Control Chart
+- [x] Forecast Duration
+
+### Scrum [MVP 2]
+
+- [ ] Sprints
+
+#### Graphs
+
+- [ ] Velocity
+- [ ] Burndown chart
+- [ ] Forecast Duration
 
 ## Development
 
