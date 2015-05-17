@@ -21,18 +21,11 @@ class ColumnsController < ApplicationController
 
   def update
     @column = @board.columns.find(params[:id])
-
     if params[:issues]
-      issue_ids = params[:issues].reject{ |n| n == 'empty' }.uniq
-       @column.update(issues: issue_ids)
-       render nothing: true
-    else
-      if @column.update(column_params)
-        redirect_to board_url(@board)
-      else
-        render 'edit'
-      end
+      issue_ids = params[:issues].reject { |n| n == 'empty' }.uniq
+      @column.update(issues: issue_ids)
     end
+    render nothing: true
   end
 
   def destroy
