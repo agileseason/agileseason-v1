@@ -9,4 +9,4 @@ window.jQuery.initJsPathForInputs = ->
         value: $input.val()
       }
       success: (data) ->
-        window.location = data.redirect_url if data && data.redirect_url
+        Turbolinks.visit(data.redirect_url) if data && data.redirect_url
