@@ -60,7 +60,8 @@ ActiveRecord::Schema.define(version: 20150511094331) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "issues"
-    t.text     "settings"
+    t.integer  "wip_min"
+    t.integer  "wip_max"
   end
 
   add_index "columns", ["board_id"], name: "index_columns_on_board_id"

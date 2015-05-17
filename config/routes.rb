@@ -16,8 +16,6 @@ Rails.application.routes.draw do
       member do
         get :move_left
         get :move_right
-        patch :wip
-        patch :update_settings
         patch :update_attribute
       end
     end

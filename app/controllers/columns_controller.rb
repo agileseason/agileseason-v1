@@ -56,22 +56,6 @@ class ColumnsController < ApplicationController
     move_to(:right)
   end
 
-  def wip
-    @settings = WipColumnSettings.new(column_settings)
-    @settings.save_to(@board.columns.find(params[:id]))
-    redirect_to board_url(@board), notice: 'Column WIP limit successfully updated.'
-  end
-
-  # FIX : Extract settings as a Model
-  def update_settings
-    column = @board.columns.find(params[:id])
-    settings = column.wip_settings
-    settings.send("#{params[:name]}=", params[:value].empty? ? nil : params[:value])
-    column.wip_settings = settings
-    column.save!
-    render nothing: true
-  end
-
   private
 
   def move_to(direction)
@@ -89,12 +73,6 @@ class ColumnsController < ApplicationController
     params
       .require(:column)
       .permit(:name, :issues)
-  end
-
-  def column_settings
-    params.
-      require(:wip_column_settings).
-      permit(:min, :max)
   end
 
   def fetch_resource

@@ -28,20 +28,20 @@
         li
           label WIP Min
           input.js-patch [
-            name='min'
+            name='wip_min'
             type='input'
-            data-url="#{update_settings_board_column_url(@board, column)}"
+            data-url="#{update_attribute_board_column_url(@board, column)}"
             placeholder='none'
-            value="#{column.wip_settings.min}"
+            value="#{column.wip_min}"
           ]
         li
           label WIP Max
           input.js-patch [
-            name='max'
+            name='wip_max'
             type='input'
-            data-url="#{update_settings_board_column_url(@board, column)}"
+            data-url="#{update_attribute_board_column_url(@board, column)}"
             placeholder='none'
-            value="#{column.wip_settings.max}"
+            value="#{column.wip_max}"
           ]
         li.delimiter
         li
@@ -55,8 +55,6 @@
   .wip
     .badge_container
       = render partial: 'columns/wip_badge', locals: { column: column }
-    .inline-form
-      = render partial: 'columns/wip', locals: { board: @board, column: column }
 
   .new-issue.ajax-link
     a.ajax-link New issue
