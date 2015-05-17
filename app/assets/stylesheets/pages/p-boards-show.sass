@@ -100,9 +100,6 @@
         position: relative
         width: 10px
 
-  .inline-form.rename
-    display: none
-
   .column-menu
     .title
       +text-shadow(0px 1px 1px rgba(255,255,255,0.8))
@@ -153,7 +150,6 @@
       +border-radius(4px)
       background-color: #e3e3e3
       color: $text-light
-      cursor: pointer
       font-size: 11px
       padding: 6px 10px
       position: absolute
@@ -165,25 +161,6 @@
       &.alert
         background-color: #ff5252
         color: #fff
-
-    .inline-form
-      margin-bottom: 10px
-      label
-        display: table-cell
-      input[type="text"]
-        width: 186px
-        margin-bottom: 5px
-    //.popup
-      +popup
-      top: 32px
-      left: 224px
-      display: block
-      padding: 14px
-      form
-        width: 100%
-        .input,
-        input[type="text"]
-          width: 100%
 
   .issues
     padding: 0 10px

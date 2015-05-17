@@ -3,58 +3,10 @@
     data-column="#{column.id}"
     id="column_#{column.id}"
   ]
-  .inline-form.rename
-    = render partial: 'columns/edit', locals: { board: @board, column: column }
-  / FIX : Extract to partial 'columns/_menu'.
-  .column-menu
-    a.title
-      = column.name
-      span.octicon.octicon-chevron-down
-    .popup
-      ul
-        li
-          label Name
-          input.js-patch.name [
-            name='name'
-            type='input'
-            data-url="#{update_attribute_board_column_url(@board, column)}"
-            placeholder='none'
-            value="#{column.name}"
-          ]
-        li.delimiter
-        li: a href="#{move_left_board_column_url(@board, column)}" Move Column Left
-        li: a href="#{move_right_board_column_url(@board, column)}" Move Column Right
-        li.delimiter
-        li
-          label WIP Min
-          input.js-patch [
-            name='wip_min'
-            type='input'
-            data-url="#{update_attribute_board_column_url(@board, column)}"
-            placeholder='none'
-            value="#{column.wip_min}"
-          ]
-        li
-          label WIP Max
-          input.js-patch [
-            name='wip_max'
-            type='input'
-            data-url="#{update_attribute_board_column_url(@board, column)}"
-            placeholder='none'
-            value="#{column.wip_max}"
-          ]
-        li.delimiter
-        li
-          a.delete [
-            href="#{board_column_url(@board, column)}"
-            data-confirm='Are you sure?'
-            data-method='delete'
-            data-remote='true'
-          ] Remove Column...
+  = render partial: 'columns/menu', locals: { column: column }
 
   .wip
-    .badge_container
-      = render partial: 'columns/wip_badge', locals: { column: column }
+    = render partial: 'columns/wip_badge', locals: { column: column }
 
   .new-issue.ajax-link
     a.ajax-link New issue

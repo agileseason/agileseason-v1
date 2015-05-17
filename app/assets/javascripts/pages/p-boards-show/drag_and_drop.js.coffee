@@ -40,8 +40,7 @@ $(document).on 'page:change', ->
         url: move_to_path
         success: (badges) ->
           for i, badge of badges
-            wip = $("#column_#{badge.column_id}").find('.wip')
-            wip.find('.badge_container').html(badge.html)
+            $("#column_#{badge.column_id}").find('.wip').html(badge.html)
 
   $(".droppable").on "dropout", (event, ui) ->
     $(@).removeClass 'over'

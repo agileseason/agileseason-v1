@@ -80,6 +80,7 @@ class ColumnsController < ApplicationController
   end
 
   def render_result
-    render json: { redirect_url: board_url(@board), notice: 'Column was successfully updated' }
+    return super unless params[:name] == 'name'
+    render json: { redirect_url: board_url(@board) }
   end
 end

@@ -3,7 +3,6 @@ resize_lock = false
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
   column_menu()
-  column_wip_form()
   new_issue_forms()
   $.initJsPathForInputs()
 
@@ -45,20 +44,6 @@ $(document).on 'page:change', ->
     $(@).closest('.inline-form').prev().show()
     $(@).closest('.inline-form').hide()
     false
-
-  # показать форму редактирования колонки
-  $('.board-column').on 'click', '.rename', ->
-    $form = $(@).parents('.board-column').children('.inline-form.rename')
-    $(@).closest('.popup').hide()
-    $('.overlay').remove()
-    $form.show()
-    $form.find('textarea').focus()
-    false
-
-  # FIX : разобраться почему просто не работает submit для обновления, т.к. этот обработчик вынужденный костыль.
-  # отпрака формы на обновление колонки
-  $('.inline-form.rename').find('input[type=submit]').on 'click', ->
-    $(@).parents('form').submit()
 
   $('.issue-modal').on 'ajax:success', (e, data) ->
     #console.log 'modal ajax:success'
@@ -169,15 +154,6 @@ resize_height = ->
 
   height = $(window).height() - $('.l-menu').outerHeight(true) - $('.l-submenu').outerHeight(true)
   $('.board').height(height)
-
-column_wip_form = ->
-  $('.board-column').on 'click', '.wip', ->
-    $form = $(@).find('.inline-form')
-    $form.show()
-    false
-  # FIX : Find reason ignoring submit
-  $('.wip input[type="submit"]').on 'click', ->
-    $(@).parents('form').submit()
 
 column_menu = ->
   $('.board-column').on 'click', '.column-menu', ->
