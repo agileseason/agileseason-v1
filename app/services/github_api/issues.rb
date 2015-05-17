@@ -32,7 +32,7 @@ class GithubApi
 
     def move_to(board, column, number)
       issue_stat = IssueStatService.find(board, number) ||
-        IssueStatService.create!(board, client.issue(board.github_id, number))
+                   IssueStatService.create!(board, client.issue(board.github_id, number))
       IssueStatService.move!(column, issue_stat)
       # FIX : Add activities if column really changed.
       # FIX : Save info about previous column after #126
