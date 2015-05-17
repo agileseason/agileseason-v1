@@ -1,3 +1,4 @@
-.title Boards
-ul.list
-  = render partial: 'board', collection: k(:user, current_user).boards, as: :board
+- @boards_lists.select { |list| list[:boards].present? }.each do |list|
+  .title = list[:title]
+  ul.list.boards
+    = render partial: 'board', collection: list[:boards], as: :board

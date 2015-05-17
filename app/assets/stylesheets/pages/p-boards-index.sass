@@ -1,0 +1,45 @@
+@import compass/css3
+@import globals/variables
+
+.p-boards-index
+  ul.boards
+    li
+      display: inline-block
+
+      a
+        +border-radius(4px)
+        +box-sizing(border-box)
+        background-color: #eee
+        color: $text-usual
+        display: inline-block
+        font-size: 20px
+        height: 80px
+        margin: 0 20px 20px 0
+        padding: 18px 20px
+        width: 260px
+
+        &.new
+          color: #bebebe
+          background-color: transparent
+          border: 1px dashed #bebebe
+          &:hover
+            background-color: transparent
+            border: 1px dashed $orange
+            color: $orange
+
+        &:hover
+          background-color: $orange
+          color: #fff
+
+          .issues
+            color: #ffe0b2
+
+        .name
+          font-weight: 400
+          display: block
+          margin-bottom: 4px
+
+        .issues
+          font-size: 14px
+          color: #bebebe
+          display: block

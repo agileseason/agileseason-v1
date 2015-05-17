@@ -1,2 +1,4 @@
 li
-  a href="#{board_url(board)}" #{k(:board, board).name}
+  a class="#{ :new unless board.id }" href="#{board.link}"
+    span.name = board.name
+    span.issues = raw board.issues_count
