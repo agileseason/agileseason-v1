@@ -28,8 +28,7 @@ class IssueStatService
       )
     end
 
-    def move!(board, column, github_issue)
-      issue_stat = find_or_create_issue_stat(board, github_issue)
+    def move!(board, column, issue_stat)
       issue_stat.update!(column: column)
       leave_all_column(issue_stat)
       issue_stat.lifetimes.create!(
@@ -59,7 +58,11 @@ class IssueStatService
     end
 
     def find_or_create_issue_stat(board, github_issue)
-      board.issue_stats.find_by(number: github_issue.number) || create!(board, github_issue)
+      find(board, github_issue.number) || create!(board, github_issue)
+    end
+
+    def find(board, number)
+      board.issue_stats.find_by(number: number)
     end
 
     private
