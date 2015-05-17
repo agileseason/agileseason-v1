@@ -1,0 +1,45 @@
+.column-menu
+  a.title
+    = column.name
+    span.octicon.octicon-chevron-down
+  .popup
+    ul
+      li
+        label Name
+        input.js-patch.name [
+          name='name'
+          type='input'
+          data-url="#{update_attribute_board_column_url(@board, column)}"
+          placeholder='none'
+          value="#{column.name}"
+        ]
+      li.delimiter
+      li: a href="#{move_left_board_column_url(@board, column)}" Move Column Left
+      li: a href="#{move_right_board_column_url(@board, column)}" Move Column Right
+      li.delimiter
+      li
+        label WIP Min
+        input.js-patch [
+          name='wip_min'
+          type='input'
+          data-url="#{update_attribute_board_column_url(@board, column)}"
+          placeholder='none'
+          value="#{column.wip_min}"
+        ]
+      li
+        label WIP Max
+        input.js-patch [
+          name='wip_max'
+          type='input'
+          data-url="#{update_attribute_board_column_url(@board, column)}"
+          placeholder='none'
+          value="#{column.wip_max}"
+        ]
+      li.delimiter
+      li
+        a.delete [
+          href="#{board_column_url(@board, column)}"
+          data-confirm='Are you sure?'
+          data-method='delete'
+          data-remote='true'
+        ] Remove Column...

@@ -30,17 +30,18 @@ class GithubApi
       client.issue(board.github_id, number)
     end
 
-    # FIX : To many args.
-    def move_to(board, column, number, issue = client.issue(board.github_id, number))
-      issue_stat = IssueStatService.move!(board, column, issue)
+    def move_to(board, column, number)
+      issue_stat = IssueStatService.find(board, number) ||
+                   IssueStatService.create!(board, client.issue(board.github_id, number))
+      IssueStatService.move!(column, issue_stat)
       # FIX : Add activities if column really changed.
       # FIX : Save info about previous column after #126
       Activities::ColumnChangedActivity.create_for(issue_stat, nil, column, @user)
     end
 
     def close(board, number)
-      client.close_issue(board.github_id, number)
-      IssueStatService.close!(board, client.issue(board.github_id, number))
+      github_issue = client.close_issue(board.github_id, number)
+      IssueStatService.close!(board, github_issue)
     end
 
     def archive(board, number)

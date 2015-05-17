@@ -4,6 +4,7 @@ $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
   column_menu()
   new_issue_forms()
+  $.initJsPathForInputs()
 
   $('.issues').on 'click', '.issue.draggable', (e) ->
     unless $(e.target).is('a, .button')
@@ -43,20 +44,6 @@ $(document).on 'page:change', ->
     $(@).closest('.inline-form').prev().show()
     $(@).closest('.inline-form').hide()
     false
-
-  # показать форму редактирования колонки
-  $('.board-column').on 'click', '.rename', ->
-    $form = $(@).parents('.board-column').children('.inline-form.rename')
-    $(@).closest('.popup').hide()
-    $('.overlay').remove()
-    $form.show()
-    $form.find('textarea').focus()
-    false
-
-  # FIX : разобраться почему просто не работает submit для обновления, т.к. этот обработчик вынужденный костыль.
-  # отпрака формы на обновление колонки
-  $('.inline-form.rename').find('input[type=submit]').on 'click', ->
-    $(@).parents('form').submit()
 
   $('.issue-modal').on 'ajax:success', (e, data) ->
     #console.log 'modal ajax:success'

@@ -1,4 +1,5 @@
 class ColumnsController < ApplicationController
+  include PatchAttributes
   before_action :fetch_board_for_update
 
   def new
@@ -20,17 +21,11 @@ class ColumnsController < ApplicationController
 
   def update
     @column = @board.columns.find(params[:id])
-
     if params[:issues]
-       @column.update(issues: params[:issues].uniq)
-       render nothing: true
-    else
-      if @column.update(column_params)
-        redirect_to board_url(@board)
-      else
-        render 'edit'
-      end
+      issue_ids = params[:issues].reject { |n| n == 'empty' }.uniq
+      @column.update(issues: issue_ids)
     end
+    render nothing: true
   end
 
   def destroy
@@ -71,5 +66,14 @@ class ColumnsController < ApplicationController
     params
       .require(:column)
       .permit(:name, :issues)
+  end
+
+  def fetch_resource
+    @board.columns.find(params[:id])
+  end
+
+  def render_result
+    return super unless params[:name] == 'name'
+    render json: { redirect_url: board_url(@board) }
   end
 end

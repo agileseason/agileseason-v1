@@ -31,7 +31,14 @@ class IssuesController < ApplicationController
 
   def move_to
     github_api.move_to(@board, @board.columns.find(params[:column_id]), params[:number])
-    render nothing: true
+    render json: begin
+      Board.includes(columns: :issue_stats).find(@board).columns.map do |column|
+        {
+          column_id: column.id,
+          html: render_to_string(partial: 'columns/wip_badge', locals: { column: column })
+        }
+      end
+    end
   end
 
   def close

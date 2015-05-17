@@ -100,9 +100,6 @@
         position: relative
         width: 10px
 
-  .inline-form.rename
-    display: none
-
   .column-menu
     .title
       +text-shadow(0px 1px 1px rgba(255,255,255,0.8))
@@ -120,7 +117,6 @@
     .popup
       +popup
       top: 32px
-      height: 142px
 
       ul
         list-style-type: none
@@ -132,10 +128,39 @@
             border-bottom: 1px solid #ccc
             margin: 6px 0
             padding: 0
+
           a
             color: $text-light
             &:hover
               color: $text-usual
+
+          label
+            color: $text-light
+            display: inline-block
+            padding: 0
+            width: 64px
+
+          input
+            width: 40px
+            &.name
+              width: 100px
+
+  .wip
+    .badge
+      +border-radius(4px)
+      background-color: #e3e3e3
+      color: $text-light
+      font-size: 11px
+      padding: 6px 10px
+      position: absolute
+      right: 10px
+      top: 4px
+      &.warning
+        background-color: #ffab40
+        color: #fff
+      &.alert
+        background-color: #ff5252
+        color: #fff
 
   .issues
     padding: 0 10px

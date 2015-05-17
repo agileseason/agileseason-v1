@@ -5,6 +5,7 @@ class Column < ActiveRecord::Base
 
   validates :name, presence: true
   validates :board, presence: true
+  validates :wip_min, :wip_max, numericality: true, allow_nil: true
 
   serialize :issues
 
