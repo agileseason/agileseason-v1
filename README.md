@@ -20,7 +20,7 @@ Look at the our development board for example - [agileseason.com](http://agilese
 
 ### Kanban
 
-- [ ] WIP limit on columns
+- [x] WIP limit on columns
 
 #### Graphs
 
