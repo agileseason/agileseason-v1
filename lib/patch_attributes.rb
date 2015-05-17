@@ -1,7 +1,8 @@
 module PatchAttributes
   def update_attribute
     resource.send("#{params[:name]}=", params[:value])
-    resource.save!
+    # FIX : Think about save! with some message-alert for user.
+    resource.save
     render_result
   end
 
