@@ -1,4 +1,5 @@
 class ColumnsController < ApplicationController
+  include PatchAttributes
   before_action :fetch_board_for_update
 
   def new
@@ -61,10 +62,12 @@ class ColumnsController < ApplicationController
     redirect_to board_url(@board), notice: 'Column WIP limit successfully updated.'
   end
 
+  # FIX : Extract settings as a Model
   def update_settings
     column = @board.columns.find(params[:id])
-    # FIX : Remove potential memory leak through .to_sym
-    column.settings[params[:name].to_sym] = params[:value].to_i
+    settings = column.wip_settings
+    settings.send("#{params[:name]}=", params[:value].empty? ? nil : params[:value])
+    column.wip_settings = settings
     column.save!
     render nothing: true
   end
@@ -92,5 +95,13 @@ class ColumnsController < ApplicationController
     params.
       require(:wip_column_settings).
       permit(:min, :max)
+  end
+
+  def fetch_resource
+    @board.columns.find(params[:id])
+  end
+
+  def render_result
+    render json: { redirect_url: board_url(@board), notice: 'Column was successfully updated' }
   end
 end

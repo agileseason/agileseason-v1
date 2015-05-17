@@ -12,6 +12,16 @@
       span.octicon.octicon-chevron-down
     .popup
       ul
+        li
+          label Name
+          input.js-patch.name [
+            name='name'
+            type='input'
+            data-url="#{update_attribute_board_column_url(@board, column)}"
+            placeholder='none'
+            value="#{column.name}"
+          ]
+        li.delimiter
         li: a href="#{move_left_board_column_url(@board, column)}" Move Column Left
         li: a href="#{move_right_board_column_url(@board, column)}" Move Column Right
         li.delimiter
@@ -33,8 +43,6 @@
             placeholder='none'
             value="#{column.wip_settings.max}"
           ]
-        li.delimiter
-        li: a.rename href="#rename" Rename Column...
         li.delimiter
         li
           a.delete [

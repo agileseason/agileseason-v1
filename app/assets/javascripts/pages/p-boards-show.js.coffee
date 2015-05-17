@@ -5,17 +5,7 @@ $(document).on 'page:change', ->
   column_menu()
   column_wip_form()
   new_issue_forms()
-
-  # FIX : extract to plugin
-  $('input.js-patch').on 'blur', (e) ->
-    $input = $(@)
-    $.ajax
-      url: $input.data('url')
-      method: 'PATCH'
-      data: {
-        name: $input.attr('name')
-        value: $input.val()
-      }
+  $.initJsPathForInputs()
 
   $('.issues').on 'click', '.issue.draggable', (e) ->
     unless $(e.target).is('a, .button')

@@ -7,6 +7,7 @@
 //= require browser_timezone_rails/set_time_zone
 // -------------------------------
 //= require highcharts.js
+//= require js-patch.coffee
 //= require turbolinks
 //= require_tree .
 // --- fileupload loaded after all
