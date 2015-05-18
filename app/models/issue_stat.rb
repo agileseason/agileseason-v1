@@ -3,6 +3,8 @@ class IssueStat < ActiveRecord::Base
   belongs_to :column
   has_many :lifetimes, dependent: :destroy
 
+  scope :visible, -> { where(archived_at: nil) }
+
   validates :number, presence: true, uniqueness: { scope: :board_id }
 
   serialize :track_data

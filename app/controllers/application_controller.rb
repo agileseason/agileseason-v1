@@ -58,8 +58,7 @@ class ApplicationController < ActionController::Base
 
   # FIX : Nees specs.
   def fetch_board
-    # FIX : Add includes :columns and check sql queries.
-    @board ||= Board.find_by(github_full_name: params_github_full_name)
+    @board ||= Board.includes(columns: :visible_issue_stats).find_by(github_full_name: params_github_full_name)
     authorize!(:read, @board)
     # FIX : Keep @board or @board_bag after experiment.
     @board_bag = BoardBag.new(github_api, @board)

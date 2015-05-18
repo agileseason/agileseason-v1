@@ -1,6 +1,6 @@
 describe ColumnPresenter do
   let(:presenter) { ColumnPresenter.new(:column, column) }
-  let(:column) { build(:column, wip_min: min, wip_max: max, issue_stats: issues) }
+  let(:column) { build(:column, wip_min: min, wip_max: max, visible_issue_stats: issues) }
   let(:issues) { [] }
 
   describe '#wip_status' do
