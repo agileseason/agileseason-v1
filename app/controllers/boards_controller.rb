@@ -12,9 +12,8 @@ class BoardsController < ApplicationController
       return
     end
     @boards_lists = [
-      { title: 'My Boards', boards: k(:user, current_user).boards.map { |board| BoardBase.new(board) } << BoardBase.default },
-      { tltle: 'Organization Boards', boards: [] },
-      { title: 'Explore Public Boards', boards: Board.where.not(settings: nil).select { |board| board.public? }.map { |board| BoardBase.new(board) } },
+      { title: 'My Boards', boards: BoardPick.list_by(k(:user, current_user).boards) },
+      { title: 'Explore Public Boards', boards: BoardPick.public_list },
     ]
   end
 
