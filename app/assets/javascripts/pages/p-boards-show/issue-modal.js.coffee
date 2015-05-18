@@ -189,10 +189,10 @@ load_comments = ->
   $issue_comments.append('<div class="b-preloader horizontal"></div>')
 
   $.get comments_url, {}, (comments) ->
+    $issue_comments.html(comments)
     setTimeout ->
-        $issue_comments.html(comments)
         $issue_comments.trigger 'comments:load'
-      , 500
+      , 300
 
 open_new_comment_form = ($editable_node) ->
   #console.log 'open new comment form'
