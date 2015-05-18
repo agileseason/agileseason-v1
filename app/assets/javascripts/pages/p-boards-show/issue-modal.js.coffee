@@ -78,8 +78,10 @@ $(document).on 'page:change', ->
       # save a new comment
       else if $(@).prev().hasClass 'add-comment'
         unless new_content == ''
-          $.get url, comment: new_content, -> $('.octicon-comment-discussion', $current_issue).addClass 'show'
-          load_comments()
+          $('.issue-comments').append('<div class="b-preloader horizontal"></div>')
+          $.get url, comment: new_content, ->
+            $('.octicon-comment-discussion', $current_issue).addClass 'show'
+            load_comments()
 
         close_active_form()
 
@@ -185,8 +187,6 @@ load_comments = ->
   #console.log 'load comments'
   $issue_comments = $('.issue-comments')
   comments_url = $issue_comments.data('url')
-
-  $issue_comments.append('<div class="b-preloader horizontal"></div>')
 
   $.get comments_url, {}, (comments) ->
     $issue_comments.html(comments)
