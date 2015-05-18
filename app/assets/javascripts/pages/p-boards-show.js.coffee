@@ -15,6 +15,8 @@ $(document).on 'page:change', ->
       $issue_modal.show()
       $modal_content.html('<div class="b-issue-modal" style="text-align: center;"><div class="b-preloader horizontal modal-preloader"></div></div>')
 
+      location.hash = "#issue-number=#{$(@).data('number')}"
+
       $.get $(@).data('url'), {}, (issue_modal) ->
         $modal_content.html(issue_modal).trigger 'modal:load'
 
@@ -136,10 +138,7 @@ $(document).on 'page:change', ->
   if location.hash
     number = location.hash.match(/issue-number=(\d+)/)?[1]
     if number
-      $.ajax
-        url: "/boards/#{$('.board').data('github_full_name')}/issues/#{number}",
-        success: (html) ->
-          open_issue_modal($(html))
+      $('.issue[data-number="' + number + '"]').trigger 'click'
 
 $(window).resize ->
   return unless document.body.id == 'boards_show' & !resize_lock
