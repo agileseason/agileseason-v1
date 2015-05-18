@@ -189,5 +189,5 @@ new_issue_forms = ->
     $form.find('.cancel').trigger('click') # закрываем форму
     $form.find('textarea').val('') # в данном случае нужно очищать поле ввода
     $issues = $('.issues', $form.closest('.board-column'))
-    $issues.append(data)
+    $issues.prepend(data)
 
