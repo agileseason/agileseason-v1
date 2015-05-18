@@ -64,4 +64,24 @@ RSpec.describe Column, type: :model do
       it { is_expected.to eq issues }
     end
   end
+
+  describe '#issues_stat' do
+    subject { board.issue_stats }
+    let(:board) { create(:board, :with_columns) }
+    let(:column) { board.columns.first }
+    let!(:issue_stat) { create(:issue_stat, board: board, column: column) }
+
+    it { is_expected.to eq [issue_stat] }
+  end
+
+  describe '#visible_issues_stat' do
+    subject { board.visible_issue_stats }
+    let(:board) { create(:board, :with_columns) }
+    let(:column) { board.columns.first }
+    let!(:issue_stat_1) { create(:issue_stat, :open, board: board, column: column) }
+    let!(:issue_stat_2) { create(:issue_stat, :closed, board: board, column: column) }
+    let!(:issue_stat_3) { create(:issue_stat, :archived, board: board, column: column) }
+
+    it { is_expected.to have(2).items }
+  end
 end

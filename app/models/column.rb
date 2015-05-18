@@ -1,6 +1,7 @@
 class Column < ActiveRecord::Base
   belongs_to :board
   has_many :issue_stats, dependent: :destroy
+  has_many :visible_issue_stats, -> { visible }, class_name: IssueStat
   has_many :lifetimes, dependent: :destroy
 
   validates :name, presence: true

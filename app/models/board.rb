@@ -4,7 +4,7 @@ class Board < ActiveRecord::Base
   has_many :repo_histories, -> { order(:collected_on) }, dependent: :delete_all
   has_many :board_histories, -> { order(:collected_on) }, dependent: :delete_all
   has_many :issue_stats, dependent: :destroy
-  has_many :visible_issue_stats, -> { where(archived_at: nil) }, class_name: IssueStat
+  has_many :visible_issue_stats, -> { visible }, class_name: IssueStat
   has_many :activities, -> { order(created_at: :desc) }, dependent: :delete_all
 
   validates :name, presence: true
