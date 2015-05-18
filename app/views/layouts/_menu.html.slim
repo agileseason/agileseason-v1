@@ -1,7 +1,8 @@
 .l-menu
   ul.left
-    li.logo Agile Season
-    li.repos
+    li.logo
+      a href="#{boards_url}" Agile Season
+    /li.repos
       a href="#{repos_url}"
         span.octicon.octicon-repo
         span &nbsp;Repositories
@@ -13,7 +14,8 @@
       .popup
         .octicon.octicon-triangle-up
         ul
-          = render partial: 'boards/board', collection: k(:user, current_user).boards, as: :board
+          - k(:user, current_user).boards.each do |board|
+            li : a href="#{board_url(board)}" #{k(:board, board).name}
     - if @board && @board.persisted?
       li.search data-url="#{search_board_issues_url(@board)}"
         input type='text'
@@ -27,5 +29,6 @@
           .close-popup
 
   ul.right
+    li : a href="#{repos_url}" title='Create new board' : span.octicon.octicon-plus
     li.user = current_user
     li.exit : a href="#{sign_out_url}" : span.octicon.octicon-sign-out

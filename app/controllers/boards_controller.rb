@@ -11,6 +11,10 @@ class BoardsController < ApplicationController
       redirect_to repos_url
       return
     end
+    @boards_lists = [
+      { title: 'My Boards', boards: BoardPick.list_by(k(:user, current_user).boards) },
+      { title: 'Explore Public Boards', boards: BoardPick.public_list },
+    ]
   end
 
   def show
