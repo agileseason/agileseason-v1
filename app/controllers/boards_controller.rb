@@ -45,7 +45,7 @@ class BoardsController < ApplicationController
   def destroy
     authorize! :destroy, @board
     @board.destroy
-    redirect_to repos_url, notice: "Your board \"#{@board.name}\" was successfully deleted."
+    redirect_to boards_url, notice: "Your board \"#{@board.name}\" was successfully deleted."
   end
 
 private
