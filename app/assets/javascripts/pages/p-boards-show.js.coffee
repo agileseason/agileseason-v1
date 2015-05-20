@@ -18,7 +18,6 @@ $(document).on 'page:change', ->
     unless $(e.target).is('a, .button')
       $(@).closest('.issue').addClass 'current-issue'
       show_issue_modal($(@).data('number'))
-      location.hash = "#issue-number=#{$(@).data('number')}"
 
   # закрыть попап по крестику или по клику мимо попапа
   $('.issue-modal').on 'click', '.modal-close, .overlay', ->
@@ -229,6 +228,7 @@ show_issue_modal = (number) ->
     url: "/boards/#{$('.board').data('github_full_name')}/issues/#{number}",
     success: (html) ->
       $modal_content.html($(html)).trigger 'modal:load'
+      location.hash = "#issue-number=#{number}"
 
 # пересчитать высоту борда
 resize_height = ->
