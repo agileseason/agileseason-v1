@@ -130,15 +130,6 @@ $(document).on 'page:change', ->
     $(@).next('.archive').removeClass('hidden')
     $(@).remove()
 
-  $('.l-menu').on 'click', '.boards', ->
-    $(@).addClass('active').prepend('<div class="overlay"></div>')
-    $(@).find('.popup').show()
-
-  $('.l-menu .boards').on 'click', '.overlay', ->
-    $(@).parent().find('.popup').hide()
-    $(@).parent().removeClass 'active'
-    $(@).remove()
-
   $('.l-menu .search input').on 'click', ->
     $popup = $(@).parents('.search').find('.popup')
     unless $popup.is(':visible')
@@ -169,7 +160,7 @@ $(document).on 'page:change', ->
     $(@).remove()
 
   # open activities slider
-  $('.l-submenu').on 'click', '.activities-link', ->
+  $('.l-menu').on 'click', '.activities-link', ->
     $activities = $('.b-activities')
     $activities
       .trigger 'slider:load'
@@ -234,7 +225,7 @@ show_issue_modal = (number) ->
 resize_height = ->
   resize_lock = false
 
-  height = $(window).height() - $('.l-menu').outerHeight(true) - $('.l-submenu').outerHeight(true)
+  height = $(window).height() - $('.l-menu').outerHeight(true)
   $('.board').height(height)
 
 column_menu = ->

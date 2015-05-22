@@ -1,8 +1,6 @@
-= render partial: '/layouts/submenu'
-
 .p-settings-show
   .box
-    title Settings
+    .title Settings
     = simple_form_for(board, url: rename_board_settings_url(board)) do |f|
       = f.input :name
       = f.button :submit, value: 'Rename'
