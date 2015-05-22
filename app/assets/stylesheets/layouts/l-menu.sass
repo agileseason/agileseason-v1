@@ -6,7 +6,7 @@
 @import globals/variables
 
 .l-menu
-  background: #fff
+  background: $menu-bg
   color: $text-light
   height: 18px
   margin: 0
@@ -30,6 +30,9 @@
     &.boards
       position: relative
 
+      span
+        cursor: pointer
+
     &:first-child
       margin-left: 20px
 
@@ -45,10 +48,20 @@
       &:hover
         color: $text-usual
 
+  .left-menu-link
+    margin-right: 0
+
   .logo
     +text-shadow(0 1px 1px rgba(255,255,255,1))
     color: $text-light
     font-weight: bold
+    margin-left: 0
+
+  .octicon.octicon-three-bars
+    font-size: 20px
+    display: inline-block
+    padding: 5px
+    margin-top: -7px
 
   .popup
     +popup
@@ -84,24 +97,30 @@
       margin-top: -3px
       padding-right: 22px
       width: 178px
+
     span
       color: $text-muted
       margin-left: -20px
       vertical-align: middle
+
     .popup
       height: auto
       margin-left: -326px
       min-height: 100px
       padding: 10px
       width: 400px
+
       .content
         p
           color: $text-muted
           padding: 15px 15px
+
       .help
         padding: 15px 15px
         line-height: 20px
+
         a
           +link
+
       .close-popup
         +close

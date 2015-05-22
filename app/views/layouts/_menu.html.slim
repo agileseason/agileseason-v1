@@ -1,21 +1,40 @@
 .l-menu
   ul.left
-    li.logo
-      a href="#{boards_url}" Agile Season
-    /li.repos
-      a href="#{repos_url}"
-        span.octicon.octicon-repo
-        span &nbsp;Repositories
-    li.boards
-      a
-        span Boards&nbsp;
-        span.octicon.octicon-chevron-down
+    li.left-menu-link
+      a.octicon.octicon-three-bars
 
-      .popup
-        .octicon.octicon-triangle-up
-        ul
-          - k(:user, current_user).boards.each do |board|
-            li : a href="#{board_url(board)}" #{k(:board, board).name}
+    li.logo
+      - if params[:controller] == 'boards' && params[:action] == 'index'
+        span Agile Season
+
+      - else
+        a href="#{boards_url}" Agile Season
+
+    - unless params[:controller] == 'boards' && params[:action] == 'index'
+      li.boards
+        - if @board
+          - if can? :update, @board
+            a href="#{board_settings_url(@board)}" title='Board Settings' : span.octicon.octicon-gear
+            | &nbsp;
+
+          span
+            - if params[:controller] == 'boards'
+              span #{k(:board, @board).name} board&nbsp;
+            - else
+              a.current-board-link href="#{board_url(@board)}" #{k(:board, @board).name} board&nbsp;
+            span.octicon.octicon-chevron-down
+
+        - else
+          a
+            span Boards&nbsp;
+            span.octicon.octicon-chevron-down
+
+        .popup
+          .octicon.octicon-triangle-up
+          ul
+            - k(:user, current_user).boards.each do |board|
+              li : a href="#{board_url(board)}" #{k(:board, board).name}
+
     - if @board && @board.persisted?
       li.search data-url="#{search_board_issues_url(@board)}"
         input type='text'
@@ -28,7 +47,16 @@
             a href="https://help.github.com/articles/searching-issues/" target='_blank' Learn more…
           .close-popup
 
+    - if @board && @board.kanban?
+      // FIX : Remove copy-paste from li... @blackchestnut
+      li
+        /- if params[:controller] == 'graphs/cumulative'
+          /span Cumulative Flow
+        /- else
+        span.octicon.octicon-graph &nbsp;
+        a href="#{board_graphs_cumulative_index_url(@board)}" Statistic
+
   ul.right
-    li : a href="#{repos_url}" title='Create new board' : span.octicon.octicon-plus
-    li.user = current_user
-    li.exit : a href="#{sign_out_url}" : span.octicon.octicon-sign-out
+    - if @board
+      li.activities-link data-url="#{board_activities_url @board}"
+        a: span.octicon.octicon-megaphone
