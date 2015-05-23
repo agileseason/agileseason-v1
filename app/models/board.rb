@@ -19,6 +19,10 @@ class Board < ActiveRecord::Base
     github_full_name
   end
 
+  def github_url
+    "https://github.com/#{github_full_name}"
+  end
+
   def kanban?
     type == 'Boards::KanbanBoard'
   end

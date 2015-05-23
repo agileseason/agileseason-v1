@@ -3,8 +3,8 @@ class CommentsController < ApplicationController
   before_action :fetch_board, only: [:comments]
 
   def index
-    comments = github_api.issue_comments(@board, params[:number].to_i)
-    render partial: 'index', locals: { comments: comments }
+    comments = github_api.issue_comments(@board, params[:number])
+    render partial: 'index', locals: { comments: comments, board: @board }
   end
 
   def create
