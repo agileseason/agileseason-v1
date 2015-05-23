@@ -16,7 +16,7 @@
             | Description
         - else
           .description.editable data-url="#{update_board_issues_url(board, issue.number)}" data-initial="#{issue.body}"
-            = markdown(issue.body.html_safe)
+            = markdown(issue.body.html_safe, @board.github_url)
         = render partial: 'issues/editable_form'
 
       - unless issue.archive?
