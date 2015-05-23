@@ -1,11 +1,13 @@
 class GithubApi
   module Repos
     def repos
-      user_repos + org_repos
+      fetch_repos = user_repos + org_repos
+      Rails.cache.write(cache_key, fetch_repos, expires_in: 1.month)
+      fetch_repos
     end
 
     def cached_repos
-      Rails.cache.fetch([@token, :repos], expires_in: 5.minutes) { repos }
+      Rails.cache.fetch(cache_key, expires_in: 1.month) { repos }
     end
 
     def repo(repo_name)
@@ -24,12 +26,20 @@ class GithubApi
 
     def org_repos
       orgs.flat_map do |org|
-        paginate { |page| client.org_repos(org[:login], page: page).select { |repo| repo.permissions.push } }
+        paginate do |page|
+          client.
+            org_repos(org[:login], page: page).
+            select { |repo| repo.permissions.push }
+        end
       end
     end
 
     def orgs
       client.orgs
+    end
+
+    def cache_key
+      [@token, :repos]
     end
   end
 end
