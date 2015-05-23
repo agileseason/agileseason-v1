@@ -11,22 +11,16 @@ html
     script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"
 
   body class="p-#{controller_name}-#{action_name}" id="#{controller_name}_#{action_name}"
-    .left-menu
-      .overlay
-      ul
-        li
-          span #{current_user}
+    - if signed_in?
+      .left-menu
+        .overlay
+        ul
+          li : span #{current_user}
+          li : a href="#{repos_url}" Repos
+          li : a href="#{boards_url}" Boards
+          li : a.sign-out href="#{sign_out_url}" Sign out
+      = render partial: 'layouts/menu'
 
-        li
-          a href="#{repos_url}" Repos
-
-        li
-          a href="#{boards_url}" Boards
-
-        li
-          a.sign-out href="#{sign_out_url}" Sign out
-
-    = render partial: 'layouts/menu' if signed_in?
     .container
       = render partial: '/layouts/notice'
       = yield
