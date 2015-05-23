@@ -25,12 +25,12 @@ describe ApplicationHelper do
     end
 
     context 'with #abs' do
-      let(:text) { "#abs" }
+      let(:text) { '#abs' }
       it { is_expected.to eq "<h1>abs</h1>\n" }
     end
 
     context 'with ##abs' do
-      let(:text) { "##abs" }
+      let(:text) { '##abs' }
       it { is_expected.to eq "<h2>abs</h2>\n" }
     end
 

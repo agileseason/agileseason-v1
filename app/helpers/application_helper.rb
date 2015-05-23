@@ -11,10 +11,12 @@ module ApplicationHelper
 
   def markdown(text, repo_url)
     return unless text
-    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(prettify: true),
+    markdown = Redcarpet::Markdown.new(
+      Redcarpet::Render::HTML.new(prettify: true),
       fenced_code_blocks: true,
       highlight: true,
-      autolink: true)
+      autolink: true
+    )
     markdown.render(
       replace_issue_numbers(text, repo_url)
     ).html_safe
