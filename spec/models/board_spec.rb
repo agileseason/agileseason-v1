@@ -8,6 +8,12 @@ describe Board, type: :model do
     it { is_expected.to validate_presence_of :github_full_name }
   end
 
+  describe '#github_url' do
+    subject { board.github_url }
+    let(:board) { build(:board, github_full_name: 'agileseason/agileseason') }
+    it { is_expected.to eq 'https://github.com/agileseason/agileseason' }
+  end
+
   describe '#activities' do
     subject { board.activities }
     let(:board) { build_stubbed(:board) }

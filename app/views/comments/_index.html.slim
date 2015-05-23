@@ -3,13 +3,13 @@
     .user-ava
       a.user[
         href="#{comment.user.html_url}"
-        target="_blank"
+        target='_blank'
         title="#{comment.user.login}"]
 
         img.avatar src="#{comment.user.avatar_url}"
     .comment-body
       .user-login #{comment.user.login}&nbsp;
-      .date = comment.created_at.strftime("%h %d, %H:%M")
+      .date = comment.created_at.strftime('%h %d, %H:%M')
 
       span.controls
         | &mdash; 
@@ -17,12 +17,12 @@
 
         | &nbsp;or&nbsp;
 
-        a.delete data-url="#{delete_comment_board_issues_url(@board, comment.id)}"
+        a.delete data-url="#{delete_comment_board_issues_url(board, comment.id)}"
           | delete
 
       .comment[
-        data-url="#{update_comment_board_issues_url(@board, comment.id)}"
-        data-delete="#{delete_comment_board_issues_url(@board, comment.id)}"
+        data-url="#{update_comment_board_issues_url(board, comment.id)}"
+        data-delete="#{delete_comment_board_issues_url(board, comment.id)}"
         data-initial="#{comment.body}"]
-        = markdown(comment.body)
+        = markdown(comment.body, board.github_url)
       = render partial: 'issues/editable_form'

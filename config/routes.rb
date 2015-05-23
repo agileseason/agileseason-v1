@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     end
 
     resources :activities, only: [:index]
+    post 'preview', to: 'markdown#preview', as: :preview
   end
 
   mount Sidekiq::Web => '/sidekiq', constraints: SidekiqConstraint.new
@@ -61,6 +62,4 @@ Rails.application.routes.draw do
   get '/awstest', to: 'awstest#index'
 
   root 'landing#index'
-
-  post 'preview', to: 'markdown#preview', as: :preview
 end
