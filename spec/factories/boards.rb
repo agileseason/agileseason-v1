@@ -10,7 +10,7 @@ FactoryGirl.define do
 
     trait :with_columns do
       transient do
-        number_of_columns 1
+        number_of_columns 2
       end
       after(:build) do |board, evaluator|
         board.columns = evaluator.number_of_columns.times.each_with_object([]) do |n, columns|

@@ -17,15 +17,15 @@ module Graphs
     end
 
     def fetch_board_history(board)
-      find_board_history(board) || create_board_history(board)
+      find_board_history(board) || build_board_history(board)
     end
 
     def find_board_history(board)
       board.board_histories.where(collected_on: Date.today).first
     end
 
-    def create_board_history(board)
-      board.board_histories.create(collected_on: Date.today)
+    def build_board_history(board)
+      board.board_histories.build(collected_on: Date.today)
     end
   end
 end

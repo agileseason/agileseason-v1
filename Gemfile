@@ -30,6 +30,7 @@ gem 'uglifier'
 gem 'virtus'
 gem 'whenever'
 gem 'will_paginate'
+gem 'xproc'
 
 group :production do
   gem 'newrelic_rpm'
@@ -69,5 +70,6 @@ group :development, :test do
 end
 
 group :test do
-  gem "codeclimate-test-reporter", require: nil
+  gem 'docile', github: 'blackchestnut/docile'
+  gem 'codeclimate-test-reporter', require: nil
 end

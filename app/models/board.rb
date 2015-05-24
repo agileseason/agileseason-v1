@@ -9,7 +9,7 @@ class Board < ActiveRecord::Base
 
   validates :name, presence: true
   validates :type, presence: true
-  validates :columns, presence: true
+  validates :columns, presence: true, length: { minimum: 2 }
   validates :github_name, presence: true
   validates :github_full_name, presence: true
 

@@ -7,6 +7,7 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 require File.expand_path('../../lib/time_with_timezone', __FILE__)
+require 'xproc/global'
 
 module Agileseason
   class Application < Rails::Application
