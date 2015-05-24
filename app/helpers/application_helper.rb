@@ -18,7 +18,7 @@ module ApplicationHelper
       autolink: true
     )
     markdown.render(
-      replace_issue_numbers(text, repo_url)
+      replace_issue_numbers(fix_new_line(text), repo_url)
     ).html_safe
   end
 
@@ -26,5 +26,9 @@ module ApplicationHelper
 
   def replace_issue_numbers(text, repo_url)
     text.gsub(/#([0-9]+)/, "<a href='#{repo_url}/issues/\\1' target='_blank'>#\\1</a>")
+  end
+
+  def fix_new_line(text)
+    text.gsub("\n", '<br />')
   end
 end
