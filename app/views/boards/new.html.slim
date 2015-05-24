@@ -8,6 +8,7 @@
     .type
       = f.collection_radio_buttons :type, [['Boards::KanbanBoard', 'Kanban'], ['Boards::ScrumBoard', 'Scrum [Coming Soon]']], :first, :last
 
+  .errors = @board.errors[:columns].first if @board.errors[:columns]
   .columns
     .label-column Columns
     ul

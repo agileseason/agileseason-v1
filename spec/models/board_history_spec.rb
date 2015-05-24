@@ -16,13 +16,6 @@ RSpec.describe BoardHistory, type: :model do
     let(:issue_stat) { create(:issue_stat, board: board, column: column) }
     let(:board_issue) { BoardIssue.new(issue, issue_stat) }
 
-    context :one_column do
-      let(:board_issues) { { column.id => [board_issue] } }
-      let(:expected_data) { [{ column_id: column.id, issues: 1, issues_cumulative: 1 }] }
-
-      it { is_expected.to eq expected_data }
-    end
-
     context :two_columns do
       let(:board) { create(:board, :with_columns, number_of_columns: 2) }
       let(:board_issues) do

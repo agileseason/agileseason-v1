@@ -7,7 +7,10 @@ RSpec.describe Graphs::CumulativeWorker do
     let(:column) { board.columns.first }
     let(:perform) { worker.perform(board.id, 'fake_token') }
     let(:issue) { BoardIssue.new(nil, nil) }
-    before { allow_any_instance_of(GithubApi).to receive(:board_issues).and_return(board_issues) }
+    before do
+      allow_any_instance_of(GithubApi).
+        to receive(:board_issues).and_return(board_issues)
+    end
     before { perform }
 
     context :create_board_history do
