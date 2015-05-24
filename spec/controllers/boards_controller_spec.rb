@@ -39,6 +39,41 @@ describe BoardsController, type: :controller do
     end
   end
 
+  describe '#create' do
+    subject { Board.where(user_id: user.id).first }
+    let(:user) { create(:user) }
+    before do
+      allow_any_instance_of(User).
+        to receive(:repo_admin?).and_return(true)
+      allow_any_instance_of(GithubApi).
+        to receive(:cached_repos).and_return([])
+    end
+    before { stub_sign_in(user) }
+    before do
+      post :create,
+        board: {
+          name: 'test-1',
+          type: 'Boards::KanbanBoard',
+          github_id: '123',
+          github_name: 'test-1',
+          github_full_name: 'test/test-1',
+          column: { name: column_names }
+        }
+    end
+
+    context 'success' do
+      let(:column_names) { ['c1', 'c2', '', nil] }
+
+      its(:name) { is_expected.to eq 'test-1' }
+      it { expect(subject.columns.map(&:name)).to eq ['c1', 'c2' ] }
+    end
+
+    context 'to few columns' do
+      let(:column_names) { ['c1'] }
+      it { is_expected.to be_nil }
+    end
+  end
+
   describe 'DELETE destroy' do
     let(:user) { create(:user) }
     let(:repo) { OpenStruct.new(id: board.github_id) }
