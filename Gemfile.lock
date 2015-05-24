@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/blackchestnut/docile.git
+  revision: 1547977537e9bb1f0c9ab979bfa30f4c926653c9
+  specs:
+    docile (1.1.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -128,7 +134,6 @@ GEM
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.2.5)
-    docile (1.1.5)
     dotenv (2.0.1)
     dotenv-rails (2.0.1)
       dotenv (= 2.0.1)
@@ -424,6 +429,7 @@ DEPENDENCIES
   compass-rails (~> 2.0.2)
   dalli
   database_cleaner
+  docile!
   dotenv-rails
   enumerize
   factory_girl_rails

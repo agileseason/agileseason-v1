@@ -70,5 +70,6 @@ group :development, :test do
 end
 
 group :test do
-  gem "codeclimate-test-reporter", require: nil
+  gem 'docile', github: 'blackchestnut/docile'
+  gem 'codeclimate-test-reporter', require: nil
 end
