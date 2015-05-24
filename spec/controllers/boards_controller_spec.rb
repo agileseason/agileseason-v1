@@ -50,7 +50,8 @@ describe BoardsController, type: :controller do
     end
     before { stub_sign_in(user) }
     before do
-      post :create,
+      post(
+        :create,
         board: {
           name: 'test-1',
           type: 'Boards::KanbanBoard',
@@ -59,13 +60,14 @@ describe BoardsController, type: :controller do
           github_full_name: 'test/test-1',
           column: { name: column_names }
         }
+      )
     end
 
     context 'success' do
       let(:column_names) { ['c1', 'c2', '', nil] }
 
       its(:name) { is_expected.to eq 'test-1' }
-      it { expect(subject.columns.map(&:name)).to eq ['c1', 'c2' ] }
+      it { expect(subject.columns.map(&:name)).to eq ['c1', 'c2'] }
     end
 
     context 'to few columns' do
