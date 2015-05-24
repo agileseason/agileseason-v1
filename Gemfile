@@ -30,6 +30,7 @@ gem 'uglifier'
 gem 'virtus'
 gem 'whenever'
 gem 'will_paginate'
+gem 'xproc'
 
 group :production do
   gem 'newrelic_rpm'
