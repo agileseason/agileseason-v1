@@ -22,7 +22,7 @@ class BoardsController < ApplicationController
   end
 
   def new
-    repo = github_api.cached_repos.select(&x.id == params[:github_id].to_i).first
+    repo = github_api.cached_repos.select(&x1.id == params[:github_id].to_i).first
     @board = Board.new(
       name: repo.name,
       github_id: repo.id,
@@ -65,7 +65,7 @@ private
 
   def build_columns
     order = 0
-    column_params[:name].select(&x.present?).map do |name|
+    column_params[:name].select(&x1.present?).map do |name|
       order = order + 1
       Column.new(name: name, order: order, board: @board)
     end
