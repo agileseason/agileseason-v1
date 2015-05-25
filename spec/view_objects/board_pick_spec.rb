@@ -60,7 +60,7 @@ describe BoardPick do
 
       context 'empty' do
         let(:board) { build(:board) }
-        it { is_expected.to eq '0 issues' }
+        it { is_expected.to eq '0 open issues' }
       end
 
       context 'with issues open, closed and archived' do
@@ -69,7 +69,7 @@ describe BoardPick do
         let!(:issues_2) { create(:issue_stat, :closed, board: board) }
         let!(:issues_3) { create(:issue_stat, :archived, board: board) }
 
-        it { is_expected.to eq '2 issues' }
+        it { is_expected.to eq '1 open issues' }
       end
     end
   end
