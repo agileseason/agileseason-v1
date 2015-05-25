@@ -47,5 +47,35 @@ describe ApplicationHelper do
       let(:text) { "line 1\nline 2" }
       it { is_expected.to eq "<p>line 1<br />line 2</p>\n" }
     end
+
+    context 'checkboxes' do
+      context 'one - unchecked' do
+        let(:text) { '- [ ] ch1' }
+        it { is_expected.to eq "<p><input type=\"checkbox\" disabled> ch1</input></p>\n" }
+      end
+
+      context 'one - checked' do
+        let(:text) { '- [x] ch1' }
+        it { is_expected.to eq "<p><input type=\"checkbox\" disabled checked> ch1</input></p>\n" }
+      end
+
+      context 'complex' do
+        let(:text) do
+<<-TEXT
+- [ ] ch1
+- [x] ch2
+
+text
+- [ ] ch3
+TEXT
+        end
+        let(:expected_text) do
+<<-HTML
+<p><input type="checkbox" disabled> ch1</input><br /><input type="checkbox" disabled checked> ch2</input><br /><br />text<br /><input type="checkbox" disabled> ch3</input><br /></p>
+HTML
+        end
+        it { is_expected.to eq expected_text }
+      end
+    end
   end
 end

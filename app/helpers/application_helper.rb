@@ -17,12 +17,17 @@ module ApplicationHelper
       highlight: true,
       autolink: true
     )
-    markdown.render(
-      replace_issue_numbers(fix_new_line(text), repo_url)
-    ).html_safe
+    markdown.render(markdown_github_fixes(text, repo_url)).html_safe
   end
 
   private
+
+  def markdown_github_fixes(text, repo_url)
+    text = replace_issue_numbers(text, repo_url)
+    text = replace_checkbox(text)
+    text = fix_new_line(text)
+    text
+  end
 
   def replace_issue_numbers(text, repo_url)
     text.gsub(/#([0-9]+)/, "<a href='#{repo_url}/issues/\\1' target='_blank'>#\\1</a>")
@@ -30,5 +35,11 @@ module ApplicationHelper
 
   def fix_new_line(text)
     text.gsub("\n", '<br />')
+  end
+
+  def replace_checkbox(text)
+    text.
+      gsub(/- \[ \] (.*)/, '<input type="checkbox" disabled> \1</input>').
+      gsub(/- \[x\] (.*)/, '<input type="checkbox" disabled checked> \1</input>')
   end
 end
