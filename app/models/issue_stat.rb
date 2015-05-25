@@ -3,15 +3,14 @@ class IssueStat < ActiveRecord::Base
   belongs_to :column
   has_many :lifetimes, dependent: :destroy
 
-  scope :visible, -> { where(archived_at: nil) }
-
   validates :number, presence: true, uniqueness: { scope: :board_id }
 
   serialize :track_data
 
-  scope :open, -> { where('closed_at is null') }
-  scope :closed, -> { where('closed_at is not null') }
-  scope :archived, -> { where('archived_at is not null') }
+  scope :archived, -> { where.not(archived_at: nil) }
+  scope :closed, -> { where.not(closed_at: nil) }
+  scope :open, -> { where(closed_at: nil) }
+  scope :visible, -> { where(archived_at: nil) }
 
   def elapsed_time
     (closed_at || Time.current) - created_at

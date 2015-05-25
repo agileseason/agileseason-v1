@@ -8,7 +8,7 @@ class BoardPick
   end
 
   def issues_count
-    "#{@board.visible_issue_stats.count} issues"
+    "#{@board.issue_stats.open.count} open issues"
   end
 
   def self.default
