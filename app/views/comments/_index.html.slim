@@ -11,14 +11,15 @@
       .user-login #{comment.user.login}&nbsp;
       .date = comment.created_at.strftime('%h %d, %H:%M')
 
-      span.controls
-        | &mdash; 
-        a.edit edit
+      - if can? :update, @board
+        span.controls
+          | &mdash; 
+          a.edit edit
 
-        | &nbsp;or&nbsp;
+          | &nbsp;or&nbsp;
 
-        a.delete data-url="#{delete_comment_board_issues_url(board, comment.id)}"
-          | delete
+          a.delete data-url="#{delete_comment_board_issues_url(board, comment.id)}"
+            | delete
 
       .comment[
         data-url="#{update_comment_board_issues_url(board, comment.id)}"

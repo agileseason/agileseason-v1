@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
-  before_action :fetch_board_for_update, except: [:comments]
-  before_action :fetch_board, only: [:comments]
+  # FIX : Need specs.
+  before_action :fetch_board_for_update, except: [:index]
+  before_action :fetch_board, only: [:index]
 
   def index
     comments = github_api.issue_comments(@board, params[:number])

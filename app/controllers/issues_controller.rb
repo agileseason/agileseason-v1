@@ -1,5 +1,7 @@
 class IssuesController < ApplicationController
-  before_action :fetch_board_for_update
+  # FIX : Need specs.
+  before_action :fetch_board, only: [:show, :search]
+  before_action :fetch_board_for_update, except: [:show, :search]
 
   def show
     github_issue = github_api.issue(@board, params[:number])
