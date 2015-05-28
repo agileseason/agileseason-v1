@@ -2,9 +2,9 @@ class BoardsController < ApplicationController
   load_and_authorize_resource
   skip_authorize_resource only: [:new, :create]
 
-  before_action :check_permissions,  only: [:create]
-  before_action :fetch_board,        only: [:show, :destroy]
-  after_action  :fetch_repo_history, only: [:show], unless: -> { Rails.env.test? }
+  before_action :check_permissions, only: [:create]
+  before_action :fetch_board,       only: [:show, :destroy]
+  after_action  :fetch_board_stats, only: [:show], unless: -> { Rails.env.test? }
 
   def index
     @boards_lists = [
@@ -67,7 +67,7 @@ private
     end
   end
 
-  def fetch_repo_history
+  def fetch_board_stats
     Graphs::LinesWorker.perform_async(@board.id, github_token)
     Graphs::CumulativeWorker.perform_async(@board.id, github_token)
     Graphs::IssueStatsWorker.perform_async(@board.id, github_token)
