@@ -7,10 +7,6 @@ class BoardsController < ApplicationController
   after_action  :fetch_repo_history, only: [:show], unless: -> { Rails.env.test? }
 
   def index
-    if current_user.boards.blank?
-      redirect_to repos_url
-      return
-    end
     @boards_lists = [
       { title: 'My Boards', boards: BoardPick.list_by(k(:user, current_user).boards) },
       { title: 'Explore Public Boards', boards: BoardPick.public_list },

@@ -3,6 +3,17 @@ describe BoardsController, type: :controller do
 
   let(:s3) { OpenStruct.new(url: 's3.foo', fields: []) }
   before { allow(S3Api).to receive(:direct_post).and_return(s3) }
+  before do
+    allow_any_instance_of(GithubApi).
+      to receive(:cached_repos).and_return([])
+  end
+
+  describe '#index' do
+    before { stub_sign_in }
+    before { get :index }
+    it { expect(response).to have_http_status(:success) }
+    it { expect(response).to render_template(:index) }
+  end
 
   describe 'GET new' do
     let(:repo) { OpenStruct.new(id: 1, name: 'foo', full_name: 'bar/foo') }
@@ -27,10 +38,6 @@ describe BoardsController, type: :controller do
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([issue]) }
     before { allow_any_instance_of(GithubApi).to receive(:labels).and_return([label_1, label_2]) }
     before { allow_any_instance_of(GithubApi).to receive(:collaborators).and_return([]) }
-    before do
-      allow_any_instance_of(GithubApi).
-        to receive(:cached_repos).and_return([])
-    end
     before { stub_sign_in(user) }
 
     it 'returns http success' do
