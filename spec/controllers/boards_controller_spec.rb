@@ -4,6 +4,13 @@ describe BoardsController, type: :controller do
   let(:s3) { OpenStruct.new(url: 's3.foo', fields: []) }
   before { allow(S3Api).to receive(:direct_post).and_return(s3) }
 
+  describe '#index' do
+    before { stub_sign_in }
+    before { get :index }
+    it { expect(response).to have_http_status(:success) }
+    it { expect(response).to render_template(:index) }
+  end
+
   describe 'GET new' do
     let(:repo) { OpenStruct.new(id: 1, name: 'foo', full_name: 'bar/foo') }
     before do
