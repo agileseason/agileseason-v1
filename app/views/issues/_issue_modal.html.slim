@@ -30,9 +30,16 @@
         .b-preloader.horizontal
 
       - if can? :update, @board
-        .add-comment.editable data-url="#{add_comment_board_issues_url(board, issue.number)}"
-          | Add a comment or upload an image…
-        = render partial: 'issues/editable_form'
+        .editable-form.add-comment-form data-url="#{add_comment_board_issues_url(board, issue.number)}"
+          form
+            .placeholder Add a comment or upload an image…
+            textarea
+            .preview-textarea
+            .controls
+              a.write Edit
+              a.preview data-url="#{preview_url}" Preview
+              a.button.save Save
+          = render partial: 'issues/upload'
 
     - if can? :update, @board
       .issue-actions

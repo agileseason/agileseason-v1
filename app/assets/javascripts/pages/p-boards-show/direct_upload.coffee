@@ -25,6 +25,7 @@ window.init_direct_upload = ($elements, url, form_data) ->
         #progress = parseInt(data.loaded / data.total * 100, 10)
 
       start: (e) ->
+        return unless $textarea.closest('.editable-form').hasClass 'active'
         $submitButton.hide()
         $progress.show()
         $info.hide()
@@ -32,6 +33,7 @@ window.init_direct_upload = ($elements, url, form_data) ->
         $form.parents('.upload').removeClass('dragenter')
 
       done: (e, data) ->
+        return unless $textarea.closest('.editable-form').hasClass 'active'
         key = $(data.jqXHR.responseXML).find('Key').text()
         image_url = window.build_s3_image_url(url, key)
 
@@ -43,14 +45,21 @@ window.init_direct_upload = ($elements, url, form_data) ->
         $info.show()
 
       fail: (e, data) ->
+        return unless $textarea.closest('.editable-form').hasClass 'active'
         $progress.hide()
         $info.show()
         $submitButton.show()
 
     $textarea.on 'dragenter', ->
+      open_new_comment_form($(@))
       $textarea.addClass('dragenter')
       $form.parents('.upload').addClass('dragenter')
 
     $textarea.on 'dragleave', ->
       $textarea.removeClass('dragenter')
       $form.parents('.upload').removeClass('dragenter')
+
+open_new_comment_form = ($node) ->
+  $node
+    .val('').focus()
+    .closest('.editable-form').addClass 'active'

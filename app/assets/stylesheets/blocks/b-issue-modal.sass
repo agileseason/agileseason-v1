@@ -311,8 +311,48 @@
     vertical-align: middle
     width: calc(100% - 20px)
 
-  .add-comment + .editable-form.active
-    margin-top: 40px
+  .add-comment-form
+    display: block !important
+    margin-top: 50px
+
+    form
+      position: relative
+
+    .placeholder
+      +border-radius(6px)
+      color: #999
+      height: 20px
+      padding: 12px 10px 8px
+      position: absolute
+      width: 100%
+
+    textarea
+      position: relative
+      background: none
+      height: 20px
+      min-height: 0px
+      padding: 10px
+      resize: none
+
+      &.dragenter
+        border: 3px dashed #56AD05
+
+    .controls,
+    .upload
+      display: none
+
+    &.active
+      .placeholder
+        display: none
+
+      textarea
+        background: #FAFAE9
+        min-height: 140px
+        resize: vertical
+
+      .controls,
+      .upload
+        display: inline-block
 
   .user-login
     color: $lightgrey
