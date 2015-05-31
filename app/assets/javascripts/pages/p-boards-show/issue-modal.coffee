@@ -218,15 +218,6 @@ load_comments = ->
         $issue_comments.trigger 'comments:load'
       , 300
 
-#open_new_comment_form = ($editable_node) ->
-  ##console.log 'open new comment form'
-  #setTimeout ->
-      #$editable_node
-        #.hide()
-        #.next().show().addClass 'active'
-        #.find('textarea').val('').focus()
-    #, 300
-
 open_form = ($editable_node) ->
   #console.log 'open form'
   setTimeout ->
