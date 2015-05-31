@@ -3,10 +3,8 @@
     data-column="#{column.id}"
     id="column_#{column.id}"
   ]
-  = render partial: 'columns/menu', locals: { column: column }
 
-  .wip
-    = render partial: 'columns/wip_badge', locals: { column: column }
+  = render partial: 'columns/menu', locals: { column: column }
 
   .new-issue.ajax-link
     a.ajax-link New issue

@@ -1,6 +1,9 @@
 .column-menu
   a.title
     = column.name
+
+    = render partial: 'columns/wip_badge', locals: { column: column }
+
     span.octicon.octicon-chevron-down
   .popup
     ul
