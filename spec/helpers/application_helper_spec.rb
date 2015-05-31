@@ -43,11 +43,6 @@ describe ApplicationHelper do
       end
     end
 
-    context 'new lines' do
-      let(:text) { "line 1\nline 2" }
-      it { is_expected.to eq "<p>line 1<br />line 2</p>\n" }
-    end
-
     context 'checkboxes' do
       context 'one - unchecked' do
         let(:text) { '- [ ] ch1' }
@@ -71,7 +66,7 @@ TEXT
         end
         let(:expected_text) do
 <<-HTML
-<p><input type="checkbox" disabled> ch1</input><br /><input type="checkbox" disabled checked> ch2</input><br /><br />text<br /><input type="checkbox" disabled> ch3</input><br /></p>
+<p><input type=\"checkbox\" disabled> ch1</input><br>\n<input type=\"checkbox\" disabled checked> ch2</input></p>\n\n<p>text<br>\n<input type=\"checkbox\" disabled> ch3</input></p>
 HTML
         end
         it { is_expected.to eq expected_text }

@@ -12,7 +12,7 @@ module ApplicationHelper
   def markdown(text, repo_url)
     return unless text
     markdown = Redcarpet::Markdown.new(
-      Redcarpet::Render::HTML.new(prettify: true),
+      Redcarpet::Render::HTML.new(prettify: true, hard_wrap: true, link_attributes: true),
       fenced_code_blocks: true,
       highlight: true,
       autolink: true
@@ -25,16 +25,10 @@ module ApplicationHelper
   def markdown_github_fixes(text, repo_url)
     text = replace_issue_numbers(text, repo_url)
     text = replace_checkbox(text)
-    text = fix_new_line(text)
-    text
   end
 
   def replace_issue_numbers(text, repo_url)
     text.gsub(/#([0-9]+)/, "<a href='#{repo_url}/issues/\\1' target='_blank'>#\\1</a>")
-  end
-
-  def fix_new_line(text)
-    text.gsub("\n", '<br />')
   end
 
   def replace_checkbox(text)

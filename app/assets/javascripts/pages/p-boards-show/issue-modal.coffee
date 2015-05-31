@@ -233,7 +233,7 @@ open_form = ($editable_node) ->
     , 300
 
 close_active_form = ->
-  console.log 'close active form'
+  #console.log 'close active form'
   if $('.editable-form.active').length > 0
     $('.editable-form.active').val('')
     $('.editable-form.active')
