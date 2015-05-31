@@ -20,12 +20,18 @@ $(document).on 'page:change', ->
 
     $('.b-issue-modal').click (e) ->
       unless $(e.target).is('.editable-form.active textarea, .editable-form.active .save, .preview, .attach-images, controls, .upload, .upload input, .write')
+        if $('.add-comment-form').hasClass 'active'
+          $('textarea', '.add-comment-form.active').val('')
         close_active_form()
 
+    $('textarea', '.add-comment-form').click (e) ->
+      $form = $(@).closest('.add-comment-form')
+      $form.addClass 'active'
+      $('textarea', $form).focus()
+      e.stopPropagation()
+
     $('.editable').click ->
-      if $(@).hasClass 'add-comment'
-        open_new_comment_form($(@))
-      else
+      unless $(@).closest('.add-comment-form').length > 0
         open_form($(@))
 
     $('.preview', $issue_modal).click ->
@@ -39,7 +45,25 @@ $(document).on 'page:change', ->
       $(@).closest('form').removeClass('preview-mode')
 
     $('.editable-form').click (e) ->
-      if $(e.target).is('.editable-form.active .save')
+      if $(e.target).is('.add-comment-form.active .save')
+        $form = $(@).closest '.editable-form'
+        url = $form.data('url')
+        new_content = $('textarea', '.editable-form.active').val()
+
+        $('textarea', '.editable-form.active').val('')
+
+        $current_issue = $('.current-issue')
+
+        unless new_content == ''
+          $('.issue-comments').append('<div class="b-preloader horizontal"></div>')
+          $.get url, comment: new_content, ->
+            $('.octicon-comment-discussion', $current_issue).addClass 'show'
+            load_comments()
+
+        close_active_form()
+
+
+      else if $(e.target).is('.editable-form.active .save')
         $(@).trigger('form:save')
 
     $('.editable-form').on 'form:save', ->
@@ -194,15 +218,6 @@ load_comments = ->
         $issue_comments.trigger 'comments:load'
       , 300
 
-open_new_comment_form = ($editable_node) ->
-  #console.log 'open new comment form'
-  setTimeout ->
-      $editable_node
-        .hide()
-        .next().show().addClass 'active'
-        .find('textarea').val('').focus()
-    , 300
-
 open_form = ($editable_node) ->
   #console.log 'open form'
   setTimeout ->
@@ -218,8 +233,9 @@ open_form = ($editable_node) ->
     , 300
 
 close_active_form = ->
-  #console.log 'close active form'
+  console.log 'close active form'
   if $('.editable-form.active').length > 0
+    $('.editable-form.active').val('')
     $('.editable-form.active')
       .hide()
       .removeClass('active')
