@@ -55,11 +55,6 @@ describe ApplicationHelper do
       end
     end
 
-    #context 'new lines' do
-      #let(:text) { "foo\nbar\n\nbaz" }
-      #it { is_expected.to eq "<p>foo\nbar\n\nbaz</p>\n" }
-    #end
-
     context 'checkboxes' do
       context 'one - unchecked' do
         let(:text) { '- [ ] ch1' }
