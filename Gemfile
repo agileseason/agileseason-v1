@@ -52,6 +52,7 @@ group :development do
   gem 'quiet_assets'
   gem 'rack-mini-profiler'
   gem 'spring'
+  gem 'table_print'
 end
 
 group :development, :test do

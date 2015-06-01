@@ -12,10 +12,12 @@ module ApplicationHelper
   def markdown(text, repo_url)
     return unless text
     markdown = Redcarpet::Markdown.new(
-      Redcarpet::Render::HTML.new(prettify: true, hard_wrap: true, link_attributes: true),
+      Redcarpet::Render::HTML.new(prettify: true, hard_wrap: true),
+      autolink: true,
       fenced_code_blocks: true,
       highlight: true,
-      autolink: true
+      lax_spacing: true, # Now it doesn't work. Partially helps hard_wrap.
+      space_after_headers: true,
     )
     markdown.render(markdown_github_fixes(text, repo_url)).html_safe
   end
@@ -25,6 +27,7 @@ module ApplicationHelper
   def markdown_github_fixes(text, repo_url)
     text = replace_issue_numbers(text, repo_url)
     text = replace_checkbox(text)
+    text
   end
 
   def replace_issue_numbers(text, repo_url)

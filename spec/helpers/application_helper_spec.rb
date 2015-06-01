@@ -27,12 +27,12 @@ describe ApplicationHelper do
 
       context 'with #abs' do
         let(:text) { '#abs' }
-        it { is_expected.to eq "<h1>abs</h1>\n" }
+        it { is_expected.to eq "<p>#abs</p>\n" }
       end
 
       context 'with ##abs' do
         let(:text) { '##abs' }
-        it { is_expected.to eq "<h2>abs</h2>\n" }
+        it { is_expected.to eq "<p>##abs</p>\n" }
       end
 
       context 'with two numbers' do
@@ -40,6 +40,18 @@ describe ApplicationHelper do
         let(:number_1) { 10 }
         let(:number_2) { 999 }
         it { is_expected.to eq "<p>text <a href='#{repo_url}/issues/#{number_1}' target='_blank'>##{number_1}</a> text2 <a href='http://github.com/a/b/issues/#{number_2}' target='_blank'>##{number_2}</a></p>\n" }
+      end
+    end
+
+    context 'check header' do
+      context 'not header' do
+        let(:text) { '#abs' }
+        it { is_expected.to eq "<p>#abs</p>\n" }
+      end
+
+      context 'header' do
+        let(:text) { '# abs' }
+        it { is_expected.to eq "<h1>abs</h1>\n" }
       end
     end
 
