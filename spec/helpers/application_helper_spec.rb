@@ -27,12 +27,12 @@ describe ApplicationHelper do
 
       context 'with #abs' do
         let(:text) { '#abs' }
-        it { is_expected.to eq "<h1>abs</h1>\n" }
+        it { is_expected.to eq "<p>#abs</p>\n" }
       end
 
       context 'with ##abs' do
         let(:text) { '##abs' }
-        it { is_expected.to eq "<h2>abs</h2>\n" }
+        it { is_expected.to eq "<p>##abs</p>\n" }
       end
 
       context 'with two numbers' do
@@ -42,6 +42,23 @@ describe ApplicationHelper do
         it { is_expected.to eq "<p>text <a href='#{repo_url}/issues/#{number_1}' target='_blank'>##{number_1}</a> text2 <a href='http://github.com/a/b/issues/#{number_2}' target='_blank'>##{number_2}</a></p>\n" }
       end
     end
+
+    context 'check header' do
+      context 'not header' do
+        let(:text) { '#abs' }
+        it { is_expected.to eq "<p>#abs</p>\n" }
+      end
+
+      context 'header' do
+        let(:text) { '# abs' }
+        it { is_expected.to eq "<h1>abs</h1>\n" }
+      end
+    end
+
+    #context 'new lines' do
+      #let(:text) { "foo\nbar\n\nbaz" }
+      #it { is_expected.to eq "<p>foo\nbar\n\nbaz</p>\n" }
+    #end
 
     context 'checkboxes' do
       context 'one - unchecked' do
@@ -66,7 +83,7 @@ TEXT
         end
         let(:expected_text) do
 <<-HTML
-<p><input type=\"checkbox\" disabled> ch1</input><br>\n<input type=\"checkbox\" disabled checked> ch2</input></p>\n\n<p>text<br>\n<input type=\"checkbox\" disabled> ch3</input></p>
+<p><input type="checkbox" disabled> ch1</input>\n<input type=\"checkbox\" disabled checked> ch2</input></p>\n\n<p>text\n<input type=\"checkbox\" disabled> ch3</input></p>
 HTML
         end
         it { is_expected.to eq expected_text }

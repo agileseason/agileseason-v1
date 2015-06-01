@@ -40,6 +40,11 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
+  unless ENV['RSPEC_IGNORE_FOCUSED']
+    config.filter_run focus: true
+    config.run_all_when_everything_filtered = true
+  end
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin
