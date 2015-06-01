@@ -4,11 +4,11 @@ RSpec.describe MarkdownController, type: :controller do
   before { stub_sign_in(user) }
 
   describe '#preview' do
-    before { post :preview, board_github_full_name: board.github_full_name, string: '#Title' }
+    before { post :preview, board_github_full_name: board.github_full_name, string: 'text' }
 
     it 'return http success' do
       expect(response).to be_successful
-      expect(response.body).to eq "<h1>Title</h1>\n"
+      expect(response.body).to eq "<p>text</p>\n"
     end
   end
 end
