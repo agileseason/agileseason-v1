@@ -83,7 +83,7 @@ TEXT
         end
         let(:expected_text) do
 <<-HTML
-<p><input type="checkbox" disabled> ch1</input>\n<input type=\"checkbox\" disabled checked> ch2</input></p>\n\n<p>text\n<input type=\"checkbox\" disabled> ch3</input></p>
+<p><input type=\"checkbox\" disabled> ch1</input><br>\n<input type=\"checkbox\" disabled checked> ch2</input></p>\n\n<p>text<br>\n<input type=\"checkbox\" disabled> ch3</input></p>
 HTML
         end
         it { is_expected.to eq expected_text }

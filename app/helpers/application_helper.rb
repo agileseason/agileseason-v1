@@ -12,11 +12,11 @@ module ApplicationHelper
   def markdown(text, repo_url)
     return unless text
     markdown = Redcarpet::Markdown.new(
-      Redcarpet::Render::HTML.new(prettify: true),
+      Redcarpet::Render::HTML.new(prettify: true, hard_wrap: true),
       autolink: true,
       fenced_code_blocks: true,
       highlight: true,
-      lax_spacing: true,
+      lax_spacing: true, # Now it doesn't work. Partially helps hard_wrap.
       space_after_headers: true,
     )
     markdown.render(markdown_github_fixes(text, repo_url)).html_safe
