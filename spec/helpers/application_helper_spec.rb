@@ -55,6 +55,11 @@ describe ApplicationHelper do
       end
     end
 
+    context 'links' do
+      let(:text) { 'http://agileseason.com' }
+      it { is_expected.to eq "<p><a href=\"#{text}\">#{text}</a></p>\n" }
+    end
+
     context 'checkboxes' do
       context 'one - unchecked' do
         let(:text) { '- [ ] ch1' }
