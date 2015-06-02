@@ -1,9 +1,9 @@
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
 
-################################################################################
-    # issue modal loaded
-################################################################################
+  ################################################################################
+  # issue modal loaded
+  ################################################################################
   $('.issue-modal').on 'modal:load', ->
     return unless document.body.id == 'boards_show'
     #console.log 'modal:load'
@@ -166,6 +166,14 @@ $(document).on 'page:change', ->
           $.post $('.preview', @).data('url'), string: new_content, (markdown) ->
             $editable_node.html(markdown)
             close_active_form()
+
+      $('.issue-comments .task').click (e) ->
+        checkbox_index = $(@).index('.task')
+        checkbox_value = $(@).is(':checked')
+        $comment = $(@).parents('.comment')
+        body = $comment.data('initial')
+        new_body = replaceNthMatch(body, /(\[(?:x|\s)\])/, checkbox_index + 1, if checkbox_value then '[x]' else '[ ]')
+        $.get $comment.data('url'), comment: new_body
 
     ################################################################################
     # move-to events in issue modal

@@ -7,6 +7,7 @@
 //= require browser_timezone_rails/set_time_zone
 // -------------------------------
 //= require highcharts.js
+//= require replace_nth_match.js
 //= require js-patch.coffee
 //= require turbolinks
 //= require_tree .

@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       get ':number/assignee/:login', to: 'issues#assignee', as: :assignee
       get ':number/update', to: 'issues#update', as: :update
 
+      # Replace by REST methods.
       get ':number/comment', to: 'comments#create', as: :add_comment
       get ':number/update_comment', to: 'comments#update', as: :update_comment
       get ':number/delete_comment', to: 'comments#delete', as: :delete_comment
