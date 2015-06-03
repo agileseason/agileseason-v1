@@ -276,3 +276,4 @@ update_by_checkbox = ($checkbox, container_selector) ->
   new_body = replaceNthMatch(initial_body, /(\[(?:x|\s)\])/, checkbox_index + 1, if checkbox_value then '[x]' else '[ ]')
 
   $.get($container.data('url'), body: new_body)
+  $container.data('initial', new_body)
