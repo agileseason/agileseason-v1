@@ -1,4 +1,4 @@
-var replaceNthMatch = function (original, pattern, n, replace) {
+var replaceNthMatch = function(original, pattern, n, replace) {
   var parts, tempParts;
 
   if (pattern.constructor === RegExp) {
@@ -15,14 +15,17 @@ var replaceNthMatch = function (original, pattern, n, replace) {
     // If there was a capture group, index 1 will be
     // an item that matches the RegExp
     if (parts[1].search(pattern) !== 0) {
-      throw {name: "ArgumentError", message: "RegExp must have a capture group"};
+      throw {
+        name: "ArgumentError",
+        message: "RegExp must have a capture group"
+      };
     }
   } else if (pattern.constructor === String) {
     parts = original.split(pattern);
     // Need every other item to be the matched string
     tempParts = [];
 
-    for (var i=0; i < parts.length; i++) {
+    for (var i = 0; i < parts.length; i++) {
       tempParts.push(parts[i]);
 
       // Insert between, but don't tack one onto the end
@@ -31,26 +34,29 @@ var replaceNthMatch = function (original, pattern, n, replace) {
       }
     }
     parts = tempParts;
-  }  else {
-    throw {name: "ArgumentError", message: "Must provide either a RegExp or String"};
+  } else {
+    throw {
+      name: "ArgumentError",
+      message: "Must provide either a RegExp or String"
+    };
   }
 
   // Parens are unnecessary, but explicit. :)
   indexOfNthMatch = (n * 2) - 1;
 
-if (parts[indexOfNthMatch] === undefined) {
-  // There IS no Nth match
-  return original;
-}
+  if (parts[indexOfNthMatch] === undefined) {
+    // There IS no Nth match
+    return original;
+  }
 
-if (typeof(replace) === "function") {
-  // Call it. After this, we don't need it anymore.
-  replace = replace(parts[indexOfNthMatch]);
-}
+  if (typeof(replace) === "function") {
+    // Call it. After this, we don't need it anymore.
+    replace = replace(parts[indexOfNthMatch]);
+  }
 
-// Update our parts array with the new value
-parts[indexOfNthMatch] = replace;
+  // Update our parts array with the new value
+  parts[indexOfNthMatch] = replace;
 
-// Put it back together and return
-return parts.join('');
+  // Put it back together and return
+  return parts.join('');
 }
