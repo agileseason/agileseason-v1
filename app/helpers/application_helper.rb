@@ -36,7 +36,7 @@ module ApplicationHelper
 
   def replace_checkbox(text)
     text.
-      gsub(/- \[ \] (.*)/, '<input type="checkbox" disabled> \1</input>').
-      gsub(/- \[x\] (.*)/, '<input type="checkbox" disabled checked> \1</input>')
+      gsub(/- \[ \] (.*)/, '<input type="checkbox" class="task"> \1</input>').
+      gsub(/- \[x\] (.*)/, '<input type="checkbox" class="task" checked> \1</input>')
   end
 end

@@ -24,11 +24,14 @@ Rails.application.routes.draw do
       get :search, :collection
       get ':number', to: 'issues#show', as: :show
       get ':number/move_to/:column_id', to: 'issues#move_to', as: :move_to_column
+
+      # Replace by POST methods
       get ':number/close', to: 'issues#close', as: :close
       get ':number/archive', to: 'issues#archive', as: :archive
       get ':number/assignee/:login', to: 'issues#assignee', as: :assignee
       get ':number/update', to: 'issues#update', as: :update
 
+      # Replace by REST methods.
       get ':number/comment', to: 'comments#create', as: :add_comment
       get ':number/update_comment', to: 'comments#update', as: :update_comment
       get ':number/delete_comment', to: 'comments#delete', as: :delete_comment
