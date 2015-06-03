@@ -63,12 +63,12 @@ describe ApplicationHelper do
     context 'checkboxes' do
       context 'one - unchecked' do
         let(:text) { '- [ ] ch1' }
-        it { is_expected.to eq "<p><input type=\"checkbox\" disabled> ch1</input></p>\n" }
+        it { is_expected.to eq "<p><input type=\"checkbox\" class=\"task\"> ch1</input></p>\n" }
       end
 
       context 'one - checked' do
         let(:text) { '- [x] ch1' }
-        it { is_expected.to eq "<p><input type=\"checkbox\" disabled checked> ch1</input></p>\n" }
+        it { is_expected.to eq "<p><input type=\"checkbox\" class=\"task\" checked> ch1</input></p>\n" }
       end
 
       context 'complex' do
@@ -83,7 +83,7 @@ TEXT
         end
         let(:expected_text) do
 <<-HTML
-<p><input type=\"checkbox\" disabled> ch1</input><br>\n<input type=\"checkbox\" disabled checked> ch2</input></p>\n\n<p>text<br>\n<input type=\"checkbox\" disabled> ch3</input></p>
+<p><input type=\"checkbox\" class=\"task\"> ch1</input><br>\n<input type=\"checkbox\" class=\"task\" checked> ch2</input></p>\n\n<p>text<br>\n<input type=\"checkbox\" class=\"task\"> ch3</input></p>
 HTML
         end
         it { is_expected.to eq expected_text }
