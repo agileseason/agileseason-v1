@@ -56,7 +56,7 @@ $(document).on 'page:change', ->
 
         unless new_content == ''
           $('.issue-comments').append('<div class="b-preloader horizontal"></div>')
-          $.get url, comment: new_content, ->
+          $.get url, body: new_content, ->
             $('.octicon-comment-discussion', $current_issue).addClass 'show'
             load_comments()
 
@@ -103,20 +103,14 @@ $(document).on 'page:change', ->
       else if $(@).prev().hasClass 'add-comment'
         unless new_content == ''
           $('.issue-comments').append('<div class="b-preloader horizontal"></div>')
-          $.get url, comment: new_content, ->
+          $.get url, body: new_content, ->
             $('.octicon-comment-discussion', $current_issue).addClass 'show'
             load_comments()
 
         close_active_form()
 
     $('.issue-description .task').click (e) ->
-      event.stopPropagation()
-      checkbox_index = $(@).index('.task')
-      checkbox_value = $(@).is(':checked')
-      $description = $(@).parents('.description')
-      body = $description.data('initial')
-      new_body = replaceNthMatch(body, /(\[(?:x|\s)\])/, checkbox_index + 1, if checkbox_value then '[x]' else '[ ]')
-      $.get $description.data('url'), body: new_body
+      update_by_checkbox($(@), '.description')
 
     ################################################################################
     # comments are loaded in issue modal
@@ -171,19 +165,13 @@ $(document).on 'page:change', ->
           close_active_form()
 
         else
-          $.get url, comment: new_content
+          $.get url, body: new_content
           $.post $('.preview', @).data('url'), string: new_content, (markdown) ->
             $editable_node.html(markdown)
             close_active_form()
 
       $('.issue-comments .task').click (e) ->
-        event.stopPropagation()
-        checkbox_index = $(@).index('.task')
-        checkbox_value = $(@).is(':checked')
-        $comment = $(@).parents('.comment')
-        body = $comment.data('initial')
-        new_body = replaceNthMatch(body, /(\[(?:x|\s)\])/, checkbox_index + 1, if checkbox_value then '[x]' else '[ ]')
-        $.get $comment.data('url'), comment: new_body
+        update_by_checkbox($(@), '.comment')
 
     ################################################################################
     # move-to events in issue modal
@@ -278,3 +266,13 @@ init_uploading = ->
   url = $('.board').data('direct_post_url')
   form_data = $('.board').data('direct_post_form_data')
   window.init_direct_upload($('.directUpload').find('input:file'), url, form_data)
+
+update_by_checkbox = ($checkbox, container_selector) ->
+  event.stopPropagation()
+  $container = $checkbox.parents(container_selector)
+  checkbox_index = $checkbox.index("#{container_selector} .task")
+  checkbox_value = $checkbox.is(':checked')
+  initial_body = $container.data('initial')
+  new_body = replaceNthMatch(initial_body, /(\[(?:x|\s)\])/, checkbox_index + 1, if checkbox_value then '[x]' else '[ ]')
+
+  $.get($container.data('url'), body: new_body)
