@@ -109,6 +109,15 @@ $(document).on 'page:change', ->
 
         close_active_form()
 
+    $('.issue-description .task').click (e) ->
+      event.stopPropagation()
+      checkbox_index = $(@).index('.task')
+      checkbox_value = $(@).is(':checked')
+      $description = $(@).parents('.description')
+      body = $description.data('initial')
+      new_body = replaceNthMatch(body, /(\[(?:x|\s)\])/, checkbox_index + 1, if checkbox_value then '[x]' else '[ ]')
+      $.get $description.data('url'), body: new_body
+
     ################################################################################
     # comments are loaded in issue modal
     ################################################################################
@@ -168,6 +177,7 @@ $(document).on 'page:change', ->
             close_active_form()
 
       $('.issue-comments .task').click (e) ->
+        event.stopPropagation()
         checkbox_index = $(@).index('.task')
         checkbox_value = $(@).is(':checked')
         $comment = $(@).parents('.comment')

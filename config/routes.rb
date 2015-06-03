@@ -24,6 +24,8 @@ Rails.application.routes.draw do
       get :search, :collection
       get ':number', to: 'issues#show', as: :show
       get ':number/move_to/:column_id', to: 'issues#move_to', as: :move_to_column
+
+      # Replace by POST methods
       get ':number/close', to: 'issues#close', as: :close
       get ':number/archive', to: 'issues#archive', as: :archive
       get ':number/assignee/:login', to: 'issues#assignee', as: :assignee
