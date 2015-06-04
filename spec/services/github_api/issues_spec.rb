@@ -107,12 +107,9 @@ describe GithubApi::Issues do
     let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: '', labels: ['feature']) }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
     before { allow(IssueStatService).to receive(:move!) }
-    before { allow(Activities::ColumnChangedActivity).to receive(:create_for) }
 
     after { subject }
     it { expect(IssueStatService).to receive(:move!) }
-    # FIX : Check params .with(...)
-    it { expect(Activities::ColumnChangedActivity).to receive(:create_for) }
   end
 
   describe '#close' do

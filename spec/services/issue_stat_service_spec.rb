@@ -1,5 +1,6 @@
 describe IssueStatService do
-  let(:board) { create(:board, :with_columns, number_of_columns: 2) }
+  let(:user) { create(:user) }
+  let(:board) { create(:board, :with_columns, number_of_columns: 2, user: user) }
   let(:service) { IssueStatService }
 
   describe '.create!' do
@@ -21,13 +22,29 @@ describe IssueStatService do
   end
 
   describe '.move!' do
-    subject { service.move!(column, issue_stat) }
-    let(:issue_stat) { create(:issue_stat, column: column) }
-    let(:column) { board.columns.second }
-    let!(:lifetime) { create(:lifetime, issue_stat: issue_stat, column: column) }
+    subject { service.move!(user, column_2, issue_stat) }
+    let(:issue_stat) { create(:issue_stat, column: column_1) }
+    let!(:lifetime) { create(:lifetime, issue_stat: issue_stat, column: column_1) }
 
-    it { expect { subject }.to change(Lifetime, :count).by(1) }
-    it { expect(subject.column).to eq column }
+    context 'new column' do
+      let(:column_1) { board.columns.first }
+      let(:column_2) { board.columns.second }
+
+      it { expect { subject }.to change(Lifetime, :count).by(1) }
+      it { expect { subject }.to change(Activity, :count).by(1) }
+      it { expect(subject.column).to eq column_2 }
+      # FIX : Check params .with(...)
+      #before { allow(Activities::ColumnChangedActivity).to receive(:create_for) }
+      #it { expect(Activities::ColumnChangedActivity).to receive(:create_for) }
+    end
+
+    context 'column not changed' do
+      let(:column_1) { board.columns.first }
+      let(:column_2) { board.columns.first }
+      it { expect { subject }.to change(Lifetime, :count).by(0) }
+      it { expect { subject }.to change(Activity, :count).by(0) }
+      it { expect(subject.column).to eq column_2 }
+    end
   end
 
   describe '.close!' do
