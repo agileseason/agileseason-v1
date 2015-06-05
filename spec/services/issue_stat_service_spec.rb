@@ -43,14 +43,12 @@ describe IssueStatService do
 
         it 'fetch data for cumulative flow chart' do
           expect(Graphs::CumulativeWorker).
-            to receive(:perform_async).
-              with(board.id, fake_token)
+            to receive(:perform_async).with(board.id, fake_token)
         end
 
         it 'create activity by issue_stat params' do
           expect(Activities::ColumnChangedActivity).
-            to receive(:create_for).
-              with(issue_stat, nil, column_2, user)
+            to receive(:create_for).with(issue_stat, nil, column_2, user)
         end
       end
     end
