@@ -11,6 +11,6 @@
     .datepicker
     a.button.save Save
 
-  a.button.set-due-date data-date="#{(issue.due_date_at || DateTime.now).strftime('%d/%m/%Y')}"
+  a.button.set-due-date data-date="#{(issue.due_date_at || DateTime.now).strftime('%m/%d/%Y')}"
     span.octicon.octicon-clock
     | Due Date
