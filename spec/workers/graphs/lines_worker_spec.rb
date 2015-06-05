@@ -35,7 +35,7 @@ RSpec.describe Graphs::LinesWorker do
 
     context :create_repo_history_for_missing_days do
       let(:repo_history) { create(:repo_history, board: board, collected_on: Date.today.prev_day(2), lines: 20) }
-      it { expect(board.reload.repo_histories).to have(3).item }
+      it { expect(board.reload.repo_histories).to have(2).item }
     end
   end
 end
