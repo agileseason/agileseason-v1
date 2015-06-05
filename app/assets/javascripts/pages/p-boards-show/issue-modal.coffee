@@ -30,7 +30,10 @@ $(document).on 'page:change', ->
       $('textarea', $form).focus()
       e.stopPropagation()
 
-    $('.editable').click ->
+    $('.editable').click (e) ->
+      if $(e.target).is(':checkbox')
+        return
+
       unless $(@).closest('.add-comment-form').length > 0
         open_form($(@))
 
@@ -92,6 +95,7 @@ $(document).on 'page:change', ->
           $('.octicon-book', $current_issue).hide()
 
         else
+          update_initial_data($(@), new_content)
           $.post $('.preview', @).data('url'), string: new_content, (markdown) ->
             $editable_node.html(markdown).removeClass 'blank-description'
           $('.octicon-book', $current_issue).show()
@@ -109,7 +113,7 @@ $(document).on 'page:change', ->
 
         close_active_form()
 
-    $('.issue-description .task').click (e) ->
+    $('.issue-description').on 'click', '.task', (e) ->
       update_by_checkbox($(@), '.description')
 
     ################################################################################
@@ -165,12 +169,13 @@ $(document).on 'page:change', ->
           close_active_form()
 
         else
+          update_initial_data($(@), new_content)
           $.get url, body: new_content
           $.post $('.preview', @).data('url'), string: new_content, (markdown) ->
             $editable_node.html(markdown)
             close_active_form()
 
-      $('.issue-comments .task').click (e) ->
+      $('.issue-comments').on 'click', '.task', (e) ->
         update_by_checkbox($(@), '.comment')
 
     ################################################################################
@@ -276,4 +281,10 @@ update_by_checkbox = ($checkbox, container_selector) ->
   new_body = replaceNthMatch(initial_body, /(\[(?:x|\s)\])/, checkbox_index + 1, if checkbox_value then '[x]' else '[ ]')
 
   $.get($container.data('url'), body: new_body)
-  $container.data('initial', new_body)
+  update_initial_data($container, new_body)
+
+update_initial_data = ($element, new_content) ->
+  if $element.attr('data-initial')
+    $element.data('initial', new_content)
+  else
+    $element.parent().find('[data-initial]').data('initial', new_content)
