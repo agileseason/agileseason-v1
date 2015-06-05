@@ -73,10 +73,10 @@ $(document).on 'page:change', ->
       e.preventDefault()
 
   # скрыть дашборд
-  $('.l-menu .boards').click (e) ->
+  $('.b-menu .boards').click (e) ->
     return if $(e.target).is('.current-board-link')
 
-    if $(e.target).is('.overlay', '.l-menu .boards')
+    if $(e.target).is('.overlay', '.b-menu .boards')
       $(@).find('.popup').hide()
       $(@).removeClass 'active'
       $(@).find('.overlay').remove()
@@ -85,7 +85,7 @@ $(document).on 'page:change', ->
       $(@).addClass('active').prepend('<div class="overlay"></div>')
       $(@).find('.popup').show()
 
-  $('.l-menu .search').on 'click', 'input, .octicon-search', ->
+  $('.b-menu .search').on 'click', 'input, .octicon-search', ->
     $('input', $(@).closest('.search')).focus().addClass 'active'
     $popup = $(@).parents('.search').find('.popup')
     unless $popup.is(':visible')
@@ -93,7 +93,7 @@ $(document).on 'page:change', ->
       $popup.find('.help').show()
       $popup.show()
 
-  $('.l-menu .search input').on 'keyup', (e) ->
+  $('.b-menu .search input').on 'keyup', (e) ->
     if e.keyCode == 13
       query = $(e.target).val()
       return if query == ''
@@ -109,11 +109,11 @@ $(document).on 'page:change', ->
           .html(search_result)
         $popup.show()
 
-  $('.l-menu .search .popup .close-popup').on 'click', ->
+  $('.b-menu .search .popup .close-popup').on 'click', ->
     $(@).parents('.popup').hide()
 
     # open activities slider
-  $('.l-menu').on 'click', '.activities-link', ->
+  $('.b-menu').on 'click', '.activities-link', ->
     $activities = $('.b-activities')
     $activities
       .trigger 'slider:load'

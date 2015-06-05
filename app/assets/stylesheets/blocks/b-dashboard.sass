@@ -7,6 +7,10 @@
 
 $image-path: "blocks/b-dashboard"
 
+@font-face
+  font-family: 'SignPainter'
+  src: local("SignPainter"), url("SignPainter.otf")
+
 .b-dashboard
   .header
     text-align: center
@@ -23,7 +27,10 @@ $image-path: "blocks/b-dashboard"
       padding-top: 92px
 
       span
-        font-size: 24px
+        font-family: "SignPainter"
+        font-size: 30px
+        line-height: 25px
+        color: #7f756c
 
     .user
       display: inline-block

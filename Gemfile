@@ -79,4 +79,5 @@ end
 source 'https://rails-assets.org' do
   gem 'rails-assets-jquery'
   gem 'rails-assets-jquery.scrollTo'
+  gem 'rails-assets-jquery-ui'
 end

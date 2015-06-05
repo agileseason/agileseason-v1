@@ -268,6 +268,8 @@ GEM
       railties (= 4.2.1)
       sprockets-rails
     rails-assets-jquery (2.1.4)
+    rails-assets-jquery-ui (1.11.4)
+      rails-assets-jquery (>= 1.6)
     rails-assets-jquery.scrollTo (2.1.0)
       rails-assets-jquery (>= 1.8)
     rails-deprecated_sanitizer (1.0.3)
@@ -454,6 +456,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (= 4.2.1)
   rails-assets-jquery!
+  rails-assets-jquery-ui!
   rails-assets-jquery.scrollTo!
   rb-fsevent
   redcarpet
