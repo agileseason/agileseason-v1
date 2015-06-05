@@ -53,9 +53,6 @@ describe IssueStatService do
               with(issue_stat, nil, column_2, user)
         end
       end
-      # FIX : Check params .with(...)
-      #before { allow(Activities::ColumnChangedActivity).to receive(:create_for) }
-      #it { expect(Activities::ColumnChangedActivity).to receive(:create_for) }
     end
 
     context 'column not changed' do
