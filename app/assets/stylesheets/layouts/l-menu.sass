@@ -1,31 +1,29 @@
 @import compass/css3/text-shadow
 @import compass/css3/border-radius
+@import compass/css3/transition
 @import mixins/close
 @import mixins/link
 @import mixins/popup
 @import globals/variables
 
+.profiler-results
+  display: none
+
 .l-menu
-  background: $menu-bg
-  color: $text-light
-  height: 18px
-  margin: 0
-  padding: 10px 0
+  margin: 0 0 20px 0
   position: relative
 
   ul
     margin: 0
     padding: 0
 
-    &.left
-      float: left
-
-    &.right
-      float: right
-
   li
     display: inline-block
-    margin: 0 10px
+    margin: 20px 20px 0 0
+
+    a
+      span
+        +link
 
     &.boards
       position: relative
@@ -33,75 +31,77 @@
       span
         cursor: pointer
 
-    &:first-child
-      margin-left: 20px
-
-    &:last-child
-      margin-right: 20px
-
     &.exit, &.user
       text-align: right
 
     a
-      color: $text-light
+      border-radius: 35px
+      cursor: pointer
+      display: inline-block
+      font-size: 18px
+      padding: 15px
 
-      &:hover
-        color: $text-usual
+      &.active
+        cursor: default
 
   .left-menu-link
-    margin-right: 0
+    margin: 0
 
-  .logo
-    +text-shadow(0 1px 1px rgba(255,255,255,1))
-    color: $text-light
-    font-weight: bold
-    margin-left: 0
-
-  .octicon.octicon-three-bars
-    font-size: 20px
-    display: inline-block
-    padding: 5px
-    margin-top: -7px
-
-  .popup
-    +popup
-    left: 50%
-    margin: 10px 0 0 -90px
-    top: 100%
-
-    .octicon.octicon-triangle-up
+    a
+      background: #fff
       display: inline-block
+      font-size: 20px
+      height: 20px
+      margin: 20px
+      text-align: center
+      width: 20px
+      color: inherit
 
-    ul
-      padding: 10px 0
+      &:hover
+        color: $link-hover
 
-      li
-        display: block
-        margin: 0
+  .activities-link
+    float: right
 
-      a
-        display: block
-        padding: 5px 15px
+    a
+      background: rgba(60,60,60,0.1)
+      +ajax_link
+      line-height: 18px
 
-        &:hover
-          background: $orange
-          color: #fff
+      &:hover
+        color: $link-hover
+
+        span.octicon-megaphone
+          color: $link-hover
+
+      span.octicon-megaphone
+        color: $ajax-link
 
   .search
-    input
-      +border-radius(4px)
-      border: 1px solid $lightgrey
-      color: $text-usual
-      font-size: 12px
-      height: 13px
-      margin-top: -3px
-      padding-right: 22px
-      width: 178px
+    float: right
 
-    span
-      color: $text-muted
-      margin-left: -20px
+    input
+      +transition(width ease 0.1s)
+      background: rgba(60,60,60,0.1)
+      border-radius: 35px
+      border: none
+      font-size: 16px
+      height: 20px
+      outline: none
+      padding: 14px
+      width: 20px
+
+      &.active
+        width: 350px
+
+    span.octicon-search
+      color: $ajax-link
+      cursor: pointer
+      margin-left: -30px
       vertical-align: middle
+
+      &:hover
+        color: $link-hover
 
     .popup
       height: auto

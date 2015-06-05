@@ -7,13 +7,13 @@
 
     - if @board.kanban?
       .box
-        h4 Features Kanban
+        h4.subtitle Features Kanban
         = simple_form_for(@board.kanban_settings, url: board_settings_url(board), method: :patch) do |f|
           = f.input :rolling_average_window
           = f.button :submit, value: 'Update'
     - elsif @board.scrum?
       .box
-        h4 Features Scrum
+        h4.subtitle Features Scrum
         = simple_form_for(@board.scrum_settings, url: board_settings_url(board), method: :patch) do |f|
           = f.input :days_per_iteration
           = f.input :start_iteration, collection: ScrumSettings::START_ITERATION_DAYS, include_blank: false

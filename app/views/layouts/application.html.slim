@@ -11,14 +11,9 @@ html
     script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"
 
   body class="p-#{controller_name}-#{action_name}" id="#{controller_name}_#{action_name}"
-    - if signed_in?
-      .left-menu
-        .overlay
-        ul
-          li : span #{current_user}
-          li : a href="#{repos_url}" Repos
-          li : a href="#{boards_url}" Boards
-          li : a.sign-out href="#{sign_out_url}" Sign out
+
+    - if params[:controller] != 'boards' && (params[:action] != 'show' or params[:action] != 'index')
+      /- if @board && @board.persisted? && params[:controller] == 'boards' && params[:controller] == 'show'
       = render partial: 'layouts/menu'
 
     .container
@@ -27,5 +22,14 @@ html
 
     - if @board
       .b-activities data-paginate="true" data-page="2" data-url="#{board_activities_url @board}"
+
+    - if params[:controller] == 'boards' && params[:action] == 'show'
+      - if @board && @board.persisted?
+        = render partial: 'layouts/menu'
+
+    - if signed_in? && @board && @board.persisted?
+      = render partial: 'dashboard'
+
+    = render partial: 'modal'
 
     = render partial: 'layouts/yandex_metrika' if Rails.env.production?

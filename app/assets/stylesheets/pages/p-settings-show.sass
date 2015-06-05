@@ -1,18 +1,34 @@
 @import mixins/button
 
 .p-settings-show
+  .l-menu
+    margin-bottom: 0
+
+  .title
+    padding-bottom: 30px
+
+  form
+    input, .input
+      display: inline-block
+
+      &[type="submit"]
+        margin-left: 10px
+
+    label
+      display: block
+
   .box
     margin-bottom: 36px
 
-    title
-      font-size: 18px
     p
       margin: 10px auto
 
     &.danger
-      title
+      .subtitle
         color: #c00
+
       .button
         background: #c00
+
         &:hover
           background: #f00000
