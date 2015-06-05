@@ -20,6 +20,10 @@ class GithubApi
     @client ||= Octokit::Client.new(access_token: @token, auto_paginate: true)
   end
 
+  def github_token
+    @token
+  end
+
   def add_user_to_repo(username, repo_name)
     repo = repo(repo_name)
 
