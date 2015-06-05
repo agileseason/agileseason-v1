@@ -13,7 +13,7 @@ class IssuePresenter < Keynote::Presenter
   end
 
   def due_date_at
-    issue.due_date_at.try(:strftime, '%b %d %H:%M')
+    issue.due_date_at.try(:utc).try(:strftime, '%b %d %H:%M')
   end
 
   # FIX : Public method only for test - not single responsibility.
