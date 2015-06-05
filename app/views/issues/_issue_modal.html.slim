@@ -27,7 +27,7 @@
                 a = column.name
 
       .issue-comments data-url="#{comments_board_issues_url board, issue.number}"
-        .b-preloader.horizontal
+        .b-preloader
 
       - if can? :update, @board
         .editable-form.add-comment-form data-url="#{add_comment_board_issues_url(board, issue.number)}"

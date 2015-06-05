@@ -15,3 +15,4 @@
 
 // ---  Fileupload loaded after all  ---
 //= require vendor/jquery.fileupload
+//= require jquery.scrollTo

@@ -126,7 +126,7 @@ show_issue_modal = (number) ->
   $issue_modal = $('.issue-modal')
   $modal_content = $('.modal-content', $issue_modal)
   $issue_modal.show()
-  $modal_content.html('<div class="b-issue-modal" style="text-align: center;"><div class="b-preloader horizontal modal-preloader"></div></div>')
+  $modal_content.html('<div class="b-issue-modal" style="text-align: center;"><div class="b-preloader modal-preloader"></div></div>')
 
   $.ajax
     url: "/boards/#{$('.board').data('github_full_name')}/issues/#{number}",

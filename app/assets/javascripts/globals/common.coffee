@@ -50,6 +50,27 @@ $(document).on 'page:change', ->
         success: (html) ->
           $('.b-preloader', $board_list).hide()
           $board_list.html($(html))
+          $issue_modal.trigger 'dashboard:load'
+
+  $('.settings-modal').on 'dashboard:load', ->
+
+    $('.boards a.new').click (e) ->
+      $(@).addClass 'loading'
+
+      $.ajax
+        url: $(@).attr('href'),
+        success: (html) =>
+          $(@)
+            .hide()
+            .closest('.modal-content')
+            .find('.repos')
+            .show()
+            .find('.repos-list')
+            .html(html)
+
+          $('.settings-modal').scrollTo('.repos', 300)
+
+      e.preventDefault()
 
   # скрыть дашборд
   $('.l-menu .boards').click (e) ->
@@ -96,7 +117,7 @@ $(document).on 'page:change', ->
     $activities = $('.b-activities')
     $activities
       .trigger 'slider:load'
-      .html('<div class="overlay"></div><div class="b-preloader horizontal"></div>')
+      .html('<div class="overlay"></div><div class="b-preloader"></div>')
       .addClass 'active'
 
     url = $(@).data('url')
@@ -121,7 +142,7 @@ $(document).on 'page:change', ->
 $(document).on 'slider:load', '.b-activities', ->
   $('.b-activities').scroll ->
     if $(@).scrollTop() + $(@).innerHeight() >= $(@)[0].scrollHeight && $(@).data('paginate') == true
-      $(@).append '<div class="b-preloader horizontal"></div>'
+      $(@).append '<div class="b-preloader"></div>'
       $(@).data(paginate: false)
 
       $.get $(@).data('url'), { page: $(@).data('page') }, (data) =>
@@ -138,7 +159,7 @@ show_issue_modal = (number) ->
   $issue_modal = $('.issue-modal')
   $modal_content = $('.modal-content', $issue_modal)
   $issue_modal.show()
-  $modal_content.html('<div class="b-issue-modal" style="text-align: center;"><div class="b-preloader horizontal modal-preloader"></div></div>')
+  $modal_content.html('<div class="b-issue-modal" style="text-align: center;"><div class="b-preloader modal-preloader"></div></div>')
 
   $.ajax
     url: "/boards/#{$('.board').data('github_full_name')}/issues/#{number}",

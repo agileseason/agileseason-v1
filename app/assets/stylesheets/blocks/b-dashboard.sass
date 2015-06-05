@@ -119,10 +119,27 @@ $image-path: "blocks/b-dashboard"
             color: #bebebe
             background-color: transparent
             border: 1px dashed #bebebe
+
             &:hover
               background-color: transparent
               border: 1px dashed $orange
               color: $orange
+
+            &.loading
+              position: relative
+              top: -26px
+              border-color: $link
+
+              &:after
+                background: inline-image("blocks/b-preloader/blue-medium.gif") no-repeat 50% 50% #fff
+                content: ' '
+                display: block
+                height: 20px
+                margin: -30px auto 0
+                width: 60px
+
+              .name
+                display: none
 
           &:hover
             background-color: $orange
@@ -140,3 +157,19 @@ $image-path: "blocks/b-dashboard"
             font-size: 14px
             color: #bebebe
             display: block
+
+  .repos
+    display: none
+    margin: 20px auto
+    width: 750px
+
+    .button
+      margin-left: 10px
+
+    li
+      margin-bottom: 20px
+
+  .repos-list
+    list-style: none
+    margin: 0
+    padding: 0
