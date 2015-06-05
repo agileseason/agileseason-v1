@@ -38,6 +38,7 @@ class IssueStatService
         )
         # FIX : Save info about previous column after #126
         Activities::ColumnChangedActivity.create_for(issue_stat, nil, column, user)
+        Graphs::CumulativeWorker.perform_async(column.board_id, user.github_api.github_token)
       end
       issue_stat
     end
