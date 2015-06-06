@@ -2,7 +2,3 @@
   .b-assignee
     a.user href="#{issue.assignee.html_url}" target="_blank" title="#{issue.assignee.login}"
       img.avatar src="#{issue.assignee.avatar_url}"
-- else
-  .no-one
-    | No one—
-    a.yourself href="#{assignee_board_issues_url(issue.board, issue.number, current_user.login)}" data-remote='true' assign yourself

@@ -2,11 +2,18 @@
   .popup
     .close-popup
     .users
+      /- unless issue.assignee
+        /.no-one
+          /a.yourself[
+            /href="#{assignee_board_issues_url(issue.board, issue.number, current_user.login)}"
+            /data-remote='true']
+            /| assign yourself
+
       - @board_bag.collaborators.each do |user|
         a.user href="#{assignee_board_issues_url(issue.board, issue.number, user.login)}" data-remote='true'
           img.avatar src="#{user.avatar_url}"
           span.name = user.login
           span.check class="#{'octicon octicon-check' if user.id == issue.assignee.try(:id)}"
-  a.assignee Assignee
-  .b-assignee-container
-    = render partial: 'issues/assignee', locals: { issue: issue }
+  a.assignee.button
+    span.octicon.octicon-person
+    span Assignee
