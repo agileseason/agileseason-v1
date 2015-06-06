@@ -2,6 +2,7 @@
 @import compass/css3/opacity
 @import compass/css3/border-radius
 @import compass/css3/box-shadow
+@import mixins/preloaders
 
 @import globals/variables
 
@@ -138,12 +139,9 @@ $image-path: "blocks/b-dashboard"
               border-color: $link
 
               &:after
-                background: inline-image("blocks/b-preloader/blue-medium_fefefe_bg.gif") no-repeat 50% 50% #fefefe
                 content: ' '
-                display: block
-                height: 20px
+                //+medium_preloader
                 margin: -30px auto 0
-                width: 60px
 
               .name
                 display: none

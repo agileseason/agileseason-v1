@@ -1,25 +1,13 @@
-$image-path: "blocks/b-preloader"
+@import mixins/preloaders
 
 .b-preloader
-  background: inline-image("#{$image-path}/blue_small_fefefe_bg.gif") no-repeat 50% 0 transparent
-  width: 28px
-  height: 9px
-  display: block
-  margin: 40px auto
+  +small_preloader
 
   &.blue-medium
-    background: inline-image("#{$image-path}/blue_medium_fefefe_bg.gif") no-repeat 50% 0 transparent
-    width: 60px
-    height: 20px
-    display: block
-    margin: 40px auto
+    +medium_preloader
 
   &.blue-big
-    background: inline-image("#{$image-path}/blue_big.gif") no-repeat 50% 0 transparent
-    width: 100px
-    height: 34px
-    display: block
-    margin: 40px auto
+    +big_preloader
 
   &.inline
     display: inline-block
