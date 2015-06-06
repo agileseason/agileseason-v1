@@ -89,8 +89,12 @@
       +box-shadow(0 0 40px rgba(63,63,63,0.1) inset)
 
     &.last
-      a.button.close
+      a.button.close,
+      a.button.archive
         display: block
+
+      a.button.archive.hidden
+        display: none
 
     &:first-child
       .new-issue
@@ -340,6 +344,7 @@
       background: $card-bug
 
     &.closed
+      opacity: 0.7
       background: $card-closed
 
       .issue-title,
@@ -399,11 +404,10 @@
       padding: 5px 10px
       text-align: right
       text-transform: uppercase
+      display: none
 
       &.close
         display: none
-
-
 
   .issue-modal
     color: $text-usual

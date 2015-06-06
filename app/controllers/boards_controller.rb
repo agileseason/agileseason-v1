@@ -27,6 +27,8 @@ class BoardsController < ApplicationController
       github_name: repo.name,
       github_full_name: repo.full_name
     )
+
+    render partial: 'new', locals: { board: @board }
   end
 
   def create

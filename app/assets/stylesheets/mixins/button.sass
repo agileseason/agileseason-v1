@@ -1,5 +1,6 @@
 @import compass/css3/border-radius
 @import globals/variables
+@import mixins/preloaders
 
 =button
   +border-radius(100px)
@@ -9,10 +10,30 @@
   cursor: pointer
   font-size: 14px
   padding: 5px 10px
+  display: inline-block
+
+  .b-preloader
+    display: none
 
   &:hover
     background: $button-hover
     color: #fff
+
+  &.loading
+    background: transparent
+    display: inline-block
+    position: relative
+    text-align: center
+
+    span
+      visibility: hidden
+
+    .b-preloader
+      display: inline-block
+      left: 0
+      margin: 4px 0 0 0
+      position: absolute
+      visibility: visible
 
 =button_ajax
   -moz-box-flex: 0

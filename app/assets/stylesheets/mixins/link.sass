@@ -28,5 +28,19 @@
   &:hover
     color: $ajax-link-hover
 
+  &.disabled,
+  &:disabled
+    color: $lightgrey
+    cursor: default
+
+    &:hover
+      color: $lightgrey
+
   &.active
     color: $ajax-link-hover
+    cursor: default
+    background: rgba(255,188,47,0.2)
+    border-radius: 100px
+
+    &:hover
+      color: $ajax-link-hover

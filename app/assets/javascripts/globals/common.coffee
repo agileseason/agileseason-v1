@@ -1,10 +1,6 @@
 $ ->
   Turbolinks.enableProgressBar true
 
-$(document).on 'left:menu:show', ->
-  $('.overlay', '.left-menu').click ->
-    $('.left-menu').removeClass 'show'
-
 $(document).on 'page:change', ->
   $('.notice').on 'click', ->
     $(@).remove()
@@ -50,27 +46,7 @@ $(document).on 'page:change', ->
         success: (html) ->
           $('.b-preloader', $board_list).hide()
           $board_list.html($(html))
-          $issue_modal.trigger 'dashboard:load'
-
-  $('.settings-modal').on 'dashboard:load', ->
-
-    $('.boards a.new').click (e) ->
-      $(@).addClass 'loading'
-
-      $.ajax
-        url: $(@).attr('href'),
-        success: (html) =>
-          $(@)
-            .hide()
-            .closest('.modal-content')
-            .find('.repos')
-            .show()
-            .find('.repos-list')
-            .html(html)
-
-          $('.settings-modal').scrollTo('.repos', 300)
-
-      e.preventDefault()
+          $('.b-dashboard').trigger 'wizard:load'
 
   # скрыть дашборд
   $('.b-menu .boards').click (e) ->
