@@ -137,19 +137,13 @@ $image-path: "blocks/b-dashboard"
               border: 1px dashed $orange
               color: $orange
 
-            &.loading
-              position: relative
-              border-color: $link
-
-              .name, .issues
-                display: none
-
-              .preloader
-                +medium_preloader
-                margin: 10px auto
-
-              .name
-                display: none
+            &.loading + .button-preloader
+              +medium_preloader
+              background-position: center center
+              display: inline-block
+              height: 80px
+              margin: 0
+              width: 215px
 
           &:hover
             background-color: $orange

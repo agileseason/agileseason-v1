@@ -20,20 +20,11 @@
     color: #fff
 
   &.loading
-    background: transparent
-    display: inline-block
-    position: relative
-    text-align: center
+    cursor: default
+    display: none !important
 
-    span
-      visibility: hidden
-
-    .b-preloader
-      display: inline-block
-      left: 0
-      margin: 4px 0 0 0
-      position: absolute
-      visibility: visible
+  &.loading + .button-preloader
+    +small_button_preloader
 
 =button_ajax
   -moz-box-flex: 0

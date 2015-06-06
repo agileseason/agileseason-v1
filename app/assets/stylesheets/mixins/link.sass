@@ -1,4 +1,5 @@
 @import globals/variables
+@import mixins/preloaders
 
 =link
   color: $link
@@ -22,6 +23,13 @@
     a.child
       color: $text-usual
       cursor: default
+
+  &.loading
+    cursor: default
+    display: none !important
+
+  &.loading + .button-preloader
+    +small_button_preloader
 
   &.disabled,
   &:disabled

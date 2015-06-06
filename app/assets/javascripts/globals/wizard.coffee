@@ -10,7 +10,7 @@ $(document).on 'ready page:load', ->
       $.ajax
         url: $(@).attr('href'),
         success: (html) =>
-          $(@).hide()
+          $(@).hide().removeClass 'loading'
           $wizard.show().find('.repos-list').html(html)
 
           if $('.settings-modal', $dashboard).length
