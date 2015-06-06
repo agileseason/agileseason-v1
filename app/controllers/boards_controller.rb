@@ -11,6 +11,7 @@ class BoardsController < ApplicationController
       { title: 'My Boards', boards: BoardPick.list_by(k(:user, current_user).boards) },
       { title: 'Explore Public Boards', boards: BoardPick.public_list },
     ]
+
     render partial: 'board_list' if request.xhr?
   end
 

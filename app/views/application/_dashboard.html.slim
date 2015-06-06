@@ -1,14 +1,20 @@
-.b-dashboard
-  .settings-modal.modal
-    .overlay
-    .modal-inner
-      .modal-content
-        a.octicon.octicon-three-bars.close-settings
+.header
+  .logo
+    span Agile season
 
-        = render partial: 'profile'
-        .board-lists
-          .b-preloader.blue-medium
+  .user
+    .avatar
+    .name
+      span #{current_user}&nbsp;&mdash; 
+      a.sign-out href="#{sign_out_url}" sign out
 
-        .repos
-          .title Choose repository
-          ul.repos-list
+.board-lists
+  - if params[:controller] == 'boards' && params[:action] == 'index'
+    = render partial: 'board_list'
+
+  - else
+    .b-preloader.blue-medium
+
+.repos
+  .title Choose repository
+  ul.repos-list

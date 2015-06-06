@@ -28,7 +28,7 @@ html
         = render partial: 'layouts/menu'
 
     - if signed_in? && @board && @board.persisted?
-      = render partial: 'dashboard'
+      = render partial: 'dashboard_modal'
 
     = render partial: 'modal'
 
