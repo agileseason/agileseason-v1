@@ -16,10 +16,17 @@
   &.active:hover
     color: $text-usual
     cursor: default
+    background: rgba(255,188,47,0.2)
+    border-radius: 100px
 
     a.child
       color: $text-usual
       cursor: default
+
+  &.disabled,
+  &:disabled
+    color: $lightgrey
+    cursor: default
 
 =ajax_link
   color: $ajax-link

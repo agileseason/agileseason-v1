@@ -34,6 +34,7 @@ $(document).on 'ready page:load', ->
         $.ajax
           url: $(@).attr('href'),
           success: (html) =>
+            $(@).removeClass 'loading'
             $('.repos-list', $wizard).hide()
             $('.new-board-form', $wizard).show().html(html)
 
@@ -46,6 +47,12 @@ $(document).on 'ready page:load', ->
 
       $('.menu li', $wizard).first().removeClass('active')
       $('.menu li', $wizard).last().removeClass('disabled').addClass('active')
+
+      $('.menu li', $wizard).first().click ->
+        $('.new-board-form', $wizard).hide()
+        $('.repos-list', $wizard).show()
+        $('.menu li', $wizard).removeClass('active').addClass 'disabled'
+        $('.menu li', $wizard).first().removeClass('disabled').addClass('active')
 
       $('#board_type_boardskanbanboard').click()
       $('#board_type_boardsscrumboard').prop('disabled', true)
