@@ -1,0 +1,124 @@
+@import compass/css3/text-shadow
+@import compass/css3/border-radius
+@import compass/css3/transition
+@import mixins/close
+@import mixins/link
+@import mixins/popup
+@import globals/variables
+
+.b-menu
+  margin: 0 0 20px 0
+  position: relative
+
+  ul
+    margin: 0
+    padding: 0
+
+  li
+    display: inline-block
+    margin: 20px 20px 0 0
+
+    a
+      span
+        +link
+
+    &.boards
+      position: relative
+
+      span
+        cursor: pointer
+
+    &.exit, &.user
+      text-align: right
+
+    a
+      border-radius: 35px
+      cursor: pointer
+      display: inline-block
+      font-size: 18px
+      padding: 15px
+
+      &.active
+        cursor: default
+
+  .left-menu-link
+    margin: 0
+
+    a
+      background: $link
+      display: inline-block
+      font-size: 20px
+      height: 20px
+      margin: 20px
+      text-align: center
+      width: 20px
+      color: #fff
+
+      &:hover
+        background: $link-hover
+        color: #fff
+
+  .activities-link
+    float: right
+
+    a
+      background: rgba(60,60,60,0.1)
+      +ajax_link
+      line-height: 18px
+
+      &:hover
+        color: $link-hover
+
+        span.octicon-megaphone
+          color: $link-hover
+
+      span.octicon-megaphone
+        color: $ajax-link
+
+  .search
+    float: right
+
+    input
+      +transition(width ease 0.1s)
+      background: rgba(60,60,60,0.1)
+      border-radius: 35px
+      border: none
+      font-size: 16px
+      height: 20px
+      outline: none
+      padding: 14px
+      width: 20px
+
+      &.active
+        width: 350px
+
+    span.octicon-search
+      color: $ajax-link
+      cursor: pointer
+      margin-left: -30px
+      vertical-align: middle
+
+      &:hover
+        color: $link-hover
+
+    .popup
+      height: auto
+      margin-left: -326px
+      min-height: 100px
+      padding: 10px
+      width: 400px
+
+      .content
+        p
+          color: $text-muted
+          padding: 15px 15px
+
+      .help
+        padding: 15px 15px
+        line-height: 20px
+
+        a
+          +link
+
+      .close-popup
+        +close

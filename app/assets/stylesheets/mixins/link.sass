@@ -1,4 +1,5 @@
 @import globals/variables
+@import mixins/preloaders
 
 =link
   color: $link
@@ -9,9 +10,30 @@
   &:hover
     color: $link-hover
 
+    .a-child
+      color: $link-hover
+
   &.active,
   &.active:hover
     color: $text-usual
+    cursor: default
+    background: rgba(255,188,47,0.2)
+    border-radius: 100px
+
+    a.child
+      color: $text-usual
+      cursor: default
+
+  &.loading
+    cursor: default
+    display: none !important
+
+  &.loading + .button-preloader
+    +small_button_preloader
+
+  &.disabled,
+  &:disabled
+    color: $lightgrey
     cursor: default
 
 =ajax_link
@@ -21,5 +43,19 @@
   &:hover
     color: $ajax-link-hover
 
+  &.disabled,
+  &:disabled
+    color: $lightgrey
+    cursor: default
+
+    &:hover
+      color: $lightgrey
+
   &.active
     color: $ajax-link-hover
+    cursor: default
+    background: rgba(255,188,47,0.2)
+    border-radius: 100px
+
+    &:hover
+      color: $ajax-link-hover

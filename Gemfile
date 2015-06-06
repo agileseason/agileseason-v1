@@ -74,3 +74,10 @@ group :test do
   gem 'docile', github: 'blackchestnut/docile'
   gem 'codeclimate-test-reporter', require: nil
 end
+
+# assets
+source 'https://rails-assets.org' do
+  gem 'rails-assets-jquery'
+  gem 'rails-assets-jquery.scrollTo'
+  gem 'rails-assets-jquery-ui'
+end

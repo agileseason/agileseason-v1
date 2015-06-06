@@ -1,12 +1,13 @@
-$image-path: "blocks/b-preloader"
+@import mixins/preloaders
 
 .b-preloader
-  &.horizontal
-    background: inline-image("#{$image-path}/horizontal-preloader.gif") no-repeat 0 0 transparent
-    height: 11px
-    margin: 0
-    width: 24px
-    display: block
+  +small_preloader
+
+  &.blue-medium
+    +medium_preloader
+
+  &.blue-big
+    +big_preloader
 
   &.inline
     display: inline-block

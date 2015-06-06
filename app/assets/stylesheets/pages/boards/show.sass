@@ -9,6 +9,7 @@
 @import mixins/close
 @import mixins/link
 @import mixins/popup
+@import compass/css3
 
 @import globals/variables
 
@@ -17,8 +18,13 @@
   .container
     padding: 0
 
-  .l-submenu
+  .b-submenu
     margin: 20px
+
+  .b-menu
+    position: absolute
+    top: 0
+    width: 100%
 
   .actions
     margin-bottom: 10px
@@ -46,7 +52,7 @@
     left: 0
     overflow-x: auto
     overflow-y: hidden
-    padding: 20px 20px 10px 10px
+    padding: 100px 20px 10px 10px
     position: absolute
     right: 0
     top: 0
@@ -83,8 +89,12 @@
       +box-shadow(0 0 40px rgba(63,63,63,0.1) inset)
 
     &.last
-      a.button.close
+      a.button.close,
+      a.button.archive
         display: block
+
+      a.button.archive.hidden
+        display: none
 
     &:first-child
       .new-issue
@@ -102,7 +112,7 @@
 
   .column-menu
     .title
-      +text-shadow(0px 1px 0px rgba(255,255,255,0.3))
+      //+text-shadow(0px 1px 0px rgba(255,255,255,0.3))
       color: $text-light
       font-size: 16px
       font-weight: bold
@@ -270,6 +280,7 @@
 
   .new-issue, .new-column
     +button_ajax
+    +border-radius(4px)
     border: 2px dashed rgba(63,63,63,0.4)
 
     &:hover
@@ -297,9 +308,12 @@
     background: #ccc
     margin-bottom: 10px
 
+  .ui-sortable-helper
+    +box-shadow(0 15px 10px -10px rgba(100, 100, 100, 0.3))
+
   .issue
     +border-radius(3px)
-    +box-shadow(0 1px 0px rgba(100,100,100,0.3))
+    +box-shadow(0 2px 0px 0px rgba(100, 100, 100, 0.3))
     background-color: $card
     margin-bottom: 10px
     padding: 0 10px 10px
@@ -309,6 +323,7 @@
     .octicon
       display: none
       margin-right: 3px
+      color: $text-light
 
       &.show
         display: inline
@@ -329,6 +344,7 @@
       background: $card-bug
 
     &.closed
+      opacity: 0.7
       background: $card-closed
 
       .issue-title,
@@ -388,6 +404,7 @@
       padding: 5px 10px
       text-align: right
       text-transform: uppercase
+      display: none
 
       &.close
         display: none
@@ -424,6 +441,14 @@
       top: 100px
       width: $modal-width
       z-index: 205
+
+    .modal-close
+      +close
+
+  .modal-preloader
+    background-position: 50% 50%
+    min-height: 200px
+    width: 100%
 
     .modal-close
       +close

@@ -1,0 +1,163 @@
+@import compass/css3
+@import compass/css3/opacity
+@import compass/css3/border-radius
+@import compass/css3/box-shadow
+@import mixins/preloaders
+
+@import globals/variables
+
+$image-path: "blocks/b-dashboard"
+
+@font-face
+  font-family: 'SignPainter'
+  src: local("SignPainter"), url("SignPainter.otf")
+
+.b-dashboard
+  .header
+    text-align: center
+    padding: 100px 0 40px
+    width: 700px
+    margin: 0 auto
+
+    .logo
+      display: inline-block
+      width: 50%
+      vertical-align: top
+      background: image-url("#{$image-path}/logo.png") 50% 0 no-repeat
+      background-size: 80px
+      padding-top: 88px
+
+      span
+        font-family: "SignPainter"
+        font-size: 30px
+        line-height: 25px
+        color: #7f756c
+
+    .user
+      display: inline-block
+      width: 50%
+      vertical-align: top
+
+      .avatar
+        +border-radius(100px)
+        background: #eee
+        height: 60px
+        margin: 10px 0 20px -10px
+        width: 60px
+        display: inline-block
+
+  .title
+    font-size: 24px
+    font-weight: normal
+    padding: 20px 0 20px 0
+
+
+  .settings-modal
+    display: none
+    bottom: 0
+    height: 100%
+    left: 0
+    overflow-y: auto
+    position: fixed
+    right: 0
+    top: 0
+    width: 100%
+    z-index: 205
+
+    & > .overlay
+      +opacity(0.4)
+      height: 100%
+      left: 0
+      position: fixed
+      top: 0
+      width: 100%
+      z-index: 0
+
+      &.visible
+        +opacity(0.5)
+
+    .modal-inner
+      +border-radius(10px)
+      +box-shadow(0px 20px 50px -3px rgba(60,60,60,0.2))
+      background: #fafafa
+      margin: 20px
+      padding: 40px 60px
+      position: relative
+
+      .header
+        padding-top: 20px
+
+      .octicon-three-bars
+        display: inline-block
+        font-size: 20px
+        height: 20px
+        left: 0
+        margin: 20px
+        position: absolute
+        text-align: center
+        top: 0
+        width: 20px
+
+        &:hover
+          color: $link-hover
+
+  .board-lists
+    display: block
+    margin: 0 auto
+    vertical-align: top
+    width: 750px
+
+    ul.boards
+      li
+        display: inline-block
+        vertical-align: top
+
+        a
+          +border-radius(4px)
+          +box-sizing(border-box)
+          background-color: #eee
+          color: $text-usual
+          display: inline-block
+          font-size: 20px
+          height: 80px
+          margin: 0 20px 20px 0
+          padding: 18px 20px
+          width: 230px
+
+          .preloader
+            display: none
+
+          &.new
+            color: #bebebe
+            background-color: transparent
+            border: 1px dashed #bebebe
+
+            &:hover
+              background-color: transparent
+              border: 1px dashed $orange
+              color: $orange
+
+            &.loading + .button-preloader
+              +medium_preloader
+              background-position: center center
+              display: inline-block
+              height: 80px
+              margin: 0
+              width: 215px
+
+          &:hover
+            background-color: $orange
+            color: #fff
+
+            .issues
+              color: #ffe0b2
+
+          .name
+            font-weight: 400
+            display: block
+            margin-bottom: 4px
+
+          .issues
+            font-size: 14px
+            color: #bebebe
+            display: block

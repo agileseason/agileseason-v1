@@ -7,6 +7,8 @@ li
     - if k(:repo, repo).board
       a href="#{board_url(k(:repo, repo).board)}" Link to Board
     - elsif current_user.repo_admin?(repo.id)
-      a.button.create_board href="#{new_board_url( github_id: repo.id )}" Create Board
+      a.button.create_board href="#{new_board_url( github_id: repo.id )}"
+        span Create Board
+      span.button-preloader
     - else
       span Not enough permissions

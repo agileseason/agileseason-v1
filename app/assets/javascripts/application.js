@@ -1,4 +1,5 @@
 //= require jquery
+//= require jquery-ui
 //= require jquery-ui/datepicker
 //= require jquery_ujs
 
@@ -15,3 +16,4 @@
 
 // ---  Fileupload loaded after all  ---
 //= require vendor/jquery.fileupload
+//= require jquery.scrollTo

@@ -1,0 +1,83 @@
+@import mixins/link
+@import globals/variables
+
+.b-wizard
+  display: none
+  margin: 20px auto
+  width: 750px
+
+  .button
+    margin-left: 10px
+
+  li
+    margin-bottom: 20px
+
+  .repos-list
+    list-style: none
+    margin: 0
+    padding: 0
+
+  .new-board-form
+    display: none
+
+  .menu
+    list-style: none
+    margin: 0
+    padding: 20px 0 10px
+    font-size: 24px
+
+    li
+      +link
+      display: inline-block
+      padding: 5px 10px
+      margin-left: -10px
+
+      &:last-child
+        &.active
+          margin-left: 10px
+
+    .arrow
+      margin: 0 10px
+      color: #7f756c
+
+  form
+    label
+      width: 80px
+
+    .error
+      margin-left: 10px
+
+    input:disabled + .collection_radio_buttons
+      color: $lightgrey
+
+    .input
+      margin-bottom: 10px
+
+    .columns
+      margin-bottom: 10px
+
+      .label-column
+        display: inline-block
+        vertical-align: top
+        width: 90px
+
+      .type
+        display: inline-block
+        vertical-align: top
+
+        label
+          padding-bottom: 0
+          width: 300px
+          padding-bottom: 10px
+
+          label
+            padding-bottom: 0
+            vertical-align: top
+            width: 240px
+
+      ul
+        display: inline-block
+        list-style: none
+        margin: 0
+        padding: 0
+        vertical-align: top

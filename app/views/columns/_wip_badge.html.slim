@@ -1,5 +1,6 @@
-span.badge [
-  class="#{k(column).wip_status}"
-  title='Work in progress limit'
-  ]
-  = column.visible_issue_stats.size
+- if column.visible_issue_stats.size > 9
+  span.badge [
+    class="#{k(column).wip_status}"
+    title='Work in progress limit'
+    ]
+    = column.visible_issue_stats.size

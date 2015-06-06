@@ -1,13 +1,15 @@
 @import compass/css3/opacity
+@import globals/variables
 
 =close
   +opacity(0.4)
   border-bottom: none
   cursor: pointer
   height: 18px
+  padding: 20px
   position: absolute
-  right: 10px
-  top: 10px
+  right: -10px
+  top: -10px
   width: 16px
 
   &:before
@@ -21,3 +23,4 @@
 
   &:hover
     +opacity(0.6)
+    color: $link-hover

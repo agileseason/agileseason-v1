@@ -11,6 +11,8 @@ class BoardsController < ApplicationController
       { title: 'My Boards', boards: BoardPick.list_by(k(:user, current_user).boards) },
       { title: 'Explore Public Boards', boards: BoardPick.public_list },
     ]
+
+    render partial: 'board_list' if request.xhr?
   end
 
   def show
@@ -25,6 +27,8 @@ class BoardsController < ApplicationController
       github_name: repo.name,
       github_full_name: repo.full_name
     )
+
+    render partial: 'new', locals: { board: @board }
   end
 
   def create

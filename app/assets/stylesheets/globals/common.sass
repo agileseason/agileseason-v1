@@ -1,10 +1,16 @@
 @import compass/css3/border-radius
-@import compass/css3/text-shadow
 @import mixins/button
 @import globals/variables
 @import mixins/link
 @import mixins/popup
 @import mixins/close
+
+@font-face
+  font-family: 'Verdana'
+  src: local("Verdana"), url("Verdana.ttf")
+
+.profiler-results
+  left: 80% !important
 
 html,
 body
@@ -12,22 +18,32 @@ body
 
 body
   background: $body-bg
-  font-family: Helvetica, Arial, sans-serif
+  font-family: 'Verdana', sans-serif
   margin: 0
   padding: 0
 
 .container
-  padding: 0px 20px 20px 20px
+  padding: 0px 30px 20px 30px
 
-title
-  display: block
+.title
+  font-size: 34px
   font-weight: bold
-  margin-bottom: 8px
+  margin: 0
+  padding: 20px 0 10px 0
+  text-align: left
+
+.subtitle
+  font-size: 26px
+  font-weight: normal
+  padding: 35px 0 20px 0
 
 p
   line-height: 1.3em
   margin: 0
   padding: 0
+
+.button-preloader
+  display: none
 
 a
   +link
@@ -37,13 +53,6 @@ a
 
 .hidden
   display: none
-
-.title
-  font-size: 28px
-  font-weight: bold
-  margin: 0
-  padding: 20px 0 10px 0
-  text-align: left
 
 .list
   list-style: none
@@ -55,10 +64,10 @@ a
 
 .button
   +button
+
   .octicon
     color: #fff
     margin-right: 4px
-    text-shadow: 0 1px 1px $button
     width: 16px
 
 form
@@ -78,7 +87,7 @@ label
 
 input[type="text"]
   display: table-cell
-  font-size: 14px
+  font-size: 16px
   padding: 4px
   width: 300px
 
@@ -106,17 +115,13 @@ abbr[title="required"]
 .scroller::-webkit-scrollbar
   width: 0
 
-.octicon
-  +text-shadow(0 1px 0px rgba(255,255,255,0.3))
-  color: $text-light
-
 .overlay
   height: 100%
   left: 0
   position: fixed
   top: 0
   width: 100%
-  z-index: 1
+  z-index: 2
 
 blockquote
   border-left: 4px solid #ddd
@@ -135,7 +140,6 @@ blockquote
 .popup
   +popup
   font-size: 14px
-  //height: 220px
   width: 240px
 
   .close-popup

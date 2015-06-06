@@ -1,0 +1,28 @@
+.header
+  .logo
+    span Agile season
+
+  .user
+    .avatar
+    .name
+      span #{current_user}&nbsp;&mdash; 
+      a.sign-out href="#{sign_out_url}" sign out
+
+.board-lists
+  - if params[:controller] == 'boards' && params[:action] == 'index'
+    = render partial: 'board_list'
+
+  - else
+    .b-preloader.blue-medium
+
+.b-wizard
+  ul.menu
+    li.active Choose repository
+    span.arrow &nbsp;→&nbsp;
+    li Set up board
+
+  ul.repos-list
+    .b-preloader.blue-medium
+
+  .new-board-form
+    .b-preloader.blue-medium
