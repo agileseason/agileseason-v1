@@ -25,7 +25,7 @@ $image-path: "blocks/b-dashboard"
       vertical-align: top
       background: image-url("#{$image-path}/logo.png") 50% 0 no-repeat
       background-size: 80px
-      padding-top: 92px
+      padding-top: 88px
 
       span
         font-family: "SignPainter"
@@ -110,6 +110,7 @@ $image-path: "blocks/b-dashboard"
     ul.boards
       li
         display: inline-block
+        vertical-align: top
 
         a
           +border-radius(4px)
@@ -123,6 +124,9 @@ $image-path: "blocks/b-dashboard"
           padding: 18px 20px
           width: 230px
 
+          .preloader
+            display: none
+
           &.new
             color: #bebebe
             background-color: transparent
@@ -135,13 +139,14 @@ $image-path: "blocks/b-dashboard"
 
             &.loading
               position: relative
-              top: -26px
               border-color: $link
 
-              &:after
-                content: ' '
-                //+medium_preloader
-                margin: -30px auto 0
+              .name, .issues
+                display: none
+
+              .preloader
+                +medium_preloader
+                margin: 10px auto
 
               .name
                 display: none
