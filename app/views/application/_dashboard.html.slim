@@ -3,9 +3,9 @@
     span Agile season
 
   .user
-    .avatar
+    .avatar style="background-image: url(#{raw gravatar_image_url(current_user.email, size: 60)})"
     .name
-      span #{current_user}&nbsp;&mdash; 
+      span #{current_user}&nbsp;&mdash;&nbsp;
       a.sign-out href="#{sign_out_url}" sign out
 
 .board-lists
