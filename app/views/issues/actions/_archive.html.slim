@@ -1,4 +1,7 @@
 - if issue.closed? && !issue.archive?
-  a.button.archive href="#{archive_board_issues_url(board, issue.number)}"
+  a.button.archive [
+    href="#{archive_board_issues_url(board, issue.number)}"
+    title='Remove issue from board'
+  ]
     span.octicon.octicon-package
-    | Archive issue
+    | Archive
