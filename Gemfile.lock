@@ -454,7 +454,7 @@ DEPENDENCIES
   pry-rails
   quiet_assets
   rack-mini-profiler
-  rails
+  rails (= 4.2.1)
   rails-assets-jquery!
   rails-assets-jquery-ui!
   rails-assets-jquery.scrollTo!
