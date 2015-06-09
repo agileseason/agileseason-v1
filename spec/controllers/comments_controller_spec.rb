@@ -27,11 +27,19 @@ RSpec.describe CommentsController, type: :controller do
     end
   end
 
-  describe 'GET delete' do
-    before { allow_any_instance_of(GithubApi).to receive(:delete_comment) }
-    it 'return http success' do
-      get :delete, board_github_full_name: board.github_full_name, number: 1
-      expect(response.body).to be_empty
+  describe '#delete' do
+    subject { delete :delete, board_github_full_name: board.github_full_name, number: 1 }
+
+    context 'check responce' do
+      before { allow_any_instance_of(GithubApi).to receive(:delete_comment) }
+      before { subject }
+      it { expect(response).to have_http_status(:success) }
+      it { expect(response.body).to be_empty }
+    end
+
+    context 'call delete_comment' do
+      after { subject }
+      it { expect_any_instance_of(GithubApi).to receive(:delete_comment).once }
     end
   end
 end

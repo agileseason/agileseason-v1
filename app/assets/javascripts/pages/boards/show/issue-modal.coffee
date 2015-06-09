@@ -129,7 +129,10 @@ $(document).on 'page:change', ->
 
       $('.delete', @).click ->
         if window.confirm('Delete comment?')
-          $.get $(@).data('url'), {}, ->
+          $.ajax
+            method: 'DELETE'
+            url: $(@).data('url')
+            success: ->
             if $('.comment', $issue_modal).length < 1
               $('.octicon-comment-discussion', $current_issue).removeClass 'show'
 

@@ -33,8 +33,8 @@ Rails.application.routes.draw do
       # Replace by REST methods.
       get ':number/comment', to: 'comments#create', as: :add_comment
       get ':number/update_comment', to: 'comments#update', as: :update_comment
-      get ':number/delete_comment', to: 'comments#delete', as: :delete_comment
       get ':number/comments', to: 'comments#index', as: :comments
+      delete ':number/delete_comment', to: 'comments#delete', as: :delete_comment
     end
 
     resource :settings, only: [:show, :update] do

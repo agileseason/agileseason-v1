@@ -13,13 +13,20 @@
 
       - if can? :update, @board
         span.controls
-          | &mdash; 
+          | &mdash;&nbsp;
           a.edit edit
 
           | &nbsp;or&nbsp;
 
-          a.delete data-url="#{delete_comment_board_issues_url(board, comment.id)}"
-            | delete
+          a.delete data-url="#{delete_comment_board_issues_url(board, comment.id)}" delete
+
+          / FIX : Why redirect after remove=true???
+          /a.delete [
+            href="#{delete_comment_board_issues_url(board, comment.id)}"
+            remote='true
+            data-method='delete'
+            data-confirm='Delete comment?'
+            ] delete
 
       .comment[
         data-url="#{update_comment_board_issues_url(board, comment.id)}"
