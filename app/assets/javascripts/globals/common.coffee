@@ -111,8 +111,6 @@ $(document).on 'page:change', ->
 
   # open issue popup
   $('.b-activities, .search').on 'click', '.issue-url', ->
-    # FIX : Need open all issues, not just visible! (Use Issues#show)
-    #$('.issue-name[data-number="' + $(@).data('number') + '"]').trigger 'click'
     show_issue_modal($(@).data('number'))
 
 $(document).on 'slider:load', '.b-activities', ->

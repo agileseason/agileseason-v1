@@ -37,11 +37,22 @@ RSpec.describe IssuesController, type: :controller do
     end
   end
 
-  describe 'GET update' do
+  describe '#update' do
     before { allow_any_instance_of(GithubApi).to receive(:update_issue) }
-    it 'return http success' do
-      get :update, board_github_full_name: board.github_full_name, number: 1
-      expect(response).to redirect_to(board_url(board))
+    before { post :update, board_github_full_name: board.github_full_name, number: 1 }
+
+    it { expect(response).to have_http_status(:success) }
+  end
+
+  describe '#due_date' do
+    let(:date) { '10/11/2015 12:00' }
+    let!(:issue) { create(:issue_stat, board: board, number: 1, due_date_at: nil) }
+    before do
+      post :due_date, board_github_full_name: board.github_full_name, number: 1, due_date: date
     end
+
+    it { expect(response).to have_http_status(:success) }
+    it { expect(response.body).to eq 'Nov 10 12:00' }
+    it { expect(issue.reload.due_date_at).to eq date }
   end
 end

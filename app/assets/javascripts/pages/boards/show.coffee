@@ -61,15 +61,14 @@ $(document).on 'page:change', ->
     time = $modal.find('.time input').val()
     $.ajax
       url: $modal.find('.edit-due-date').data('url'),
+      method: 'POST',
       data: { due_date: "#{date} #{time}" },
       success: (date) ->
         $modal.find('.popup').hide()
         $modal.find('.due-date').removeClass('none').html(date)
         # FIX : Extract method for find current issue number
         number = $modal.find('.b-issue-modal').data('number')
-        # FIX : Find reason what find return two element .due-date
-        find_issue(number).find('.due-date').each ->
-          $(@).removeClass('none').html(date)
+        find_issue(number).find('.due-date').removeClass('none').html(date)
 
   # раскрыть попап с пользователями для назначения
   $('.board-column, .issue-modal').on 'click', '.assignee', ->
@@ -103,7 +102,7 @@ $(document).on 'page:change', ->
     $('.b-issue-labels', '.current-issue, .issue-modal').html(html_labels)
 
     # отправить на сервер набор лейблов
-    $.get $(@).data('url'), { labels: labels }
+    $.post $(@).data('url'), { labels: labels }
 
   # скрыть тикет после успешной архивации
   $('.issue .archive').on 'click', ->

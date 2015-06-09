@@ -31,6 +31,18 @@ class IssuesController < ApplicationController
     end
   end
 
+  def update
+    github_api.update_issue(
+      @board,
+      params[:number],
+      body: params[:body],
+      title: params[:title],
+      labels: params[:labels]
+    )
+
+    render nothing: true
+  end
+
   def move_to
     github_api.move_to(@board, @board.columns.find(params[:column_id]), params[:number])
     render json: begin
@@ -64,14 +76,6 @@ class IssuesController < ApplicationController
     render partial: 'issues/assignee', locals: {
       issue: BoardIssue.new(issue, @board.find_stat(issue))
     }
-  end
-
-  def update
-    github_api.update_issue(@board, params[:number],
-      body: params[:body],
-      title: params[:title],
-      labels: params[:labels])
-    redirect_to board_url(@board)
   end
 
   def due_date
