@@ -32,10 +32,13 @@ class IssuesController < ApplicationController
   end
 
   def update
-    github_api.update_issue(@board, params[:number],
+    github_api.update_issue(
+      @board,
+      params[:number],
       body: params[:body],
       title: params[:title],
-      labels: params[:labels])
+      labels: params[:labels]
+    )
 
     render nothing: true
   end
