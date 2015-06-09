@@ -43,4 +43,14 @@ RSpec.describe IssuesController, type: :controller do
 
     it { expect(response).to have_http_status(:success) }
   end
+
+  describe '#due_date' do
+    let(:date) { '10/11/2015 12:00' }
+    let!(:issue) { create(:issue_stat, board: board, number: 1, due_date_at: nil) }
+    before { post :due_date, board_github_full_name: board.github_full_name, number: 1, due_date: date }
+
+    it { expect(response).to have_http_status(:success) }
+    it { expect(response.body).to eq 'Nov 10 12:00' }
+    it { expect(issue.reload.due_date_at).to eq date }
+  end
 end

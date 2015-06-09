@@ -27,7 +27,7 @@ Rails.application.routes.draw do
       get ':number/close', to: 'issues#close', as: :close
       get ':number/archive', to: 'issues#archive', as: :archive
       get ':number/assignee/:login', to: 'issues#assignee', as: :assignee
-      get ':number/due_date', to: 'issues#due_date', as: :due_date
+      post ':number/due_date', to: 'issues#due_date', as: :due_date
       post ':number/update', to: 'issues#update', as: :update
 
       # Replace by REST methods.
