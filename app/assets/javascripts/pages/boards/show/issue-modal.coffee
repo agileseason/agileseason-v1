@@ -85,7 +85,7 @@ $(document).on 'page:change', ->
         #console.log 'title:submit'
         $('.issue-name', $current_issue).html(new_content)
 
-        $.get url, title: new_content
+        $.post url, title: new_content
         close_active_form()
 
       # description save
@@ -100,7 +100,7 @@ $(document).on 'page:change', ->
             $editable_node.html(markdown).removeClass 'blank-description'
           $('.octicon-book', $current_issue).show()
 
-        $.get url, body: new_content
+        $.post url, body: new_content
         close_active_form()
 
       # save a new comment

@@ -103,7 +103,7 @@ $(document).on 'page:change', ->
     $('.b-issue-labels', '.current-issue, .issue-modal').html(html_labels)
 
     # отправить на сервер набор лейблов
-    $.get $(@).data('url'), { labels: labels }
+    $.post $(@).data('url'), { labels: labels }
 
   # скрыть тикет после успешной архивации
   $('.issue .archive').on 'click', ->
