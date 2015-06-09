@@ -59,7 +59,7 @@ $(document).on 'page:change', ->
 
         unless new_content == ''
           $('.issue-comments').append('<div class="b-preloader horizontal"></div>')
-          $.get url, body: new_content, ->
+          $.post url, body: new_content, ->
             $('.octicon-comment-discussion', $current_issue).addClass 'show'
             load_comments()
 
@@ -107,7 +107,7 @@ $(document).on 'page:change', ->
       else if $(@).prev().hasClass 'add-comment'
         unless new_content == ''
           $('.issue-comments').append('<div class="b-preloader horizontal"></div>')
-          $.get url, body: new_content, ->
+          $.post url, body: new_content, ->
             $('.octicon-comment-discussion', $current_issue).addClass 'show'
             load_comments()
 
@@ -165,7 +165,6 @@ $(document).on 'page:change', ->
         $current_issue = $('.current-issue') # миниатюра открытого тикета
 
         url = $form.prev().data('url')
-        delete_url = $form.prev().data('delete')
         new_content = $('textarea', '.editable-form.active').val()
 
         if new_content.replace(/\s*\n*/g, '') == ''
@@ -173,7 +172,7 @@ $(document).on 'page:change', ->
 
         else
           update_initial_data($(@), new_content)
-          $.get url, body: new_content
+          $.post url, body: new_content
           $.post $('.preview', @).data('url'), string: new_content, (markdown) ->
             $editable_node.html(markdown)
             close_active_form()
@@ -283,7 +282,7 @@ update_by_checkbox = ($checkbox, container_selector) ->
   initial_body = $container.data('initial')
   new_body = replaceNthMatch(initial_body, /(\[(?:x|\s)\])/, checkbox_index + 1, if checkbox_value then '[x]' else '[ ]')
 
-  $.get($container.data('url'), body: new_body)
+  $.post($container.data('url'), body: new_body)
   update_initial_data($container, new_body)
 
 update_initial_data = ($element, new_content) ->

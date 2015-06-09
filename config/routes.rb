@@ -30,10 +30,9 @@ Rails.application.routes.draw do
       post ':number/due_date', to: 'issues#due_date', as: :due_date
       post ':number/update', to: 'issues#update', as: :update
 
-      # Replace by REST methods.
-      get ':number/comment', to: 'comments#create', as: :add_comment
-      get ':number/update_comment', to: 'comments#update', as: :update_comment
       get ':number/comments', to: 'comments#index', as: :comments
+      post ':number/comment', to: 'comments#create', as: :add_comment
+      post ':number/update_comment', to: 'comments#update', as: :update_comment
       delete ':number/delete_comment', to: 'comments#delete', as: :delete_comment
     end
 
