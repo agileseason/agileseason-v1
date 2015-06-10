@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   include ApplicationHelper
 
+  force_ssl if: :ssl_configured?
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
@@ -15,6 +17,10 @@ class ApplicationController < ActionController::Base
     rescue_from ActionController::RoutingError, with: :runtime_error
     rescue_from AbstractController::ActionNotFound, with: :runtime_error
     rescue_from ActionView::Template::Error, with: :runtime_error
+  end
+
+  def ssl_configured?
+    Rails.env.production?
   end
 
   def runtime_error(e)
