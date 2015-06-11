@@ -5,7 +5,5 @@
     .description
       span.user = activity.user.github_username
       |  #{activity.description} 
-      a.issue-url data-number="#{activity.issue_stat.number}"
-        | issue
-      span &nbsp;##{activity.issue_stat.number}
+      a.issue-url data-number="#{activity.issue_stat.number}" issue&nbsp;##{activity.issue_stat.number}
       .date = "#{activity.created_at.strftime('%B %-d')} at #{activity.created_at.strftime('%H:%M')}"
