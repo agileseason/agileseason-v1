@@ -9,7 +9,7 @@ describe Activities::ChangeDueDate, type: :model do
     it { expect { subject }.to change(Activities::ChangeDueDate, :count).by(1) }
     it { expect(subject.board).to eq board }
     it { expect(subject.issue_stat).to eq issue_stat }
-    it { expect(subject.data).to eq({ due_date_at: due_date_at }) }
+    it { expect(subject.data).to eq(due_date_at: due_date_at) }
   end
 
   describe '#description' do
@@ -24,13 +24,12 @@ describe Activities::ChangeDueDate, type: :model do
 
     context 'without due date' do
       let(:due_date_at) { nil }
-      it { is_expected.to eq "changed due date to - nil" }
+      it { is_expected.to eq 'changed due date to - nil' }
     end
 
     context 'without data' do
       let(:data) { nil }
-      it { is_expected.to eq "changed due date to - nil" }
+      it { is_expected.to eq 'changed due date to - nil' }
     end
   end
 end
-
