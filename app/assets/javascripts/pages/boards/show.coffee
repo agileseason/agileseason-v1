@@ -47,7 +47,7 @@ $(document).on 'page:change', ->
     $popup = $(@).parent().find('.popup')
     $datepicker = $('.datepicker', $popup)
     $datepicker.datepicker({
-      dateFormat: 'dd/mm/yyyy',
+      dateFormat: 'dd/mm/yy',
       onSelect: ->
         $popup.find('.date input').val($(@).val())
     })
