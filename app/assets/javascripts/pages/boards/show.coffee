@@ -32,16 +32,16 @@ $(document).on 'page:change', ->
     $(@).closest('.inline-form').hide()
     false
 
-  $('.issue-modal').on 'ajax:success', (e, data) ->
-    #console.log 'modal ajax:success'
-    number = $(@).find('.b-issue-modal').data('number')
-    # FIX : Find reason what find return two element .b-assignee-container
-    find_issue(number).find('.b-assignee-container').each ->
-      $(@).html(data)
-    $(@).find('.b-assignee-container').html(data)
-    $(@).find('.b-assign .check').removeClass('octicon octicon-check')
-    $('.check', $(e.target)).addClass('octicon octicon-check')
-    $(@).find('.popup').hide() # скрытый эффект - закрывает все popup
+  #$('.issue-modal').on 'ajax:success', (e, data) ->
+    ##console.log 'modal ajax:success'
+    #number = $(@).find('.b-issue-modal').data('number')
+    ## FIX : Find reason what find return two element .b-assignee-container
+    #find_issue(number).find('.b-assignee-container').each ->
+      #$(@).html(data)
+    #$(@).find('.b-assignee-container').html(data)
+    #$(@).find('.b-assign .check').removeClass('octicon octicon-check')
+    #$('.check', $(e.target)).addClass('octicon octicon-check')
+    #$(@).find('.popup').hide() # скрытый эффект - закрывает все popup
 
   # раскрыть попап с календарем для установки крайней даты
   $('.board-column, .issue-modal').on 'click', '.set-due-date', ->

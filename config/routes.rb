@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     resource :issues, only: [:new, :create] do
       get :search, :collection
       get ':number', to: 'issues#show', as: :show
+      #get 'new/issue', to: 'issues#new', as: :new
       get ':number/move_to/:column_id', to: 'issues#move_to', as: :move_to_column
       get ':number/close', to: 'issues#close', as: :close
       get ':number/archive', to: 'issues#archive', as: :archive

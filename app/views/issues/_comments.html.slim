@@ -11,7 +11,7 @@
       .user-login #{comment.user.login}&nbsp;
       .date = comment.created_at.strftime('%h %d, %H:%M')
 
-      - if can? :update, @board
+      - if can? :update, board
         span.controls
           | &mdash;&nbsp;
           a.edit edit

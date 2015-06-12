@@ -8,107 +8,112 @@ $(document).on 'page:change', ->
     return unless document.body.id == 'boards_show'
     #console.log 'modal:load'
 
-    $('pre code').each (i, block) ->
-      hljs.highlightBlock block
+    #$('pre code').each (i, block) ->
+      #hljs.highlightBlock block
 
-    init_uploading()
+    #init_uploading()
 
     $current_issue = $('.issue[data-number="' + $(@).closest('.b-issue-modal').data('number') + '"]') # миниатюра открытого тикета
     $issue_modal = $('.issue-modal')
 
-    load_comments()
+    #load_comments()
 
-    $('.b-issue-modal').click (e) ->
-      unless $(e.target).is('.editable-form.active textarea, .editable-form.active .save, .preview, .attach-images, controls, .upload, .upload input, .write')
-        close_active_form()
+    #$('.b-issue-modal').click (e) ->
+      #unless $(e.target).is('.editable-form.active textarea, .editable-form.active .save, .preview, .attach-images, controls, .upload, .upload input, .write')
+        #close_active_form()
 
-    $('textarea', '.add-comment-form').click (e) ->
-      $form = $(@).closest('.add-comment-form')
-      $form.addClass 'active'
-      $('textarea', $form)
-        .val($(e.target).parents('.editable').data('initial'))
-        .focus()
-        #.elastic()
+    #$('textarea', '.add-comment-form').click (e) ->
+      #$form = $(@).closest('.add-comment-form')
+      #$form.addClass 'active'
+      #$('textarea', $form)
+        #.val($(e.target).parents('.editable').data('initial'))
+        #.focus()
+        ##.elastic()
 
-      e.stopPropagation()
+      #e.stopPropagation()
 
-    $('.editable').click (e) ->
-      if $(e.target).is(':checkbox')
-        return
 
-      unless $(@).closest('.add-comment-form').length > 0
-        open_form($(@))
+    #$('.editable').click (e) ->
+      #if $(e.target).is(':checkbox')
+        #return
 
-    $('.write').click ->
-      $(@).closest('form').removeClass('preview-mode')
+      #unless $(@).closest('.add-comment-form').length > 0
+        #open_form($(@))
 
-    $('.editable-form').click (e) ->
-      if $(e.target).is('.add-comment-form.active .save')
-        $form = $(@).closest '.editable-form'
-        url = $form.data('url')
-        new_content = $('textarea', '.editable-form.active').val()
+    #$('.write').click ->
+      #$(@).closest('form').removeClass('preview-mode')
 
-        $('textarea', '.editable-form.active').val('')
 
-        $current_issue = $('.current-issue')
+    #$('.editable-form').click (e) ->
+      #if $(e.target).is('.add-comment-form.active .save')
+        #$form = $(@).closest '.editable-form'
+        #url = $form.data('url')
+        #new_content = $('textarea', '.editable-form.active').val()
 
-        unless new_content == ''
-          $('.issue-comments').append('<div class="b-preloader horizontal"></div>')
-          $.post url, body: new_content, ->
-            $('.octicon-comment-discussion', $current_issue).addClass 'show'
-            load_comments()
+        #$('textarea', '.editable-form.active').val('')
 
-        close_active_form()
+        #$current_issue = $('.current-issue')
 
-      else if $(e.target).is('.editable-form.active .save')
-        $(@).trigger('form:save')
+        #unless new_content == ''
+          #$('.issue-comments').append('<div class="b-preloader horizontal"></div>')
+          #$.post url, body: new_content, ->
+            #$('.octicon-comment-discussion', $current_issue).addClass 'show'
+            #load_comments()
 
-    $('.editable-form').on 'form:save', ->
-      #console.log 'form:save'
+        #close_active_form()
 
-      $form = $(@)
-      $editable_node = $(@).prev()
-      $current_issue = $('.current-issue') # миниатюра открытого тикета
+      #else if $(e.target).is('.editable-form.active .save')
+        #$(@).trigger('form:save')
 
-      url = $form.prev().data('url')
-      new_content = $('textarea', '.editable-form.active').val()
 
-      # issue name save
-      if $(@).prev().hasClass 'issue-name'
-        $editable_node.html(new_content)
-        #console.log 'title:submit'
-        $('.issue-name', $current_issue).html(new_content)
 
-        $.post url, title: new_content
-        close_active_form()
+    #$('.editable-form').on 'form:save', ->
+      ##console.log 'form:save'
 
-      # description save
-      else if $(@).prev().hasClass 'description'
-        if new_content == ''
-          $editable_node.html('Description').addClass 'blank-description'
-          $('.octicon-book', $current_issue).hide()
+      #$form = $(@)
+      #$editable_node = $(@).prev()
+      #$current_issue = $('.current-issue') # миниатюра открытого тикета
 
-        else
-          update_initial_data($(@), new_content)
-          $.post $('.preview', @).data('url'), string: new_content, (markdown) ->
-            $editable_node.html(markdown).removeClass 'blank-description'
-          $('.octicon-book', $current_issue).show()
+      #url = $form.prev().data('url')
+      #new_content = $('textarea', '.editable-form.active').val()
 
-        $.post url, body: new_content
-        close_active_form()
+      ## issue name save
+      #if $(@).prev().hasClass 'issue-name'
+        #$editable_node.html(new_content)
+        ##console.log 'title:submit'
+        #$('.issue-name', $current_issue).html(new_content)
 
-      # save a new comment
-      else if $(@).prev().hasClass 'add-comment'
-        unless new_content == ''
-          $('.issue-comments').append('<div class="b-preloader horizontal"></div>')
-          $.post url, body: new_content, ->
-            $('.octicon-comment-discussion', $current_issue).addClass 'show'
-            load_comments()
+        #$.post url, title: new_content
+        #close_active_form()
 
-        close_active_form()
+      ## description save
+      #else if $(@).prev().hasClass 'description'
+        #if new_content == ''
+          #$editable_node.html('Description').addClass 'blank-description'
+          #$('.octicon-book', $current_issue).hide()
 
-    $('.issue-description').on 'click', '.task', (e) ->
-      update_by_checkbox($(@), '.description')
+        #else
+          #update_initial_data($(@), new_content)
+          #$.post $('.preview', @).data('url'), string: new_content, (markdown) ->
+            #$editable_node.html(markdown).removeClass 'blank-description'
+          #$('.octicon-book', $current_issue).show()
+
+        #$.post url, body: new_content
+        #close_active_form()
+
+      ## save a new comment
+      #else if $(@).prev().hasClass 'add-comment'
+        #unless new_content == ''
+          #$('.issue-comments').append('<div class="b-preloader horizontal"></div>')
+          #$.post url, body: new_content, ->
+            #$('.octicon-comment-discussion', $current_issue).addClass 'show'
+            #load_comments()
+
+
+        #close_active_form()
+
+    #$('.issue-description').on 'click', '.task', (e) ->
+      #update_by_checkbox($(@), '.description')
 
     ################################################################################
     # comments are loaded in issue modal
@@ -121,16 +126,17 @@ $(document).on 'page:change', ->
 
       init_uploading()
 
-      $('.delete', @).click ->
-        if window.confirm('Delete comment?')
-          $.ajax
-            method: 'DELETE'
-            url: $(@).data('url')
-            success: ->
-            if $('.comment', $issue_modal).length < 1
-              $('.octicon-comment-discussion', $current_issue).removeClass 'show'
+      #$('.delete', @).click ->
+        #if window.confirm('Delete comment?')
+          #$.ajax
+            #method: 'DELETE'
+            #url: $(@).data('url')
+            #success: ->
+            #if $('.comment', $issue_modal).length < 1
+              #$('.octicon-comment-discussion', $current_issue).removeClass 'show'
 
-          $(@).closest('.issue-comment').remove()
+
+          #$(@).closest('.issue-comment').remove()
 
       $('.preview', $issue_modal).click ->
         string = $('textarea', $(@).closest('form')).val()
@@ -142,37 +148,39 @@ $(document).on 'page:change', ->
       $('.write').click ->
         $(@).closest('form').removeClass('preview-mode')
 
-      $('.edit', @).click ->
-        open_form($(@).closest('.controls').next())
-        $('.editable-form', $(@).closest('.comment-body')).trigger 'comment_form:load'
+      #$('.edit', @).click ->
+        #open_form($(@).closest('.controls').next())
+        #$('.editable-form', $(@).closest('.comment-body')).trigger 'comment_form:load'
 
-      $('.editable-form').on 'comment_form:load', ->
-        #console.log 'comment_form:load'
+      #$('.editable-form').on 'comment_form:load', ->
+        ##console.log 'comment_form:load'
 
-        $('.editable-form', '.issue-comments').click (e) ->
-          if $(e.target).is('.editable-form.active .save')
-            $(@).trigger('comment:save')
+        #$('.editable-form', '.issue-comments').click (e) ->
+          #if $(e.target).is('.editable-form.active .save')
+            #$(@).trigger('comment:save')
 
-      $('.editable-form', '.issue-comments').on 'comment:save', ->
-        $form = $(@)
-        $editable_node = $(@).prev()
-        $current_issue = $('.current-issue') # миниатюра открытого тикета
+      #$('.editable-form', '.issue-comments').on 'comment:save', ->
+        #$form = $(@)
+        #$editable_node = $(@).prev()
+        #$current_issue = $('.current-issue') # миниатюра открытого тикета
 
-        url = $form.prev().data('url')
-        new_content = $('textarea', '.editable-form.active').val()
+        #url = $form.prev().data('url')
+        #new_content = $('textarea', '.editable-form.active').val()
 
-        if new_content.replace(/\s*\n*/g, '') == ''
-          close_active_form()
 
-        else
-          update_initial_data($(@), new_content)
-          $.post url, body: new_content
-          $.post $('.preview', @).data('url'), string: new_content, (markdown) ->
-            $editable_node.html(markdown)
-            close_active_form()
+        #if new_content.replace(/\s*\n*/g, '') == ''
+          #close_active_form()
 
-      $('.issue-comments').on 'click', '.task', (e) ->
-        update_by_checkbox($(@), '.comment')
+        #else
+          #update_initial_data($(@), new_content)
+          #$.post url, body: new_content
+          #$.post $('.preview', @).data('url'), string: new_content, (markdown) ->
+            #$editable_node.html(markdown)
+            #close_active_form()
+
+
+      #$('.issue-comments').on 'click', '.task', (e) ->
+        #update_by_checkbox($(@), '.comment')
 
     ################################################################################
     # move-to events in issue modal

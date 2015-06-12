@@ -1,13 +1,16 @@
 class IssuesController < ApplicationController
   # FIX : Need specs.
-  before_action :fetch_board, only: [:show, :search]
-  before_action :fetch_board_for_update, except: [:show, :search]
+  before_action :fetch_board, only: [:show, :search, :new]
+  before_action :fetch_board_for_update, except: [:show, :search, :new]
 
   def show
     github_issue = github_api.issue(@board, params[:number])
     issue_stat = @board.issue_stats.find_by(number: params[:number])
-    issue = BoardIssue.new(github_issue, issue_stat)
-    render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @board_bag.labels }
+    @issue = BoardIssue.new(github_issue, issue_stat)
+    @labels = @board_bag.labels
+
+    @comments = github_api.issue_comments(@board, @issue.number)
+    #render partial: 'issues/show', locals: { issue: issue, board: @board, labels: @board_bag.labels }
   end
 
   def search
@@ -15,12 +18,16 @@ class IssuesController < ApplicationController
     render partial: 'search_result', locals: { issues: issues }
   end
 
+  #def new
+    #@issue = Issue.new(labels: @board_bag.labels.map(&:name))
+  #end
+
   def create
     @issue = Issue.new(issue_params)
     if @issue.valid?
       issue = github_api.create_issue(@board, @issue)
       render(
-        partial: 'issues/show',
+        partial: 'issues/issue_miniature',
         locals: {
           issue: BoardIssue.new(issue, @board.find_stat(issue)),
           column: @board.columns.first

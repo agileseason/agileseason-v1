@@ -14,4 +14,4 @@
 
   .issues.scroller
     - @board_bag.column_issues(column).each do |i|
-      = render partial: 'issues/show', locals: { issue: i, column: column }
+      = render partial: 'issues/issue_miniature', locals: { issue: i, column: column }
