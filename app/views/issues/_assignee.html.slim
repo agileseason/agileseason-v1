@@ -2,3 +2,8 @@
   .b-assignee
     a.user href="#{issue.assignee.html_url}" target="_blank" title="#{issue.assignee.login}"
       img.avatar src="#{issue.assignee.avatar_url}"
+
+- else
+  .b-assignee.hidden
+    a.user target="_blank"
+      img.avatar

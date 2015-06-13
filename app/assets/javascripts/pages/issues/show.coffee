@@ -207,12 +207,13 @@ $(document).on 'page:change', ->
 
 
   $('.b-assign .user').click (e) ->
-    #debugger
-    $.ajax ->
-      url: $(@).attr('href')
-      success: (data)->
-        $('.user-list').html(data).show()
-    e.preventDefault()
+    $('img', '.user-list').attr('src', $(@).find('img').attr('src'))
+    $('a', '.user-list')
+      .attr('href', $(@).find('a').attr('href'))
+      .attr('title', $(@).find('.name').text())
+    $('.check', @).addClass 'octicon octicon-check'
+    $('.close-popup', $(@).closest('.popup')).trigger 'click'
+    $('.b-assignee', '.user-list').removeClass 'hidden'
 
   # раскрыть попап с лейблами тикета
   $('.add-label').click ->
