@@ -28,6 +28,7 @@
             data-confirm='Delete comment?'
             ] delete
 
+      / FIX : Why data-initial not in .editable same as description?
       .comment[
         data-url="#{update_comment_board_issues_url(board, comment.id)}"
         data-initial="#{comment.body}"]

@@ -248,7 +248,9 @@ open_form = ($editable_node) ->
 close_active_form = ->
   #console.log 'close active form'
   if $('.editable-form.active').length > 0
-    $('.editable-form.active').val('')
+    text = $('.editable-form.active').find('textarea').val()
+    # FIX : For description initial in .editable. For comment initial in .comment!
+    $('.editable-form.active').parent().find('.editable, .comment').data('initial', text)
     $('.editable-form.active')
       .hide()
       .removeClass('active')
