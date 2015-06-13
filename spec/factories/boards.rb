@@ -32,6 +32,12 @@ FactoryGirl.define do
       end
     end
 
+    trait :public do
+      after(:build) do |board|
+        board.public = true
+      end
+    end
+
     factory :kanban_board, parent: :board, class: 'Boards::KanbanBoard' do
       type 'Boards::KanbanBoard'
     end
