@@ -4,7 +4,7 @@ class BoardsController < ApplicationController
 
   before_action :check_permissions, only: [:create]
   before_action :fetch_board,       only: [:show, :destroy]
-  after_action  :fetch_board_stats, only: [:show], unless: -> { Rails.env.test? }
+  after_action  :fetch_board_stats, only: [:show], unless: :guest?
 
   def index
     @boards_lists = [
@@ -49,6 +49,10 @@ class BoardsController < ApplicationController
   end
 
 private
+
+  def guest?
+    !can?(:update, @board)
+  end
 
   def board_params
     params.
