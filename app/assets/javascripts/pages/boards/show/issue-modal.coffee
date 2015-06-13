@@ -20,14 +20,14 @@ $(document).on 'page:change', ->
 
     $('.b-issue-modal').click (e) ->
       unless $(e.target).is('.editable-form.active textarea, .editable-form.active .save, .preview, .attach-images, controls, .upload, .upload input, .write')
-        if $('.add-comment-form').hasClass 'active'
-          $('textarea', '.add-comment-form.active').val('')
         close_active_form()
 
     $('textarea', '.add-comment-form').click (e) ->
       $form = $(@).closest('.add-comment-form')
       $form.addClass 'active'
-      $('textarea', $form).focus()
+      $textarea = $('textarea', $form)
+      $textarea.val($(e.target).parents('.editable').data('initial'))
+      $textarea.focus()
       e.stopPropagation()
 
     $('.editable').click (e) ->
@@ -248,9 +248,14 @@ open_form = ($editable_node) ->
 close_active_form = ->
   #console.log 'close active form'
   if $('.editable-form.active').length > 0
-    text = $('.editable-form.active').find('textarea').val()
-    # FIX : For description initial in .editable. For comment initial in .comment!
-    $('.editable-form.active').parent().find('.editable, .comment').data('initial', text)
+    $textarea = $('.editable-form.active').find('textarea')
+    if $('.editable-form.active').is('.editable')
+      $('.editable-form.active').data('initial', $textarea.val())
+    else
+      # FIX : For description initial in .editable. For comment initial in .comment!
+      $('.editable-form.active').parent().find('.editable, .comment').data('initial', $textarea.val())
+
+    $textarea.val('')
     $('.editable-form.active')
       .hide()
       .removeClass('active')

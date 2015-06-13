@@ -33,7 +33,7 @@
         .b-preloader
 
       - if can? :update, @board
-        .editable-form.add-comment-form data-url="#{add_comment_board_issues_url(board, issue.number)}"
+        .editable-form.add-comment-form.editable data-url="#{add_comment_board_issues_url(board, issue.number)}" data-initial=''
           form
             .placeholder Add a comment or upload an image…
             textarea
