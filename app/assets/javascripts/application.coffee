@@ -8,6 +8,7 @@
 #= require jstz
 #= require browser_timezone_rails/set_time_zone
 
+#= require jquery.elastic.source
 #= require highcharts.js
 #= require replace_nth_match.js
 #= require js-patch.coffee
