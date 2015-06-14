@@ -25,9 +25,11 @@ $(document).on 'page:change', ->
     $('textarea', '.add-comment-form').click (e) ->
       $form = $(@).closest('.add-comment-form')
       $form.addClass 'active'
-      $textarea = $('textarea', $form)
-      $textarea.val($(e.target).parents('.editable').data('initial'))
-      $textarea.focus()
+      $('textarea', $form)
+        .val($(e.target).parents('.editable').data('initial'))
+        .focus()
+        .elastic()
+
       e.stopPropagation()
 
     $('.editable').click (e) ->
@@ -36,13 +38,6 @@ $(document).on 'page:change', ->
 
       unless $(@).closest('.add-comment-form').length > 0
         open_form($(@))
-
-    $('.preview', $issue_modal).click ->
-      string = $('textarea', $(@).closest('form')).val()
-
-      $.post $(@).data('url'), string: string, (markdown) =>
-        $(@).closest('form').addClass('preview-mode')
-        $('.preview-textarea', $(@).closest('form')).html(markdown)
 
     $('.write').click ->
       $(@).closest('form').removeClass('preview-mode')
@@ -64,7 +59,6 @@ $(document).on 'page:change', ->
             load_comments()
 
         close_active_form()
-
 
       else if $(e.target).is('.editable-form.active .save')
         $(@).trigger('form:save')
@@ -235,7 +229,10 @@ open_form = ($editable_node) ->
       $editable_node
         .hide()
         .next().show().addClass('active')
-        .find('textarea').focus().val(initial_data)
+        .find('textarea')
+          .focus()
+          .val(initial_data)
+          #.elastic()
     , 300
 
 close_active_form = ->
@@ -249,6 +246,7 @@ close_active_form = ->
       $('.editable-form.active').parent().find('.editable, .comment').data('initial', $textarea.val())
 
     $textarea.val('')
+    $textarea.height(20) # Back height after elastic.
     $('.editable-form.active')
       .hide()
       .removeClass('active')
