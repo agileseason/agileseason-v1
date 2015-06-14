@@ -28,7 +28,7 @@ $(document).on 'page:change', ->
       $('textarea', $form)
         .val($(e.target).parents('.editable').data('initial'))
         .focus()
-        .elastic()
+        #.elastic()
 
       e.stopPropagation()
 
@@ -246,7 +246,7 @@ close_active_form = ->
       $('.editable-form.active').parent().find('.editable, .comment').data('initial', $textarea.val())
 
     $textarea.val('')
-    $textarea.height(20) # Back height after elastic.
+    #$textarea.height(20) # Back height after elastic.
     $('.editable-form.active')
       .hide()
       .removeClass('active')
