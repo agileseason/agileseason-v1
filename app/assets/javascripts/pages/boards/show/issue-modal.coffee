@@ -188,37 +188,30 @@ $(document).on 'page:change', ->
 
     # Перемещение тикета в попапе
     $('.move-to-column li', $issue_modal).click ->
-      $current_issue = $('.current-issue') # миниатюра открытого тикета
       return if $(@).hasClass 'active'
-
-      issue = $current_issue.data('number')
-      column = $(@).data('column')
-      board = $('.board').data('github_full_name')
-
-      $col_1 = $current_issue.closest('.board-column')
-      $col_2 = $('.board-column[data-column="' + column + '"]')
-      col_1_url = "/boards/#{board}/columns/#{$col_1.data('column')}"
-      col_2_url = "/boards/#{board}/columns/#{$col_2.data('column')}"
 
       # класс активной колонки
       $('.move-to-column li').removeClass 'active'
       $(@).addClass 'active'
 
+      $current_issue = $(".issue.issue-#{$(@).parents('.b-issue-modal').data('number')}")
+      column_1 = $current_issue.data('column')
+      column_2 = $(@).data('column')
+      $col_1 = $("#column_#{column_1}")
+      $col_2 = $("#column_#{column_2}")
+
       # перемещение тикета в DOMe
-      $column = $('.board-column[data-column="' + column + '"]')
       clone = $current_issue
       $current_issue.remove()
-      $('.issues', $column).prepend(clone)
+      $('.issues', $col_2).prepend(clone)
 
-      # урл перемещения
-      path = "/boards/#{board}/issues/#{issue}/move_to/#{column}"
-      $.get path
+      $.get $(@).data('move-to-url')
 
       # сохранение порядка тиетов в измененных колонках
       col_1_issues = empty_check($col_1.find('.issues').sortable('serialize'), '')
-      col_2_issues = empty_check($col_2.find('.issues').sortable('serialize'), issue)
-      save_order col_1_url, col_1_issues
-      save_order col_2_url, col_2_issues
+      col_2_issues = empty_check($col_2.find('.issues').sortable('serialize'), $current_issue.data('number'))
+      save_order($col_1.data('url'), col_1_issues)
+      save_order($col_2.data('url'), col_2_issues)
 
 load_comments = ->
   #console.log 'load comments'

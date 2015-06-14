@@ -1,7 +1,8 @@
 .board-column.droppable [
+    id="column_#{column.id}"
     class="#{:last if k(:board, @board).last_column?(column)}"
     data-column="#{column.id}"
-    id="column_#{column.id}"
+    data-url="#{board_column_url(@board, column)}"
   ]
 
   = render partial: 'columns/menu', locals: { column: column }
