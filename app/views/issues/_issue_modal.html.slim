@@ -1,4 +1,4 @@
-.b-issue-modal class="issue-#{issue.number}" data-number="#{issue.number}"
+.b-issue-modal class="issue-#{issue.number}" data-number="#{issue.number}" data-current-column="#{issue.issue_stat.column_id}"
   = render partial: 'issues/labels', locals: { issue: issue, board: board }
 
   .content
@@ -17,7 +17,11 @@
         .move-to-column
           ul
             - @board.columns.each do |column|
-              li data-column="#{column.id}" class="#{issue.issue_stat.column_id == column.id ? 'active' : ''}"
+              li [
+                data-column="#{column.id}"
+                data-move-to-url="#{move_to_column_board_issues_url(board, issue.number, column.id)}"
+                class="#{:active if column.id == issue.issue_stat.column_id}"
+              ]
                 a = column.name
 
       .issue-description
