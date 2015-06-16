@@ -180,13 +180,14 @@ $(document).on 'page:change', ->
 
   # сохранение крайней даты
   $('.edit-due-date .button.save').click ->
-    $modal = $(@).parents('.issue-modal')
-    date = $modal.find('.date input').val()
-    time = $modal.find('.time input').val()
+    date = $('.date input').val()
+    time = $('.time input').val()
     $.ajax
-      url: $modal.find('.edit-due-date').data('url'),
+      url: $('.edit-due-date').data('url'),
       data: { due_date: "#{date} #{time}" },
+      method: 'post',
       success: (date) ->
+        debugger
         $('.popup').hide()
         $('.due-date').removeClass('none').html(date)
         # FIX : Extract method for find current issue number

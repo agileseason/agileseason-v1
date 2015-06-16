@@ -97,12 +97,14 @@ class IssuesController < ApplicationController
 
   def due_date
     due_date_at = params[:due_date].to_datetime # Not to_time, because adding localtime +03
+
     issue_stat = IssueStatService.set_due_date(
       current_user,
       @board,
       params[:number],
       due_date_at
     )
+
     render text: k(:issue, issue_stat).due_date_at
   end
 
