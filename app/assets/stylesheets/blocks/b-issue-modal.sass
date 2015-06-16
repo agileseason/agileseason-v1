@@ -9,67 +9,67 @@
 @import mixins/date
 
 .b-issue-modal
-  +border-radius(6px)
-  +box-shadow(0 0 40px rgba(63,63,63, 0.3))
-  background: $card
+  //+border-radius(6px)
+  //+box-shadow(0 0 40px rgba(63,63,63, 0.3))
+  //background: $card
 
   .issue-name
     cursor: pointer
     display: inline
     margin-right: 8px
 
-  .content
-    padding: 20px 30px 30px 30px
+  //.content
+    //padding: 20px 30px 30px 30px
 
-  .title
-    font-size: 28px
-    font-weight: normal
-    padding: 0 0 10px 0
-    position: relative
+  //.title
+    //font-size: 28px
+    //font-weight: normal
+    //padding: 0 0 10px 0
+    //position: relative
 
-    .upload,
-    .preview
-      display: none
+    //.upload,
+    //.preview
+      //display: none
 
-    .editable-form
-      textarea
-        font-size: 28px
-        height: 28px
-        min-height: 20px
+    //.editable-form
+      //textarea
+        //font-size: 28px
+        //height: 28px
+        //min-height: 20px
 
-      &.active
-        margin-bottom: 40px
+      //&.active
+        //margin-bottom: 40px
 
-    .editable-form.active + a,
-    .editable-form.active + a + .due-date
-      display: none
+    //.editable-form.active + a,
+    //.editable-form.active + a + .due-date
+      //display: none
 
-  .description
-    cursor: pointer
+  //.description
+    //cursor: pointer
 
-  .issue-content
-    display: inline-block
-    vertical-align: top
-    width: 730px
+  //.issue-content
+    //display: inline-block
+    //vertical-align: top
+    //width: 730px
 
-    img:not(.avatar)
-      +border-radius(4px)
-      border: 1px solid #eee
-      max-width: 100%
+    //img:not(.avatar)
+      //+border-radius(4px)
+      //border: 1px solid #eee
+      //max-width: 100%
 
-    .task
-      cursor: pointer
-      margin-bottom: 6px
+    //.task
+      //cursor: pointer
+      //margin-bottom: 6px
 
-  .issue-actions
-    display: inline-block
-    padding-left: 40px
-    width: 130px
+  //.issue-actions
+    //display: inline-block
+    //padding-left: 40px
+    //width: 130px
 
-    .button
-      display: block
-      width: 106px
-      margin-bottom: 8px
+    //.button
+      //display: block
+      //width: 106px
+      //margin-bottom: 8px
 
   .b-assign
     position: relative
@@ -151,22 +151,22 @@
   .edit-labels
     position: relative
 
-  .b-issue-labels
-    margin-left: 30px
+  //.b-issue-labels
+    //margin-left: 30px
 
-    .label
-      +border-radius(0 0 4px 4px)
-      font-size: 14px
-      line-height: 18px
-      margin-right: 5px
-      padding: 2px 15px
-      position: relative
+    //.label
+      //+border-radius(0 0 4px 4px)
+      //font-size: 14px
+      //line-height: 18px
+      //margin-right: 5px
+      //padding: 2px 15px
+      //position: relative
 
-      .remove-label
-        +close
-        position: absolute
-        right: 5px
-        top: 3px
+      //.remove-label
+        //+close
+        //position: absolute
+        //right: 5px
+        //top: 3px
 
   .action-title
     margin: 20px 0 10px 0
@@ -182,133 +182,135 @@
     &:last-child
       padding-bottom: 0
 
-  .user-list
-    display: table-cell
-    vertical-align: middle
+  //.user-list
+    //display: table-cell
+    //vertical-align: middle
 
-    .b-assignee
-      padding-right: 10px
+    //.b-assignee
+      //padding-right: 10px
 
-      &.hidden
-        display: none
+      //&.hidden
+        //display: none
 
-      .avatar
-        height: 40px
-        width: 40px
+      //.avatar
+        //height: 50px
+        //width: 50px
 
-  .move-to-column
-    display: table-cell
-    vertical-align: middle
-    width: 100%
+  //.move-to-column
+    //display: table-cell
+    //vertical-align: middle
+    //width: 100%
 
-    ul
-      list-style: none
-      padding: 0
-      margin: 20px 0 10px
-      display: -webkit-box
-      display: -moz-box
-      display: -webkit-flexbox
-      width: 100%
+    //ul
+      //list-style: none
+      //padding: 0
+      //margin: 20px 0 10px
+      //display: -webkit-box
+      //display: -moz-box
+      //display: -webkit-flexbox
+      //width: 100%
 
-      li
-        -webkit-box-flex: 1
-        -moz-box-flex: 1
-        -webkit-flex: 1
+      //li
+        //-webkit-box-flex: 1
+        //-moz-box-flex: 1
+        //-webkit-flex: 1
 
-        &:last-child
-          a
-            +border-radius(0 100px 100px 0)
-            border-right: 1px solid #eee
+        //&:last-child
+          //a
+            //+border-radius(0 100px 100px 0)
+            //border-right: 1px solid #eee
 
-            &:after,
-            &:before
-              display: none
+            //&:after,
+            //&:before
+              //display: none
 
-        &:first-child
-          a
-            +border-radius(100px 0 0 100px)
+        //&:first-child
+          //a
+            //+border-radius(100px 0 0 100px)
 
-        &:hover
-          a
-            background: #eee
+        //&:hover
+          //a
+            //background: #eee
 
-          a
-            &:after
-              border-color: transparent transparent transparent #eee
+          //a
+            //&:after
+              //border-color: transparent transparent transparent #eee
 
-        &.active
-          &:hover
-            a
-              cursor: default
+        //&.active
+          //&:hover
+            //a
+              //cursor: default
 
-          a
-            background: $active
-            color: inherit
-            border: 1px solid $active
-            border-right: none
+          //a
+            //background: $active
+            //color: inherit
+            //border: 1px solid $active
+            //border-right: none
 
-            &:after
-              border-color: transparent transparent transparent $active
+            //&:after
+              //border-color: transparent transparent transparent $active
 
-        a
-          display: block
-          position: relative
-          padding: 1px 5px 2px 10px
-          border: 1px solid #eee
-          border-right: none
+        //a
+          //display: block
+          //position: relative
+          //padding: 1px 5px 2px 10px
+          //border: 1px solid #eee
+          //border-right: none
 
-          &:after, &:before
-            content: " "
-            width: 0
-            height: 0
-            border-style: solid
-            position: absolute
+          //&:after, &:before
+            //content: " "
+            //width: 0
+            //height: 0
+            //border-style: solid
+            //position: absolute
 
-          &:after
-            border-width: 11px 0 11px 9px
-            border-color: transparent transparent transparent #fff
-            right: -8px
-            top: 0px
-            z-index: 2
+          //&:after
+            //border-width: 11px 0 11px 9px
+            //border-color: transparent transparent transparent #fff
+            //right: -8px
+            //top: 0px
+            //z-index: 2
 
-          &:before
-            border-width: 12px 0 12px 10px
-            border-color: transparent transparent transparent #eeeeee
-            right: -9px
-            top: -1px
-            z-index: 1
+          //&:before
+            //border-width: 12px 0 12px 10px
+            //border-color: transparent transparent transparent #eeeeee
+            //right: -9px
+            //top: -1px
+            //z-index: 1
 
-  .user-ava
-    display: inline-block
-    width: 33px
-    position: absolute
+  //.user-ava
+    //display: inline-block
+    //width: 33px
+    //position: absolute
 
-  .avatar
-    +avatar
+  //.avatar
+    //+avatar
+    //height: 40px
+    //width: 40px
 
-  .comment-body
-    padding: 0px 5px 0 43px
-    position: relative
+  //.comment-body
+    //padding: 0px 5px 0 43px
+    //position: relative
 
-    pre
-      width: 605px
+    //pre
+      //width: 605px
 
-    .edit-form
-      textarea
-        margin-top: 0
+    //.edit-form
+      //textarea
+        //margin-top: 0
 
-    img
-      display: block
-      margin: 0 0 5px
-      max-width: 100%
+    //img
+      //display: block
+      //margin: 0 0 5px
+      //max-width: 100%
 
-    .date
-      +date
-      display: inline-block
-      margin-bottom: 5px
+    //.date
+      //+date
+      //display: inline-block
+      //margin-bottom: 5px
 
-    .controls
-      +date
+    //.controls
+      //+date
 
   .issue-comments
     .b-preloader
