@@ -73,7 +73,6 @@ class ColumnsController < ApplicationController
   end
 
   def render_result
-    return super unless params[:name] == 'name'
     render json: { redirect_url: board_url(@board) }
   end
 end
