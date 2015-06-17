@@ -480,3 +480,6 @@ DEPENDENCIES
   whenever
   will_paginate
   xproc
+
+BUNDLED WITH
+   1.10.4
