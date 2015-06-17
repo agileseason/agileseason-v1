@@ -1,4 +1,4 @@
-- if column.visible_issue_stats.size > 9
+- if column.visible_issue_stats.size > 4 || k(column).wip_status != :normal
   span.badge [
     class="#{k(column).wip_status}"
     title='Work in progress limit'
