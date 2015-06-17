@@ -16,6 +16,7 @@ gem 'jquery-ui-rails'
 gem 'keynote', '~> 0.3.0'
 gem 'octokit'
 gem 'omniauth-github'
+gem 'pg'
 gem 'pry-rails'
 gem 'rails', '4.2.1'
 gem 'redcarpet'
@@ -35,7 +36,6 @@ gem 'xproc'
 
 group :production do
   gem 'newrelic_rpm'
-  gem 'pg'
   gem 'unicorn'
 end
 
@@ -68,7 +68,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda'
   gem 'shoulda-matchers'
-  gem 'sqlite3'
 end
 
 group :test do

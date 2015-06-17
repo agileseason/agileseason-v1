@@ -16,7 +16,7 @@ describe Board, type: :model do
 
   describe '#activities' do
     subject { board.activities }
-    let(:board) { build_stubbed(:board) }
+    let(:board) { create(:board_with_columns) }
 
     context :without_activities do
       it { is_expected.to be_empty }

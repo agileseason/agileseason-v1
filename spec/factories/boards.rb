@@ -45,5 +45,7 @@ FactoryGirl.define do
     factory :scrum_board, parent: :board, class: 'Boards::ScrumBoard' do
       type 'Boards::ScrumBoard'
     end
+
+    factory :board_with_columns, traits: [:with_columns]
   end
 end
