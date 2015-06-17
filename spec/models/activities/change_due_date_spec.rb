@@ -1,8 +1,8 @@
 describe Activities::ChangeDueDate, type: :model do
   describe '.create_for' do
     subject { Activities::ChangeDueDate.create_for(issue_stat, user) }
-    let(:user) { build_stubbed(:user) }
-    let(:board) { create(:board, :with_columns, user: user) }
+    let(:user) { create(:user) }
+    let(:board) { create(:board_with_columns, user: user) }
     let(:issue_stat) { create(:issue_stat, board: board, due_date_at: due_date_at) }
     let(:due_date_at) { DateTime.now }
 

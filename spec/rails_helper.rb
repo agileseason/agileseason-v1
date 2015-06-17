@@ -55,12 +55,16 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 
-  config.before do
-    DatabaseCleaner.clean
-  end
-
+  config.include FactoryGirl::Syntax::Methods
   config.include OauthHelper
   config.include AuthenticationHelper
-  config.include FactoryGirl::Syntax::Methods
-  DatabaseCleaner.strategy = :deletion
+
+  DatabaseCleaner.strategy = :truncation
+  config.before(:suite) do
+    begin
+      DatabaseCleaner.start
+    ensure
+      DatabaseCleaner.clean
+    end
+  end
 end

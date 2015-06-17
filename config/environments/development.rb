@@ -1,6 +1,6 @@
 Rails.application.configure do
-  ENV['GITHUB_CLIENT_ID'] ||= '6b8a90342be7cb5e8bca'
-  ENV['GITHUB_CLIENT_SECRET'] ||= '015912776fbfb6c9e7e18f23a4d5a3cb0595b083'
+  ENV['GITHUB_CLIENT_ID'] ||= '7d16be301d8052664e16'
+  ENV['GITHUB_CLIENT_SECRET'] ||= 'c12eb7c600d7be5e717e4a7ee005372db65dad3f'
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development

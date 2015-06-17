@@ -42,9 +42,15 @@ Look at the our development board for example - [agileseason.com](http://agilese
 
 ### Getting Started
 1. Clone this repository `git clone git@github.com:agileseason/agileseason.git ~/PROJECTS_DIR/agileseason`
-1. Install [pow](http://pow.cx/) and set up app `cd ~/.pow && ln -s ~/PROJECTS_DIR/agileseason`
-1. Run Sidekiq `bundle exec sidekiq`
-1. You will now have Agile Season running on `http://agileseason.dev`.
+2. Install [pow](http://pow.cx/) and set up app `cd ~/.pow && ln -s ~/PROJECTS_DIR/agileseason`
+3. Create data base:
+  1. `$ psql -d postgres`
+  2. `postgres=# create user agileseason_development with password 'agileseason';`
+  3. `postgres=# alter user agileseason_development createdb;`
+  4. `$ rake db:create`
+  5. `$ rake db:migrate`
+4. Run Sidekiq `bundle exec sidekiq`
+5. You will now have Agile Season running on `http://agileseason.dev`.
 
 ### Backup
 1. Add to `~/.zshrc` rows `export BACKUP_DROPBOX_API_KEY='...'` and `export BACKUP_DROPBOX_API_SECRET='...'`

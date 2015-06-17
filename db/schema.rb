@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20150511094331) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "activities", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "board_id"
@@ -23,9 +26,9 @@ ActiveRecord::Schema.define(version: 20150511094331) do
     t.datetime "updated_at",    null: false
   end
 
-  add_index "activities", ["board_id"], name: "index_activities_on_board_id"
-  add_index "activities", ["issue_stat_id"], name: "index_activities_on_issue_stat_id"
-  add_index "activities", ["user_id"], name: "index_activities_on_user_id"
+  add_index "activities", ["board_id"], name: "index_activities_on_board_id", using: :btree
+  add_index "activities", ["issue_stat_id"], name: "index_activities_on_issue_stat_id", using: :btree
+  add_index "activities", ["user_id"], name: "index_activities_on_user_id", using: :btree
 
   create_table "board_histories", force: :cascade do |t|
     t.integer  "board_id"
@@ -35,8 +38,8 @@ ActiveRecord::Schema.define(version: 20150511094331) do
     t.datetime "updated_at"
   end
 
-  add_index "board_histories", ["board_id"], name: "index_board_histories_on_board_id"
-  add_index "board_histories", ["collected_on", "board_id"], name: "index_board_histories_on_collected_on_and_board_id", unique: true
+  add_index "board_histories", ["board_id"], name: "index_board_histories_on_board_id", using: :btree
+  add_index "board_histories", ["collected_on", "board_id"], name: "index_board_histories_on_collected_on_and_board_id", unique: true, using: :btree
 
   create_table "boards", force: :cascade do |t|
     t.integer  "user_id"
@@ -50,7 +53,7 @@ ActiveRecord::Schema.define(version: 20150511094331) do
     t.string   "github_full_name", limit: 500
   end
 
-  add_index "boards", ["user_id"], name: "index_boards_on_user_id"
+  add_index "boards", ["user_id"], name: "index_boards_on_user_id", using: :btree
 
   create_table "columns", force: :cascade do |t|
     t.integer  "board_id"
@@ -64,7 +67,7 @@ ActiveRecord::Schema.define(version: 20150511094331) do
     t.integer  "wip_max"
   end
 
-  add_index "columns", ["board_id"], name: "index_columns_on_board_id"
+  add_index "columns", ["board_id"], name: "index_columns_on_board_id", using: :btree
 
   create_table "issue_stats", force: :cascade do |t|
     t.integer  "board_id"
@@ -77,9 +80,9 @@ ActiveRecord::Schema.define(version: 20150511094331) do
     t.datetime "due_date_at"
   end
 
-  add_index "issue_stats", ["board_id"], name: "index_issue_stats_on_board_id"
-  add_index "issue_stats", ["column_id"], name: "index_issue_stats_on_column_id"
-  add_index "issue_stats", ["number", "board_id"], name: "index_issue_stats_on_number_and_board_id", unique: true
+  add_index "issue_stats", ["board_id"], name: "index_issue_stats_on_board_id", using: :btree
+  add_index "issue_stats", ["column_id"], name: "index_issue_stats_on_column_id", using: :btree
+  add_index "issue_stats", ["number", "board_id"], name: "index_issue_stats_on_number_and_board_id", unique: true, using: :btree
 
   create_table "lifetimes", force: :cascade do |t|
     t.integer  "issue_stat_id"
@@ -90,8 +93,8 @@ ActiveRecord::Schema.define(version: 20150511094331) do
     t.datetime "updated_at",    null: false
   end
 
-  add_index "lifetimes", ["column_id"], name: "index_lifetimes_on_column_id"
-  add_index "lifetimes", ["issue_stat_id"], name: "index_lifetimes_on_issue_stat_id"
+  add_index "lifetimes", ["column_id"], name: "index_lifetimes_on_column_id", using: :btree
+  add_index "lifetimes", ["issue_stat_id"], name: "index_lifetimes_on_issue_stat_id", using: :btree
 
   create_table "repo_histories", force: :cascade do |t|
     t.integer  "board_id"
@@ -101,8 +104,8 @@ ActiveRecord::Schema.define(version: 20150511094331) do
     t.datetime "updated_at"
   end
 
-  add_index "repo_histories", ["board_id"], name: "index_repo_histories_on_board_id"
-  add_index "repo_histories", ["collected_on", "board_id"], name: "index_repo_histories_on_collected_on_and_board_id", unique: true
+  add_index "repo_histories", ["board_id"], name: "index_repo_histories_on_board_id", using: :btree
+  add_index "repo_histories", ["collected_on", "board_id"], name: "index_repo_histories_on_collected_on_and_board_id", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",           null: false
@@ -112,4 +115,9 @@ ActiveRecord::Schema.define(version: 20150511094331) do
     t.datetime "updated_at"
   end
 
+  add_foreign_key "activities", "boards", on_delete: :cascade
+  add_foreign_key "activities", "issue_stats", on_delete: :cascade
+  add_foreign_key "activities", "users", on_delete: :cascade
+  add_foreign_key "lifetimes", "columns"
+  add_foreign_key "lifetimes", "issue_stats"
 end
