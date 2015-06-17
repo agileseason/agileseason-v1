@@ -47,8 +47,8 @@ Look at the our development board for example - [agileseason.com](http://agilese
   1. `$ psql -d postgres`
   2. `postgres=# create user agileseason_development with password 'agileseason';`
   3. `alter user agileseason_development createdb;`
-  4. `rake db:create`
-  5. `rake db:migrate`
+  4. `$ rake db:create`
+  5. `$ rake db:migrate`
 4. Run Sidekiq `bundle exec sidekiq`
 5. You will now have Agile Season running on `http://agileseason.dev`.
 
