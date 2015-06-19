@@ -5,25 +5,25 @@ ul.b-submenu
       - if params[:controller] == 'graphs/cumulative'
         span Cumulative Flow
       - else
-        a href="#{board_graphs_cumulative_index_url(@board)}" Cumulative Flow
+        a href="#{un board_graphs_cumulative_index_url(@board)}" Cumulative Flow
 
     li
       - if params[:controller] == 'graphs/control'
         span Control Chart
       - else
-        a href="#{board_graphs_control_index_url(@board)}" Control Chart
+        a href="#{un board_graphs_control_index_url(@board)}" Control Chart
 
     li
       - if params[:controller] == 'graphs/forecast'
         span Forecast Duration
       - else
-        a href="#{board_graphs_forecast_index_url(@board)}" Forecast Duration
+        a href="#{un board_graphs_forecast_index_url(@board)}" Forecast Duration
 
     li
       - if params[:controller] == 'graphs/frequency'
         span Frequency
       - else
-        a href="#{board_graphs_frequency_index_url(@board)}" Frequency
+        a href="#{un board_graphs_frequency_index_url(@board)}" Frequency
 
   - else
     li
@@ -33,4 +33,4 @@ ul.b-submenu
     - if params[:controller] == 'graphs/lines'
       span Lines
     - else
-      a href="#{board_graphs_lines_url(@board)}" Lines
+      a href="#{un board_graphs_lines_url(@board)}" Lines

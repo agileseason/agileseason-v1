@@ -10,7 +10,7 @@
           - if params[:controller] == 'boards'
             a.active #{k(:board, @board).name} board&nbsp;
           - else
-            a.current-board-link href="#{board_url(@board)}" #{k(:board, @board).name} board&nbsp;
+            a.current-board-link href="#{un board_url(@board)}" #{k(:board, @board).name} board&nbsp;
             /span.octicon.octicon-chevron-down
           /.popup
             /.octicon.octicon-triangle-up
@@ -22,7 +22,7 @@
         /- if params[:controller] == 'graphs/cumulative'
           /span Cumulative Flow
         /- else
-        a href="#{board_graphs_cumulative_index_url(@board)}"
+        a href="#{un board_graphs_cumulative_index_url(@board)}"
           span.a-child.octicon.octicon-graph &nbsp;
           span.a-child Statistic
 
@@ -34,7 +34,7 @@
             span Settings
 
           - else
-            a href="#{board_settings_url(@board)}" title='Board Settings'
+            a href="#{un board_settings_url(@board)}" title='Board Settings'
               span.a-child.octicon.octicon-gear
               | &nbsp;
               span.a-child Settings
