@@ -26,9 +26,11 @@ describe IssueStatService do
     let!(:lifetime) { create(:lifetime, issue_stat: issue_stat, column: column_1) }
     let(:issue_stat) { create(:issue_stat, column: column_1) }
     let(:fake_token) { 'adsf' }
+    let(:encrypt_token) { '????' }
     let(:fake_api) { OpenStruct.new(github_token: fake_token) }
     before { allow(user).to receive(:github_api).and_return(fake_api) }
     before { allow(Graphs::CumulativeWorker).to receive(:perform_async) }
+    before { allow(Encryptor).to receive(:encrypt).with(fake_token).and_return(encrypt_token) }
 
     context 'new column' do
       let(:column_1) { board.columns.first }
@@ -43,7 +45,7 @@ describe IssueStatService do
 
         it 'fetch data for cumulative flow chart' do
           expect(Graphs::CumulativeWorker).
-            to receive(:perform_async).with(board.id, fake_token)
+            to receive(:perform_async).with(board.id, encrypt_token)
         end
 
         it 'create activity by issue_stat params' do
