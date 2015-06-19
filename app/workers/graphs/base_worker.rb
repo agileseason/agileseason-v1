@@ -1,6 +1,7 @@
 module Graphs
   class BaseWorker
     include Sidekiq::Worker
+    include GithubApiAccess
     sidekiq_options Sidekiq::UNIQUE_OPTIONS
     sidekiq_options retry: 2
 
