@@ -28,7 +28,7 @@ describe SettingsController, type: :controller do
         kanban_settings: { rolling_average_window: 1 }
       )
       expect(response).to have_http_status(:redirect)
-      expect(response).to redirect_to(board_settings_url(board))
+      expect(response).to redirect_to(CGI::unescape(board_settings_url(board)))
     end
 
     it 'returns http success if fail' do
@@ -54,7 +54,7 @@ describe SettingsController, type: :controller do
         board: { name: board.name + '1' }
       )
       expect(response).to have_http_status(:redirect)
-      expect(response).to redirect_to(board_settings_url(board))
+      expect(response).to redirect_to(CGI::unescape(board_settings_url(board)))
     end
 
     it 'returns http success if fail' do
