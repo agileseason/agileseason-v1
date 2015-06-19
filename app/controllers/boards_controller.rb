@@ -36,7 +36,7 @@ class BoardsController < ApplicationController
     @board.columns << build_columns
 
     if @board.save
-      redirect_to board_url(@board)
+      redirect_to un board_url(@board)
     else
       render 'new'
     end
@@ -45,7 +45,7 @@ class BoardsController < ApplicationController
   def destroy
     authorize! :destroy, @board
     @board.destroy
-    redirect_to boards_url, notice: "Your board \"#{@board.name}\" was successfully deleted."
+    redirect_to un(boards_url), notice: "Your board \"#{@board.name}\" was successfully deleted."
   end
 
 private

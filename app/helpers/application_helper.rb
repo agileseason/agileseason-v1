@@ -26,6 +26,10 @@ module ApplicationHelper
     markdown.render(markdown_github_fixes(text, repo_url)).html_safe
   end
 
+  def un(url)
+    CGI::unescape(url)
+  end
+
   private
 
   def markdown_github_fixes(text, repo_url)
