@@ -1,9 +1,9 @@
 module Graphs
   class CumulativeWorker < BaseWorker
-    def perform(board_id, github_token)
+    def perform(board_id, encrypted_github_token)
       board = Board.find(board_id)
       fill_missing_days(board.board_histories)
-      board_issues = GithubApi.new(github_token).board_issues(board)
+      board_issues = github_api(encrypted_github_token).board_issues(board)
       save_current_history(board, board_issues)
     end
 

@@ -6,7 +6,7 @@ describe Graphs::IssueStatsWorker do
     let(:arrange) {}
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return(issues) }
     before { arrange }
-    before { worker.perform(board.id, 'fake_token') }
+    before { worker.perform(board.id, Encryptor.encrypt('fake_token')) }
 
     context :empty do
       let(:issues) { [] }

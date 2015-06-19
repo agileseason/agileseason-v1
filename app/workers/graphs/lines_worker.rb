@@ -1,9 +1,9 @@
 module Graphs
   class LinesWorker < BaseWorker
-    def perform(board_id, github_token)
+    def perform(board_id, encrypted_github_token)
       board = Board.find(board_id)
       fill_missing_days(board.repo_histories)
-      repo_lines = GithubApi.new(github_token).repo_lines(board)
+      repo_lines = github_api(encrypted_github_token).repo_lines(board)
       save_current_history(board, repo_lines) if repo_lines > 0
     end
 

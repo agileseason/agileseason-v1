@@ -1,16 +1,16 @@
 module Graphs
   class IssueStatsWorker < BaseWorker
-    def perform(board_id, github_token)
+    def perform(board_id, encrypted_github_token)
       @board = Board.find(board_id)
-      issues = fetch_issues_to_sync(github_token)
+      issues = fetch_issues_to_sync(encrypted_github_token)
       create_issue_stats(issues)
       update_issue_stats(issues)
     end
 
     private
 
-    def fetch_issues_to_sync(github_token)
-      issues = GithubApi.new(github_token).issues(@board)
+    def fetch_issues_to_sync(encrypted_github_token)
+      issues = github_api(encrypted_github_token).issues(@board)
       issues.select { |issue| issue.state == 'open' || issue.created_at >= @board.created_at }
     end
 
