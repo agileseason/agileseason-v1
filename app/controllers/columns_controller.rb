@@ -10,7 +10,7 @@ class ColumnsController < ApplicationController
     @column.board = @board
     @column.order = @board.columns.last.order + 1
     if @column.save
-      redirect_to board_url(@board)
+      redirect_to un(board_url(@board))
     else
       render 'new'
     end
@@ -59,7 +59,7 @@ class ColumnsController < ApplicationController
     else
       notice = 'Can\'t move column with issues!'
     end
-    redirect_to board_url(@board), notice: notice
+    redirect_to un(board_url(@board)), notice: notice
   end
 
   def column_params
@@ -73,6 +73,6 @@ class ColumnsController < ApplicationController
   end
 
   def render_result
-    render json: { redirect_url: board_url(@board) }
+    render json: { redirect_url: un(board_url(@board)) }
   end
 end
