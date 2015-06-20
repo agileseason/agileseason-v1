@@ -67,7 +67,15 @@ class IssuesController < ApplicationController
     issue_stat = github_api.archive(@board, params[:number])
     respond_to do |format|
       format.html { redirect_to board_url(@board) }
-      format.json { render json: { archived: issue_stat && issue_stat.archived? } }
+      format.json do
+        render json: {
+          column_id: issue_stat.column_id,
+          html: render_to_string(
+            partial: 'columns/wip_badge.html',
+            locals: { column: issue_stat.column }
+          )
+        }
+      end
     end
   end
 

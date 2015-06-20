@@ -104,9 +104,12 @@ $(document).on 'page:change', ->
     # отправить на сервер набор лейблов
     $.post $(@).data('url'), { labels: labels }
 
-  # скрыть тикет после успешной архивации
+  # скрыть тикет после архивации
   $('.issue .archive').on 'click', ->
-    $(@).parent('.issue').remove()
+    $(@).parent('.issue').addClass('hidden')
+  # обновить WIP у колонки после архивации тикета
+  $('.issue .archive').on 'ajax:success', (e, badge) ->
+    window.update_wip_column(badge)
 
   # изменить тикет и открыть архивацию после успешного закрытия
   $('.board').on 'click', '.issue .close', ->
@@ -175,3 +178,6 @@ new_issue_forms = ->
     $form.find('textarea').val('') # в данном случае нужно очищать поле ввода
     $issues = $('.issues', $form.closest('.board-column'))
     $issues.prepend(data)
+
+window.update_wip_column = (badge) ->
+  $("#column_#{badge.column_id}").find('.badge').replaceWith(badge.html)
