@@ -109,7 +109,7 @@ $(document).on 'page:change', ->
     $(@).parent('.issue').addClass('hidden')
   # обновить WIP у колонки после архивации тикета
   $('.issue .archive').on 'ajax:success', (e, badge) ->
-    update_wip_column(badge)
+    window.update_wip_column(badge)
 
   # изменить тикет и открыть архивацию после успешного закрытия
   $('.board').on 'click', '.issue .close', ->
