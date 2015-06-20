@@ -70,7 +70,10 @@ class IssuesController < ApplicationController
       format.json do
         render json: {
           column_id: issue_stat.column_id,
-          html: render_to_string(partial: 'columns/wip_badge.html', locals: { column: issue_stat.column })
+          html: render_to_string(
+            partial: 'columns/wip_badge.html',
+            locals: { column: issue_stat.column }
+          )
         }
       end
     end
