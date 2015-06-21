@@ -1,6 +1,7 @@
 @import compass/css3/border-radius
 @import compass/css3/box-shadow
 @import compass/css3/text-shadow
+@import compass/css3/transition
 @import globals/variables
 @import mixins/avatar
 @import mixins/button
@@ -314,9 +315,16 @@
         a.user
           display: block
           margin: 4px
+
+          .avatar
+            +avatar
+            height: 40px
+            width: 40px
+
           .name
             line-height: 30px
             vertical-align: top
+
           .check
             margin: 5px
             vertical-align: top
@@ -378,3 +386,49 @@
     display: inline
     font-size: 14px
     font-weight: bold
+
+  .edit-labels
+    .popup
+      +popup
+      font-size: 14px
+      height: auto
+      top: 100%
+      width: 240px
+
+      .octicon.octicon-triangle-up
+        display: block
+
+      .close-popup
+        +close
+
+      .labels-block
+        overflow-x: hidden
+        overflow-y: auto
+        padding: 10px
+        height: 200px
+
+        label.check_boxes
+          display: none
+
+        label.label
+          padding: 3px
+          display: block
+          color: #fff
+          +border-radius(4px)
+          background: #aaa
+          margin-bottom: 5px
+          width: 160px
+          +transition(width ease-out 0.2s)
+          position: relative
+
+          &:hover
+            width: 190px
+
+          input
+            display: inline-block
+            position: absolute
+
+          .label-name
+            display: block
+            white-space: nowrap
+            padding-left: 20px

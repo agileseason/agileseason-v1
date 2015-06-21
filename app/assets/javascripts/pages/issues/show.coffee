@@ -180,6 +180,7 @@ $(document).on 'page:change', ->
 
   # раскрыть попап с лейблами тикета
   $('.add-label').click ->
+    console.log 'open:labels'
     $(@).parent().prev().show()
     $(@).hide()
 
@@ -199,8 +200,9 @@ $(document).on 'page:change', ->
     # обновить текущий список лейблов тикета на борде и в попапе
     $('.b-issue-labels').html(html_labels)
 
+    $(@).closest('form').submit()
     # отправить на сервер набор лейблов
-    $.post $(@).data('url'), { labels: labels }
+    #$.post $(@).data('url'), { labels: labels }
 
 # private ###########################################################
 
