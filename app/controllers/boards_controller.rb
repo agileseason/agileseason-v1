@@ -16,7 +16,7 @@ class BoardsController < ApplicationController
   end
 
   def show
-    @direct_post = S3Api.direct_post
+    #@direct_post = S3Api.direct_post
   end
 
   def new

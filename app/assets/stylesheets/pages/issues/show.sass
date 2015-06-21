@@ -7,6 +7,7 @@
 @import mixins/close
 @import mixins/popup
 @import mixins/date
+@import mixins/form
 
 .p-issues-show
   .b-menu
@@ -58,34 +59,32 @@
     font-weight: normal
     padding: 0 0 10px 0
     position: relative
+    +issue_form
 
-    .upload,
-    .preview
+    .issue-title
+      display: inline
+      margin-right: 10px
+
+      &:hover
+        background: $active
+        outline: 5px solid $active
+
+    form
       display: none
 
-    .editable-form
-      textarea
-        font-size: 28px
-        height: 28px
-        min-height: 20px
+      .button
+        display: none
 
-      &.active
-        margin-bottom: 40px
+    &.active
+      form
+        display: block
 
-    .editable-form.active + a,
-    .editable-form.active + a + .due-date
-      display: none
+      .url, .due-date, .issue-title
+        display: none
 
-  .issue-name
-    cursor: pointer
-    display: inline
-    margin-right: 8px
-
-  .description
-    cursor: pointer
-
-  .issue-description
-    margin-top: 10px
+  .add-comment-form
+    margin-top: 60px
+    +issue_form
 
   .b-issue-labels
     margin-left: 70px
@@ -104,12 +103,45 @@
         right: 5px
         top: 3px
 
+  .issue-comments
+    margin-top: 60px
+
+  .issue-comment
+    display: table
+    padding: 0 0 40px
+    width: 100%
+
+    &:last-child
+      padding-bottom: 0
+
+  .comment-form
+    +issue_form
+
+    form.edit-comment, .upload
+      display: none
+
+    &.active
+      .comment-text
+        display: none
+
+      form.edit-comment, .upload
+        display: block
+
   .comment-body
     +border-radius(6px)
     background-color: #f2f9fc
     margin-left: 60px
     padding: 20px
     position: relative
+
+    &.current-comment
+      background: $active
+
+      .edit-link
+        display: none
+
+      &:before
+        border-color: transparent $active transparent transparent
 
     &:before
       border-color: transparent #f2f9fc transparent transparent
@@ -120,6 +152,9 @@
       margin: -5px 0 0 -30px
       position: absolute
       width: 0
+
+    .upload
+      margin-bottom: 0
 
     pre,
     code

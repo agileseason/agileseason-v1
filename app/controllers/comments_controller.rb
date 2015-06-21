@@ -9,13 +9,13 @@ class CommentsController < ApplicationController
   #end
 
   def create
-    github_api.add_comment(@board, params[:number], params[:body])
-    render nothing: true
+    comment = github_api.add_comment(@board, params[:number], params[:comment][:body])
+    render partial: 'show', locals: { comment: comment, board: @board }
   end
 
   def update
-    github_api.update_comment(@board, params[:number], params[:body])
-    render nothing: true
+    comment = github_api.update_comment(@board, params[:number], params[:comment][:body])
+    render partial: 'show', locals: { comment: comment, board: @board }
   end
 
   def delete

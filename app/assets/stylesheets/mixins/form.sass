@@ -1,0 +1,54 @@
+=issue_form
+  form
+    textarea, textarea:focus
+      background: $active
+      border: none
+      display: block
+      outline: 5px solid $active
+      padding: 0
+      width: 100%
+      outline-offset: 0px
+
+      &.dragenter
+        border: 3px dashed #56AD05
+
+    .actions
+      display: inline-block
+      float: right
+      margin: 17px 5px 0 0
+
+      a
+        margin-right: 10px
+
+      .close-without-saving
+        font-size: 13px
+
+  .upload
+    background: $active
+    outline: 5px solid $active
+    border-top: 1px solid #aaa
+    margin: 10px 0 20px 0
+    padding: 10px 0
+
+    form
+      display: inline-block
+
+    label
+      display: inline
+      font-size: 13px
+      padding: 0
+
+    .progress
+      display: none
+
+      .b-preloader
+        margin: 0
+
+    input[type="file"]
+      //display: none
+      cursor: pointer
+      height: 40px
+      left: 0
+      opacity: 0.00001
+      position: absolute
+      top: -10px

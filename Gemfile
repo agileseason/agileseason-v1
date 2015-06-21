@@ -25,6 +25,7 @@ gem 'sass-rails'
 gem 'sidekiq'
 gem 'sidekiq-unique-jobs'
 gem 'simple_form'
+gem 'simple_form-magic_submit'
 gem 'sinatra', require: nil
 gem 'slim-rails'
 gem 'state_machine'

@@ -4,6 +4,8 @@ class IssuesController < ApplicationController
   before_action :fetch_board_for_update, except: [:show, :search, :new]
 
   def show
+    @direct_post = S3Api.direct_post
+
     github_issue = github_api.issue(@board, params[:number])
     issue_stat = @board.issue_stats.find_by(number: params[:number])
     @issue = BoardIssue.new(github_issue, issue_stat)
@@ -42,9 +44,7 @@ class IssuesController < ApplicationController
     github_api.update_issue(
       @board,
       params[:number],
-      body: params[:body],
-      title: params[:title],
-      labels: params[:labels]
+      issue_params
     )
 
     render nothing: true

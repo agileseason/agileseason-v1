@@ -185,35 +185,35 @@ $(document).on 'page:change', ->
     ################################################################################
     # move-to events in issue modal
     ################################################################################
-    $('.move-to-column li', $issue_modal).each ->
-      $(@).addClass('active') if $(@).data('column') == $current_issue.closest('.board-column').data('column')
+    #$('.move-to-column li', $issue_modal).each ->
+      #$(@).addClass('active') if $(@).data('column') == $current_issue.closest('.board-column').data('column')
 
-    # Перемещение тикета в попапе
-    $('.move-to-column li', $issue_modal).click ->
-      return if $(@).hasClass 'active'
+    ## Перемещение тикета в попапе
+    #$('.move-to-column li', $issue_modal).click ->
+      #return if $(@).hasClass 'active'
 
-      # класс активной колонки
-      $('.move-to-column li').removeClass 'active'
-      $(@).addClass 'active'
+      ## класс активной колонки
+      #$('.move-to-column li').removeClass 'active'
+      #$(@).addClass 'active'
 
-      $current_issue = $(".issue.issue-#{$(@).parents('.b-issue-modal').data('number')}")
-      column_1 = $current_issue.data('column')
-      column_2 = $(@).data('column')
-      $col_1 = $("#column_#{column_1}")
-      $col_2 = $("#column_#{column_2}")
+      #$current_issue = $(".issue.issue-#{$(@).parents('.b-issue-modal').data('number')}")
+      #column_1 = $current_issue.data('column')
+      #column_2 = $(@).data('column')
+      #$col_1 = $("#column_#{column_1}")
+      #$col_2 = $("#column_#{column_2}")
 
-      # перемещение тикета в DOMe
-      clone = $current_issue
-      $current_issue.remove()
-      $('.issues', $col_2).prepend(clone)
+      ## перемещение тикета в DOMe
+      #clone = $current_issue
+      #$current_issue.remove()
+      #$('.issues', $col_2).prepend(clone)
 
-      $.get $(@).data('move-to-url')
+      #$.get $(@).data('move-to-url')
 
-      # сохранение порядка тиетов в измененных колонках
-      col_1_issues = empty_check($col_1.find('.issues').sortable('serialize'), '')
-      col_2_issues = empty_check($col_2.find('.issues').sortable('serialize'), $current_issue.data('number'))
-      save_order($col_1.data('url'), col_1_issues)
-      save_order($col_2.data('url'), col_2_issues)
+      ## сохранение порядка тиетов в измененных колонках
+      #col_1_issues = empty_check($col_1.find('.issues').sortable('serialize'), '')
+      #col_2_issues = empty_check($col_2.find('.issues').sortable('serialize'), $current_issue.data('number'))
+      #save_order($col_1.data('url'), col_1_issues)
+      #save_order($col_2.data('url'), col_2_issues)
 
 load_comments = ->
   #console.log 'load comments'
