@@ -181,7 +181,6 @@
     .controls
       +date
 
-
   .user-ava
     display: inline-block
     width: 33px
@@ -288,3 +287,94 @@
             top: -1px
             z-index: 1
 
+  .b-assign
+    position: relative
+
+    .no-one
+      font-size: 14px
+      color: $text-muted
+      margin: 10px 0 28px 0
+
+    .popup
+      +popup
+      font-size: 14px
+      height: 220px
+      top: -4px
+      width: 240px
+
+      .close-popup
+        +close
+
+      .users
+        overflow-x: hidden
+        overflow-y: auto
+        padding: 10px
+        height: 200px
+
+        a.user
+          display: block
+          margin: 4px
+          .name
+            line-height: 30px
+            vertical-align: top
+          .check
+            margin: 5px
+            vertical-align: top
+
+  .edit-due-date
+    position: relative
+
+    .popup
+      height: 320px
+      margin-top: -28px
+      padding: 20px
+      width: 272px
+
+      .close-popup
+        +close
+
+      .header
+        margin-bottom: 12px
+
+        .date, .time
+          display: inline-block
+          margin-right: 30px
+          width: 98px
+
+        input
+          width: 98px
+
+      .datepicker
+        margin-bottom: 12px
+
+      .save
+        display: inline-block
+        width: auto
+
+  .due-date
+    +border-radius(2px)
+    background: $orange
+    color: #fff
+    display: inline-block
+    font-size: 12px
+    margin-left: 5px
+    padding: 2px 6px 2px 6px
+    vertical-align: top
+
+    &.none
+      display: none
+
+  .edit-labels
+    position: relative
+
+  .action-title
+    margin: 20px 0 10px 0
+
+    &:first-child
+      margin-top: 0
+
+  .user-login
+    color: $lightgrey
+    display: inline
+    font-size: 14px
+    font-weight: bold

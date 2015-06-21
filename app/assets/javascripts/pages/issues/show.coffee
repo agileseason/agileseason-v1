@@ -1,16 +1,21 @@
+$(document).keyup (e) ->
+  # клик по esc
+  if (e.keyCode == 27)
+    if $('.comment-form.active').length
+      # закрыть все активные формы
+      $('.close-without-saving', '.comment-form.active').trigger 'click'
+    else
+      # вернуться к борду
+      Turbolinks.visit($('.b-menu .boards a').attr('href'))
+
 $(document).on 'page:change', ->
   return unless document.body.id == 'issues_show'
-  console.log 'issue:load'
-
-  $(document).keyup (e) ->
-    if (e.keyCode == 27) # esc
-      Turbolinks.visit($('.b-menu .boards a').attr('href'))
 
   $('textarea').elastic()
   highlight_code()
   init_uploading()
 
-  # редактирование заголовка тикета
+  # редактировать название тикета
   $('.issue-title').click ->
     $title = $(@).closest('.title')
     $textarea = $('textarea', $title)
@@ -22,11 +27,13 @@ $(document).on 'page:change', ->
 
     $textarea.focus().val('').val($val)
 
+  # сохранить по блюру название тикета
   $('.title textarea').blur ->
     $('.issue-title').text($(@).val())
     $('.title').removeClass 'active'
     $('.button', '.title').trigger 'click'
 
+  # сабмит добавления комментария
   $('form.add-comment').on 'ajax:success', (event, data, status, xhr) ->
     $('.issue-comments').append(data)
     $('textarea', '.add-comment-form')
@@ -49,13 +56,25 @@ $(document).on 'page:change', ->
   #$('.write').click ->
     #$(@).closest('form').removeClass('preview-mode')
 
-  # указываю, в какую форму загружать картинку
-  $('.issue-comments, .add-comment-form').on 'click', '.upload a', ->
-    $('.b-editable-form').removeClass 'current-uploading'
-    $(@).closest('.b-editable-form').addClass 'current-uploading'
+  $('.issue-comments, .add-comment-form')
+    # указываю, в какую форму загружать картинку
+    .on 'click', '.upload a', ->
+      $('.b-editable-form').removeClass 'current-uploading'
+      $(@).closest('.b-editable-form').addClass 'current-uploading'
+
+    # не отправлять пустой комментарий при добавлении и редактировании
+    .on 'click', 'input:submit', (e) ->
+      e.preventDefault()
+      $textarea = $(@).closest('form').find('textarea')
+      if $textarea.val().trim() == ''
+        $textarea.val('').focus()
+        return
+
+      else
+        $textarea.closest('form').submit()
 
   $('.issue-comments')
-    # удаление комментария
+    # удалить комментарий
     .on 'click', '.delete', ->
       if window.confirm('Delete comment?')
         $.ajax
@@ -63,7 +82,7 @@ $(document).on 'page:change', ->
           method: 'delete'
         $(@).closest('.issue-comment').remove()
 
-    # редактирование комментария
+    # открыть форму редактирования комментария
     .on 'click', '.edit', ->
       $parent = $(@).closest('.comment-body ')
 
@@ -78,7 +97,7 @@ $(document).on 'page:change', ->
 
       $('textarea').elastic()
 
-    # закрытие без сохранения
+    # закрыть комментарий без сохранения
     .on 'click', '.close-without-saving', ->
       $parent = $(@).closest('.comment-body ')
 
@@ -87,51 +106,17 @@ $(document).on 'page:change', ->
       $parent.removeClass 'current-comment'
       $('.comment-form', $parent).removeClass 'active'
 
+    # сабмит формы редактирования комментария
     .on 'ajax:success', 'form.edit-comment', (event, data, status, xhr) ->
-      console.log 'save:edited:comment'
       $current_comment = $(@).closest('.issue-comment')
       $current_comment.after(data)
       $current_comment.remove()
 
       highlight_code()
 
+    # сохранить чекбоксы в комментарии
     .on 'click', '.task', ->
       update_by_checkbox $(@)
-
-
-  #$('.edit').click ->
-    #open_form($(@).closest('.controls').next())
-    #$('.editable-form', $(@).closest('.comment-body')).trigger 'comment_form:load'
-
-  #$('.editable-form').on 'comment_form:load', ->
-    #console.log 'comment_form:load'
-
-  #$('.editable-form', '.issue-comments').click (e) ->
-    #if $(e.target).is('.editable-form.active .save')
-      #$(@).trigger('comment:save')
-
-    #$('.editable-form', '.issue-comments').on 'comment:save', ->
-      #$form = $(@)
-      #$editable_node = $(@).prev()
-      #$current_issue = $('.current-issue') # миниатюра открытого тикета
-
-      #url = $form.prev().data('url')
-      #delete_url = $form.prev().data('delete')
-      #new_content = $('textarea', '.editable-form.active').val()
-
-      #if new_content.replace(/\s*\n*/g, '') == ''
-        #close_active_form()
-
-      #else
-        #update_initial_data($(@), new_content)
-        #$.post url, body: new_content
-        #$.post $('.preview', @).data('url'), string: new_content, (markdown) ->
-          #$editable_node.html(markdown)
-          #close_active_form()
-
-    #$('.issue-comments').on 'click', '.task', (e) ->
-      #update_by_checkbox($(@), '.comment')
-
 
     #console.log 'modal ajax:success'
     #number = $(@).find('.b-issue-modal').data('number')
@@ -142,7 +127,6 @@ $(document).on 'page:change', ->
     #$(@).find('.b-assign .check').removeClass('octicon octicon-check')
     #$('.check', $(e.target)).addClass('octicon octicon-check')
     #$(@).find('.popup').hide() # скрытый эффект - закрывает все popup
-
 
   # раскрыть попап с календарем для установки крайней даты
   $('.set-due-date').click ->
@@ -218,6 +202,7 @@ $(document).on 'page:change', ->
     # отправить на сервер набор лейблов
     $.post $(@).data('url'), { labels: labels }
 
+# private ###########################################################
 
 highlight_code = ->
   $('pre code').each (i, block) ->
@@ -230,8 +215,6 @@ init_uploading = ->
 
 find_issue = (number) ->
   $(".issue[data-number='#{number}']")
-
-
 
 update_by_checkbox = ($checkbox) ->
   event.stopPropagation()
