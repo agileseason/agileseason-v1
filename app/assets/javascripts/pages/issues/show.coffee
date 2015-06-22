@@ -11,6 +11,11 @@ $(document).keyup (e) ->
 $(document).on 'page:change', ->
   return unless document.body.id == 'issues_show'
 
+  $('.b-menu').click (e) ->
+    # клик вне тикета делает переход к борду
+    if $(e.target).is('.b-menu, .b-menu > ul')
+      Turbolinks.visit($('.b-menu .boards a').attr('href'))
+
   $('textarea').elastic()
   highlight_code()
   init_uploading()
@@ -133,7 +138,7 @@ $(document).on 'page:change', ->
     $popup = $(@).parent().find('.popup')
     $datepicker = $('.datepicker', $popup)
     $datepicker.datepicker({
-      dateFormat: 'dd/mm/yyyy',
+      dateFormat: 'dd/mm/yy',
       onSelect: ->
         $popup.find('.date input').val($(@).val())
     })
@@ -149,7 +154,6 @@ $(document).on 'page:change', ->
       data: { due_date: "#{date} #{time}" },
       method: 'post',
       success: (date) ->
-        debugger
         $('.popup').hide()
         $('.due-date').removeClass('none').html(date)
         # FIX : Extract method for find current issue number
@@ -168,15 +172,23 @@ $(document).on 'page:change', ->
     $popup.parent().find('.assignee').show()
     $popup.hide()
 
-
   $('.b-assign .user').click (e) ->
-    $('img', '.user-list').attr('src', $(@).find('img').attr('src'))
-    $('a', '.user-list')
-      .attr('href', $(@).find('a').attr('href'))
-      .attr('title', $(@).find('.name').text())
-    $('.check', @).addClass 'octicon octicon-check'
-    $('.close-popup', $(@).closest('.popup')).trigger 'click'
-    $('.b-assignee', '.user-list').removeClass 'hidden'
+    if $('.check', @).hasClass 'octicon octicon-check'
+      $('.check', @).removeClass 'octicon octicon-check'
+      $('.b-assignee', '.user-list').addClass 'hidden'
+
+    else
+      img_src = $(@).find('img').attr('src')
+      $('img', '.user-list').attr('src', img_src)
+
+      a_href = $(@).find('a').attr('href')
+      a_title = $(@).find('.name').text()
+      $('a', '.user-list')
+        .attr('href', a_href)
+        .attr('title', a_title)
+
+      $('.check', @).addClass 'octicon octicon-check'
+      $('.b-assignee', '.user-list').removeClass 'hidden'
 
   # раскрыть попап с лейблами тикета
   $('.add-label').click ->
