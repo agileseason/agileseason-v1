@@ -12,6 +12,7 @@ rerun.txt
 pickle-email-*.html
 
 config/initializers/secret_token.rb
+config/initializers/faye_token.rb
 
 ## Environment normalisation:
 /.bundle
