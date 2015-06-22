@@ -43,12 +43,14 @@ Look at the our development board for example - [agileseason.com](http://agilese
 ### Getting Started
 1. Clone this repository `git clone git@github.com:agileseason/agileseason.git ~/PROJECTS_DIR/agileseason`
 2. Install [pow](http://pow.cx/) and set up app `cd ~/.pow && ln -s ~/PROJECTS_DIR/agileseason`
-3. Create data base:
+3. Create databases:
   1. `$ psql -d postgres`
   2. `postgres=# create user agileseason_development with password 'agileseason';`
   3. `postgres=# alter user agileseason_development createdb;`
-  4. `$ rake db:create`
-  5. `$ rake db:migrate`
+  4. `postgres=# create user agileseason_test with password 'agileseason';`
+  5. `postgres=# alter user agileseason_test createdb;`
+  6. `$ rake db:create`
+  7. `$ rake db:migrate`
 4. Run Sidekiq `bundle exec sidekiq`
 5. You will now have Agile Season running on `http://agileseason.dev`.
 
