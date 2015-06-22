@@ -4,7 +4,7 @@ $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
   column_menu()
   new_issue_forms()
-  subscribe_board_update()
+  #subscribe_board_update()
   $.initJsPathForInputs()
 
   # пересчитать высоту борда в зависимости от высоты окна браузера
