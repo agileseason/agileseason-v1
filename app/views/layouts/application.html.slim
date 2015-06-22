@@ -5,7 +5,7 @@ html
     = stylesheet_link_tag '/octicons/octicons.css', media: 'all', 'data-turbolinks-track' => true
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
-    = javascript_include_tag "#{FayePusher::URL}/faye/client.js"
+    /= javascript_include_tag "#{FayePusher::URL}/faye/client.js"
     = csrf_meta_tags
 
     link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/solarized_light.min.css"
