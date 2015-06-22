@@ -45,8 +45,7 @@ class IssuesController < ApplicationController
 
   def move_to
     github_api.move_to(@board, @board.columns.find(params[:column_id]), params[:number])
-    #FayePusher.broadcast("/boards/#{}/update", { number: params[:number], move_to: params[:column_id] })
-    FayePusher.broadcast("/messages/new", { text: "foo... bar..." })
+    FayePusher.broadcast_board(current_user, @board, { number: params[:number], action: :move_to, column_id: params[:column_id] })
     render json: begin
       Board.includes(columns: :issue_stats).find(@board).columns.map do |column|
         {

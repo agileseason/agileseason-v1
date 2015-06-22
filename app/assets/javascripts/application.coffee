@@ -26,8 +26,3 @@ $(document).on 'page:load', =>
   if @turbolinks_referer
     if @yaCounter27976815
       @yaCounter27976815.hit location.href, $('title').html(), @turbolinks_referer
-
-$(document).ready ->
-  faye = new Faye.Client('http://localhost:9292/faye')
-  faye.subscribe "/messages/new", (data) ->
-    alert(data.text)
