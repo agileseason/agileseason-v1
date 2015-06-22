@@ -1,8 +1,6 @@
 # config valid only for Capistrano 3.1
 lock '3.2.1'
 
-#SSHKit.config.command_map[:rackup] = "bundle exec rackup"
-
 set :application, 'agileseason'
 set :repo_url, 'git@github.com:agileseason/agileseason.git'
 
@@ -31,7 +29,7 @@ set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config/database.yml config/secrets.yml app/initializers/faye_token.rb}
+set :linked_files, %w{config/database.yml config/secrets.yml}
 
 # Default value for linked_dirs is []
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
@@ -49,11 +47,6 @@ namespace :deploy do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
       # execute :touch, release_path.join('tmp/restart.txt')
-
-      #within "#{current_path}" do
-        #execute "kill `cat #{fetch :faye_pid}` || true"
-        #execute :rackup, "#{fetch :faye_config} -s thin -E production -D --pid #{fetch :faye_pid}"
-      #end
     end
   end
 
@@ -69,27 +62,5 @@ namespace :deploy do
   end
 end
 
-namespace :faye do
-  desc "Start Faye"
-  task :start do
-    on roles(:app) do
-      within "#{current_path}" do
-        #execute :rackup, "#{fetch(:faye_config)} -s thin -E production -D --pid #{fetch(:faye_pid)}"
-        execute "bundle exec rackup", "#{current_path}/faye.ru -s thin -E production -D --pid #{current_path}/tmp/pids/faye.pid"
-      end
-    end
-  end
-  desc "Stop Faye"
-  task :stop do
-    on roles(:app) do
-      within "#{current_path}" do
-        execute "kill `#{current_path}/tmp/pids/faye.pid` || true"
-      end
-    end
-  end
-end
-
 after 'deploy:started', 'sidekiq:stop'
 after 'deploy:published', 'sidekiq:start'
-#before 'deploy:started', 'faye:stop'
-#after 'deploy:published', 'faye:start'
