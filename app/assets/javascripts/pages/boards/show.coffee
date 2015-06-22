@@ -187,6 +187,5 @@ subscribe_board_update = ->
   $board = $('.board')
   faye = new Faye.Client($board.data('faye-url'))
   faye.subscribe $board.data('faye-channel'), (message) ->
-    #console.log "#{message.data.client_id} issue ##{message.data.number} to column_id=#{message.data.column_id} (#{message.client_id})"
-    return if $board.data('faye-client-id') != message.client_id
-    # TODO : show refresh alert
+    return if $board.data('faye-client-id') == message.client_id
+    $('.alert-refresh').show()
