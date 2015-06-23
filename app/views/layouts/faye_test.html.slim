@@ -8,11 +8,5 @@ html
     = javascript_include_tag 'https://agileseason.com/faye/client.js'
     = csrf_meta_tags
 
-  javascript:
-    var faye = new Faye.Client("https://agileseason.com/faye");
-    faye.subscribe("/events", function(data) {
-       alert(data)
-    });
-
   body class="p-#{controller_name}-#{action_name}" id="#{controller_name}_#{action_name}"
     = yield
