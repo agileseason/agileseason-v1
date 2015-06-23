@@ -14,7 +14,7 @@
 @import globals/variables
 
 .p-boards-show
-  background: $board-bg
+  background-image: -webkit-linear-gradient(top,#d9d2cb, #f7f0ea)
   .container
     padding: 0
 
@@ -94,7 +94,7 @@
     display: flex
     flex-direction: column
     flex: 0 0 260px
-    margin-right: 10px
+    margin-right: 0
     max-height: 100%
     padding: 40px 0 0 0
     position: relative
@@ -327,14 +327,18 @@
     margin-bottom: 10px
 
   .ui-sortable-helper
-    +box-shadow(0 15px 10px -10px rgba(100, 100, 100, 0.3))
+    +box-shadow(0 25px 20px -10px rgba(100, 100, 100, 0.3))
 
   .issue
-    +border-radius(3px)
-    +box-shadow(0 2px 0px 0px rgba(100, 100, 100, 0.3))
-    background-color: $card
-    margin-bottom: 10px
-    padding: 0 10px 10px
+    +border-radius(2px)
+    //+box-shadow(0 2px 0px 0px rgba(100, 100, 100, 0.3))
+    background-color: #fff
+    //background-image: -webkit-linear-gradient(top,#F5F4F1,#fff)
+    //box-shadow: 0 9px 8px -10px #aaa
+    //box-shadow: 0 7px 5px -7px #aaa
+    border-bottom: 1px solid #ddd
+    //margin-bottom: 10px
+    padding: 0 10px 15px
     position: relative
     overflow: hidden
 
@@ -356,7 +360,7 @@
       z-index: 1
 
     &:hover
-      background: $card-hover
+      background: #EAF4FC
 
     &.bug
       background: $card-bug

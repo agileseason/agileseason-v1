@@ -38,8 +38,12 @@ RSpec.describe IssuesController, type: :controller do
   end
 
   describe '#update' do
-    before { allow_any_instance_of(GithubApi).to receive(:update_issue) }
-    before { post :update, board_github_full_name: board.github_full_name, number: 1 }
+    before do
+      allow_any_instance_of(GithubApi).to receive(:update_issue)
+      post :update, board_github_full_name: board.github_full_name,
+        number: 1,
+        issue: { title: 'dsgf' }
+    end
 
     it { expect(response).to have_http_status(:success) }
   end

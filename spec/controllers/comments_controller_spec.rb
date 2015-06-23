@@ -13,7 +13,7 @@ RSpec.describe CommentsController, type: :controller do
   #end
 
   describe '#create' do
-    subject { post :create, board_github_full_name: board.github_full_name, number: 1 }
+    subject { post :create, board_github_full_name: board.github_full_name, number: 1, comment: { body: 'sdfsd' } }
 
     context 'check response' do
       before { allow_any_instance_of(GithubApi).to receive(:add_comment) }
@@ -30,7 +30,7 @@ RSpec.describe CommentsController, type: :controller do
   end
 
   describe '#update' do
-    subject { post :update, board_github_full_name: board.github_full_name, number: 1 }
+    subject { post :update, board_github_full_name: board.github_full_name, number: 1, comment: { body: 'sdfsd' } }
 
     context 'check response' do
       before { allow_any_instance_of(GithubApi).to receive(:update_comment) }
