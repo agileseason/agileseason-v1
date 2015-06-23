@@ -9,7 +9,7 @@ class FayePusher
     message = {
       channel: channel,
       data: { client_id: user.remember_token, data: data },
-      ext: { auth_token: FAYE_TOKEN }
+      #ext: { auth_token: FAYE_TOKEN }
     }
     Net::HTTP.post_form(URI(URL), message: message.to_json)
   end
