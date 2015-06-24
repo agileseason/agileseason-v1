@@ -131,11 +131,18 @@ $(document).on 'page:change', ->
     #$(@).find('.b-assignee-container').html(data)
     #$(@).find('.b-assign .check').removeClass('octicon octicon-check')
     #$('.check', $(e.target)).addClass('octicon octicon-check')
-    #$(@).find('.popup').hide() # скрытый эффект - закрывает все popup
+    #$(@).find('.issue-popup').hide() # скрытый эффект - закрывает все.issue-popup
+
+  $('.overlay', '.issue-actions').click ->
+    $('.issue-popup', '.issue-actions').hide()
+    $(@).hide()
 
   # раскрыть попап с календарем для установки крайней даты
   $('.set-due-date').click ->
-    $popup = $(@).parent().find('.popup')
+    $('.issue-popup').hide()
+    $('.overlay', '.issue-actions').show()
+
+    $popup = $(@).parent().find('.issue-popup')
     $datepicker = $('.datepicker', $popup)
     $datepicker.datepicker({
       dateFormat: 'dd/mm/yy',
@@ -154,7 +161,7 @@ $(document).on 'page:change', ->
       data: { due_date: "#{date} #{time}" },
       method: 'post',
       success: (date) ->
-        $('.popup').hide()
+        $('.issue-popup').hide()
         $('.due-date').removeClass('none').html(date)
         # FIX : Extract method for find current issue number
         #number = $modal.find('.b-issue-modal').data('number')
@@ -164,15 +171,19 @@ $(document).on 'page:change', ->
 
   # раскрыть попап с пользователями для назначения
   $('.assignee').click ->
-    $(@).parent().find('.popup').show()
+    $('.issue-popup').hide()
+    $(@).parent().find('.issue-popup').show()
+
+    $('.overlay', '.issue-actions').show()
 
   # скрыть попап с пользователями для назначения
-  $('.close-popup').click ->
-    $popup = $(@).closest('.popup')
-    $popup.parent().find('.assignee').show()
-    $popup.hide()
+  #$('.close-popup').click ->
+    #$popup = $(@).closest('.issue-popup')
+    #$popup.parent().find('.assignee').show()
+    #$popup.hide()
 
   $('.b-assign .user').click (e) ->
+
     if $('.check', @).hasClass 'octicon octicon-check'
       $('.check', @).removeClass 'octicon octicon-check'
       $('.b-assignee', '.user-list').addClass 'hidden'
@@ -193,13 +204,16 @@ $(document).on 'page:change', ->
   # раскрыть попап с лейблами тикета
   $('.add-label').click ->
     console.log 'open:labels'
+    $('.issue-popup').hide()
+    $('.overlay', '.issue-actions').show()
+
     $(@).parent().prev().show()
-    $(@).hide()
+    #$(@).hide()
 
   # скрыть попап с лейблами тикета
-  $('.close-popup').click ->
-    $(@).closest('.popup').next().find('.add-label').show()
-    $(@).closest('.popup').hide()
+  #$('.close-popup').click ->
+    #$(@).closest('.issue-popup').next().find('.add-label').show()
+    #$(@).closest('.issue-popup').hide()
 
   # изменить набор лейблов тикета
   $('label input').on 'change', ->

@@ -8,9 +8,11 @@
       - unless params[:controller] == 'boards' && params[:action] == 'index'
         li.boards
           - if params[:controller] == 'boards'
-            a.active #{k(:board, @board).name} board&nbsp;
+            a.active
+              span #{k(:board, @board).name} board
           - else
-            a.current-board-link href="#{un board_url(@board)}" #{k(:board, @board).name} board&nbsp;
+            a.current-board-link href="#{un board_url(@board)}"
+              span #{k(:board, @board).name} board
             /span.octicon.octicon-chevron-down
           /.popup
             /.octicon.octicon-triangle-up

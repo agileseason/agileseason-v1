@@ -5,11 +5,6 @@ $(document).on 'page:change', ->
   $('.notice').on 'click', ->
     $(@).remove()
 
-  # открыть модальное окно с issue по прямой сслыке
-  if location.hash
-    number = location.hash.match(/issue-number=(\d+)/)?[1]
-    show_issue_modal(number) if number
-
   $('.issues').on 'click', '.issue.draggable', (e) ->
     unless $(e.target).is('a, .button')
       $(@).closest('.issue').addClass 'current-issue'
@@ -109,10 +104,6 @@ $(document).on 'page:change', ->
     $(@).parent().removeClass 'active'
     $(@).remove()
 
-  # open issue popup
-  $('.b-activities, .search').on 'click', '.issue-url', ->
-    show_issue_modal($(@).data('number'))
-
 $(document).on 'slider:load', '.b-activities', ->
   $('.b-activities').scroll ->
     if $(@).scrollTop() + $(@).innerHeight() >= $(@)[0].scrollHeight && $(@).data('paginate') == true
@@ -128,15 +119,3 @@ $(document).on 'slider:load', '.b-activities', ->
         else
           $(@).data(paginate: false)
           $('.b-preloader', @).remove()
-
-show_issue_modal = (number) ->
-  $issue_modal = $('.issue-modal')
-  $modal_content = $('.modal-content', $issue_modal)
-  $issue_modal.show()
-  $modal_content.html('<div class="b-issue-modal" style="text-align: center;"><div class="b-preloader modal-preloader"></div></div>')
-
-  $.ajax
-    url: "/boards/#{$('.board').data('github_full_name')}/issues/#{number}",
-    success: (html) ->
-      $modal_content.html($(html)).trigger 'modal:load'
-      location.hash = "#issue-number=#{number}"
