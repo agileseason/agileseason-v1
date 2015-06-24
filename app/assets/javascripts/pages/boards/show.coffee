@@ -10,16 +10,6 @@ $(document).on 'page:change', ->
   # пересчитать высоту борда в зависимости от высоты окна браузера
   resize_height()
 
-  # открыть модальное окно с issue по прямой сслыке
-  #if location.hash
-    #number = location.hash.match(/issue-number=(\d+)/)?[1]
-    #show_issue_modal(number) if number
-
-  #$('.issues').on 'click', '.issue.draggable', (e) ->
-    #unless $(e.target).is('a, .button')
-      #$(@).closest('.issue').addClass 'current-issue'
-      #show_issue_modal($(@).data('number'))
-
   # открыть форму добавления тикета или колонки
   $('.new-issue, .new-column').click ->
     $(@).next().show()
@@ -31,17 +21,6 @@ $(document).on 'page:change', ->
     $(@).closest('.inline-form').prev().show()
     $(@).closest('.inline-form').hide()
     false
-
-  #$('.issue-modal').on 'ajax:success', (e, data) ->
-    ##console.log 'modal ajax:success'
-    #number = $(@).find('.b-issue-modal').data('number')
-    ## FIX : Find reason what find return two element .b-assignee-container
-    #find_issue(number).find('.b-assignee-container').each ->
-      #$(@).html(data)
-    #$(@).find('.b-assignee-container').html(data)
-    #$(@).find('.b-assign .check').removeClass('octicon octicon-check')
-    #$('.check', $(e.target)).addClass('octicon octicon-check')
-    #$(@).find('.popup').hide() # скрытый эффект - закрывает все popup
 
   # раскрыть попап с календарем для установки крайней даты
   $('.board-column, .issue-modal').on 'click', '.set-due-date', ->
@@ -60,6 +39,7 @@ $(document).on 'page:change', ->
     $modal = $(@).parents('.issue-modal')
     date = $modal.find('.date input').val()
     time = $modal.find('.time input').val()
+
     $.ajax
       url: $modal.find('.edit-due-date').data('url'),
       method: 'POST',

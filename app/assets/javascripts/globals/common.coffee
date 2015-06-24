@@ -13,7 +13,6 @@ $(document).on 'page:change', ->
   $('.issues').on 'click', '.issue.draggable', (e) ->
     unless $(e.target).is('a, .button')
       $(@).closest('.issue').addClass 'current-issue'
-      #show_issue_modal($(@).data('number'))
       Turbolinks.visit $(@).data('url')
 
   # закрыть попап по крестику или по клику мимо попапа
