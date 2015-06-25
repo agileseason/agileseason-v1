@@ -28,6 +28,9 @@
               li data-column="#{column.id}" class="#{@issue.issue_stat.column_id == column.id ? 'active' : ''}"
                 a data-remote="true" href="#{move_to_column_board_issues_url @board, @issue.number, column.id}" = column.name
 
+      - unless k(:issue, @issue).body_empty?
+        .issue-description = markdown(@issue.body.html_safe, @board.github_url)
+
       .issue-comments data-url="#{comments_board_issues_url @board, @issue.number}"
         - @comments.each do |comment|
           = render partial: 'comments/show', locals: { comment: comment, board: @board }
@@ -43,3 +46,5 @@
         = render partial: 'issues/actions/edit_due_date', locals: { board: @board, issue: @issue }
         = render partial: 'issues/actions/close',         locals: { board: @board, issue: @issue }
         = render partial: 'issues/actions/archive',       locals: { board: @board, issue: @issue }
+
+
