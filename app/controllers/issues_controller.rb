@@ -17,7 +17,7 @@ class IssuesController < ApplicationController
 
   def search
     issues = github_api.search_issues(@board, params[:query])
-    render partial: 'search_result', locals: { issues: issues }
+    render partial: 'search_result', locals: { issues: issues, board: @board }
   end
 
   #def new

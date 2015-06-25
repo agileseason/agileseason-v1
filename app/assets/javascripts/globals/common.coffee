@@ -57,10 +57,11 @@ $(document).on 'page:change', ->
       $(@).find('.popup').show()
 
   $('.b-menu .search').on 'click', 'input, .octicon-search', ->
-    $('input', $(@).closest('.search')).focus().addClass 'active'
-    $popup = $(@).parents('.search').find('.popup')
+    $(@).closest('li').addClass 'active'
+    $('input', $(@).closest('li')).focus()
+    $popup = $(@).parents('.search').find('.search-popup')
     unless $popup.is(':visible')
-      $popup.find('.content').html('')
+      $popup.find('.search-content').html('')
       $popup.find('.help').show()
       $popup.show()
 
@@ -70,18 +71,18 @@ $(document).on 'page:change', ->
       return if query == ''
 
       $search_container = $(@).parents('.search')
-      $popup = $search_container.find('.popup')
-      $popup.find('.content').html('<p>Search...</p>')
+      $popup = $search_container.find('.search-popup')
+      $popup.find('.search-content').html('<p>Search...</p>')
       $popup.find('.help').hide()
 
       url = "#{$search_container.data('url')}?query=#{query}"
       $.get url, (search_result) ->
-        $popup.find('.content')
+        $popup.find('.search-content')
           .html(search_result)
         $popup.show()
 
-  $('.b-menu .search .popup .close-popup').on 'click', ->
-    $(@).parents('.popup').hide()
+  $('.b-menu .search .overlay').on 'click', ->
+    $(@).closest('li').removeClass 'active'
 
     # open activities slider
   $('.b-menu').on 'click', '.activities-link', ->

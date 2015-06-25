@@ -4,4 +4,4 @@
   ul
     - issues.each do |issue|
       li
-        a.issue-url data-number="#{issue.number}" #{issue.title} ##{issue.number}
+        a.issue-url href="#{show_board_issues_url board, issue.number}" #{issue.title} ##{issue.number}

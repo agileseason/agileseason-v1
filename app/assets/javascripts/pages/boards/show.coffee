@@ -23,43 +23,43 @@ $(document).on 'page:change', ->
     false
 
   # раскрыть попап с календарем для установки крайней даты
-  $('.board-column, .issue-modal').on 'click', '.set-due-date', ->
-    $popup = $(@).parent().find('.popup')
-    $datepicker = $('.datepicker', $popup)
-    $datepicker.datepicker({
-      dateFormat: 'dd/mm/yy',
-      onSelect: ->
-        $popup.find('.date input').val($(@).val())
-    })
-    $datepicker.datepicker('setDate', new Date($(@).data('date')))
-    $popup.show()
+  #$('.board-column, .issue-modal').on 'click', '.set-due-date', ->
+    #$popup = $(@).parent().find('.popup')
+    #$datepicker = $('.datepicker', $popup)
+    #$datepicker.datepicker({
+      #dateFormat: 'dd/mm/yy',
+      #onSelect: ->
+        #$popup.find('.date input').val($(@).val())
+    #})
+    #$datepicker.datepicker('setDate', new Date($(@).data('date')))
+    #$popup.show()
 
   # сохранение крайней даты
-  $('.board-column, .issue-modal').on 'click', '.edit-due-date .button.save', ->
-    $modal = $(@).parents('.issue-modal')
-    date = $modal.find('.date input').val()
-    time = $modal.find('.time input').val()
+  #$('.board-column, .issue-modal').on 'click', '.edit-due-date .button.save', ->
+    #$modal = $(@).parents('.issue-modal')
+    #date = $modal.find('.date input').val()
+    #time = $modal.find('.time input').val()
 
-    $.ajax
-      url: $modal.find('.edit-due-date').data('url'),
-      method: 'POST',
-      data: { due_date: "#{date} #{time}" },
-      success: (date) ->
-        $modal.find('.popup').hide()
-        $modal.find('.due-date').removeClass('none').html(date)
-        # FIX : Extract method for find current issue number
-        number = $modal.find('.b-issue-modal').data('number')
-        find_issue(number).find('.due-date').removeClass('none').html(date)
+    #$.ajax
+      #url: $modal.find('.edit-due-date').data('url'),
+      #method: 'POST',
+      #data: { due_date: "#{date} #{time}" },
+      #success: (date) ->
+        #$modal.find('.popup').hide()
+        #$modal.find('.due-date').removeClass('none').html(date)
+        ## FIX : Extract method for find current issue number
+        #number = $modal.find('.b-issue-modal').data('number')
+        #find_issue(number).find('.due-date').removeClass('none').html(date)
 
   # раскрыть попап с пользователями для назначения
-  $('.board-column, .issue-modal').on 'click', '.assignee', ->
-    $(@).parent().find('.popup').show()
+  #$('.board-column, .issue-modal').on 'click', '.assignee', ->
+    #$(@).parent().find('.popup').show()
 
   # скрыть попап с пользователями для назначения
-  $('.board-column, .issue-modal').on 'click', '.close-popup', ->
-    $popup = $(@).closest('.popup')
-    $popup.parent().find('.assignee').show()
-    $popup.hide()
+  #$('.board-column, .issue-modal').on 'click', '.close-popup', ->
+    #$popup = $(@).closest('.popup')
+    #$popup.parent().find('.assignee').show()
+    #$popup.hide()
 
   # раскрыть попап с лейблами тикета
   $('.board-column, .issue-modal').on 'click', '.add-label', ->
