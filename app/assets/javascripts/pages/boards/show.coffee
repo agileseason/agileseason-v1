@@ -4,7 +4,7 @@ $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
   column_menu()
   new_issue_forms()
-  #subscribe_board_update()
+  subscribe_board_update()
   $.initJsPathForInputs()
 
   # пересчитать высоту борда в зависимости от высоты окна браузера
@@ -185,7 +185,9 @@ window.update_wip_column = (badge) ->
 
 subscribe_board_update = ->
   $board = $('.board')
+  return unless $board.data('faye-on')
   faye = new Faye.Client($board.data('faye-url'))
   faye.subscribe $board.data('faye-channel'), (message) ->
+    #console.log message
     return if $board.data('faye-client-id') == message.client_id
     $('.alert-refresh').show()

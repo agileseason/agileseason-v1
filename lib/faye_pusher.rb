@@ -1,15 +1,17 @@
 class FayePusher
-  URL = 'http://localhost:9292/faye'
+  URL = Rails.env.production? ? 'https://agileseason.com/faye' : 'http://localhost:9292/faye'
 
   def self.client
     @client ||= Faye::Client.new(URL)
   end
 
   def self.broadcast(channel, user, data)
+    return unless on?
+
     message = {
       channel: channel,
       data: { client_id: user.remember_token, data: data },
-      #ext: { auth_token: FAYE_TOKEN }
+      ext: { auth_token: config['token'] }
     }
     Net::HTTP.post_form(URI(URL), message: message.to_json)
   end
@@ -20,5 +22,13 @@ class FayePusher
 
   def self.board_channel(board)
     "/boards/#{board.id}/update"
+  end
+
+  def self.on?
+    Rails.env.production?# || true
+  end
+
+  def self.config
+    @config ||= YAML.load_file(Rails.root.join('config/faye.yml'))
   end
 end

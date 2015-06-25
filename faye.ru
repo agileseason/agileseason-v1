@@ -1,14 +1,19 @@
-#rackup faye.ru -s thin -E production
+# Development
+# rackup faye.ru -s thin -E production
 
 require 'faye'
-require File.expand_path('../config/initializers/faye_token.rb', __FILE__)
+require 'psych'
+
+CONFIG = Psych.load_file(File.expand_path(File.dirname(__FILE__) + '/config/faye.yml'))
 
 class ServerAuth
   def incoming(message, callback)
     if message['channel'] !~ %r{^/meta/}
       msg_token = message['ext'] && message['ext']['auth_token']
 
-      if msg_token != FAYE_TOKEN
+      if msg_token == CONFIG['token']
+        message['data'].delete('token')
+      else
         message['error'] = 'Invalid authentication token.'
       end
     end
