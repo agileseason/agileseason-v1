@@ -18,10 +18,6 @@
     display: inline-block
     margin: 20px 20px 0 0
 
-    a
-      span
-        +link
-
     &.boards
       position: relative
 
@@ -38,24 +34,47 @@
       font-size: 18px
       padding: 15px
 
-      &.active
+      span
+        +link
+        color: $text-usual
+
+      span:not(.octicon)
+        border-bottom: 1px solid rgba(90,90,90,0.3)
+
+        &:hover
+          border-bottom: 1px solid rgba($orange-hover,0.3)
+
+      &:hover
+        span:not(.octicon)
+          border-bottom: 1px solid rgba($orange-hover,0.3)
+          color: $orange-hover
+
+      &.active,
+      &.active:hover
         cursor: default
+        color: $text-usual
+        border: none
+
+        span
+          cursor: default
+          color: $text-usual
+          border: none
 
   .left-menu-link
     margin: 0
 
     a
-      background: $link
+      background: $orange
+      color: #fff
       display: inline-block
       font-size: 20px
       height: 20px
       margin: 20px
       text-align: center
       width: 20px
-      color: #fff
 
       &:hover
-        background: $link-hover
+        background: $orange-hover
         color: #fff
 
   .activities-link
@@ -63,62 +82,104 @@
 
     a
       background: rgba(60,60,60,0.1)
-      +ajax_link
       line-height: 18px
 
       &:hover
-        color: $link-hover
+        color: $orange-hover
 
         span.octicon-megaphone
-          color: $link-hover
+          color: $orange-hover
 
       span.octicon-megaphone
-        color: $ajax-link
+        color: $text-usual
 
   .search
     float: right
 
-    input
-      +transition(width ease 0.1s)
+    &.active
+      .field
+        position: relative
+        z-index: 2
+        top: 0
+        padding: 20px 70px 20px 20px
+        margin: -20px -70px 0 20px
+        background: #fff
+
+      .search-input
+        padding: 14px 14px
+        width: 350px
+
+      .overlay
+        display: block
+        z-index: 1
+
+      .search-popup
+        display: block
+
+    .overlay
+      display: none
+
+    .search-input
+      +transition(all ease 0.1s)
       background: rgba(60,60,60,0.1)
       border-radius: 35px
       border: none
       font-size: 16px
       height: 20px
       outline: none
-      padding: 14px
-      width: 20px
-
-      &.active
-        width: 350px
+      padding: 14px 24px
+      width: 0px
 
     span.octicon-search
-      color: $ajax-link
+      color: $text-usual
       cursor: pointer
       margin-left: -30px
       vertical-align: middle
 
       &:hover
-        color: $link-hover
+        color: $orange-hover
 
-    .popup
-      height: auto
-      margin-left: -326px
-      min-height: 100px
-      padding: 10px
-      width: 400px
+    .search-popup
+      background: rgba(255,255,255,1)
+      border-left: 1px solid #eee
+      display: none
+      height: 100%
+      overflow-x: hidden
+      overflow-y: auto
+      position: fixed
+      right: 0
+      top: 0
+      width: 485px
+      z-index: 1
 
-      .content
+      .search-content
+        margin-top: 90px
+
+        ul
+          padding-left: 25px
+
+          li
+            display: block
+            margin: 0
+            padding: 0 0 10px 0
+
+            a
+              padding: 0
+              font-size: 14px
+
         p
           color: $text-muted
           padding: 15px 15px
 
       .help
-        padding: 15px 15px
+        color: $lightgrey
         line-height: 20px
+        margin-top: 80px
+        padding: 10px 20px
 
         a
           +link
+          font-size: 14px
+          padding: 0
 
-      .close-popup
-        +close
+

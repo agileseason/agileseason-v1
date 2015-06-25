@@ -8,17 +8,15 @@
   text-decoration: none
 
   &:hover
-    color: $link-hover
+    color: $orange-hover
 
     .a-child
-      color: $link-hover
+      color: $orange-hover
 
   &.active,
   &.active:hover
-    color: $text-usual
+    color: $orange-hover
     cursor: default
-    background: rgba(255,188,47,0.2)
-    border-radius: 100px
 
     a.child
       color: $text-usual
@@ -39,9 +37,10 @@
 =ajax_link
   color: $ajax-link
   cursor: pointer
+  border-bottom: 1px dashed
 
   &:hover
-    color: $ajax-link-hover
+    color: $orange-hover
 
   &.disabled,
   &:disabled
@@ -52,10 +51,16 @@
       color: $lightgrey
 
   &.active
-    color: $ajax-link-hover
+    color: $orange-hover
     cursor: default
-    background: rgba(255,188,47,0.2)
-    border-radius: 100px
 
     &:hover
-      color: $ajax-link-hover
+      color: $orange-hover
+
+=menu_link
+  +ajax_link
+  border-bottom: 1px solid rgba(90,90,90,0.3)
+
+  &:hover
+    color: $orange-hover
+    border-bottom: 1px solid rgba($orange-hover,0.3)

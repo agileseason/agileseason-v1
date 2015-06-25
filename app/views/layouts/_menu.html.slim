@@ -8,9 +8,11 @@
       - unless params[:controller] == 'boards' && params[:action] == 'index'
         li.boards
           - if params[:controller] == 'boards'
-            a.active #{k(:board, @board).name} board&nbsp;
+            a.active
+              span #{k(:board, @board).name} board
           - else
-            a.current-board-link href="#{un board_url(@board)}" #{k(:board, @board).name} board&nbsp;
+            a.current-board-link href="#{un board_url(@board)}"
+              span #{k(:board, @board).name} board
             /span.octicon.octicon-chevron-down
           /.popup
             /.octicon.octicon-triangle-up
@@ -43,12 +45,13 @@
         a: span.octicon.octicon-megaphone
 
       li.search data-url="#{search_board_issues_url(@board)}"
-        input type='text'
-        span.octicon.octicon-search
-        .popup
-          .content
+        .overlay
+        .field
+          input.search-input type='text'
+          span.octicon.octicon-search
+        .search-popup
+          .search-content
           .help
             ' Refine your search with operators like @member or assignee:member,
-            ' label:name, text in:title, and text in:body,comment.
+            ' label:name, text in:title, and text in:body, comment.
             a href="https://help.github.com/articles/searching-issues/" target='_blank' Learn more…
-          .close-popup

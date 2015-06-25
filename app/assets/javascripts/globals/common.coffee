@@ -5,15 +5,10 @@ $(document).on 'page:change', ->
   $('.notice').on 'click', ->
     $(@).remove()
 
-  # открыть модальное окно с issue по прямой сслыке
-  if location.hash
-    number = location.hash.match(/issue-number=(\d+)/)?[1]
-    show_issue_modal(number) if number
-
   $('.issues').on 'click', '.issue.draggable', (e) ->
     unless $(e.target).is('a, .button')
       $(@).closest('.issue').addClass 'current-issue'
-      show_issue_modal($(@).data('number'))
+      Turbolinks.visit $(@).data('url')
 
   # закрыть попап по крестику или по клику мимо попапа
   $('.modal').on 'click', '.modal-close, .overlay, .close-settings', ->
@@ -21,13 +16,6 @@ $(document).on 'page:change', ->
     $content = $('> .modal-content', $modal)
     $content.children().trigger 'modal:close'
     $modal.hide()
-
-    if $modal.hasClass 'issue-modal'
-      $('.b-issue-modal', $modal).remove()
-      # снять отметку текущего тикета
-      $('.current-issue').removeClass('current-issue')
-      # убрать #issue-number от прямой ссылки на issue
-      location.hash = ''
 
     # страница борда
     return unless document.body.id == 'boards_show'
@@ -62,10 +50,11 @@ $(document).on 'page:change', ->
       $(@).find('.popup').show()
 
   $('.b-menu .search').on 'click', 'input, .octicon-search', ->
-    $('input', $(@).closest('.search')).focus().addClass 'active'
-    $popup = $(@).parents('.search').find('.popup')
+    $(@).closest('li').addClass 'active'
+    $('input', $(@).closest('li')).focus()
+    $popup = $(@).parents('.search').find('.search-popup')
     unless $popup.is(':visible')
-      $popup.find('.content').html('')
+      $popup.find('.search-content').html('')
       $popup.find('.help').show()
       $popup.show()
 
@@ -75,18 +64,18 @@ $(document).on 'page:change', ->
       return if query == ''
 
       $search_container = $(@).parents('.search')
-      $popup = $search_container.find('.popup')
-      $popup.find('.content').html('<p>Search...</p>')
+      $popup = $search_container.find('.search-popup')
+      $popup.find('.search-content').html('<p>Search...</p>')
       $popup.find('.help').hide()
 
       url = "#{$search_container.data('url')}?query=#{query}"
       $.get url, (search_result) ->
-        $popup.find('.content')
+        $popup.find('.search-content')
           .html(search_result)
         $popup.show()
 
-  $('.b-menu .search .popup .close-popup').on 'click', ->
-    $(@).parents('.popup').hide()
+  $('.b-menu .search .overlay').on 'click', ->
+    $(@).closest('li').removeClass 'active'
 
     # open activities slider
   $('.b-menu').on 'click', '.activities-link', ->
@@ -109,10 +98,6 @@ $(document).on 'page:change', ->
     $(@).parent().removeClass 'active'
     $(@).remove()
 
-  # open issue popup
-  $('.b-activities, .search').on 'click', '.issue-url', ->
-    show_issue_modal($(@).data('number'))
-
 $(document).on 'slider:load', '.b-activities', ->
   $('.b-activities').scroll ->
     if $(@).scrollTop() + $(@).innerHeight() >= $(@)[0].scrollHeight && $(@).data('paginate') == true
@@ -128,15 +113,3 @@ $(document).on 'slider:load', '.b-activities', ->
         else
           $(@).data(paginate: false)
           $('.b-preloader', @).remove()
-
-show_issue_modal = (number) ->
-  $issue_modal = $('.issue-modal')
-  $modal_content = $('.modal-content', $issue_modal)
-  $issue_modal.show()
-  $modal_content.html('<div class="b-issue-modal" style="text-align: center;"><div class="b-preloader modal-preloader"></div></div>')
-
-  $.ajax
-    url: "/boards/#{$('.board').data('github_full_name')}/issues/#{number}",
-    success: (html) ->
-      $modal_content.html($(html)).trigger 'modal:load'
-      location.hash = "#issue-number=#{number}"

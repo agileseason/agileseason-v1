@@ -1,0 +1,443 @@
+@import compass/css3/border-radius
+@import compass/css3/box-shadow
+@import compass/css3/text-shadow
+@import compass/css3/transition
+@import globals/variables
+@import mixins/avatar
+@import mixins/button
+@import mixins/close
+@import mixins/popup
+@import mixins/date
+@import mixins/form
+@import mixins/link
+
+.p-issues-show
+  .b-menu
+    background: #E8E4DB
+    margin-bottom: 0
+    padding-bottom: 5px
+    position: static
+
+  .b-issue-modal
+    background: $card
+
+  .container
+    max-width: 1400px
+    min-width: 900px
+    margin: 0 auto
+    padding: 0px 0 20px 0
+
+  .content
+    margin: 0 auto
+    padding: 30px 70px
+    position: relative
+
+  .issue-content
+    padding-right: 280px
+
+    img:not(.avatar)
+      +border-radius(4px)
+      border: 1px solid #eee
+      max-width: 100%
+
+    .task
+      cursor: pointer
+      margin-bottom: 6px
+
+  .issue-actions
+    position: absolute
+    right: 70px
+    top: 40px
+    width: 200px
+
+    .overlay
+      display: none
+      z-index: inherit
+
+    .button
+      display: block
+      margin-bottom: 8px
+
+  .title
+    font-size: 36px
+    font-weight: normal
+    padding: 0 0 10px 0
+    position: relative
+    +issue_form
+
+    .issue-title
+      display: inline
+      margin-right: 10px
+
+      &:hover
+        background: $active
+        outline: 5px solid $active
+
+    form
+      display: none
+
+      textarea, textarea:focus
+        outline: 5px solid $active
+
+      .button
+        display: none
+
+    &.active
+      form
+        display: block
+
+      .url, .due-date, .issue-title
+        display: none
+
+  .add-comment-form
+    +issue_form
+    +border-radius(2px)
+    +box-shadow(0 17px 35px -15px #E4D4CF)
+    background-image: -webkit-linear-gradient(top,#f7f0ea,#fcf8f5)
+    background-image: -moz-linear-gradient(top,#f7f0ea,#fcf8f5)
+    background-image: linear-gradient(top,#f7f0ea,#fcf8f5)
+    margin: 40px 0 0 60px
+    padding: 20px
+
+    form.simple_form
+      textarea
+        height: 35px
+
+  .b-issue-labels
+    margin-left: 70px
+
+    .label
+      +border-radius(0 0 4px 4px)
+      font-size: 14px
+      line-height: 18px
+      margin-right: 5px
+      padding: 2px 15px
+      position: relative
+
+      .remove-label
+        +close
+        position: absolute
+        right: 5px
+        top: 3px
+
+  .issue-description
+    margin: 10px 0 40px
+
+  .issue-comments
+    margin-top: 20px
+
+  .issue-comment
+    display: table
+    padding: 0 0 40px
+    width: 100%
+
+    &:last-child
+      padding-bottom: 0
+
+  .comment-form
+    +issue_form
+
+    form.edit-comment, .upload
+      display: none
+
+      textarea
+        height: 35px
+
+    .comment-text
+      padding-top: 10px
+
+    &.active
+      .comment-text
+        display: none
+
+      form.edit-comment, .upload
+        display: block
+
+  .comment-body
+    +border-radius(2px)
+    background-color: #f2f9fc
+    margin-left: 60px
+    padding: 20px
+    position: relative
+
+    &.current-comment
+      background: $active
+
+      .edit-link
+        display: none
+
+      &:before
+        border-color: transparent $active transparent transparent
+
+    &:before
+      border-color: transparent #f2f9fc transparent transparent
+      border-style: solid
+      border-width: 8px 10px 8px 0
+      content: ' '
+      height: 0
+      margin: -5px 0 0 -30px
+      position: absolute
+      width: 0
+
+    pre,
+    code
+      background: #f2f9fc !important
+
+    pre
+      width: 605px
+
+    .edit-form
+      textarea
+        margin-top: 0
+
+    img
+      display: block
+      margin: 0 0 5px
+      max-width: 100%
+      margin: 10px 0
+
+    .date
+      +date
+      display: inline-block
+      margin-bottom: 5px
+
+    .controls
+      +date
+
+      a
+        +ajax_link
+        color: inherit
+
+  .user-ava
+    display: inline-block
+    width: 33px
+    position: absolute
+
+    .avatar
+      +avatar
+      height: 40px
+      width: 40px
+
+  .user-list
+    display: table-cell
+    vertical-align: middle
+
+    .b-assignee
+      padding-right: 10px
+
+      &.hidden
+        display: none
+
+      .avatar
+        height: 50px
+        width: 50px
+
+  .move-to-column
+    display: table-cell
+    vertical-align: middle
+    width: 100%
+
+    ul
+      list-style: none
+      padding: 0
+      margin: 20px 0 10px
+      display: -webkit-box
+      display: -moz-box
+      display: -webkit-flexbox
+      width: 100%
+
+      li
+        -webkit-box-flex: 1
+        -moz-box-flex: 1
+        -webkit-flex: 1
+
+        &:last-child
+          a
+            +border-radius(0 100px 100px 0)
+            border-right: 1px solid #eee
+
+            &:after,
+            &:before
+              display: none
+
+        &:first-child
+          a
+            +border-radius(100px 0 0 100px)
+
+        &:hover
+          a
+            background: #eee
+
+          a
+            &:after
+              border-color: transparent transparent transparent #eee
+
+        &.active
+          &:hover
+            a
+              cursor: default
+
+          a
+            background: $active
+            color: inherit
+            border: 1px solid $active
+            border-right: none
+
+            &:after
+              border-color: transparent transparent transparent $active
+
+        a
+          +ajax_link
+          display: block
+          position: relative
+          padding: 1px 5px 2px 10px
+          border: 1px solid #eee
+          border-right: none
+
+          &:after, &:before
+            content: " "
+            width: 0
+            height: 0
+            border-style: solid
+            position: absolute
+
+          &:after
+            border-width: 11px 0 11px 9px
+            border-color: transparent transparent transparent #fff
+            right: -8px
+            top: 0px
+            z-index: 2
+
+          &:before
+            border-width: 12px 0 12px 10px
+            border-color: transparent transparent transparent #eeeeee
+            right: -9px
+            top: -1px
+            z-index: 1
+
+  .b-assign
+    position: relative
+
+    .no-one
+      font-size: 14px
+      color: $text-muted
+      margin: 10px 0 28px 0
+
+    .issue-popup
+      +issue_popup
+
+      .close-popup
+        +close
+
+      .users
+        overflow-x: hidden
+        overflow-y: auto
+
+        a.user
+          display: block
+          margin: 4px
+
+          .avatar
+            +avatar
+            height: 30px
+            width: 30px
+
+          .name
+            line-height: 30px
+            vertical-align: top
+
+          .check
+            margin: 5px
+            vertical-align: top
+
+  .edit-due-date
+    position: relative
+
+    .issue-popup
+      +issue_popup
+
+      .close-popup
+        +close
+
+      .header
+        margin-bottom: 12px
+
+        .date, .time
+          display: inline-block
+          margin-right: 30px
+          width: 98px
+
+        input
+          width: 98px
+
+      .datepicker
+        margin-bottom: 12px
+
+      .save
+        display: inline-block
+        width: auto
+
+  .due-date
+    +border-radius(2px)
+    background: $orange
+    color: #fff
+    display: inline-block
+    font-size: 12px
+    margin-left: 5px
+    padding: 2px 6px 2px 6px
+    vertical-align: top
+
+    &.none
+      display: none
+
+  .action-title
+    margin: 20px 0 10px 0
+
+    &:first-child
+      margin-top: 0
+
+  .user-login
+    color: $lightgrey
+    display: inline
+    font-size: 14px
+    font-weight: bold
+
+  .edit-labels
+    position: relative
+
+    .issue-popup
+      +issue_popup
+      width: 170px
+
+      .octicon.octicon-triangle-up
+        display: block
+
+      .close-popup
+        +close
+
+      .labels-block
+        label.check_boxes
+          display: none
+
+        label.label
+          padding: 3px
+          display: block
+          color: #fff
+          +border-radius(4px)
+          background: #aaa
+          margin-bottom: 5px
+          width: 160px
+          +transition(width ease-out 0.2s)
+          position: relative
+
+          &:hover
+            width: 170px
+
+          input
+            display: inline-block
+            position: absolute
+
+          .label-name
+            display: block
+            white-space: nowrap
+            padding-left: 20px

@@ -1,18 +1,22 @@
 class IssuesController < ApplicationController
   # FIX : Need specs.
-  before_action :fetch_board, only: [:show, :search]
-  before_action :fetch_board_for_update, except: [:show, :search]
+  before_action :fetch_board, only: [:show, :search, :new]
+  before_action :fetch_board_for_update, except: [:show, :search, :new]
 
   def show
+    @direct_post = S3Api.direct_post
+
     github_issue = github_api.issue(@board, params[:number])
     issue_stat = @board.issue_stats.find_by(number: params[:number])
-    issue = BoardIssue.new(github_issue, issue_stat)
-    render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @board_bag.labels }
+    @issue = BoardIssue.new(github_issue, issue_stat)
+    @labels = @board_bag.labels
+
+    @comments = github_api.issue_comments(@board, @issue.number)
   end
 
   def search
     issues = github_api.search_issues(@board, params[:query])
-    render partial: 'search_result', locals: { issues: issues }
+    render partial: 'search_result', locals: { issues: issues, board: @board }
   end
 
   def create
@@ -20,7 +24,7 @@ class IssuesController < ApplicationController
     if @issue.valid?
       issue = github_api.create_issue(@board, @issue)
       render(
-        partial: 'issues/show',
+        partial: 'issues/issue_miniature',
         locals: {
           issue: BoardIssue.new(issue, @board.find_stat(issue)),
           column: @board.columns.first
@@ -35,9 +39,7 @@ class IssuesController < ApplicationController
     github_api.update_issue(
       @board,
       params[:number],
-      body: params[:body],
-      title: params[:title],
-      labels: params[:labels]
+      issue_params
     )
 
     render nothing: true
@@ -90,12 +92,14 @@ class IssuesController < ApplicationController
 
   def due_date
     due_date_at = params[:due_date].to_datetime # Not to_time, because adding localtime +03
+
     issue_stat = IssueStatService.set_due_date(
       current_user,
       @board,
       params[:number],
       due_date_at
     )
+
     render text: k(:issue, issue_stat).due_date_at
   end
 

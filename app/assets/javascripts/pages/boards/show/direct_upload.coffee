@@ -5,15 +5,17 @@ window.build_s3_image_url = (url, key) ->
 
 window.init_direct_upload = ($elements, url, form_data) ->
   $elements.each (i, elem) ->
-    $fileInput = $(elem)
-    $form = $($fileInput.parents('form:first')).first()
-    $submitButton = $form.find('input[type="file"]')
-    $textarea = $form.parents('.editable-form').find('textarea')
-    $progress = $form.find('.progress')
-    $info = $form.find('.info')
+    $input = $(elem)
+    $upload_form = $input.closest('form')
+    $parent = $input.closest('.b-editable-form')
+    #$submitButton = $upload_form.find('input[type="file"]')
 
-    $fileInput.fileupload
-      fileInput: $fileInput
+    $textarea = $('textarea', $parent)
+    $progress = $('.progress', $upload_form)
+    $info = $('.info', $upload_form)
+
+    $input.fileupload
+      fileInput: $input
       url: url
       type: 'POST'
       autoUpload: true
@@ -25,41 +27,44 @@ window.init_direct_upload = ($elements, url, form_data) ->
         #progress = parseInt(data.loaded / data.total * 100, 10)
 
       start: (e) ->
-        return unless $textarea.closest('.editable-form').hasClass 'active'
-        $submitButton.hide()
-        $progress.show()
-        $info.hide()
-        $textarea.removeClass('dragenter')
-        $form.parents('.upload').removeClass('dragenter')
+        #$submitButton.hide()
+        $current_uploading = $('.current-uploading')
+
+        $('.progress', $current_uploading).show()
+        $('.info', $current_uploading).hide()
+        $('textarea', $current_uploading).removeClass('dragenter')
+        $('.upload', $current_uploading).removeClass('dragenter')
 
       done: (e, data) ->
-        return unless $textarea.closest('.editable-form').hasClass 'active'
+        $current_uploading = $('.current-uploading')
+
         key = $(data.jqXHR.responseXML).find('Key').text()
         image_url = window.build_s3_image_url(url, key)
 
-        text = $textarea.val()
-        $textarea.focus().val("").val("#{text}#{image_url}\n")
+        text = $('textarea', $current_uploading).val()
+        $('textarea', $current_uploading)
+          .focus()
+          .val("").val("#{text}#{image_url}\n")
 
-        $progress.hide()
-        $submitButton.show()
-        $info.show()
+        $('.progress', $current_uploading).hide()
+        #$submitButton.show()
+        $('.info', $current_uploading).show()
+
+        $('.b-editable-form').removeClass 'current-uploading'
 
       fail: (e, data) ->
-        return unless $textarea.closest('.editable-form').hasClass 'active'
-        $progress.hide()
-        $info.show()
-        $submitButton.show()
+        $current_uploading = $('.current-uploading')
+
+        $('.progress', $current_uploading).hide()
+        $('.info', $current_uploading).show()
+
+        $('.b-editable-form').removeClass 'current-uploading'
+        #$submitButton.show()
 
     $textarea.on 'dragenter', ->
-      open_new_comment_form($(@))
       $textarea.addClass('dragenter')
-      $form.parents('.upload').addClass('dragenter')
+      $upload_form.parents('.upload').addClass('dragenter')
 
     $textarea.on 'dragleave', ->
       $textarea.removeClass('dragenter')
-      $form.parents('.upload').removeClass('dragenter')
-
-open_new_comment_form = ($node) ->
-  $node
-    .val('').focus()
-    .closest('.editable-form').addClass 'active'
+      $upload_form.parents('.upload').removeClass('dragenter')

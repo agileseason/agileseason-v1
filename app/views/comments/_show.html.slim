@@ -1,0 +1,52 @@
+.issue-comment
+  .user-ava
+    a.user[
+      href="#{comment.user.html_url}"
+      target='_blank'
+      title="#{comment.user.login}"]
+
+      img.avatar src="#{comment.user.avatar_url}"
+  .comment-body
+    .user-login #{comment.user.login}&nbsp;
+    .date = comment.created_at.strftime('%h %d, %H:%M')
+
+    - if can? :update, board
+      span.controls
+        | &nbsp;&mdash;&nbsp;
+        span.edit-link
+          a.edit edit
+          | &nbsp;or&nbsp;
+        a.delete data-url="#{delete_comment_board_issues_url(board, comment.id)}" delete
+
+        / FIX : Why redirect after remove=true???
+        /a.delete [
+          /remote='true'
+          /data-method='delete'
+          /data-confirm='Delete comment?'
+          /href="#{delete_comment_board_issues_url(board, comment.id)}"
+          /] delete
+
+    / FIX : Why data-initial not in .editable same as description?
+    .comment-form.b-editable-form
+      .comment-text data-url="#{update_comment_board_issues_url(board, comment.id)}"
+        = markdown(comment.body, board.github_url)
+
+      = simple_form_for :comment,
+        url: update_comment_board_issues_url(board, comment.id),
+        remote: true,
+        method: :post,
+        html: { class: 'edit-comment' } do |f|
+        = f.input :body,
+          label: false,
+          as: :text,
+          input_html: { value: comment.body }
+        .actions
+          a.close-without-saving Close without saving
+          /a.button.preview data-url="#{board_preview_url(@board)}" Preview
+          /a.button.write Write
+          = f.button :magic_submit, value: 'Save'
+      = render partial: 'issues/upload'
+
+
+
+    /= render partial: 'issues/editable_form'

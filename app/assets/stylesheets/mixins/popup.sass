@@ -1,5 +1,6 @@
 @import compass/css3/border-radius
 @import compass/css3/box-shadow
+@import globals/variables
 
 =popup
   +border-radius(4px)
@@ -17,3 +18,33 @@
     position: absolute
     text-shadow: 0 -5px 5px rgba(100, 100, 100, 0.1)
     top: -10px
+
+=issue_popup
+  +border-radius(10px)
+  +box-shadow(0 10px 20px -10px rgba(100, 50, 0, 0.5))
+  background: #f2f4f4
+  display: none
+  position: absolute
+  z-index: 3
+  right: 220px
+  top: -4px
+  font-size: 14px
+  height: auto
+  width: 250px
+  padding: 10px
+
+  &:after
+    content: ' '
+    position: absolute
+    width: 0
+    height: 0
+    border-style: solid
+    border-width: 10px 0 10px 12px
+    border-color: transparent transparent transparent #f2f4f4
+    right: -8px
+    top: 10px
+
+
+  .close-popup,
+  input[type='submit']
+    display: none

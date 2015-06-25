@@ -1,0 +1,50 @@
+.b-issue-modal[
+  class="issue-#{@issue.number}"
+  data-number="#{@issue.number}"
+  data-direct_post_url="#{@direct_post.url}"
+  data-direct_post_form_data="#{@direct_post.fields.to_json}"]
+  = render partial: 'issues/labels', locals: { issue: @issue, board: @board }
+
+  .content
+    .issue-content
+      .title.b-editable-form
+        .issue-title = k(:issue, @issue).title
+        a.url href="#{@issue.html_url}" target="_blank" ##{@issue.number}
+        .due-date class="#{ :none unless @issue.due_date_at }" = k(:issue, @issue).due_date_at
+        = simple_form_for :issue,
+          url: update_board_issues_url(@board, @issue.number),
+          remote: true,
+          method: :post do |f|
+          = f.input :title, label: false, as: :text
+          = f.button :magic_submit, value: 'Update'
+
+      .user-list
+        = render partial: 'issues/assignee', locals: { issue: @issue }
+
+      - unless @issue.archive?
+        .move-to-column
+          ul
+            - @board.columns.each do |column|
+              li data-column="#{column.id}" class="#{@issue.issue_stat.column_id == column.id ? 'active' : ''}"
+                a data-remote="true" href="#{move_to_column_board_issues_url @board, @issue.number, column.id}" = column.name
+
+      - unless k(:issue, @issue).body_empty?
+        .issue-description = markdown(@issue.body.html_safe, @board.github_url)
+
+      .issue-comments data-url="#{comments_board_issues_url @board, @issue.number}"
+        - @comments.each do |comment|
+          = render partial: 'comments/show', locals: { comment: comment, board: @board }
+
+      - if can? :update, @board
+        = render partial: 'comments/new', locals: { board: @board, issue: @issue }
+
+    - if can? :update, @board
+      .issue-actions
+        .overlay
+        = render partial: 'issues/actions/edit_labels',   locals: { board: @board, labels: @labels, issue: @issue }
+        = render partial: 'issues/actions/assign',        locals: { issue: @issue }
+        = render partial: 'issues/actions/edit_due_date', locals: { board: @board, issue: @issue }
+        = render partial: 'issues/actions/close',         locals: { board: @board, issue: @issue }
+        = render partial: 'issues/actions/archive',       locals: { board: @board, issue: @issue }
+
+

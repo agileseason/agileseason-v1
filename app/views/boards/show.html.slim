@@ -1,11 +1,7 @@
 .board [
     data-github_full_name="#{@board_bag.github_full_name}"
-    data-direct_post_url="#{@direct_post.url}"
-    data-direct_post_form_data="#{@direct_post.fields.to_json}"
     data-faye-on="#{FayePusher.on?}"
     data-faye-url="#{FayePusher::URL}"
-    data-faye-channel="#{FayePusher.board_channel(@board)}"
-    data-faye-client-id="#{current_user.remember_token}"
   ]
   .alert-refresh
     .title Board was changed
@@ -19,6 +15,3 @@
         a.ajax-link New Column
       .inline-form
         = render partial: 'columns/new', locals: { board: @board }
-
-
-

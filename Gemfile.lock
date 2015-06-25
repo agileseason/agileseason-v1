@@ -370,6 +370,9 @@ GEM
     simple_form (3.1.0)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
+    simple_form-magic_submit (1.2.0)
+      i18n (~> 0.6)
+      simple_form (>= 3.0.0.beta1)
     simplecov (0.9.2)
       docile (~> 1.1.0)
       multi_json (~> 1.0)
@@ -499,6 +502,7 @@ DEPENDENCIES
   sidekiq
   sidekiq-unique-jobs
   simple_form
+  simple_form-magic_submit
   sinatra
   slim-rails
   spring
@@ -512,6 +516,3 @@ DEPENDENCIES
   whenever
   will_paginate
   xproc
-
-BUNDLED WITH
-   1.10.4
