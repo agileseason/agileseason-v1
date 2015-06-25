@@ -97,11 +97,17 @@
     float: right
 
     &.active
+      .field
+        position: relative
+        z-index: 2
+        top: 0
+        padding: 20px 70px 20px 20px
+        margin: -20px -70px 0 20px
+        background: #fff
+
       .search-input
         padding: 14px 14px
-        position: relative
         width: 350px
-        z-index: 2
 
       .overlay
         display: block
@@ -114,7 +120,7 @@
       display: none
 
     .search-input
-      +transition(width, background ease 0.1s)
+      +transition(all ease 0.1s)
       background: rgba(60,60,60,0.1)
       border-radius: 35px
       border: none
