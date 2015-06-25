@@ -65,13 +65,13 @@
 
     a
       background: $orange
+      color: #fff
       display: inline-block
       font-size: 20px
       height: 20px
       margin: 20px
       text-align: center
       width: 20px
-      color: #fff
 
       &:hover
         background: $orange-hover
@@ -82,7 +82,6 @@
 
     a
       background: rgba(60,60,60,0.1)
-      //+ajax_link
       line-height: 18px
 
       &:hover
@@ -99,11 +98,10 @@
 
     &.active
       .search-input
-        width: 350px
-        position: relative
-        z-index: 2
-        //background: #fff
         padding: 14px 14px
+        position: relative
+        width: 350px
+        z-index: 2
 
       .overlay
         display: block
@@ -136,17 +134,16 @@
         color: $orange-hover
 
     .search-popup
+      background: rgba(255,255,255,1)
+      border-left: 1px solid #eee
       display: none
-      width: 485px
+      height: 100%
+      overflow-x: hidden
+      overflow-y: auto
+      position: fixed
       right: 0
       top: 0
-      position: fixed
-      height: 100%
-      overflow-y: auto
-      overflow-x: hidden
-      background: rgba(255,255,255,1)
-      //background: #f2f4f4
-      border-left: 1px solid #eee
+      width: 485px
       z-index: 1
 
       .search-content
@@ -156,9 +153,9 @@
           padding-left: 25px
 
           li
-            padding: 0 0 10px 0
-            margin: 0
             display: block
+            margin: 0
+            padding: 0 0 10px 0
 
             a
               padding: 0
@@ -169,10 +166,10 @@
           padding: 15px 15px
 
       .help
-        padding: 10px 20px
+        color: $lightgrey
         line-height: 20px
         margin-top: 80px
-        color: $lightgrey
+        padding: 10px 20px
 
         a
           +link

@@ -1,15 +1,14 @@
 =issue_form
   form.simple_form
     textarea, textarea:focus
-      //background: $active
       background: none
       border: none
       display: block
+      min-height: 35px
+      outline-offset: 0px
       outline: none
       padding: 10px 0 0 0
       width: 100%
-      outline-offset: 0px
-      min-height: 35px
 
       &.dragenter
         border: 3px dashed #56AD05
@@ -27,8 +26,6 @@
         font-size: 13px
 
   .upload
-    //background: $active
-    //outline: 5px solid $active
     border-top: 1px solid #aaa
     padding: 10px 0 0
 
@@ -50,7 +47,6 @@
         margin: 0
 
     input[type="file"]
-      //display: none
       cursor: pointer
       height: 40px
       left: 0

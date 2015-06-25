@@ -176,12 +176,6 @@ $(document).on 'page:change', ->
 
     $('.overlay', '.issue-actions').show()
 
-  # скрыть попап с пользователями для назначения
-  #$('.close-popup').click ->
-    #$popup = $(@).closest('.issue-popup')
-    #$popup.parent().find('.assignee').show()
-    #$popup.hide()
-
   $('.b-assign .user').click (e) ->
 
     if $('.check', @).hasClass 'octicon octicon-check'
@@ -208,12 +202,6 @@ $(document).on 'page:change', ->
     $('.overlay', '.issue-actions').show()
 
     $(@).parent().prev().show()
-    #$(@).hide()
-
-  # скрыть попап с лейблами тикета
-  #$('.close-popup').click ->
-    #$(@).closest('.issue-popup').next().find('.add-label').show()
-    #$(@).closest('.issue-popup').hide()
 
   # изменить набор лейблов тикета
   $('label input').on 'change', ->

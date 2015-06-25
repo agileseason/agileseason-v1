@@ -12,7 +12,6 @@ class IssuesController < ApplicationController
     @labels = @board_bag.labels
 
     @comments = github_api.issue_comments(@board, @issue.number)
-    #render partial: 'issues/show', locals: { issue: issue, board: @board, labels: @board_bag.labels }
   end
 
   def search

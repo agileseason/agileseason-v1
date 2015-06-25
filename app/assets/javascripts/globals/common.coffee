@@ -17,13 +17,6 @@ $(document).on 'page:change', ->
     $content.children().trigger 'modal:close'
     $modal.hide()
 
-    if $modal.hasClass 'issue-modal'
-      $('.b-issue-modal', $modal).remove()
-      # снять отметку текущего тикета
-      $('.current-issue').removeClass('current-issue')
-      # убрать #issue-number от прямой ссылки на issue
-      location.hash = ''
-
     # страница борда
     return unless document.body.id == 'boards_show'
 
