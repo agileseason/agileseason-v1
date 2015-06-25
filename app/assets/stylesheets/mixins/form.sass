@@ -6,7 +6,7 @@
       border: none
       display: block
       outline: none
-      padding: 0
+      padding: 10px 0 0 0
       width: 100%
       outline-offset: 0px
       min-height: 35px
@@ -21,6 +21,7 @@
 
       a
         margin-right: 10px
+        +ajax_link
 
       .close-without-saving
         font-size: 13px
@@ -38,6 +39,9 @@
       display: inline
       font-size: 13px
       padding: 0
+
+      a
+        +ajax_link
 
     .progress
       display: none

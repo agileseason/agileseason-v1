@@ -37,9 +37,10 @@
 =ajax_link
   color: $ajax-link
   cursor: pointer
+  border-bottom: 1px dashed
 
   &:hover
-    color: $ajax-link-hover
+    color: $orange-hover
 
   &.disabled,
   &:disabled
@@ -47,14 +48,14 @@
     cursor: default
 
     &:hover
-      color: $orange-hover
+      color: $lightgrey
 
   &.active
-    color: $ajax-link-hover
+    color: $orange-hover
     cursor: default
 
     &:hover
-      color: $ajax-link-hover
+      color: $orange-hover
 
 =menu_link
   +ajax_link

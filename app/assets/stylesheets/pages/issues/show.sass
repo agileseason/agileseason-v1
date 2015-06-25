@@ -90,13 +90,14 @@
         display: none
 
   .add-comment-form
-    margin: 40px 0 0 60px
     +issue_form
-    //background-color: $active
-    padding: 20px
     +border-radius(2px)
+    +box-shadow(0 17px 35px -15px #E4D4CF)
     background-image: -webkit-linear-gradient(top,#f7f0ea,#fcf8f5)
-    box-shadow: 0 17px 35px -15px #E4D4CF
+    background-image: -moz-linear-gradient(top,#f7f0ea,#fcf8f5)
+    background-image: linear-gradient(top,#f7f0ea,#fcf8f5)
+    margin: 40px 0 0 60px
+    padding: 20px
 
     form.simple_form
       textarea
@@ -138,6 +139,9 @@
 
       textarea
         height: 35px
+
+    .comment-text
+      padding-top: 10px
 
     &.active
       .comment-text
@@ -196,6 +200,10 @@
 
     .controls
       +date
+
+      a
+        +ajax_link
+        color: inherit
 
   .user-ava
     display: inline-block
