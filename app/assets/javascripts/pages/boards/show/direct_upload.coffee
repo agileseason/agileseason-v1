@@ -42,7 +42,9 @@ window.init_direct_upload = ($elements, url, form_data) ->
         image_url = window.build_s3_image_url(url, key)
 
         text = $('textarea', $current_uploading).val()
-        $('textarea', $current_uploading).focus().val("").val("#{text}#{image_url}\n")
+        $('textarea', $current_uploading)
+          .focus()
+          .val("").val("#{text}#{image_url}\n")
 
         $('.progress', $current_uploading).hide()
         #$submitButton.show()

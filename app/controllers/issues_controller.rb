@@ -19,10 +19,6 @@ class IssuesController < ApplicationController
     render partial: 'search_result', locals: { issues: issues, board: @board }
   end
 
-  #def new
-    #@issue = Issue.new(labels: @board_bag.labels.map(&:name))
-  #end
-
   def create
     @issue = Issue.new(issue_params)
     if @issue.valid?
