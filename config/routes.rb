@@ -61,7 +61,5 @@ Rails.application.routes.draw do
 
   get '/awstest', to: 'awstest#index'
 
-  get '/test', to: 'test#test'
-
   root 'landing#index'
 end
