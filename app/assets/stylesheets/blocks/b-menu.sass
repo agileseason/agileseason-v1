@@ -106,8 +106,9 @@
         background: #fff
 
       .search-input
-        padding: 14px 14px
-        width: 350px
+        input
+          padding: 14px 14px
+          width: 350px
 
       .overlay
         display: block
@@ -120,24 +121,26 @@
       display: none
 
     .search-input
-      +transition(all ease 0.1s)
-      background: rgba(60,60,60,0.1)
-      border-radius: 35px
-      border: none
-      font-size: 16px
-      height: 20px
-      outline: none
-      padding: 14px 24px
-      width: 0px
+      &:hover
+        span.octicon-search
+          color: $orange-hover
+      input
+        +transition(all ease 0.1s)
+        background: rgba(60,60,60,0.1)
+        border-radius: 35px
+        border: none
+        cursor: pointer
+        font-size: 16px
+        height: 20px
+        outline: none
+        padding: 14px 24px
+        width: 0px
 
     span.octicon-search
       color: $text-usual
       cursor: pointer
       margin-left: -30px
       vertical-align: middle
-
-      &:hover
-        color: $orange-hover
 
     .search-popup
       background: rgba(255,255,255,1)
@@ -181,5 +184,3 @@
           +link
           font-size: 14px
           padding: 0
-
-
