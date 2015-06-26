@@ -2,6 +2,8 @@
     data-github_full_name="#{@board_bag.github_full_name}"
     data-faye-on="#{FayePusher.on?}"
     data-faye-url="#{FayePusher::URL}"
+    data-faye-channel="#{FayePusher.board_channel(@board)}"
+    data-faye-client-id="#{current_user.remember_token}"
   ]
   .alert-refresh
     .title Board was changed

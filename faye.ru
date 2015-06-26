@@ -6,11 +6,14 @@ require 'psych'
 
 CONFIG = Psych.load_file(File.expand_path(File.dirname(__FILE__) + '/config/faye.yml'))
 
+#puts CONFIG
+
 class ServerAuth
   def incoming(message, callback)
     if message['channel'] !~ %r{^/meta/}
       msg_token = message['ext'] && message['ext']['auth_token']
 
+      #puts message
       if msg_token == CONFIG['token']
         message['data'].delete('token')
       else
