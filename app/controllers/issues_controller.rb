@@ -6,8 +6,8 @@ class IssuesController < ApplicationController
   def show
     @direct_post = S3Api.direct_post
 
-    github_issue = github_api.issue(@board, params[:number])
-    issue_stat = @board.issue_stats.find_by(number: params[:number])
+    github_issue = github_api.issue(@board, number)
+    issue_stat = @board.issue_stats.find_by(number: number)
     @issue = BoardIssue.new(github_issue, issue_stat)
     @labels = @board_bag.labels
 
@@ -38,7 +38,7 @@ class IssuesController < ApplicationController
   def update
     github_api.update_issue(
       @board,
-      params[:number],
+      number,
       issue_params
     )
 
@@ -46,8 +46,8 @@ class IssuesController < ApplicationController
   end
 
   def move_to
-    github_api.move_to(@board, @board.columns.find(params[:column_id]), params[:number])
-    FayePusher.broadcast_board(current_user, @board, number: params[:number], action: :move_to, column_id: params[:column_id])
+    github_api.move_to(@board, @board.columns.find(params[:column_id]), number)
+    broadcast
 
     render json: begin
       Board.includes(columns: :issue_stats).find(@board).columns.map do |column|
@@ -60,7 +60,7 @@ class IssuesController < ApplicationController
   end
 
   def close
-    issue_stat = github_api.close(@board, params[:number])
+    issue_stat = github_api.close(@board, number)
     respond_to do |format|
       format.html { redirect_to board_url(@board) }
       format.json { render json: { closed: issue_stat.try(:closed?) } }
@@ -68,7 +68,7 @@ class IssuesController < ApplicationController
   end
 
   def archive
-    issue_stat = github_api.archive(@board, params[:number])
+    issue_stat = github_api.archive(@board, number)
     respond_to do |format|
       format.html { redirect_to board_url(@board) }
       format.json do
@@ -84,7 +84,7 @@ class IssuesController < ApplicationController
   end
 
   def assignee
-    issue = github_api.assign(@board, params[:number], login_diff)
+    issue = github_api.assign(@board, number, login_diff)
     render partial: 'issues/assignee', locals: {
       issue: BoardIssue.new(issue, @board.find_stat(issue))
     }
@@ -96,7 +96,7 @@ class IssuesController < ApplicationController
     issue_stat = IssueStatService.set_due_date(
       current_user,
       @board,
-      params[:number],
+      number,
       due_date_at
     )
 
@@ -113,7 +113,21 @@ class IssuesController < ApplicationController
 
   def login_diff
     # FIX : Need issues cache...
-    login_prev = github_api.issue(@board, params[:number]).try(:assignee).try(:login)
+    login_prev = github_api.issue(@board, number).try(:assignee).try(:login)
     params[:login] unless login_prev == params[:login]
+  end
+
+  def number
+    params[:number]
+  end
+
+  def broadcast
+    FayePusher.broadcast_board(
+      current_user,
+      @board,
+      number: number,
+      action: action_name,
+      column_id: params[:column_id]
+    )
   end
 end

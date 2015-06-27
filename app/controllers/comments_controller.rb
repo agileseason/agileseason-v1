@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
 
   def create
     comment = github_api.add_comment(@board, number, params[:comment][:body])
-    broadcast(:create, comment)
+    broadcast(comment)
     render partial: 'show', locals: { comment: comment, board: @board }
   end
 
@@ -25,11 +25,11 @@ class CommentsController < ApplicationController
     params[:number]
   end
 
-  def broadcast(action, comment)
+  def broadcast(comment)
     FayePusher.broadcast_issue(
       current_user,
       @board,
-      action: action,
+      action: action_name,
       number: number,
       html: render_to_string(partial: 'show', locals: { comment: comment, board: @board })
     )
