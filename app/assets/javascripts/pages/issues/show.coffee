@@ -11,6 +11,8 @@ $(document).keyup (e) ->
 $(document).on 'page:change', ->
   return unless document.body.id == 'issues_show'
 
+  subscribe_issue_update()
+
   $('.b-menu').click (e) ->
     # клик вне тикета делает переход к борду
     if $(e.target).is('.b-menu, .b-menu > ul')
@@ -248,3 +250,16 @@ update_by_checkbox = ($checkbox) ->
 
   $('form.edit-comment', $comment_text.parent())
     .trigger 'submit'
+
+subscribe_issue_update = ->
+  $issue = $('.b-issue-modal')
+  return unless $issue.data('faye-on')
+  return if window.faye_issues
+
+  window.faye_issues = new Faye.Client($issue.data('faye-url'))
+  window.faye_issues.subscribe $issue.data('faye-channel'), (message) ->
+    #console.log message
+    $fetch_issue = $('.b-issue-modal')
+    return if $fetch_issue.data('faye-client-id') == message.client_id
+    return if $fetch_issue.data('number') != parseInt(message.data.number)
+    $('.issue-comments').append(message.data.html) if message.data.action == 'create'
