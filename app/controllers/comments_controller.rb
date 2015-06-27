@@ -29,11 +29,9 @@ class CommentsController < ApplicationController
     FayePusher.broadcast_issue(
       current_user,
       @board,
-      {
-        action: action,
-        number: number,
-        html: render_to_string(partial: 'show', locals: { comment: comment, board: @board })
-      }
+      action: action,
+      number: number,
+      html: render_to_string(partial: 'show', locals: { comment: comment, board: @board })
     )
   end
 end
