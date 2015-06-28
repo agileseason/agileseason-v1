@@ -9,14 +9,14 @@ RSpec.describe Graphs::CumulativeWorker do
     let(:perform) { worker.perform(board.id, Encryptor.encrypt('fake_token')) }
     let(:issue) { BoardIssue.new(nil, nil) }
     before do
-      allow_any_instance_of(GithubApi).
-        to receive(:board_issues).and_return(board_issues)
+      allow_any_instance_of(BoardBag).
+        to receive(:issues_by_columns).and_return(issues_by_columns)
     end
     before { perform }
 
     context :create_board_history do
       context :one_issue do
-        let(:board_issues) { { column_1.id => [issue] } }
+        let(:issues_by_columns) { { column_1.id => [issue] } }
         let(:expected_data) do
           [
             { column_id: column_1.id, issues: 1, issues_cumulative: 1 },
@@ -28,7 +28,7 @@ RSpec.describe Graphs::CumulativeWorker do
       end
 
       context :two_issues do
-        let(:board_issues) { { column_1.id => [issue, issue] } }
+        let(:issues_by_columns) { { column_1.id => [issue, issue] } }
         let(:expected_data) do
           [
             { column_id: column_1.id, issues: 2, issues_cumulative: 2 },
