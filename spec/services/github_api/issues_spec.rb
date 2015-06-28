@@ -10,10 +10,14 @@ describe GithubApi::Issues do
       allow_any_instance_of(Octokit::Client)
         .to receive(:issues).with(board.github_id).and_return(open_issues)
     end
+    before { Timecop.freeze(Time.current) }
     before do
-      allow_any_instance_of(Octokit::Client)
-        .to receive(:issues).with(board.github_id, state: :closed).and_return(closed_issues)
+      allow_any_instance_of(Octokit::Client).
+        to receive(:issues).
+        with(board.github_id, state: :closed, since: 1.month.ago.iso8601).
+        and_return(closed_issues)
     end
+    after { Timecop.return }
 
     context 'open and closed' do
       let(:open_issues) { [OpenStruct.new(number: 1)] }

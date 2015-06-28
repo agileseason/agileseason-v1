@@ -30,14 +30,18 @@ describe BoardBag do
         allow_any_instance_of(Octokit::Client).
           to receive(:issues).with(board.github_id).and_return([issue])
       end
+      before { Timecop.freeze(Time.current) }
       before do
         allow_any_instance_of(Octokit::Client).
-          to receive(:issues).with(board.github_id, state: :closed).and_return([])
+          to receive(:issues).
+          with(board.github_id, state: :closed, since: 1.month.ago.iso8601).
+          and_return([])
       end
       before do
         allow_any_instance_of(Octokit::Client).
           to receive(:update_issue)
       end
+      after { Timecop.return }
 
       context 'unknown open issues added to first column' do
         let(:board) { create(:board, :with_columns) }
