@@ -74,7 +74,9 @@ class BoardBag
 
   def ordered_issues(column)
     column.issues.each_with_object([]) do |number, array|
-      one_issue = issues_by_columns[column.id].find { |issue| number.to_i == issue.number && !issue.archive? }
+      one_issue = issues_by_columns[column.id].detect do |issue|
+        number.to_i == issue.number && !issue.archive?
+      end
       array << one_issue if one_issue.present?
     end
   end

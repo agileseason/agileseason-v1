@@ -11,7 +11,10 @@ describe BoardBag do
     let(:column_2) { board.columns.second }
 
     context :empty_columns do
-      before { allow_any_instance_of(Octokit::Client).to receive(:issues).and_return([]) }
+      before do
+        allow_any_instance_of(Octokit::Client).
+          to receive(:issues).and_return([])
+      end
 
       it { is_expected.to have(2).items }
       it { expect(subject.first.first).to eq column_1.id }
@@ -24,16 +27,16 @@ describe BoardBag do
       let!(:issue_stat) { create(:issue_stat, number: issue.number, board: board, column: column) }
       let(:state) { 'open' }
       before do
-        allow_any_instance_of(Octokit::Client)
-          .to receive(:issues).with(board.github_id).and_return([issue])
+        allow_any_instance_of(Octokit::Client).
+          to receive(:issues).with(board.github_id).and_return([issue])
       end
       before do
-        allow_any_instance_of(Octokit::Client)
-          .to receive(:issues).with(board.github_id, state: :closed).and_return([])
+        allow_any_instance_of(Octokit::Client).
+          to receive(:issues).with(board.github_id, state: :closed).and_return([])
       end
       before do
-        allow_any_instance_of(Octokit::Client)
-          .to receive(:update_issue)
+        allow_any_instance_of(Octokit::Client).
+          to receive(:update_issue)
       end
 
       context 'unknown open issues added to first column' do
