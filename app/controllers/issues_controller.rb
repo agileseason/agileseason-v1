@@ -8,7 +8,6 @@ class IssuesController < ApplicationController
 
     @issue = @board_bag.issues_hash[number]
     @labels = @board_bag.labels
-    # FIX : Move comments to ajax.
     @comments = github_api.issue_comments(@board, number)
   end
 
