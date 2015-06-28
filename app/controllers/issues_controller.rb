@@ -6,12 +6,9 @@ class IssuesController < ApplicationController
   def show
     @direct_post = S3Api.direct_post
 
-    github_issue = github_api.issue(@board, number)
-    issue_stat = @board.issue_stats.find_by(number: number)
-    @issue = BoardIssue.new(github_issue, issue_stat)
+    @issue = @board_bag.issues_hash[number]
     @labels = @board_bag.labels
-
-    @comments = github_api.issue_comments(@board, @issue.number)
+    @comments = github_api.issue_comments(@board, number)
   end
 
   def search
@@ -118,7 +115,7 @@ class IssuesController < ApplicationController
   end
 
   def number
-    params[:number]
+    params[:number].to_i
   end
 
   def broadcast

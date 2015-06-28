@@ -2,12 +2,47 @@ class BoardBag
   pattr_initialize :github_api, :board
   delegate :github_name, :github_full_name, :columns, :to_param, to: :board
 
+  # All issues
   def issues
-    @issues ||= cached(:board_issues, 5.minutes) { @github_api.board_issues(@board) }
+    cached(:issues, 5.minutes) do
+      github_api.issues(board)
+    end
+  end
+
+  # Issues visible on board
+  def board_issues
+    @board_issues ||= begin
+      issues.map do |issue|
+        issue_stat = issue_stat_mapper[issue]
+        BoardIssue.new(issue, issue_stat) if issue_stat
+      end.compact
+    end
+  end
+
+  # Issues visible on board in hash by number
+  def issues_hash
+    @issues_hash ||= board_issues.each_with_object({}) do |board_issue, hash|
+      hash[board_issue.number] = board_issue
+    end
+  end
+
+  # Issues visible on board and groupped by columns
+  def issues_by_columns
+    @issues_by_columns ||= begin
+      result_hash = board.columns.each_with_object({}) do |column, hash|
+        hash[column.id] = []
+      end
+
+      board_issues.each_with_object(result_hash) do |board_issue, hash|
+        hash[board_issue.column_id] << board_issue
+      end
+    end
   end
 
   def collaborators
-    @collaborators ||= cached(:collaborators, 20.minutes) { @github_api.collaborators(@board) }
+    @collaborators ||= cached(:collaborators, 20.minutes) do
+      @github_api.collaborators(@board)
+    end
   end
 
   def labels
@@ -33,15 +68,21 @@ class BoardBag
 
   private
 
+  def issue_stat_mapper
+    @issue_stat_mapper ||= IssueStatsMapper.new(board)
+  end
+
   def ordered_issues(column)
     column.issues.each_with_object([]) do |number, array|
-      one_issue = issues[column.id].find { |issue| number.to_i == issue.number && !issue.archive? }
+      one_issue = issues_by_columns[column.id].detect do |issue|
+        number.to_i == issue.number && !issue.archive?
+      end
       array << one_issue if one_issue.present?
     end
   end
 
   def unordered_issues(column)
-    issues[column.id].select do |issue|
+    issues_by_columns[column.id].select do |issue|
       !ordered_issues(column).include?(issue) && !issue.archive?
     end
   end

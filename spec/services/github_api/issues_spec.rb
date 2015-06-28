@@ -34,54 +34,6 @@ describe GithubApi::Issues do
     end
   end
 
-  describe '#board_issues' do
-    subject { service.board_issues(board) }
-    let(:board) { create(:board, :with_columns, number_of_columns: 2) }
-    let(:column_1) { board.columns.first }
-    let(:column_2) { board.columns.second }
-
-    context :empty_columns do
-      before { allow_any_instance_of(Octokit::Client).to receive(:issues).and_return([]) }
-
-      it { is_expected.to have(2).items }
-      it { expect(subject.first.first).to eq column_1.id }
-      it { expect(subject[column_1.id]).to be_empty }
-      it { expect(subject[column_2.id]).to be_empty }
-    end
-
-    context :columns_with_issues do
-      let(:issue) { OpenStruct.new(number: 1, state: state) }
-      let!(:issue_stat) { create(:issue_stat, number: issue.number, board: board, column: column) }
-      let(:state) { 'open' }
-      before do
-        allow_any_instance_of(Octokit::Client)
-          .to receive(:issues).with(board.github_id).and_return([issue])
-      end
-      before do
-        allow_any_instance_of(Octokit::Client)
-          .to receive(:issues).with(board.github_id, state: :closed).and_return([])
-      end
-      before do
-        allow_any_instance_of(Octokit::Client)
-          .to receive(:update_issue)
-      end
-
-      context 'unknown open issues added to first column' do
-        let(:board) { create(:board, :with_columns) }
-        let(:column) { column_1 }
-        it { expect(subject[column_1.id]).to have(1).item }
-        it { expect(subject[column_1.id].first.issue).to eq issue }
-      end
-
-      context 'known issues dont move to first column' do
-        let(:column) { column_2 }
-        it { expect(subject[column_1.id]).to be_empty }
-        it { expect(subject[column_2.id]).to have(1).items }
-        it { expect(subject[column_2.id].first.issue).to eq issue }
-      end
-    end
-  end
-
   describe '#create_issue' do
     subject { service.create_issue(board, issue) }
     let(:board) { create(:board, :with_columns, number_of_columns: 2) }
