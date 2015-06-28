@@ -71,8 +71,9 @@ class GithubApi
       client.issues(board.github_id)
     end
 
+    # FIX : Think about this - since: 1.month.ago.iso8601 (added after cache problem)
     def closed_issues(board)
-      client.issues(board.github_id, state: :closed)
+      client.issues(board.github_id, state: :closed, since: 1.month.ago.iso8601)
     end
   end
 end

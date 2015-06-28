@@ -78,7 +78,8 @@ private
     Graphs::LinesWorker.perform_async(@board.id, encrypted_github_token)
     Graphs::CumulativeWorker.perform_async(@board.id, encrypted_github_token)
     Graphs::IssueStatsWorker.perform_async(@board.id, encrypted_github_token)
-    BoardWorker.perform_async(@board.id, encrypted_github_token)
+    # FIX : Perhaps not actual
+    #BoardWorker.perform_async(@board.id, encrypted_github_token)
   end
 
   def check_permissions

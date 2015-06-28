@@ -88,7 +88,7 @@ class BoardBag
   end
 
   def cache_key(posfix)
-    [@board, "board_bag_#{posfix}"]
+    "board_bag_#{posfix}_#{board.id}_#{board.updated_at.to_i}"
   end
 
   def cached(posfix, expires_in, &block)
