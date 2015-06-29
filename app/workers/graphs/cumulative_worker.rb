@@ -41,7 +41,7 @@ module Graphs
 
       total_issues = total_issues_count(board, issues_group)
       board.columns.each_with_object([]) do |column, arr|
-        count = issues_group[column.id]
+        count = issues_group[column.id] || 0
         arr << {
           column_id: column.id,
           issues: count,
