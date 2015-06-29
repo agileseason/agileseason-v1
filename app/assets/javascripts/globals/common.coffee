@@ -36,19 +36,6 @@ $(document).on 'page:change', ->
           $board_list.html($(html))
           $('.b-dashboard').trigger 'wizard:load'
 
-  # скрыть дашборд
-  $('.b-menu .boards').click (e) ->
-    return if $(e.target).is('.current-board-link')
-
-    if $(e.target).is('.overlay', '.b-menu .boards')
-      $(@).find('.popup').hide()
-      $(@).removeClass 'active'
-      $(@).find('.overlay').remove()
-
-    else
-      $(@).addClass('active').prepend('<div class="overlay"></div>')
-      $(@).find('.popup').show()
-
   $('.b-menu .search').on 'click', 'input, .octicon-search', ->
     $(@).closest('li').addClass 'active'
     $('input', $(@).closest('li')).focus()

@@ -20,22 +20,27 @@
               /- k(:user, current_user).boards.each do |board|
                 /li : a href="#{board_url(board)}" #{k(:board, board).name}
 
-      li
-        /- if params[:controller] == 'graphs/cumulative'
-          /span Cumulative Flow
-        /- else
-        a href="#{un board_graphs_cumulative_index_url(@board)}"
-          span.a-child.octicon.octicon-graph &nbsp;
-          span.a-child Statistic
+      - if ['graphs/cumulative', 'graphs/control', 'graphs/forecast', 'graphs/frequency', 'graphs/lines'].any? { |v| v == params[:controller] }
+        li.active
+          span
+            span.a-child.octicon.octicon-graph &nbsp;
+            span.a-child Statistic
 
-      li.board-settings
-        - if can? :update, @board
-          - if params[:controller] == 'settings' && params[:action] == 'show'
+      - else
+        li
+          a href="#{un board_graphs_cumulative_index_url(@board)}"
+            span.a-child.octicon.octicon-graph &nbsp;
+            span.a-child Statistic
+
+      - if can? :update, @board
+        - if params[:controller] == 'settings' && params[:action] == 'show'
+          li.board-settings.active
             span.octicon.octicon-gear
             | &nbsp;
             span Settings
 
-          - else
+        - else
+          li.board-settings
             a href="#{un board_settings_url(@board)}" title='Board Settings'
               span.a-child.octicon.octicon-gear
               | &nbsp;
