@@ -7,7 +7,8 @@ RSpec.describe Graphs::CumulativeWorker do
     let(:column_1) { board.columns.first }
     let(:column_2) { board.columns.second }
     let(:perform) { worker.perform(board.id, Encryptor.encrypt('fake_token')) }
-    let(:issue) { BoardIssue.new(nil, nil) }
+    let(:issue) { BoardIssue.new(nil, issue_stat) }
+    let(:issue_stat) { build(:issue_stat) }
     before do
       allow_any_instance_of(BoardBag).
         to receive(:issues_by_columns).and_return(issues_by_columns)
@@ -23,7 +24,6 @@ RSpec.describe Graphs::CumulativeWorker do
             { column_id: column_2.id, issues: 0, issues_cumulative: 0 },
           ]
         end
-        it { is_expected.to have(1).item }
         it { expect(subject.first.data).to eq expected_data }
       end
 
@@ -35,9 +35,36 @@ RSpec.describe Graphs::CumulativeWorker do
             { column_id: column_2.id, issues: 0, issues_cumulative: 0 },
           ]
         end
-        it { is_expected.to have(1).item }
         it { expect(subject.first.data).to eq expected_data }
       end
+    end
+
+    context 'ignore archive issues' do
+      let(:issues_by_columns) { { column_2.id => [issue] } }
+      let(:issue) { BoardIssue.new(nil, issue_stat) }
+      let(:issue_stat) { build(:issue_stat, :archived) }
+      let(:expected_data) do
+        [
+          { column_id: column_1.id, issues: 0, issues_cumulative: 0 },
+          { column_id: column_2.id, issues: 0, issues_cumulative: 0 },
+        ]
+      end
+
+      it { expect(subject.first.data).to eq expected_data }
+    end
+
+    context 'sum previous archive issues from board' do
+      let(:issues_by_columns) { { column_2.id => [issue] } }
+      let(:issue) { BoardIssue.new(nil, issue_stat) }
+      let(:issue_stat) { create(:issue_stat, :archived, board: board) }
+      let(:expected_data) do
+        [
+          { column_id: column_1.id, issues: 0, issues_cumulative: 1 },
+          { column_id: column_2.id, issues: 0, issues_cumulative: 1 },
+        ]
+      end
+
+      it { expect(subject.first.data).to eq expected_data }
     end
   end
 end
