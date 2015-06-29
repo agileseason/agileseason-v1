@@ -13,7 +13,7 @@ html
 
   body class="p-#{controller_name}-#{action_name}" id="#{controller_name}_#{action_name}"
 
-    - if params[:controller] != 'boards' && (params[:action] != 'show' || params[:action] != 'index')
+    - if params[:controller] != 'boards' && params[:controller] != 'docs' && (params[:action] != 'show' || params[:action] != 'index')
       = render partial: 'layouts/menu'
 
     .container
