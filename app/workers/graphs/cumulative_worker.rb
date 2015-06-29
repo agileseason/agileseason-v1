@@ -31,6 +31,7 @@ module Graphs
       board.board_histories.build(collected_on: Date.today)
     end
 
+    # FIX : Require refactoring! It's c# style!
     def fetch_data(board, board_issues)
       issues_group = board_issues.each_with_object({}) do |pair, hash|
         column_id = pair[0]
@@ -39,9 +40,8 @@ module Graphs
       end
 
       total_issues = total_issues_count(board, issues_group)
-      data = {}
-      data = board.columns.each_with_object([]) do |column, arr|
-        count = issues_group[column.id] || 0
+      board.columns.each_with_object([]) do |column, arr|
+        count = issues_group[column.id]
         arr << {
           column_id: column.id,
           issues: count,
