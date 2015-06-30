@@ -1,5 +1,5 @@
 class IssueStat < ActiveRecord::Base
-  belongs_to :board, touch: true
+  belongs_to :board
   belongs_to :column
   has_many :lifetimes, dependent: :destroy
 

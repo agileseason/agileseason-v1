@@ -2,12 +2,15 @@ class IssuesController < ApplicationController
   # FIX : Need specs.
   before_action :fetch_board, only: [:show, :search, :new]
   before_action :fetch_board_for_update, except: [:show, :search, :new]
+  after_action  :touch_board, only: [:create, :update, :assignee]
+  after_action  :fetch_cumulative_graph, only: [:move_to, :close, :archive]
 
   def show
     @direct_post = S3Api.direct_post
 
     @issue = @board_bag.issues_hash[number]
     @labels = @board_bag.labels
+    # TODO : Find a way to accelerate this request.
     @comments = github_api.issue_comments(@board, number)
   end
 
@@ -126,5 +129,13 @@ class IssuesController < ApplicationController
       action: action_name,
       column_id: params[:column_id]
     )
+  end
+
+  def touch_board
+    @board.touch
+  end
+
+  def fetch_cumulative_graph
+    Graphs::CumulativeWorker.perform_async(@board.id, encrypted_github_token)
   end
 end
