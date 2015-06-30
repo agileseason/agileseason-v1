@@ -43,11 +43,6 @@ describe IssueStatService do
       context 'check external commands' do
         after { subject }
 
-        it 'fetch data for cumulative flow chart' do
-          expect(Graphs::CumulativeWorker).
-            to receive(:perform_async).with(board.id, encrypt_token)
-        end
-
         it 'create activity by issue_stat params' do
           expect(Activities::ColumnChangedActivity).
             to receive(:create_for).with(issue_stat, nil, column_2, user)

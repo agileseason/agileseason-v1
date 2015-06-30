@@ -78,9 +78,6 @@ private
     # TODO : запускать не так часто - возможно вместе с переодическим обновлением ярлыков и пользователей.
     Graphs::LinesWorker.perform_async(@board.id, encrypted_github_token)
 
-    # TODO : запускать только после перемещения, закрытия и архива тикетов.
-    Graphs::CumulativeWorker.perform_async(@board.id, encrypted_github_token)
-
     # TODO : запускать только после закрытия тикитов.
     Graphs::IssueStatsWorker.perform_async(@board.id, encrypted_github_token)
 

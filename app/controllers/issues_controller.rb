@@ -3,6 +3,7 @@ class IssuesController < ApplicationController
   before_action :fetch_board, only: [:show, :search, :new]
   before_action :fetch_board_for_update, except: [:show, :search, :new]
   after_action  :touch_board, only: [:create, :update, :assignee]
+  after_action  :fetch_cumulative_graph, only: [:move_to, :close, :archive]
 
   def show
     @direct_post = S3Api.direct_post
@@ -132,5 +133,9 @@ class IssuesController < ApplicationController
 
   def touch_board
     @board.touch
+  end
+
+  def fetch_cumulative_graph
+    Graphs::CumulativeWorker.perform_async(@board.id, encrypted_github_token)
   end
 end
