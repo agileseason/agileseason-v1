@@ -46,7 +46,7 @@ class BoardBag
   end
 
   def labels
-    @labels ||= cached(:labels, 20.minutes) { @github_api.labels(@board) }
+    @labels ||= cached(:labels, 15.minutes) { @github_api.labels(@board) }
   end
 
   def build_issue_new
@@ -88,7 +88,11 @@ class BoardBag
   end
 
   def cache_key(posfix)
-    "board_bag_#{posfix}_#{board.id}_#{board.updated_at.to_i}"
+    if posfix == :issues
+      "board_bag_#{posfix}_#{board.id}_#{board.updated_at.to_i}"
+    else
+      "board_bag_#{posfix}_#{board.id}"
+    end
   end
 
   def cached(posfix, expires_in, &block)
