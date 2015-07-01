@@ -1,16 +1,17 @@
 .board-column.droppable [
     id="column_#{column.id}"
-    class="#{:last if k(:board, @board).last_column?(column)}"
+    class="#{:last if k(column).last?}"
     data-column="#{column.id}"
     data-url="#{board_column_url(@board, column)}"
   ]
 
   = render partial: 'columns/menu', locals: { column: column }
 
-  .new-issue.ajax-link
-    a.ajax-link New issue
-  .inline-form
-    = render partial: 'issues/new', locals: { board_bag: @board_bag, issue: @board_bag.build_issue_new }
+  - if k(column).first?
+    .new-issue.ajax-link
+      a.ajax-link New issue
+    .inline-form
+      = render partial: 'issues/new', locals: { board_bag: @board_bag, issue: @board_bag.build_issue_new }
 
   .issues.scroller
     - @board_bag.column_issues(column).each do |i|

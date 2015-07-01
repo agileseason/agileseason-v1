@@ -71,4 +71,34 @@ describe ColumnPresenter do
       end
     end
   end
+
+  describe '#last?' do
+    subject { presenter.last? }
+    let(:board) { create(:board, :with_columns, number_of_columns: 3) }
+
+    context :true do
+      let(:column) { board.columns.last }
+      it { is_expected.to eq true }
+    end
+
+    context :false do
+      let(:column) { board.columns.first }
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe '#first?' do
+    subject { presenter.first? }
+    let(:board) { create(:board, :with_columns, number_of_columns: 3) }
+
+    context :true do
+      let(:column) { board.columns.first }
+      it { is_expected.to eq true }
+    end
+
+    context :false do
+      let(:column) { board.columns.last }
+      it { is_expected.to eq false }
+    end
+  end
 end
