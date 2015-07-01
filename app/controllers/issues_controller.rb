@@ -2,7 +2,7 @@ class IssuesController < ApplicationController
   # FIX : Need specs.
   before_action :fetch_board, only: [:show, :search, :new]
   before_action :fetch_board_for_update, except: [:show, :search, :new]
-  after_action  :touch_board, only: [:create, :update, :assignee]
+  after_action  :touch_board, only: [:create, :update, :assignee, :close]
   after_action  :fetch_cumulative_graph, only: [:move_to, :close, :archive]
 
   def show
