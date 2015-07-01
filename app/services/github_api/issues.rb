@@ -73,9 +73,10 @@ class GithubApi
       client.issues(board.github_id)
     end
 
-    # FIX : Think about this - since: 1.month.ago.iso8601 (added after cache problem)
+    # FIX : Think about this - since: ... (added after cache problem)
+    # UPDATE 1 : Add dalli compress: true and change 1.month to 2.month.ago.
     def closed_issues(board)
-      client.issues(board.github_id, state: :closed, since: 1.month.ago.iso8601)
+      client.issues(board.github_id, state: :closed, since: 2.month.ago.iso8601)
     end
   end
 end

@@ -38,5 +38,5 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # Use a different cache store in development (test only).
-  config.cache_store = :dalli_store
+  config.cache_store = :dalli_store, { expires_in: 1.day, compress: true }
 end
