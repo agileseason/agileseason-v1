@@ -7,4 +7,12 @@ class ColumnPresenter < Keynote::Presenter
     return :warning if wip_min && column.visible_issue_stats.size < wip_min
     :normal
   end
+
+  def last?
+    column == column.board.columns.last
+  end
+
+  def first?
+    column == column.board.columns.first
+  end
 end
