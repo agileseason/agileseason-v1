@@ -89,7 +89,6 @@ describe GithubApi::Issues do
     let(:in_at) { Time.current }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
     before { allow(IssueStatService).to receive(:archive!).and_return(issue_stat) }
-    # FIX : Check params .with(...)
     before { allow(Activities::ArchiveActivity).to receive(:create_for) }
 
 
@@ -99,16 +98,29 @@ describe GithubApi::Issues do
       before { allow(Time).to receive(:current).and_return(archived_at) }
 
       after { subject }
-      #it { expect(IssueStatService).to receive(:archive!).with(board, issue) }
-      #it { expect(Activities::ArchiveActivity).to receive(:create_for) }
-      it { expect(subject).to_not be_nil }
-      it { expect(subject).to be_a IssueStat }
+      it do
+        expect(Activities::ArchiveActivity).
+          to receive(:create_for).with(issue_stat, user)
+      end
+
+      it do
+        expect(IssueStatService).
+          to receive(:archive!).with(board, issue)
+      end
     end
 
     context 'open issue' do
       let(:state) { 'open' }
       after { subject }
-      it { expect_any_instance_of(Octokit::Client).to_not receive(:update_issue) }
+      it do
+        expect(Activities::ArchiveActivity).
+          to_not receive(:create_for).with(issue_stat, user)
+      end
+
+      it do
+        expect(IssueStatService).
+          to_not receive(:archive!).with(board, issue)
+      end
     end
   end
 

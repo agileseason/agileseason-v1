@@ -1,6 +1,7 @@
 RSpec.describe IssuesController, type: :controller do
   let(:user) { create(:user) }
   let(:board) { create(:board, :with_columns, user: user) }
+  let(:issue) { OpenStruct.new(number: 1) }
   before { stub_sign_in(user) }
 
   describe 'GET search' do
@@ -12,7 +13,9 @@ RSpec.describe IssuesController, type: :controller do
   end
 
   describe 'GET close' do
-    before { allow_any_instance_of(GithubApi).to receive(:close) }
+    before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
+    before { allow_any_instance_of(GithubApi).to receive(:close).and_return(issue) }
+
     it 'return http success' do
       get :close, board_github_full_name: board.github_full_name, number: 1
       expect(response).to redirect_to(board_url(board))
@@ -20,7 +23,9 @@ RSpec.describe IssuesController, type: :controller do
   end
 
   describe 'GET archive' do
-    before { allow_any_instance_of(GithubApi).to receive(:archive) }
+    before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
+    before { allow_any_instance_of(GithubApi).to receive(:archive).and_return(issue) }
+
     it 'return http success' do
       get :archive, board_github_full_name: board.github_full_name, number: 1
       expect(response).to redirect_to(board_url(board))
@@ -31,6 +36,8 @@ RSpec.describe IssuesController, type: :controller do
     let(:issue) { OpenStruct.new(number: 1, assigne: 'fake') }
     before { allow_any_instance_of(GithubApi).to receive(:assign).and_return(issue) }
     before { allow_any_instance_of(GithubApi).to receive(:issue).and_return(issue) }
+    before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
+
     it 'return http success' do
       get :assignee, board_github_full_name: board.github_full_name, number: 1, login: 'github_user'
       expect(response).to have_http_status(:success)
@@ -39,7 +46,9 @@ RSpec.describe IssuesController, type: :controller do
 
   describe '#update' do
     before do
-      allow_any_instance_of(GithubApi).to receive(:update_issue)
+      allow_any_instance_of(GithubApi).to receive(:update_issue).and_return(issue)
+      allow_any_instance_of(GithubApi).to receive(:issues).and_return([])
+
       post :update, board_github_full_name: board.github_full_name,
         number: 1,
         issue: { title: 'dsgf' }
