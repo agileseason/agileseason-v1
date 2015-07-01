@@ -4,25 +4,23 @@ class BoardBag
 
   # All issues
   def issues
-    cached(:issues, 5.minutes) do
-      github_api.issues(board)
-    end
+    issues_hash.values
   end
 
   # Issues visible on board
   def board_issues
-    @board_issues ||= begin
-      issues.map do |issue|
-        issue_stat = issue_stat_mapper[issue]
-        BoardIssue.new(issue, issue_stat) if issue_stat
-      end.compact
-    end
+    @board_issues ||= issues.map do |issue|
+      issue_stat = issue_stat_mapper[issue]
+      BoardIssue.new(issue, issue_stat) if issue_stat
+    end.compact
   end
 
-  # Issues visible on board in hash by number
+  # All Issues in hash by number
   def issues_hash
-    @issues_hash ||= board_issues.each_with_object({}) do |board_issue, hash|
-      hash[board_issue.number] = board_issue
+    @issues_hash ||= cached(:issues_hash, 5.minutes) do
+      github_api.issues(board).each_with_object({}) do |issue, hash|
+        hash[issue.number] = issue
+      end
     end
   end
 
@@ -37,6 +35,15 @@ class BoardBag
         hash[board_issue.column_id] << board_issue
       end
     end
+  end
+
+  def update_cache(issue)
+    issues_hash[issue.number] = issue
+    Rails.cache.write(
+      cache_key(:issues_hash),
+      issues_hash,
+      expires_in: 5.minutes
+    )
   end
 
   def collaborators
@@ -88,7 +95,7 @@ class BoardBag
   end
 
   def cache_key(posfix)
-    if posfix == :issues
+    if posfix == :issues_hash
       "board_bag_#{posfix}_#{board.id}_#{board.updated_at.to_i}"
     else
       "board_bag_#{posfix}_#{board.id}"

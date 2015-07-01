@@ -58,4 +58,25 @@ describe BoardIssue do
       it { is_expected.to eq false }
     end
   end
+
+  describe '#visible?' do
+    subject { board_issue.visible? }
+
+    context :true do
+      let(:issue_stat) { build(:issue_stat, archived_at: nil) }
+      it { is_expected.to eq true }
+    end
+
+    context :false do
+      context 'issue stat is nil' do
+        let(:issue_stat) {}
+        it { is_expected.to eq false }
+      end
+
+      context 'issue is archived' do
+        let(:issue_stat) { build(:issue_stat, archived_at: Time.current) }
+        it { is_expected.to eq false }
+      end
+    end
+  end
 end

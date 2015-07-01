@@ -30,14 +30,16 @@ class GithubApi
     def close(board, number)
       github_issue = client.close_issue(board.github_id, number)
       IssueStatService.close!(board, github_issue)
+      github_issue
     end
 
     def archive(board, number)
       issue = issue(board, number)
-      return if issue.state == 'open'
-      issue_stat = IssueStatService.archive!(board, issue)
-      Activities::ArchiveActivity.create_for(issue_stat, @user)
-      issue_stat
+      if issue.state == 'closed'
+        issue_stat = IssueStatService.archive!(board, issue)
+        Activities::ArchiveActivity.create_for(issue_stat, @user)
+      end
+      issue
     end
 
     def assign(board, number, github_username)

@@ -4,14 +4,12 @@ class BoardIssue
            :assignee, :comments, :all_comments, to: :issue
   delegate :board, :due_date_at, :column_id, to: :issue_stat
 
-  def initialize(issue, issue_stat)
-    @issue = issue
-    @issue_stat = issue_stat
-  end
+  attr_initialize :issue, :issue_stat
 
   def archive?
-    @issue_stat.archived?
+    issue_stat.archived?
   end
+  alias :archived? :archive?
 
   def open?
     state == 'open'
@@ -19,5 +17,9 @@ class BoardIssue
 
   def closed?
     state == 'closed'
+  end
+
+  def visible?
+    issue_stat.present? && !archived?
   end
 end

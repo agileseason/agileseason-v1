@@ -59,6 +59,20 @@ describe BoardBag do
     end
   end
 
+  describe '#update_cache' do
+    subject { bag.issues_hash[101] }
+    let(:issue) { OpenStruct.new(number: 101) }
+
+    before do
+      allow_any_instance_of(Octokit::Client).
+        to receive(:issues).and_return([])
+    end
+    before { bag.update_cache(issue) }
+
+    it { is_expected.to_not be_nil }
+    it { is_expected.to eq issue }
+  end
+
   describe '#collaborators' do
     before { allow_any_instance_of(GithubApi).to receive(:collaborators) }
     after { bag.collaborators }

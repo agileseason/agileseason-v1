@@ -2,13 +2,14 @@ class IssuesController < ApplicationController
   # FIX : Need specs.
   before_action :fetch_board, only: [:show, :search, :new]
   before_action :fetch_board_for_update, except: [:show, :search, :new]
-  after_action  :touch_board, only: [:create, :update, :assignee, :close]
-  after_action  :fetch_cumulative_graph, only: [:move_to, :close, :archive]
+
+  after_action :fetch_cumulative_graph, only: [:move_to, :close, :archive]
 
   def show
     @direct_post = S3Api.direct_post
 
-    @issue = @board_bag.issues_hash[number]
+    issue = @board_bag.issues_hash[number]
+    @issue = BoardIssue.new(issue, @board.find_stat(issue))
     @labels = @board_bag.labels
     # TODO : Find a way to accelerate this request.
     @comments = github_api.issue_comments(@board, number)
@@ -23,6 +24,7 @@ class IssuesController < ApplicationController
     @issue = Issue.new(issue_params)
     if @issue.valid?
       issue = github_api.create_issue(@board, @issue)
+      @board_bag.update_cache(issue)
       render(
         partial: 'issues/issue_miniature',
         locals: {
@@ -36,11 +38,12 @@ class IssuesController < ApplicationController
   end
 
   def update
-    github_api.update_issue(
+    issue = github_api.update_issue(
       @board,
       number,
       issue_params
     )
+    @board_bag.update_cache(issue)
 
     render nothing: true
   end
@@ -60,18 +63,24 @@ class IssuesController < ApplicationController
   end
 
   def close
-    issue_stat = github_api.close(@board, number)
+    issue = github_api.close(@board, number)
+    @board_bag.update_cache(issue)
+
     respond_to do |format|
       format.html { redirect_to board_url(@board) }
-      format.json { render json: { closed: issue_stat.try(:closed?) } }
+      format.json { render json: { closed: true } }
     end
   end
 
   def archive
-    issue_stat = github_api.archive(@board, number)
+    issue = github_api.archive(@board, number)
+    @board_bag.update_cache(issue)
+
     respond_to do |format|
       format.html { redirect_to board_url(@board) }
       format.json do
+        issue_stat = @board.find_stat(issue)
+
         render json: {
           column_id: issue_stat.column_id,
           html: render_to_string(
@@ -85,6 +94,8 @@ class IssuesController < ApplicationController
 
   def assignee
     issue = github_api.assign(@board, number, login_diff)
+    @board_bag.update_cache(issue)
+
     render partial: 'issues/assignee', locals: {
       issue: BoardIssue.new(issue, @board.find_stat(issue))
     }
@@ -129,10 +140,6 @@ class IssuesController < ApplicationController
       action: action_name,
       column_id: params[:column_id]
     )
-  end
-
-  def touch_board
-    @board.touch
   end
 
   def fetch_cumulative_graph
