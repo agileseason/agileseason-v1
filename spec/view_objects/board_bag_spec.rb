@@ -34,7 +34,7 @@ describe BoardBag do
       before do
         allow_any_instance_of(Octokit::Client).
           to receive(:issues).
-          with(board.github_id, state: :closed, since: 1.month.ago.iso8601).
+          with(board.github_id, state: :closed, since: 2.month.ago.iso8601).
           and_return([])
       end
       before do
