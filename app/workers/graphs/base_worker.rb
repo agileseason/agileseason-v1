@@ -4,7 +4,7 @@ module Graphs
     include GithubApiAccess
     sidekiq_options retry: 2
     sidekiq_options unique: true,
-                    unique_args: -> (args) { [ args.first ] }
+                    unique_args: -> (args) { [args.first] }
 
     def fill_missing_days(entry_histories)
       to_copy = entry_histories.last

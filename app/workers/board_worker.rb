@@ -4,7 +4,7 @@ class BoardWorker
   include GithubApiAccess
   sidekiq_options retry: 2
   sidekiq_options unique: true,
-                  unique_args: -> (args) { [ args.first ] }
+                  unique_args: -> (args) { [args.first] }
 
   def perform(board_id, encrypted_github_token)
     @board = Board.find(board_id)
