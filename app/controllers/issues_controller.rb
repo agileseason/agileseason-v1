@@ -4,6 +4,8 @@ class IssuesController < ApplicationController
   before_action :fetch_board_for_update, except: [:show, :search, :new]
 
   after_action :fetch_cumulative_graph, only: [:move_to, :close, :archive]
+  after_action :fetch_lines_graph, only: [:move_to]
+  after_action :fetch_control_chart, only: [:close]
 
   def show
     @direct_post = S3Api.direct_post
@@ -144,5 +146,13 @@ class IssuesController < ApplicationController
 
   def fetch_cumulative_graph
     Graphs::CumulativeWorker.perform_async(@board.id, encrypted_github_token)
+  end
+
+  def fetch_control_chart
+    Graphs::IssueStatsWorker.perform_async(@board.id, encrypted_github_token)
+  end
+
+  def fetch_lines_graph
+    Graphs::LinesWorker.perform_async(@board.id, encrypted_github_token)
   end
 end

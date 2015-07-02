@@ -4,7 +4,6 @@ class BoardsController < ApplicationController
 
   before_action :check_permissions, only: [:create]
   before_action :fetch_board,       only: [:show, :destroy]
-  after_action  :fetch_board_stats, only: [:show], unless: :guest?
 
   def index
     @boards_lists = [
@@ -72,18 +71,6 @@ private
       order = order + 1
       Column.new(name: name, order: order, board: @board)
     end
-  end
-
-  def fetch_board_stats
-    # TODO : запускать не так часто - возможно вместе с переодическим обновлением ярлыков и пользователей.
-    Graphs::LinesWorker.perform_async(@board.id, encrypted_github_token)
-
-    # TODO : запускать только после закрытия тикитов.
-    Graphs::IssueStatsWorker.perform_async(@board.id, encrypted_github_token)
-
-    # TODO : Перенести этот таск на те события которые изменяют борд,
-    # TODO : а так же переодически его запускать, чтобы получить данные по пользователям и ярлыкам.
-    #BoardWorker.perform_async(@board.id, encrypted_github_token)
   end
 
   def check_permissions

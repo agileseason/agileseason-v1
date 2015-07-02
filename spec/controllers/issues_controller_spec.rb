@@ -4,7 +4,7 @@ RSpec.describe IssuesController, type: :controller do
   let(:issue) { OpenStruct.new(number: 1) }
   before { stub_sign_in(user) }
 
-  describe 'GET search' do
+  describe '#search' do
     before { allow_any_instance_of(GithubApi).to receive(:search_issues).and_return([]) }
     it 'return http success' do
       get :search, board_github_full_name: board.github_full_name, query: 'test'
@@ -12,17 +12,20 @@ RSpec.describe IssuesController, type: :controller do
     end
   end
 
-  describe 'GET close' do
+  describe '#close' do
+    let(:request) { get :close, board_github_full_name: board.github_full_name, number: 1 }
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
     before { allow_any_instance_of(GithubApi).to receive(:close).and_return(issue) }
+    before { allow(Graphs::IssueStatsWorker).to receive(:perform_async) }
+    before { allow(Graphs::CumulativeWorker).to receive(:perform_async) }
+    before { request }
 
-    it 'return http success' do
-      get :close, board_github_full_name: board.github_full_name, number: 1
-      expect(response).to redirect_to(board_url(board))
-    end
+    it { expect(response).to redirect_to(board_url(board)) }
+    it { expect(Graphs::IssueStatsWorker).to have_received(:perform_async) }
+    it { expect(Graphs::CumulativeWorker).to have_received(:perform_async) }
   end
 
-  describe 'GET archive' do
+  describe '#archive' do
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
     before { allow_any_instance_of(GithubApi).to receive(:archive).and_return(issue) }
 
@@ -32,7 +35,7 @@ RSpec.describe IssuesController, type: :controller do
     end
   end
 
-  describe 'GET assignee' do
+  describe '#assignee' do
     let(:issue) { OpenStruct.new(number: 1, assigne: 'fake') }
     before { allow_any_instance_of(GithubApi).to receive(:assign).and_return(issue) }
     before { allow_any_instance_of(GithubApi).to receive(:issue).and_return(issue) }
