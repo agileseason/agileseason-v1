@@ -1,3 +1,4 @@
+# TODO : Remove if unused until 01.08.2015
 class BoardWorker
   include Sidekiq::Worker
   include GithubApiAccess
