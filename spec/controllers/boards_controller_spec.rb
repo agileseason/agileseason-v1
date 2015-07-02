@@ -7,10 +7,6 @@ describe BoardsController, type: :controller do
     allow_any_instance_of(GithubApi).
       to receive(:cached_repos).and_return([])
   end
-  before do
-    allow_any_instance_of(BoardsController).
-      to receive(:fetch_board_stats)
-  end
 
   describe '#index' do
     before { stub_sign_in }
@@ -58,36 +54,6 @@ describe BoardsController, type: :controller do
     it 'returns http success' do
       get :show, github_full_name: board.github_full_name
       expect(response).to have_http_status(:success)
-    end
-  end
-
-  describe 'Dont fetch board stat if can only read' do
-    let(:user) { create(:user) }
-    before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
-    before { allow_any_instance_of(GithubApi).to receive(:labels).and_return([]) }
-    before { allow_any_instance_of(GithubApi).to receive(:collaborators).and_return([]) }
-    before { stub_sign_in(user) }
-    after { get :show, github_full_name: board.github_full_name }
-
-    context 'guest for board' do
-      let!(:board) { create(:board, :with_columns, :public) }
-      it { expect_any_instance_of(BoardsController).to_not receive(:fetch_board_stats) }
-    end
-
-    context 'owner' do
-      let!(:board) { create(:board, :with_columns, user: user) }
-      it { expect_any_instance_of(BoardsController).to receive(:fetch_board_stats) }
-    end
-
-    context 'colloborator' do
-      let!(:board) { create(:board, :with_columns) }
-      let(:repo) { OpenStruct.new(id: board.github_id) }
-      before do
-        allow_any_instance_of(GithubApi).
-          to receive(:cached_repos).and_return([repo])
-      end
-
-      it { expect_any_instance_of(BoardsController).to receive(:fetch_board_stats) }
     end
   end
 
