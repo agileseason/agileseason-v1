@@ -22,7 +22,7 @@ describe Graphs::IssueStatsWorker do
       it { expect(subject.first.number).to eq issue_2.number }
     end
 
-    context :add_new do
+    context 'add_new' do
       let(:issues) { [issue_1, issue_2] }
       let(:issue_1) { OpenStruct.new(number: 1, created_at: Time.current - 1.day, updated_at: Time.current - 6.hours, closed_at: Time.current) }
       let(:issue_2) { OpenStruct.new(number: 2, created_at: Time.current - 1.day, updated_at: Time.current - 6.hours, closed_at: nil) }
@@ -57,6 +57,21 @@ describe Graphs::IssueStatsWorker do
         let(:issue_1) { OpenStruct.new(number: 1, created_at: Time.current - 2.day, updated_at: updated_at, closed_at: Time.current) }
         it { expect(subject.first.closed_at).to be_nil }
       end
+    end
+
+    context 'auto archive very old (see GithubApi::Issues.closed)' do
+      let(:arrange) do
+        board.issue_stats.create!(number: 1, closed_at: 3.month.ago, archived_at: nil)
+        board.issue_stats.create!(number: 2, closed_at: closed_issue.closed_at, archived_at: nil)
+        board.issue_stats.create!(number: 3, closed_at: nil, archived_at: nil)
+      end
+      let(:closed_issue) { OpenStruct.new(number: 2, state: 'closed', created_at: 2.day.ago, updated_at: Time.current - 6.hours, closed_at: Time.current) }
+      let(:open_issue) { OpenStruct.new(number: 3, state: 'open', created_at: 2.day.ago, updated_at: Time.current, closed_at: nil) }
+      let(:issues) { [closed_issue, open_issue] }
+
+      it { expect(IssueStat.find_by(number: 1)).to be_archived }
+      it { expect(IssueStat.find_by(number: 2)).not_to be_archived }
+      it { expect(IssueStat.find_by(number: 3)).not_to be_archived }
     end
   end
 end
