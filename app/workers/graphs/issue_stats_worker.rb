@@ -36,7 +36,7 @@ module Graphs
     def auto_archive_issue_stats(issues)
       closed_numbers = issues.
         select { |issue| issue.state == 'closed' }.
-        map { |issue| issue.number }
+        map(&:number)
 
       # TODO : Create activities for auto-archived issues.
       @board.issue_stats.

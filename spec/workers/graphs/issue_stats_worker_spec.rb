@@ -65,8 +65,20 @@ describe Graphs::IssueStatsWorker do
         board.issue_stats.create!(number: 2, closed_at: closed_issue.closed_at, archived_at: nil)
         board.issue_stats.create!(number: 3, closed_at: nil, archived_at: nil)
       end
-      let(:closed_issue) { OpenStruct.new(number: 2, state: 'closed', created_at: 2.day.ago, updated_at: Time.current - 6.hours, closed_at: Time.current) }
-      let(:open_issue) { OpenStruct.new(number: 3, state: 'open', created_at: 2.day.ago, updated_at: Time.current, closed_at: nil) }
+      let(:closed_issue) do
+        OpenStruct.new(
+          number: 2, state: 'closed',
+          created_at: 2.day.ago, updated_at: Time.current - 6.hours,
+          closed_at: Time.current
+        )
+      end
+      let(:open_issue) do
+        OpenStruct.new(
+          number: 3, state: 'open',
+          created_at: 2.day.ago, updated_at: Time.current,
+          closed_at: nil
+        )
+      end
       let(:issues) { [closed_issue, open_issue] }
 
       it { expect(IssueStat.find_by(number: 1)).to be_archived }
