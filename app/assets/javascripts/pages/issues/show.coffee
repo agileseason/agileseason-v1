@@ -20,7 +20,8 @@ $(document).on 'page:change', ->
 
   $('textarea').elastic()
   highlight_code()
-  init_uploading()
+
+  init_uploading($('input:file', $('.add-comment-form')))
 
   # редактировать название тикета
   $('.issue-title').click ->
@@ -92,6 +93,9 @@ $(document).on 'page:change', ->
     # открыть форму редактирования комментария
     .on 'click', '.edit', ->
       $parent = $(@).closest('.comment-body ')
+
+      init_uploading($('input:file'))
+      #init_uploading()
 
       $parent.addClass 'current-comment'
       $('.comment-form', $parent).addClass 'active'
@@ -220,16 +224,20 @@ $(document).on 'page:change', ->
     # отправить на сервер набор лейблов
     #$.post $(@).data('url'), { labels: labels }
 
+  $('textarea').on 'dragenter', ->
+    #open_new_comment_form($(@))
+    $(@).addClass('dragenter')
+    $('.upload', $(@).closest('.b-editable-form')).addClass('dragenter')
+
+  $('textarea').on 'dragleave', ->
+    $(@).removeClass('dragenter')
+    $('.upload', $(@).closest('.b-editable-form')).removeClass('dragenter')
+
 # private ###########################################################
 
 highlight_code = ->
   $('pre code').each (i, block) ->
     hljs.highlightBlock block
-
-init_uploading = ->
-  url = $('.b-issue-modal').data('direct_post_url')
-  form_data = $('.b-issue-modal').data('direct_post_form_data')
-  window.init_direct_upload($('input:file'), url, form_data)
 
 find_issue = (number) ->
   $(".issue[data-number='#{number}']")
