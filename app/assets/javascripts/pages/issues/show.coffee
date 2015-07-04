@@ -20,7 +20,8 @@ $(document).on 'page:change', ->
 
   $('textarea').elastic()
   highlight_code()
-  init_uploading()
+
+  init_uploading($('input:file', $('.add-comment-form')))
 
   # редактировать название тикета
   $('.issue-title').click ->
@@ -93,6 +94,9 @@ $(document).on 'page:change', ->
     .on 'click', '.edit', ->
       $parent = $(@).closest('.comment-body ')
 
+      init_uploading($('input:file'))
+      #init_uploading()
+
       $parent.addClass 'current-comment'
       $('.comment-form', $parent).addClass 'active'
 
@@ -124,6 +128,19 @@ $(document).on 'page:change', ->
     # сохранить чекбоксы в комментарии
     .on 'click', '.task', ->
       update_by_checkbox $(@)
+
+  # перетаскивать картинку можно в любое место окна,
+  # она загрузится в активное поле,
+  # если нет формы с классом active, то загрузится в поле
+  # добавления нового комментария
+  $('.b-issue-modal').on 'dragenter', ->
+    show_dragging()
+
+  $(document).on 'mouseout', ->
+    hide_dragging()
+
+  $(document).on 'drop', ->
+    hide_dragging()
 
     #console.log 'modal ajax:success'
     #number = $(@).find('.b-issue-modal').data('number')
@@ -226,11 +243,6 @@ highlight_code = ->
   $('pre code').each (i, block) ->
     hljs.highlightBlock block
 
-init_uploading = ->
-  url = $('.b-issue-modal').data('direct_post_url')
-  form_data = $('.b-issue-modal').data('direct_post_form_data')
-  window.init_direct_upload($('input:file'), url, form_data)
-
 find_issue = (number) ->
   $(".issue[data-number='#{number}']")
 
@@ -263,3 +275,9 @@ subscribe_issue_update = ->
     return if $fetch_issue.data('faye-client-id') == message.client_id
     return if $fetch_issue.data('number') != parseInt(message.data.number)
     $('.issue-comments').append(message.data.html) if message.data.action == 'create'
+
+show_dragging = ->
+  $('.drag-n-drop-overlay').addClass 'active'
+
+hide_dragging = ->
+  $('.drag-n-drop-overlay').removeClass 'active'
