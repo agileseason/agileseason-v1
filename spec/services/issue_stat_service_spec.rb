@@ -175,4 +175,14 @@ describe IssueStatService do
       end
     end
   end
+
+  describe '.find_or_build_issue_stat' do
+    subject { service.find_or_build_issue_stat(board, issue) }
+    let(:issue) { OpenStruct.new(number: 1) }
+
+    it { is_expected.not_to be_nil }
+    it { is_expected.not_to be_persisted }
+    its(:board_id) { is_expected.to eq board.id }
+    its(:number) { is_expected.to eq 1 }
+  end
 end

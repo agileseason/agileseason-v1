@@ -4,6 +4,18 @@ RSpec.describe IssuesController, type: :controller do
   let(:issue) { OpenStruct.new(number: 1) }
   before { stub_sign_in(user) }
 
+  describe '#show' do
+    let(:issue) { OpenStruct.new(number: 1) }
+    before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([issue]) }
+    before { allow_any_instance_of(GithubApi).to receive(:labels).and_return([]) }
+    before { allow_any_instance_of(GithubApi).to receive(:issue_comments).and_return([]) }
+    before { get :show, board_github_full_name: board.github_full_name, number: 1 }
+
+    it { expect(board.reload.issue_stats.count).to eq 0 }
+    it { expect((assigns :issue).issue_stat).to be_present }
+    it { expect((assigns :issue).due_date_at).to be_nil }
+  end
+
   describe '#search' do
     before { allow_any_instance_of(GithubApi).to receive(:search_issues).and_return([]) }
     it 'return http success' do
