@@ -133,7 +133,7 @@ $(document).on 'page:change', ->
   # она загрузится в активное поле,
   # если нет формы с классом active, то загрузится в поле
   # добавления нового комментария
-  $(document).on 'dragenter', ->
+  $('.b-issue-modal').on 'dragenter', ->
     show_dragging()
 
   $(document).on 'mouseout', ->
