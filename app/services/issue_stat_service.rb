@@ -71,7 +71,6 @@ class IssueStatService
       if issue_stat.nil?
         issue_stat = board.issue_stats.build(
           number: github_issue.number,
-          #column: column,
           created_at: github_issue.created_at,
           updated_at: github_issue.updated_at,
           closed_at: github_issue.closed_at,
