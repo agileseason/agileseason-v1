@@ -6,14 +6,29 @@ RSpec.describe IssuesController, type: :controller do
 
   describe '#show' do
     let(:issue) { OpenStruct.new(number: 1) }
-    before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([issue]) }
-    before { allow_any_instance_of(GithubApi).to receive(:labels).and_return([]) }
-    before { allow_any_instance_of(GithubApi).to receive(:issue_comments).and_return([]) }
-    before { get :show, board_github_full_name: board.github_full_name, number: 1 }
+    let(:github_api) { GithubApi.new('fake_token', user) }
+    let(:request) { get :show, board_github_full_name: board.github_full_name, number: 1 }
+    before { allow(controller).to receive(:github_api).and_return(github_api) }
+    before { allow(github_api).to receive(:issue).and_return(issue) }
+    before { allow(github_api).to receive(:labels).and_return([]) }
+    before { allow(github_api).to receive(:issue_comments).and_return([]) }
 
-    it { expect(board.reload.issue_stats.count).to eq 0 }
-    it { expect((assigns :issue).issue_stat).to be_present }
-    it { expect((assigns :issue).due_date_at).to be_nil }
+    context 'issue in cache' do
+      before { allow(github_api).to receive(:issues).and_return([issue]) }
+      before { request }
+
+      it { expect(github_api).not_to have_received(:issue) }
+      it { expect(board.reload.issue_stats.count).to eq 0 }
+      it { expect((assigns :issue).issue_stat).to be_present }
+    end
+
+    context 'issue not in cache' do
+      before { allow(github_api).to receive(:issues).and_return([]) }
+      before { request }
+
+      it { expect(assigns :issue).to be_present }
+      it { expect((assigns :issue).number).to eq issue.number }
+    end
   end
 
   describe '#search' do
