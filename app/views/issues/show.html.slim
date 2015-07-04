@@ -46,7 +46,7 @@
     - if can? :update, @board
       .issue-actions
         .overlay
-        = render partial: 'issues/actions/edit_labels',   locals: { board: @board, labels: @labels, issue: @issue }
+        = render partial: 'issues/actions/edit_labels',   locals: { board: @board_bag, issue: @issue }
         = render partial: 'issues/actions/assign',        locals: { issue: @issue }
         = render partial: 'issues/actions/edit_due_date', locals: { board: @board, issue: @issue }
         = render partial: 'issues/actions/close',         locals: { board: @board, issue: @issue }

@@ -9,12 +9,10 @@ class IssuesController < ApplicationController
 
   def show
     @direct_post = S3Api.direct_post
-
     @issue = BoardIssue.new(
       github_issue,
       IssueStatService.find_or_build_issue_stat(@board, github_issue)
     )
-    @labels = @board_bag.labels
     # TODO : Find a way to accelerate this request.
     @comments = github_api.issue_comments(@board, number)
   end
