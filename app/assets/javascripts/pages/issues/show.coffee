@@ -129,6 +129,19 @@ $(document).on 'page:change', ->
     .on 'click', '.task', ->
       update_by_checkbox $(@)
 
+  # перетаскивать картинку можно в любое место окна,
+  # она загрузится в активное поле,
+  # если нет формы с классом active, то загрузится в поле
+  # добавления нового комментария
+  $(document).on 'dragenter', ->
+    show_dragging()
+
+  $(document).on 'mouseout', ->
+    hide_dragging()
+
+  $(document).on 'drop', ->
+    hide_dragging()
+
     #console.log 'modal ajax:success'
     #number = $(@).find('.b-issue-modal').data('number')
     ## FIX : Find reason what find return two element .b-assignee-container
@@ -224,15 +237,6 @@ $(document).on 'page:change', ->
     # отправить на сервер набор лейблов
     #$.post $(@).data('url'), { labels: labels }
 
-  $('textarea').on 'dragenter', ->
-    #open_new_comment_form($(@))
-    $(@).addClass('dragenter')
-    $('.upload', $(@).closest('.b-editable-form')).addClass('dragenter')
-
-  $('textarea').on 'dragleave', ->
-    $(@).removeClass('dragenter')
-    $('.upload', $(@).closest('.b-editable-form')).removeClass('dragenter')
-
 # private ###########################################################
 
 highlight_code = ->
@@ -271,3 +275,9 @@ subscribe_issue_update = ->
     return if $fetch_issue.data('faye-client-id') == message.client_id
     return if $fetch_issue.data('number') != parseInt(message.data.number)
     $('.issue-comments').append(message.data.html) if message.data.action == 'create'
+
+show_dragging = ->
+  $('.drag-n-drop-overlay').addClass 'active'
+
+hide_dragging = ->
+  $('.drag-n-drop-overlay').removeClass 'active'
