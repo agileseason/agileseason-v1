@@ -6,7 +6,7 @@
         url: update_board_issues_url(board, issue.number),
         remote: true,
         method: :post do |f|
-        - labels.each do |label|
+        - board.labels.each do |label|
           label.label style="background: ##{label.color};"
             - if issue.labels.map(&:name).any? { |l| l == label.name }
               input[
