@@ -141,9 +141,9 @@
 				$textarea.bind('blur',function(){
 					if($twin.height() < maxheight){
 						if($twin.height() > minheight) {
-							$textarea.height($twin.height());
+							$textarea.height($twin.height() + 25);
 						} else {
-							$textarea.height(minheight);
+							$textarea.height(minheight + 12);
 						}
 					}
 				});
