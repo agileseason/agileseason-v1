@@ -64,6 +64,8 @@
     padding: 0 0 10px 0
     position: relative
     +issue_form
+    height: 82px
+    line-height: 1.6
 
     .issue-title
       display: inline
@@ -77,7 +79,8 @@
       display: none
 
       textarea, textarea:focus
-        outline: 5px solid $active
+        outline-offset: 0px
+        line-height: inherit
 
       .button
         display: none
@@ -98,10 +101,6 @@
     background-image: linear-gradient(top,#f7f0ea,#fcf8f5)
     margin: 40px 0 0 60px
     padding: 20px
-
-    form.simple_form
-      textarea
-        height: 35px
 
   .b-issue-labels
     margin-left: 70px
@@ -139,9 +138,6 @@
 
     form.edit-comment, .upload
       display: none
-
-      textarea
-        height: 35px
 
     .comment-text
       padding-top: 10px
@@ -188,7 +184,7 @@
 
     .edit-form
       textarea
-        margin-top: 0
+        //margin-top: 0
 
     img
       display: block
