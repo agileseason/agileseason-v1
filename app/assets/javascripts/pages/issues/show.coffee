@@ -34,10 +34,10 @@ $(document).on 'ready page:load', ->
     $title.addClass 'active'
 
     $textarea
+      .height $(@).height()
       .focus()
       .val ''
       .val $val
-      .height $(@).height()
 
   # сохранить по блюру название тикета
   $('.title textarea').blur ->
