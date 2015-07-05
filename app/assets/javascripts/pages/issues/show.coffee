@@ -8,7 +8,7 @@ $(document).keyup (e) ->
       # вернуться к борду
       Turbolinks.visit($('.b-menu .boards a').attr('href'))
 
-$(document).on 'page:change', ->
+$(document).on 'ready page:load', ->
   return unless document.body.id == 'issues_show'
 
   subscribe_issue_update()
@@ -184,9 +184,6 @@ $(document).on 'page:change', ->
         $('.due-date').removeClass('none').html(date)
         # FIX : Extract method for find current issue number
         #number = $modal.find('.b-issue-modal').data('number')
-        # FIX : Find reason what find return two element .due-date
-        #find_issue(number).find('.due-date').each ->
-          #$(@).removeClass('none').html(date)
 
   # раскрыть попап с пользователями для назначения
   $('.assignee').click ->
@@ -216,7 +213,7 @@ $(document).on 'page:change', ->
 
   # раскрыть попап с лейблами тикета
   $('.add-label').click ->
-    console.log 'open:labels'
+    #console.log 'open:labels'
     $('.issue-popup').hide()
     $('.overlay', '.issue-actions').show()
 
@@ -270,7 +267,6 @@ subscribe_issue_update = ->
 
   window.faye_issues = new Faye.Client($issue.data('faye-url'))
   window.faye_issues.subscribe $issue.data('faye-channel'), (message) ->
-    #console.log message
     $fetch_issue = $('.b-issue-modal')
     return if $fetch_issue.data('faye-client-id') == message.client_id
     return if $fetch_issue.data('number') != parseInt(message.data.number)
