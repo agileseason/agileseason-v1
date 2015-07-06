@@ -1,6 +1,6 @@
 = simple_form_for(Column.new(board: board), url: board_columns_url(board)) do |f|
-  = f.input :name, as: :text
+  = f.input :name, label: false, input_html: { placeholder: 'A new column' }
 
   .submit-area
     a.cancel href="#{board_url(board)}" Cancel
-    = f.button :submit, value: 'Create'
+    = f.button :magic_submit, value: 'Create', data: { disable_with: 'Creating…' }

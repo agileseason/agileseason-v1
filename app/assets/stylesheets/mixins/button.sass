@@ -8,9 +8,14 @@
   border: none
   color: #fff
   cursor: pointer
-  font-size: 14px
-  padding: 7px 10px
   display: inline-block
+  font-size: 14px
+  outline: none
+  padding: 7px 10px
+
+  &:focus,
+  &:active
+    outline: none
 
   .b-preloader
     display: none
@@ -18,6 +23,7 @@
   &:hover
     background: $button-hover
     color: #fff
+    outline: none
 
   &.loading
     cursor: default

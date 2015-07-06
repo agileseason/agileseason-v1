@@ -10,16 +10,16 @@ $(document).on 'page:change', ->
   # пересчитать высоту борда в зависимости от высоты окна браузера
   resize_height()
 
+  $('textarea', '.new_issue').elastic()
+
   # открыть форму добавления тикета или колонки
   $('.new-issue, .new-column').click ->
     $(@).next().show()
-    $('textarea', $(@).next()).first().focus()
-    $(@).hide()
+    $('textarea, input:text', $(@).next()).first().focus()
 
   # закрыть форму создания тикета или колонки
   $('.board-column').on 'click', '.cancel', ->
-    $(@).closest('.inline-form').prev().show()
-    $(@).closest('.inline-form').hide()
+    $(@).closest('.create-column, .create-issue').hide()
     false
 
   # раскрыть попап с лейблами тикета
@@ -60,9 +60,10 @@ resize_height = ->
   $('.board').height(height)
 
 column_menu = ->
-  $('.board-column').on 'click', '.column-menu', ->
-    $(@).addClass('active').prepend('<div class="overlay"></div>')
-    $(@).find('.popup').show()
+  $('.board-column').on 'click', '.column-menu .title', ->
+    $menu = $(@).closest('.column-menu')
+    $menu.addClass('active').prepend('<div class="overlay"></div>')
+    $menu.find('.popup').show()
 
   $('.board-column .column-menu').on 'click', '.overlay', ->
     $(@).parent().find('.popup').hide()
@@ -87,8 +88,7 @@ new_issue_forms = ->
     $form = $(@)
     $form.removeData('blocked')
     return if data == ''
-    $form.find('.cancel').trigger('click') # закрываем форму
-    $form.find('textarea').val('') # в данном случае нужно очищать поле ввода
+    $form.find('textarea').val('').focus() # в данном случае нужно очищать поле ввода
     $issues = $('.issues', $form.closest('.board-column'))
     $issues.prepend(data)
 

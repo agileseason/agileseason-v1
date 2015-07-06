@@ -13,7 +13,6 @@
       = render partial: 'columns/show', locals: { column: column }
 
     .board-column
-      .new-column.ajax-link
-        a.ajax-link New Column
-      .inline-form
+      div.new-column : span Append a new column
+      .create-column
         = render partial: 'columns/new', locals: { board: @board }
