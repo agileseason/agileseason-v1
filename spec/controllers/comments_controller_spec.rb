@@ -2,9 +2,10 @@ RSpec.describe CommentsController, type: :controller do
   let(:user) { create(:user) }
   let(:board) { create(:board, :with_columns, user: user) }
   before { stub_sign_in(user) }
+  before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
 
   describe '#create' do
-    subject { post :create, board_github_full_name: board.github_full_name, number: 1, comment: { body: 'sdfsd' } }
+    subject { post :create, board_github_full_name: board.github_full_name, number: 1, id: 101, comment: { body: 'sdfsd' } }
 
     context 'check response' do
       before { allow_any_instance_of(GithubApi).to receive(:add_comment) }
@@ -21,7 +22,7 @@ RSpec.describe CommentsController, type: :controller do
   end
 
   describe '#update' do
-    subject { post :update, board_github_full_name: board.github_full_name, number: 1, comment: { body: 'sdfsd' } }
+    subject { post :update, board_github_full_name: board.github_full_name, number: 1, id: 101, comment: { body: 'sdfsd' } }
 
     context 'check response' do
       before { allow_any_instance_of(GithubApi).to receive(:update_comment) }
@@ -37,7 +38,7 @@ RSpec.describe CommentsController, type: :controller do
   end
 
   describe '#delete' do
-    subject { delete :delete, board_github_full_name: board.github_full_name, number: 1 }
+    subject { delete :delete, board_github_full_name: board.github_full_name, number: 1, id: 101 }
 
     context 'check response' do
       before { allow_any_instance_of(GithubApi).to receive(:delete_comment) }

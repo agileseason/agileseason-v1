@@ -41,7 +41,7 @@
 
       .issue-comments data-url="#{comments_board_issues_url @board, @issue.number}"
         - @comments.each do |comment|
-          = render partial: 'comments/show', locals: { comment: comment, board: @board }
+          = render partial: 'comments/show', locals: { comment: comment, board: @board, number: @issue.number }
 
       - if can? :update, @board
         = render partial: 'comments/new', locals: { board: @board, issue: @issue }

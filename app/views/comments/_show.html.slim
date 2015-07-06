@@ -16,15 +16,15 @@
         span.edit-link
           a.edit edit
           | &nbsp;or&nbsp;
-        a.delete data-url="#{delete_comment_board_issues_url(board, comment.id)}" delete
+        a.delete data-url="#{delete_comment_board_issues_url(board, number, comment.id)}" delete
 
     / FIX : Why data-initial not in .editable same as description?
     .comment-form.b-editable-form
-      .comment-text data-url="#{update_comment_board_issues_url(board, comment.id)}"
+      .comment-text data-url="#{update_comment_board_issues_url(board, number, comment.id)}"
         = markdown(comment.body, board.github_url)
 
       = simple_form_for :comment,
-        url: update_comment_board_issues_url(board, comment.id),
+        url: update_comment_board_issues_url(board, number, comment.id),
         remote: true,
         method: :post,
         html: { class: 'edit-comment' } do |f|
