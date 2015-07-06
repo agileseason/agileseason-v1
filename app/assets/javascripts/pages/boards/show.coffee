@@ -22,6 +22,7 @@ $(document).on 'page:change', ->
     $(@).closest('.create-column, .create-issue').hide()
     false
 
+  # закрыть форму создания тикета по клику на оверлей
   $('.create-issue').click (e) ->
     if $(e.target).is('.create-issue')
       $(@).hide()
