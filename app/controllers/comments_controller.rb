@@ -36,7 +36,10 @@ class CommentsController < ApplicationController
       @board,
       action: action_name,
       number: number,
-      html: render_to_string(partial: 'show', locals: { comment: comment, board: @board, number: number })
+      html: render_to_string(
+        partial: 'show',
+        locals: { comment: comment, board: @board, number: number }
+      )
     )
   end
 
