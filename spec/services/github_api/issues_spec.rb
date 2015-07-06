@@ -1,6 +1,6 @@
 describe GithubApi::Issues do
   let(:service) { GithubApi.new('fake_token', user) }
-  let(:user) { build_stubbed(:user) }
+  let(:user) { create(:user) }
   let(:board) { build(:board, :with_columns, number_of_columns: 1) }
   let(:issue) { OpenStruct.new(number: 1) }
 
@@ -79,7 +79,7 @@ describe GithubApi::Issues do
       expect_any_instance_of(Octokit::Client)
         .to receive(:close_issue).with(board.github_id, issue.number)
     end
-    it { expect(IssueStatService).to receive(:close!).with(board, issue) }
+    it { expect(IssueStatService).to receive(:close!).with(board, issue, user) }
   end
 
   describe '#archive' do
@@ -96,30 +96,21 @@ describe GithubApi::Issues do
       let(:state) { 'closed' }
       let(:archived_at) { Time.current }
       before { allow(Time).to receive(:current).and_return(archived_at) }
-
       after { subject }
-      it do
-        expect(Activities::ArchiveActivity).
-          to receive(:create_for).with(issue_stat, user)
-      end
 
       it do
         expect(IssueStatService).
-          to receive(:archive!).with(board, issue)
+          to receive(:archive!).with(board, issue, user)
       end
     end
 
     context 'open issue' do
       let(:state) { 'open' }
       after { subject }
-      it do
-        expect(Activities::ArchiveActivity).
-          to_not receive(:create_for).with(issue_stat, user)
-      end
 
       it do
         expect(IssueStatService).
-          to_not receive(:archive!).with(board, issue)
+          to_not receive(:archive!).with(board, issue, user)
       end
     end
   end

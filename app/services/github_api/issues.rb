@@ -13,7 +13,7 @@ class GithubApi
         issue.body,
         labels: issue.labels
       )
-      IssueStatService.create!(board, github_issue)
+      IssueStatService.create!(board, github_issue, @user)
       github_issue
     end
 
@@ -21,24 +21,21 @@ class GithubApi
       client.issue(board.github_id, number)
     end
 
-    def move_to(board, column, number)
+    def move_to(board, column, number, force = false)
       issue_stat = IssueStatService.find(board, number) ||
-                   IssueStatService.create!(board, issue(board, number))
-      IssueStatService.move!(@user, column, issue_stat)
+                   IssueStatService.create!(board, issue(board, number), @user)
+      IssueStatService.move!(column, issue_stat, @user, force)
     end
 
     def close(board, number)
       github_issue = client.close_issue(board.github_id, number)
-      IssueStatService.close!(board, github_issue)
+      IssueStatService.close!(board, github_issue, @user)
       github_issue
     end
 
     def archive(board, number)
       issue = issue(board, number)
-      if issue.state == 'closed'
-        issue_stat = IssueStatService.archive!(board, issue)
-        Activities::ArchiveActivity.create_for(issue_stat, @user)
-      end
+      IssueStatService.archive!(board, issue, @user) if issue.state == 'closed'
       issue
     end
 

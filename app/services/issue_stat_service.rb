@@ -1,7 +1,7 @@
 # FIX : Move methods to instance and add user to initializer.
 class IssueStatService
   class << self
-    def create!(board, github_issue)
+    def create!(board, github_issue, user)
       column = board.columns.first
       issue_stat = board.issue_stats.create!(
         number: github_issue.number,
@@ -11,14 +11,7 @@ class IssueStatService
         closed_at: github_issue.closed_at,
       )
 
-      issue_stat.lifetimes.create!(
-        column: column,
-        in_at: Time.current,
-      )
-
-      column.update(issues: column.issues.unshift(github_issue.number.to_s))
-
-      issue_stat
+      move!(column, issue_stat, user, force: true)
     end
 
     def update!(issue_stat, github_issue)
@@ -29,32 +22,39 @@ class IssueStatService
       )
     end
 
-    def move!(user, column, issue_stat)
-      if issue_stat.column != column
-        issue_stat.update!(column: column)
-        leave_all_column(issue_stat)
-        issue_stat.lifetimes.create!(
-          column: column,
-          in_at: Time.current
-        )
-        # FIX : Save info about previous column after #126
-        Activities::ColumnChangedActivity.create_for(issue_stat, nil, column, user)
+    def move!(column, issue_stat, user, force = false)
+      return issue_stat if issue_stat.column == column && !force
+      if force
+        column.update(issues: column.issues.unshift(issue_stat.number.to_s))
+      end
+
+      issue_stat.update!(column: column)
+      leave_all_column(issue_stat)
+      issue_stat.lifetimes.create!(
+        column: column,
+        in_at: Time.current
+      )
+      # FIX : Save info about previous column after #126
+      if user.present?
+        Activities::ColumnChangedActivity.
+          create_for(issue_stat, nil, column, user)
       end
       issue_stat
     end
 
     # FIX : Move close! and add close? to state_machine.
-    def close!(board, github_issue)
-      issue_stat = find_or_create_issue_stat(board, github_issue)
+    def close!(board, github_issue, user)
+      issue_stat = find_or_create_issue_stat(board, github_issue, user)
       issue_stat.update(closed_at: (github_issue.closed_at || Time.current))
       issue_stat
     end
 
     # FIX : Move archive! and archive? to state_machine.
-    def archive!(board, github_issue)
-      issue_stat = find_or_create_issue_stat(board, github_issue)
+    def archive!(board, github_issue, user)
+      issue_stat = find_or_create_issue_stat(board, github_issue, user)
       leave_all_column(issue_stat)
       issue_stat.update!(archived_at: Time.current)
+      Activities::ArchiveActivity.create_for(issue_stat, user) if user.present?
       issue_stat
     end
 
@@ -62,8 +62,8 @@ class IssueStatService
       board.issue_stats.find_by(number: number).try(:archived?)
     end
 
-    def find_or_create_issue_stat(board, github_issue)
-      find(board, github_issue.number) || create!(board, github_issue)
+    def find_or_create_issue_stat(board, github_issue, user)
+      find(board, github_issue.number) || create!(board, github_issue, user)
     end
 
     def find_or_build_issue_stat(board, github_issue)
