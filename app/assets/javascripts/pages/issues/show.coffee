@@ -170,15 +170,15 @@ $(document).on 'ready page:load', ->
     $datepicker.datepicker({
       dateFormat: 'dd/mm/yy',
       onSelect: ->
-        $popup.find('.date input').val($(@).val())
+        $popup.find('input.date').val($(@).val())
     })
     $datepicker.datepicker('setDate', new Date($(@).data('date')))
     $popup.show()
 
   # сохранение крайней даты
   $('.edit-due-date .button.save').click ->
-    date = $('.date input').val()
-    time = $('.time input').val()
+    date = $('input.date').val()
+    time = $('input.time').val()
     $.ajax
       url: $('.edit-due-date').data('url'),
       data: { due_date: "#{date} #{time}" },

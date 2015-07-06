@@ -22,6 +22,11 @@ $(document).on 'page:change', ->
     $(@).closest('.create-column, .create-issue').hide()
     false
 
+  $('.create-issue').click (e) ->
+    if $(e.target).is('.create-issue')
+      $(@).hide()
+      false
+
   # раскрыть попап с лейблами тикета
   $('.board-column').on 'click', '.add-label', ->
     $(@).parent().prev().show()
@@ -60,7 +65,7 @@ resize_height = ->
   $('.board').height(height)
 
 column_menu = ->
-  $('.board-column').on 'click', '.column-menu .title', ->
+  $('.board-column').on 'click', '.column-menu .octicon', ->
     $menu = $(@).closest('.column-menu')
     $menu.addClass('active').prepend('<div class="overlay"></div>')
     $menu.find('.popup').show()
