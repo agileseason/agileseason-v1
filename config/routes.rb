@@ -32,8 +32,8 @@ Rails.application.routes.draw do
 
       get ':number/comments', to: 'comments#index', as: :comments
       post ':number/comment', to: 'comments#create', as: :add_comment
-      post ':number/update_comment', to: 'comments#update', as: :update_comment
-      delete ':number/delete_comment', to: 'comments#delete', as: :delete_comment
+      post ':number/update_comment/:id', to: 'comments#update', as: :update_comment
+      delete ':number/delete_comment/:id', to: 'comments#delete', as: :delete_comment
     end
 
     resource :settings, only: [:show, :update] do
