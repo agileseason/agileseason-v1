@@ -51,7 +51,7 @@ class IssuesController < ApplicationController
   end
 
   def move_to
-    github_api.move_to(@board, @board.columns.find(params[:column_id]), number)
+    github_api.move_to(@board, @board.columns.find(params[:column_id]), number, !!params[:force])
     broadcast
 
     render json: begin

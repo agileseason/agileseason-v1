@@ -20,7 +20,7 @@ class IssueStatsMapper
   end
 
   def fix_missing(issue)
-    issue_stats_map[issue.number] = IssueStatService.find_or_create_issue_stat(@board, issue) if actual?(issue)
+    issue_stats_map[issue.number] = IssueStatService.find_or_create_issue_stat(@board, issue, nil) if actual?(issue)
   end
 
   def actual?(issue)

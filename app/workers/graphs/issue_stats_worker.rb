@@ -17,7 +17,7 @@ module Graphs
 
     def create_issue_stats(issues)
       new_issues = issues.select { |issue| issue.number > last_number }
-      new_issues.each { |issue| IssueStatService.create!(@board, issue) }
+      new_issues.each { |issue| IssueStatService.create!(@board, issue, nil) }
     end
 
     def update_issue_stats(issues)

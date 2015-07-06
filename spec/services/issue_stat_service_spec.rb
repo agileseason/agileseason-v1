@@ -4,7 +4,7 @@ describe IssueStatService do
   let(:service) { IssueStatService }
 
   describe '.create!' do
-    subject { service.create!(board, issue) }
+    subject { service.create!(board, issue, user) }
     let(:issue) { OpenStruct.new(number: 1, created_at: Time.current, updated_at: Time.current) }
     let(:first_column) { board.columns.first }
 
@@ -22,7 +22,7 @@ describe IssueStatService do
   end
 
   describe '.move!' do
-    subject { service.move!(user, column_2, issue_stat) }
+    subject { service.move!(column_2, issue_stat, user) }
     let!(:lifetime) { create(:lifetime, issue_stat: issue_stat, column: column_1) }
     let(:issue_stat) { create(:issue_stat, column: column_1) }
     let(:fake_token) { 'adsf' }
@@ -51,17 +51,31 @@ describe IssueStatService do
     end
 
     context 'column not changed' do
+      subject { service.move!(column_2, issue_stat, user, force) }
       let(:column_1) { board.columns.first }
       let(:column_2) { board.columns.first }
-      it { expect { subject }.to change(Lifetime, :count).by(0) }
-      it { expect { subject }.to change(Activity, :count).by(0) }
-      it { expect(subject.column).to eq column_2 }
+
+      context 'not force' do
+        let(:force) { false }
+        it { expect { subject }.to change(Lifetime, :count).by(0) }
+        it { expect { subject }.to change(Activity, :count).by(0) }
+        it { expect(subject.column).to eq column_2 }
+        it { expect(subject.column.issues).to be_blank }
+      end
+
+      context 'force' do
+        let(:force) { true }
+        it { expect { subject }.to change(Lifetime, :count).by(1) }
+        it { expect { subject }.to change(Activity, :count).by(1) }
+        it { expect(subject.column).to eq column_2 }
+        it { expect(subject.column.issues).to eq [issue_stat.number.to_s] }
+      end
     end
   end
 
   describe '.close!' do
     let(:issue) { OpenStruct.new(number: 1) }
-    subject { service.close!(board, issue) }
+    subject { service.close!(board, issue, user) }
 
     context :with_issue_stat do
       let!(:issue_stat) { create(:issue_stat, :open, board: board, number: issue.number) }
@@ -82,7 +96,8 @@ describe IssueStatService do
 
   describe '.archive!' do
     let(:issue) { OpenStruct.new(number: 1) }
-    subject { service.archive!(board, issue) }
+    subject { service.archive!(board, issue, user) }
+    before { allow(Activities::ArchiveActivity).to receive(:create_for) }
 
     context :with_issue_stat do
       let!(:issue_stat) { create(:issue_stat, board: board, number: issue.number, archived_at: nil) }
@@ -102,6 +117,20 @@ describe IssueStatService do
 
     context :without_issue_stat do
       it { expect { subject }.to change(IssueStat, :count).by(1) }
+    end
+
+    context 'create activities' do
+      before { subject }
+
+      context 'not skip, user present' do
+        let(:user) { create(:user) }
+        it { expect(Activities::ArchiveActivity).to have_received(:create_for) }
+      end
+
+      context 'not skip, user present' do
+        let(:user) { nil }
+        it { expect(Activities::ArchiveActivity).not_to have_received(:create_for) }
+      end
     end
   end
 
