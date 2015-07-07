@@ -93,8 +93,12 @@ new_issue_forms = ->
   $('form.new_issue').on 'ajax:success', (e, data) ->
     $form = $(@)
     $form.removeData('blocked')
+
     return if data == ''
-    $form.find('textarea').val('').focus() # в данном случае нужно очищать поле ввода
+
+    $form.find('textarea').val('') # в данном случае нужно очищать поле ввода
+    $('.cancel', @).trigger 'click'
+
     $issues = $('.issues', $form.closest('.board-column'))
     $issues.prepend(data)
 
