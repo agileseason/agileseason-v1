@@ -111,6 +111,11 @@ textarea
   font-size: inherit
   line-height: inherit
 
+textarea, input
+  font-size: inherit
+  +border-radius(3px)
+  border: 1px solid $form_border
+
 input[type="radio"]
   display: inline-block
   margin-right: 10px
@@ -156,14 +161,6 @@ blockquote
   color: #3a87ad
   cursor: pointer
   padding: 14px
-
-.popup
-  +popup
-  font-size: 14px
-  width: 240px
-
-  .close-popup
-    +close
 
 .hljs
   background: #f7f7f7 !important

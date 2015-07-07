@@ -135,37 +135,56 @@
       span
         margin-left: 6px
 
+    span.octicon.octicon-gear
+      +border-radius(50px)
+      color: $text-light
+      cursor: pointer
+      padding: 10px
+      position: absolute
+      right: 2px
+      top: 2px
+
     .popup
       +popup
-      top: 32px
+      top: -20px
       z-index: 3
+      left: 100%
+
+      .delete
+        +light_button
 
       ul
         list-style-type: none
-        padding: 0 20px
+        padding: 0 10px
 
         li
-          padding: 4px 0
+          padding: 6px 0
+          margin: 0
+
+          &.move
+            a
+              +light_button
+
+              &:last-child
+                margin-left: 10px
+
           &.delimiter
-            border-bottom: 1px solid #ccc
+            border-bottom: 1px solid $form-border
             margin: 6px 0
             padding: 0
 
-          a
-            color: $text-light
-            &:hover
-              color: $text-usual
-
           label
-            color: $text-light
             display: inline-block
             padding: 0
-            width: 64px
+            margin-right: 10px
+            width: 61px
 
           input
-            width: 40px
+            width: 20px
+            padding: 5px
+
             &.name
-              width: 100px
+              width: 137px
 
   .badge
     display: inline-block
@@ -177,37 +196,61 @@
       color: #ff5252
 
   .issues
-    padding: 0 10px
-    overflow-y: auto
     min-height: 40px
+    overflow-y: auto
+    padding: 0 10px
 
     .add-user
       display: none
 
+  .new-issue
+    +ajax_link
+    +border-radius(6px)
+    border: 1px solid #77B818
+    color: #77B818
+    display: inline-block
+    float: right
+    font-size: 14px
+    margin: -32px 35px 0 0
+    padding: 3px 5px
+    vertical-align: top
+
+    &:hover
+      border-color: $orange
+
   .create-issue
+    background: rgba(90,90,90,0.3)
     display: none
-    z-index: 1
+    height: 100%
+    left: 0
+    overflow: auto
     position: fixed
-    width: 630px
-    background: #fff
-    left: 50%
-    margin-left: -315px
-    +box-shadow(5px 10px 30px -3px rgba(90,80,80,0.3))
-    +border-radius(2px)
-    border: 1px solid $form-border
-    overflow: hidden
-    outline: none
+    top: 0
+    width: 100%
+    z-index: 1
 
     form.new_issue
+      +border-radius(8px)
+      +box-shadow(5px 10px 40px -3px rgba(90,80,80,0.3))
+      background: #fff
+      left: 50%
+      margin-bottom: 100px
+      margin-left: -335px
+      outline: none
+      overflow: hidden
       padding: 0
+      position: absolute
+      top: 170px
+      width: 670px
 
       .issue_title
         margin: 15px 25px 0 20px
 
       textarea
+        +border-radius(0)
+        font-size: 24px
         min-height: 80px
         width: 100%
-        font-size: 24px
 
         background: none
         border: none
@@ -226,9 +269,9 @@
     .submit-area
       +border-radius(0)
       background: none
-      padding: 15px 0 5px
       border-top: 1px solid $form-border
       margin: 0 20px 10px
+      padding: 15px 0 5px
 
       .cancel
         +ajax_link
@@ -240,19 +283,19 @@
       text-align: left
 
       label
-        width: 130px
+        +border-radius(6px)
+        cursor: pointer
         display: inline-block
         margin: 10px 10px 0 0
         padding: 0px 5px 3px
         text-align: left
-        +border-radius(6px)
-        cursor: pointer
+        width: 140px
 
         .label-name
           display: inline-block
-          width: 110px
           font-size: 14px
           vertical-align: middle
+          width: 110px
 
         .input
           display: inline-block
@@ -271,28 +314,23 @@
     .close-popup
       +close
 
-  .new-issue
-    +ajax_link
-    display: inline-block
-    float: right
-    vertical-align: top
-    margin: -30px 10px 0 0
-
   .new-column
     text-align: center
 
     span
-      +ajax_link
+      +light_button
       display: inline-block
+      padding: 5px 15px
 
   .create-column
     +border-radius(2px)
-    background: #e6e8e8
+    background: #e9eae8
     display: none
-    margin-top: -20px
+    margin-top: -31px
     padding: 10px
 
     input[type='text']
+      +border-radius(0)
       background: none
       border: none
       border-bottom: 1px solid $form-border
@@ -315,9 +353,9 @@
 
   .empty-issue
     +border-radius(4px)
-    min-width: 40px
     background: #ccc
     margin-bottom: 10px
+    min-width: 40px
 
   .ui-sortable-helper
     +box-shadow(0 25px 20px -10px rgba(100, 100, 100, 0.3))
@@ -326,9 +364,9 @@
     +border-radius(2px)
     background-color: #fff
     border-bottom: 1px solid #ddd
+    overflow: hidden
     padding: 0 10px 15px
     position: relative
-    overflow: hidden
 
     .octicon
       display: none
@@ -372,13 +410,13 @@
       display: inline
 
     .due-date
-      +border-radius(2px)
-      background: $orange
-      color: #fff
+      color: $orange
       display: inline-block
       float: right
-      font-size: 10px
-      margin-top: 5px
+      font-size: 12px
+      font-weight: bold
+      letter-spacing: -0.2px
+      margin-top: 6px
       padding: 2px 6px 2px 6px
 
       &.none
@@ -394,8 +432,8 @@
       color: $text-usual
       font-size: 14px
       font-weight: normal
-      padding: 8px 0 0
       line-height: 1.3em
+      padding: 8px 0 0
 
     .issue-name
       cursor: pointer
@@ -404,6 +442,7 @@
 
     a.button
       +button
+      display: none
       float: right
       font-size: 9px
       letter-spacing: 0.1em
@@ -411,7 +450,6 @@
       padding: 5px 10px
       text-align: right
       text-transform: uppercase
-      display: none
 
       &.close
         display: none
@@ -428,7 +466,7 @@
     top: 0
     width: 100%
 
-    & > .overlay
+    &>.overlay
       +opacity(0.4)
       height: 100%
       left: 0

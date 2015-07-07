@@ -1,15 +1,17 @@
 .column-menu
-  a.title
+  .title
     = column.name
 
     = render partial: 'columns/wip_badge', locals: { column: column }
 
-    span.octicon.octicon-chevron-down
+    /span.octicon.octicon-chevron-down
 
   - if k(column).first?
     .new-issue.ajax-link Add an issue
     .create-issue
       = render partial: 'issues/new', locals: { board_bag: @board_bag, issue: @board_bag.build_issue_new }
+
+  span.octicon.octicon-gear
 
   .popup
     ul
@@ -23,25 +25,29 @@
           value="#{column.name}"
         ]
       li.delimiter
-      li: a href="#{move_left_board_column_url(@board, column)}" Move Column Left
-      li: a href="#{move_right_board_column_url(@board, column)}" Move Column Right
+      li.move
+        label Move to&nbsp;
+        a href="#{move_left_board_column_url(@board, column)}" &larr;&nbsp;Left
+        a href="#{move_right_board_column_url(@board, column)}" Right&nbsp;&rarr;
       li.delimiter
       li
-        label WIP Min
+        /label WIP from
+        span <abbr>WIP</abbr> from&nbsp;
         input.js-patch [
           name='wip_min'
           type='input'
           data-url="#{update_attribute_board_column_url(@board, column)}"
-          placeholder='none'
+          placeholder='∞'
           value="#{column.wip_min}"
         ]
-      li
-        label WIP Max
+        /li
+        /label WIP Max
+        span &nbsp;to&nbsp;
         input.js-patch [
           name='wip_max'
           type='input'
           data-url="#{update_attribute_board_column_url(@board, column)}"
-          placeholder='none'
+          placeholder='∞'
           value="#{column.wip_max}"
         ]
       li.delimiter
@@ -51,4 +57,4 @@
           data-confirm='Are you sure?'
           data-method='delete'
           data-remote='true'
-        ] Remove Column...
+        ] Remove column

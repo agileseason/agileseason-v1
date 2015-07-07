@@ -32,6 +32,20 @@
   &.loading + .button-preloader
     +small_button_preloader
 
+=light_button
+  +border-radius(6px)
+  background: none
+  border: 1px solid
+  color: $button
+  cursor: pointer
+  padding: 3px 5px
+
+  &:hover
+    color: $orange
+
+    .octicon
+      color: $orange
+
 =button_ajax
   -moz-box-flex: 0
   -ms-flex: 0 0 auto

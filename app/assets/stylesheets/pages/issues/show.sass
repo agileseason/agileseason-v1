@@ -55,16 +55,29 @@
       z-index: inherit
 
     .button
+      +light_button
+      +border-radius(100px)
       display: block
-      margin-bottom: 8px
+      padding: 10px
+      margin-bottom: 12px
+
+      .octicon
+        color: $button
+
+      &.active
+        background: $button_hover
+        color: #fff
+
+        .octicon
+          colot: #fff
 
   .title
+    +issue_form
     font-size: 36px
     font-weight: normal
+    line-height: 1.2
     padding: 0 0 10px 0
     position: relative
-    +issue_form
-    line-height: 1.2
 
     .issue-title
       display: inline
@@ -336,8 +349,10 @@
             +avatar
             height: 30px
             width: 30px
+            margin-right: 10px
 
           .name
+            font-size: 16px
             line-height: 30px
             vertical-align: top
 
@@ -350,27 +365,95 @@
 
     .issue-popup
       +issue_popup
+      padding: 10px 20px
+      width: auto
 
       .close-popup
         +close
 
-      .header
-        margin-bottom: 12px
-
-        .date, .time
-          display: inline-block
-          margin-right: 30px
-          width: 98px
-
-        input
-          width: 98px
+      input.date, input.time
+        display: inline-block
+        padding: 5px
+        outline: none
+        width: 50px
 
       .datepicker
         margin-bottom: 12px
 
       .save
+        +light_button
         display: inline-block
+        float: right
+        padding: 4px 5px 5px
         width: auto
+
+    .ui-datepicker
+      .ui-datepicker-prev, .ui-datepicker-next,
+      .ui-datepicker-prev:hover, .ui-datepicker-next:hover
+        font-size: 18px
+        padding: 3px 5px 5px 5px
+        border: none
+        background: none
+        margin: 0
+        top: 0
+
+        &:hover
+          color: $orange
+
+        span
+          display: none
+
+      .ui-datepicker-prev, .ui-datepicker-prev:hover
+        left: 0
+
+        &:after
+          content: '←'
+
+      .ui-datepicker-next, .ui-datepicker-next:hover
+        right: -15px
+
+        &:after
+          content: '→'
+
+      .ui-datepicker-header
+        +border-radius(0)
+        background: none
+        border-bottom: 1px solid #bbb
+        border: none
+        width: 210px
+
+      table
+        width: auto !important
+
+      .ui-datepicker-title,
+      th
+        font-weight: normal
+
+      td
+        border-collapse: collapse
+        padding: 0
+
+        a
+          border: 0 !important
+          width: 20px
+          padding: 5px
+          height: 20px
+          text-align: center
+          line-height: 160%
+
+      .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active
+        background: $orange
+        +border-radius(3px)
+
+      .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight
+        +border-radius(3px)
+        background: #333
+        color: #fff
+
+    .ui-widget-content
+      border: none
+      padding: 0
+      width: auto
 
   .due-date
     +border-radius(2px)
@@ -402,7 +485,7 @@
 
     .issue-popup
       +issue_popup
-      width: 170px
+      width: auto
 
       .octicon.octicon-triangle-up
         display: block
@@ -410,23 +493,24 @@
       .close-popup
         +close
 
+      form
+        padding: 10px 0 0 10px
+        width: 353px
+
       .labels-block
         label.check_boxes
           display: none
 
         label.label
           padding: 3px
-          display: block
+          display: inline-block
           color: #fff
           +border-radius(4px)
           background: #aaa
-          margin-bottom: 5px
+          margin: 0 10px 10px 0
           width: 160px
           +transition(width ease-out 0.2s)
           position: relative
-
-          &:hover
-            width: 170px
 
           input
             display: inline-block

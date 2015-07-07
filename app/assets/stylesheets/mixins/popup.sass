@@ -1,17 +1,30 @@
 @import compass/css3/border-radius
 @import compass/css3/box-shadow
 @import globals/variables
+@import compass/css3/transform
 
 =popup
-  +border-radius(4px)
-  +box-shadow(0 0 20px rgba(100,100,100,0.5))
-  background: $popup
+  +border-radius(8px)
+  +box-shadow(0 10px 40px -7px rgba(100,99,90,0.4))
+  background: $tooltip
   display: none
   position: absolute
   z-index: 1
 
+  &:after
+    +border-radius(2px)
+    +transform(rotate(45deg))
+    background: $tooltip
+    content: ' '
+    height: 15px
+    left: -7px
+    position: absolute
+    top: 32px
+    width: 15px
+    z-index: -1
+
   .octicon.octicon-triangle-up
-    color: $popup
+    color: $tooltip
     display: none
     left: 50%
     margin-left: -10px
@@ -20,30 +33,29 @@
     top: -10px
 
 =issue_popup
-  +border-radius(10px)
-  +box-shadow(0 10px 20px -10px rgba(100, 50, 0, 0.5))
-  background: #f2f4f4
+  +border-radius(8px)
+  +box-shadow(3px 4px 30px -7px rgba(100, 99, 90, 0.6))
+  background: $tooltip
   display: none
-  position: absolute
-  z-index: 3
-  right: 220px
-  top: -4px
   font-size: 14px
   height: auto
-  width: 250px
   padding: 10px
+  position: absolute
+  right: 220px
+  top: -11px
+  width: 250px
+  z-index: 3
 
   &:after
+    +border-radius(2px)
+    +transform(rotate(45deg))
+    background: $tooltip
     content: ' '
+    height: 15px
     position: absolute
-    width: 0
-    height: 0
-    border-style: solid
-    border-width: 10px 0 10px 12px
-    border-color: transparent transparent transparent #f2f4f4
     right: -8px
-    top: 10px
-
+    top: 23px
+    width: 15px
 
   .close-popup,
   input[type='submit']

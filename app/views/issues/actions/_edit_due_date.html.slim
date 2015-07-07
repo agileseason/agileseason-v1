@@ -1,16 +1,10 @@
 .edit-due-date data-url="#{due_date_board_issues_url(board, issue.number)}"
   .issue-popup
-    .close-popup
-    .header
-      .date
-        label Date
-        input type='text' value="#{(issue.due_date_at || DateTime.now).utc.strftime('%d/%m/%Y')}"
-      .time
-        label Time
-        input type='text' value="#{issue.due_date_at.try(:utc).try(:strftime, '%H:%M') || '12:00'}"
     .datepicker
-    a.button.save Save
+    input.date type='hidden' value="#{(issue.due_date_at || DateTime.now).utc.strftime('%d/%m/%Y')}"
+    input.time type='text' value="#{issue.due_date_at.try(:utc).try(:strftime, '%H:%M') || '12:00'}"
+    a.save Save date & time
 
-  a.button.set-due-date data-date="#{(issue.due_date_at || DateTime.now).utc.strftime('%m/%d/%Y')}"
+  a.button.set-due-date data-date="#{(issue.due_date_at || DateTime.now).utc.strftime('%m/%d/%Y')}" data-disable_with="asgasga"
     span.octicon.octicon-clock
     | Due Date
