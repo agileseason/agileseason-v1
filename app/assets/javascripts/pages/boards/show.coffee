@@ -106,12 +106,19 @@ window.update_wip_column = (badge) ->
   $("#column_#{badge.column_id}").find('.badge').replaceWith(badge.html)
 
 subscribe_board_update = ->
-  $board = $('.board')
-  return unless $board.data('faye-on')
-  return if window.faye_board
+  try
+    $board = $('.board')
+    return unless $board.data('faye-on')
+    return if window.faye_board
 
-  window.faye_board = new Faye.Client($board.data('faye-url'))
-  window.faye_board.subscribe $board.data('faye-channel'), (message) ->
-    #console.log message
-    return if $board.data('faye-client-id') == message.client_id
-    $('.alert-refresh').show()
+    window.faye_board = new Faye.Client($board.data('faye-url'))
+    subscription = window.faye_board.subscribe $board.data('faye-channel'), (message) ->
+      #console.log message
+      return if $board.data('faye-client-id') == message.client_id
+      $('.alert-refresh').show()
+
+    window.faye_board.on 'transport:down', ->
+      #subscription.cancel()
+      $('.alert-timeout').show()
+  catch err
+    console.log err
