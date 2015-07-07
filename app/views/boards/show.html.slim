@@ -8,6 +8,9 @@
   .alert-refresh
     .title Board was changed
     a.button href="#{un board_url(@board)}" Refresh
+  .alert-timeout
+    .title Connection lost
+    a.button href="#{un board_url(@board)}" Refresh
   .board-columns
     - @board_bag.columns.each do |column|
       = render partial: 'columns/show', locals: { column: column }

@@ -13,7 +13,10 @@ class FayePusher
       data: { client_id: user.remember_token, data: data },
       ext: { auth_token: config['token'] }
     }
-    Net::HTTP.post_form(URI(URL), message: message.to_json)
+    begin
+      Net::HTTP.post_form(URI(URL), message: message.to_json)
+    rescue StandardError
+    end
   end
 
   def self.broadcast_board(user, board, data)
