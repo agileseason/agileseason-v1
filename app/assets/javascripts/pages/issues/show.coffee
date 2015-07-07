@@ -146,16 +146,6 @@ $(document).on 'ready page:load', ->
   $(document).on 'drop', ->
     hide_dragging()
 
-    #console.log 'modal ajax:success'
-    #number = $(@).find('.b-issue-modal').data('number')
-    ## FIX : Find reason what find return two element .b-assignee-container
-    #find_issue(number).find('.b-assignee-container').each ->
-      #$(@).html(data)
-    #$(@).find('.b-assignee-container').html(data)
-    #$(@).find('.b-assign .check').removeClass('octicon octicon-check')
-    #$('.check', $(e.target)).addClass('octicon octicon-check')
-    #$(@).find('.issue-popup').hide() # скрытый эффект - закрывает все.issue-popup
-
   $('.overlay', '.issue-actions').click ->
     $('.issue-popup', '.issue-actions').hide()
     $(@).hide()
@@ -211,6 +201,8 @@ $(document).on 'ready page:load', ->
       $('a', '.user-list')
         .attr('href', a_href)
         .attr('title', a_title)
+
+      $('.b-assign .user .check').removeClass 'octicon octicon-check'
 
       $('.check', @).addClass 'octicon octicon-check'
       $('.b-assignee', '.user-list').removeClass 'hidden'
