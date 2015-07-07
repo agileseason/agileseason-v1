@@ -43,7 +43,7 @@ describe BoardsController, type: :controller do
   describe 'GET show' do
     let(:user) { create(:user) }
     let(:board) { create(:board, :with_columns, user: user) }
-    let(:issue) { OpenStruct.new(number: 1, title: 'issue_1', body: 'test', labels: [label_1]) }
+    let(:issue) { stub_issue(labels: [label_1]) }
     let(:label_1) { OpenStruct.new(name: 'techdebt', color: '000') }
     let(:label_2) { OpenStruct.new(name: 'bug', color: '000') }
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([issue]) }

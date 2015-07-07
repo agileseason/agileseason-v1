@@ -2,7 +2,7 @@ describe GithubApi::Issues do
   let(:service) { GithubApi.new('fake_token', user) }
   let(:user) { create(:user) }
   let(:board) { build(:board, :with_columns, number_of_columns: 1) }
-  let(:issue) { OpenStruct.new(number: 1) }
+  let(:issue) { stub_issue }
 
   describe '#issues' do
     subject { service.issues(board) }
@@ -20,28 +20,28 @@ describe GithubApi::Issues do
     after { Timecop.return }
 
     context 'open and closed' do
-      let(:open_issues) { [OpenStruct.new(number: 1)] }
-      let(:closed_issues) { [OpenStruct.new(number: 2)] }
+      let(:open_issues) { [stub_issue] }
+      let(:closed_issues) { [stub_closed_issue] }
       it { is_expected.to eq open_issues + closed_issues }
     end
 
-    context 'without pull request' do
-      let(:open_issues) { [OpenStruct.new(number: 1, pull_request: {})] }
-      let(:closed_issues) { [OpenStruct.new(number: 2, pull_request: {})] }
-      it { is_expected.to be_empty }
+    context 'default sort by updated_at' do
+      let(:open_issues) { [stub_issue(updated_at: 1.day.ago)] }
+      let(:closed_issues) { [stub_closed_issue(updated_at: 0.day.ago)] }
+      it { is_expected.to eq closed_issues + open_issues }
     end
 
-    context 'default sort by updated_at' do
-      let(:open_issues) { [OpenStruct.new(number: 1, updated_at: 1.day.ago)] }
-      let(:closed_issues) { [OpenStruct.new(number: 2, updated_at: 0.day.ago)] }
-      it { is_expected.to eq closed_issues + open_issues }
+    context 'without pull request' do
+      let(:open_issues) { [stub_pull_request_issue] }
+      let(:closed_issues) { [stub_pull_request_issue] }
+      it { is_expected.to be_empty }
     end
   end
 
   describe '#create_issue' do
     subject { service.create_issue(board, issue) }
     let(:board) { create(:board, :with_columns, number_of_columns: 2) }
-    let(:issue) { OpenStruct.new(number: 1, title: 'title_1', body: 'body_1', labels: labels) }
+    let(:issue) { stub_issue(title: 'title_1', body: 'body_1', labels: labels) }
     let(:labels) { ['bug', 'feature'] }
     let(:expected_labels) { ['bug', 'feature'] }
     before { allow_any_instance_of(Octokit::Client).to receive(:create_issue).and_return(issue) }
@@ -60,7 +60,6 @@ describe GithubApi::Issues do
     subject { service.move_to(board, move_to_column, issue.number) }
     let(:board) { create(:board, :with_columns, user: user) }
     let(:move_to_column) { board.columns.first }
-    let(:issue) { OpenStruct.new(number: 1, name: 'issue_1', body: '', labels: ['feature']) }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
     before { allow(IssueStatService).to receive(:move!) }
 
@@ -84,7 +83,7 @@ describe GithubApi::Issues do
 
   describe '#archive' do
     subject { service.archive(board, issue.number) }
-    let(:issue) { OpenStruct.new(number: 1, state: state) }
+    let(:issue) { stub_issue(state: state) }
     let(:issue_stat) { create(:issue_stat, board: board) }
     let(:in_at) { Time.current }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }

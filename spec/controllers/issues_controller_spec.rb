@@ -1,11 +1,10 @@
 RSpec.describe IssuesController, type: :controller do
   let(:user) { create(:user) }
   let(:board) { create(:board, :with_columns, user: user) }
-  let(:issue) { OpenStruct.new(number: 1) }
+  let(:issue) { stub_issue(number: 1) }
   before { stub_sign_in(user) }
 
   describe '#show' do
-    let(:issue) { OpenStruct.new(number: 1) }
     let(:github_api) { GithubApi.new('fake_token', user) }
     let(:request) { get :show, board_github_full_name: board.github_full_name, number: 1 }
     before { allow(controller).to receive(:github_api).and_return(github_api) }
@@ -63,7 +62,7 @@ RSpec.describe IssuesController, type: :controller do
   end
 
   describe '#assignee' do
-    let(:issue) { OpenStruct.new(number: 1, assigne: 'fake') }
+    let(:issue) { stub_issue(assigne: 'fake') }
     before { allow_any_instance_of(GithubApi).to receive(:assign).and_return(issue) }
     before { allow_any_instance_of(GithubApi).to receive(:issue).and_return(issue) }
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
