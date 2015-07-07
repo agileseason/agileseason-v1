@@ -5,7 +5,7 @@ describe IssueStatService do
 
   describe '.create!' do
     subject { service.create!(board, issue, user) }
-    let(:issue) { OpenStruct.new(number: 1, created_at: Time.current, updated_at: Time.current) }
+    let(:issue) { stub_issue }
     let(:first_column) { board.columns.first }
 
     it { is_expected.to be_persisted }
@@ -74,7 +74,7 @@ describe IssueStatService do
   end
 
   describe '.close!' do
-    let(:issue) { OpenStruct.new(number: 1) }
+    let(:issue) { stub_issue }
     subject { service.close!(board, issue, user) }
 
     context :with_issue_stat do
@@ -84,7 +84,7 @@ describe IssueStatService do
       it { expect(subject.closed_at).to_not be_nil }
 
       context 'issue already closed' do
-        let(:issue) { OpenStruct.new(number: 1, closed_at: 1.day.ago) }
+        let(:issue) { stub_issue(closed_at: 1.day.ago) }
         it { expect(subject.closed_at).to eq issue.closed_at }
       end
     end
@@ -95,7 +95,7 @@ describe IssueStatService do
   end
 
   describe '.archive!' do
-    let(:issue) { OpenStruct.new(number: 1) }
+    let(:issue) { stub_issue }
     subject { service.archive!(board, issue, user) }
     before { allow(Activities::ArchiveActivity).to receive(:create_for) }
 
@@ -207,7 +207,7 @@ describe IssueStatService do
 
   describe '.find_or_build_issue_stat' do
     subject { service.find_or_build_issue_stat(board, issue) }
-    let(:issue) { OpenStruct.new(number: 1) }
+    let(:issue) { stub_issue }
 
     it { is_expected.not_to be_nil }
     it { is_expected.not_to be_persisted }
