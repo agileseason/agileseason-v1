@@ -1,4 +1,10 @@
 module GithubHelper
+  FactoryGirl.define do
+    sequence :github_numbers do |number|
+      number
+    end
+  end
+
   def stub_issue(options = {})
     OpenStruct.new(default_issue_options.merge(options))
   end
@@ -15,10 +21,11 @@ module GithubHelper
 
   def default_issue_options
     {
-      number: 1,
+      number: FactoryGirl.generate(:github_numbers),
       name: 'test name',
       body: 'test body',
       labels: [],
+      assigne: nil,
       state: 'open',
       pull_request: nil,
       closed_at: nil,

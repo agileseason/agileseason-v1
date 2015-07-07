@@ -6,7 +6,7 @@ describe IssueStatsMapper do
     let(:board) { build_stubbed(:board) }
 
     context 'first import - only open issues' do
-      let(:issue) { OpenStruct.new(number: 1, state: state) }
+      let(:issue) { stub_issue(state: state) }
       before { allow(IssueStatService).to receive(:find_or_create_issue_stat) }
       after { subject }
 
@@ -22,7 +22,7 @@ describe IssueStatsMapper do
     end
 
     context 'second import' do
-      let(:issue) { OpenStruct.new(number: number, state: state) }
+      let(:issue) { stub_issue(number: number, state: state) }
       let!(:issue_stat) { create(:issue_stat, number: 2, board: board) }
       after { subject }
 

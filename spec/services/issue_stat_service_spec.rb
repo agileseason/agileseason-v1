@@ -212,6 +212,6 @@ describe IssueStatService do
     it { is_expected.not_to be_nil }
     it { is_expected.not_to be_persisted }
     its(:board_id) { is_expected.to eq board.id }
-    its(:number) { is_expected.to eq 1 }
+    its(:number) { is_expected.to eq issue.number }
   end
 end
