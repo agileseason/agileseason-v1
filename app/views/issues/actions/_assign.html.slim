@@ -7,7 +7,7 @@
           a.user href="#{assignee_board_issues_url(issue.board, issue.number, user.login)}" data-remote='true'
             img.avatar src="#{user.avatar_url}"
             span.name = user.login
-            span.check class="#{'octicon octicon-check' if user.id == issue.assignee.try(:id)}"
+            span.check class="#{'octicon octicon-check' if user.login == issue.assignee.try(:login)}"
 
   a.assignee.button
     span.octicon.octicon-person
