@@ -4,7 +4,7 @@ $(document).keyup (e) ->
     if $('.comment-form.active').length
       # закрыть все активные формы
       $('.close-without-saving', '.comment-form.active').trigger 'click'
-    else
+    else if document.body.id == 'issues_show'
       # вернуться к борду
       Turbolinks.visit($('.b-menu .boards a').attr('href'))
 
