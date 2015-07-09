@@ -76,19 +76,18 @@ class IssuesController < ApplicationController
   end
 
   def archive
-    issue = github_api.archive(@board, number)
-    @board_bag.update_cache(issue)
+    board_issue = github_api.archive(@board, number)
+    @board_bag.update_cache(board_issue.issue)
+    broadcast_column(board_issue.column)
 
     respond_to do |format|
       format.html { redirect_to board_url(@board) }
       format.json do
-        issue_stat = @board.find_stat(issue)
-
         render json: {
-          column_id: issue_stat.column_id,
+          column_id: board_issue.column_id,
           html: render_to_string(
             partial: 'columns/wip_badge.html',
-            locals: { column: issue_stat.column }
+            locals: { column: board_issue.column }
           )
         }
       end
