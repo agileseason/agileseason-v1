@@ -39,7 +39,7 @@ $(document).on 'page:change', ->
     $(@).closest('.popup').hide()
 
   # скрыть тикет после архивации
-  $('.issue .archive').on 'click', ->
+  $('.board').on 'click', '.issue .archive', ->
     $(@).parent('.issue').addClass('hidden')
   # обновить WIP у колонки после архивации тикета
   $('.issue .archive').on 'ajax:success', (e, badge) ->
