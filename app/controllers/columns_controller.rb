@@ -1,6 +1,7 @@
 class ColumnsController < ApplicationController
   include PatchAttributes
-  before_action :fetch_board_for_update
+  before_action :fetch_board, only: [:show]
+  before_action :fetch_board_for_update, except: [:show]
   before_action :fetch_resource, only: [:show, :update, :destroy]
 
   def show
