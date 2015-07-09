@@ -52,7 +52,15 @@ class IssuesController < ApplicationController
   end
 
   def move_to
-    github_api.move_to(@board, @board.columns.find(params[:column_id]), number, !!params[:force])
+    column_from = IssueStatService.find(@board, number).try(:column)
+    issue_stat = github_api.move_to(
+      @board, @board.columns.find(params[:column_id]),
+      number, is_force
+    )
+    if is_force
+      broadcast_column(column_from) if column_from
+      broadcast_column(issue_stat.column)
+    end
 
     render json: begin
       Board.includes(columns: :issue_stats).find(@board).columns.map do |column|
@@ -148,5 +156,9 @@ class IssuesController < ApplicationController
 
   def fetch_lines_graph
     Graphs::LinesWorker.perform_async(@board.id, encrypted_github_token)
+  end
+
+  def is_force
+    !!params[:force]
   end
 end
