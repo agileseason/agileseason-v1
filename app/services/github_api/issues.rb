@@ -29,8 +29,8 @@ class GithubApi
 
     def close(board, number)
       github_issue = client.close_issue(board.github_id, number)
-      IssueStatService.close!(board, github_issue, @user)
-      github_issue
+      issue_stat = IssueStatService.close!(board, github_issue, @user)
+      BoardIssue.new(github_issue, issue_stat)
     end
 
     def archive(board, number)

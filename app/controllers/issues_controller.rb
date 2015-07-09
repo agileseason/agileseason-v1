@@ -65,8 +65,9 @@ class IssuesController < ApplicationController
   end
 
   def close
-    issue = github_api.close(@board, number)
-    @board_bag.update_cache(issue)
+    board_issue = github_api.close(@board, number)
+    @board_bag.update_cache(board_issue.issue)
+    broadcast_column(board_issue.column)
 
     respond_to do |format|
       format.html { redirect_to board_url(@board) }
