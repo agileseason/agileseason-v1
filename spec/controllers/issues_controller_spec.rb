@@ -67,7 +67,6 @@ RSpec.describe IssuesController, type: :controller do
     end
     before { request }
 
-
     it { expect(response).to redirect_to(board_url(board)) }
     it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
   end

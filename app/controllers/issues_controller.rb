@@ -55,9 +55,9 @@ class IssuesController < ApplicationController
     column_from = IssueStatService.find(@board, number).try(:column)
     issue_stat = github_api.move_to(
       @board, @board.columns.find(params[:column_id]),
-      number, is_force
+      number, force?
     )
-    if is_force
+    if force?
       broadcast_column(column_from) if column_from
       broadcast_column(issue_stat.column)
     end
@@ -158,7 +158,7 @@ class IssuesController < ApplicationController
     Graphs::LinesWorker.perform_async(@board.id, encrypted_github_token)
   end
 
-  def is_force
+  def force?
     !!params[:force]
   end
 end

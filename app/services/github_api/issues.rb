@@ -35,7 +35,9 @@ class GithubApi
 
     def archive(board, number)
       github_issue = issue(board, number)
-      issue_stat = IssueStatService.archive!(board, github_issue, @user) if github_issue.state == 'closed'
+      return unless github_issue.state == 'closed'
+
+      issue_stat = IssueStatService.archive!(board, github_issue, @user)
       BoardIssue.new(github_issue, issue_stat)
     end
 

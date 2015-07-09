@@ -8,10 +8,10 @@ class ColumnsController < ApplicationController
       column_id: @column.id,
       html: render_to_string(
         partial: 'issues/issue_miniature',
-          collection: @board_bag.column_issues(@column),
-          as: :issue,
-          locals: { column: @column }
-        )
+        collection: @board_bag.column_issues(@column),
+        as: :issue,
+        locals: { column: @column }
+      )
     }
   end
 
