@@ -73,6 +73,10 @@ class BoardBag
     end
   end
 
+  def default_column
+    columns.first
+  end
+
   private
 
   def issue_stat_mapper

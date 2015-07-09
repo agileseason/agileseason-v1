@@ -146,4 +146,12 @@ describe BoardBag do
       it { expect(subject.first).to eq github_issue_1 }
     end
   end
+
+  describe '#default_column' do
+    subject { bag.default_column }
+    let(:board) { create(:board, :with_columns, number_of_columns: 2) }
+    let(:column_1) { board.columns.first }
+
+    it { is_expected.to eq column_1 }
+  end
 end

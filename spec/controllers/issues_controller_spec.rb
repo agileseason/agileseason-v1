@@ -3,6 +3,7 @@ RSpec.describe IssuesController, type: :controller do
   let(:board) { create(:board, :with_columns, user: user) }
   let(:issue) { stub_issue(number: 1) }
   before { stub_sign_in(user) }
+  before { allow(controller).to receive(:broadcast_column) }
 
   describe '#show' do
     let(:github_api) { GithubApi.new('fake_token', user) }
@@ -40,8 +41,12 @@ RSpec.describe IssuesController, type: :controller do
 
   describe '#close' do
     let(:request) { get :close, board_github_full_name: board.github_full_name, number: 1 }
+    let(:issue_stat) { build(:issue_stat, board: board, column: board.columns.first) }
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
-    before { allow_any_instance_of(GithubApi).to receive(:close).and_return(issue) }
+    before do
+      allow_any_instance_of(GithubApi).
+        to receive(:close).and_return(BoardIssue.new(issue, issue_stat))
+    end
     before { allow(Graphs::IssueStatsWorker).to receive(:perform_async) }
     before { allow(Graphs::CumulativeWorker).to receive(:perform_async) }
     before { request }
@@ -49,16 +54,21 @@ RSpec.describe IssuesController, type: :controller do
     it { expect(response).to redirect_to(board_url(board)) }
     it { expect(Graphs::IssueStatsWorker).to have_received(:perform_async) }
     it { expect(Graphs::CumulativeWorker).to have_received(:perform_async) }
+    it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
   end
 
   describe '#archive' do
+    let(:issue_stat) { build(:issue_stat, board: board, column: board.columns.first) }
+    let(:request) { get :archive, board_github_full_name: board.github_full_name, number: 1 }
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
-    before { allow_any_instance_of(GithubApi).to receive(:archive).and_return(issue) }
-
-    it 'return http success' do
-      get :archive, board_github_full_name: board.github_full_name, number: 1
-      expect(response).to redirect_to(board_url(board))
+    before do
+      allow_any_instance_of(GithubApi).
+        to receive(:archive).and_return(BoardIssue.new(issue, issue_stat))
     end
+    before { request }
+
+    it { expect(response).to redirect_to(board_url(board)) }
+    it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
   end
 
   describe '#assignee' do

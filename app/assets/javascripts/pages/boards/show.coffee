@@ -39,7 +39,7 @@ $(document).on 'page:change', ->
     $(@).closest('.popup').hide()
 
   # скрыть тикет после архивации
-  $('.issue .archive').on 'click', ->
+  $('.board').on 'click', '.issue .archive', ->
     $(@).parent('.issue').addClass('hidden')
   # обновить WIP у колонки после архивации тикета
   $('.issue .archive').on 'ajax:success', (e, badge) ->
@@ -113,9 +113,15 @@ subscribe_board_update = ->
 
     window.faye_board = new Faye.Client($board.data('faye-url'))
     subscription = window.faye_board.subscribe $board.data('faye-channel'), (message) ->
-      #console.log message
       return if $board.data('faye-client-id') == message.client_id
-      $('.alert-refresh').show()
+
+      if message.data.action == 'update_column'
+        column = $("#column_#{message.data.column_id}")
+        $.get(
+          column.data('url')
+          (data) ->
+            column.find('.issues').html(data.html)
+        )
 
     window.faye_board.on 'transport:down', ->
       #subscription.cancel()

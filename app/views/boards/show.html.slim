@@ -5,9 +5,6 @@
     data-faye-channel="#{FayePusher.board_channel(@board)}"
     data-faye-client-id="#{current_user.remember_token}"
   ]
-  .alert-refresh
-    .title Board was changed
-    a.button href="#{un board_url(@board)}" Refresh
   .alert-timeout
     .title Connection lost
     a.button href="#{un board_url(@board)}" Refresh

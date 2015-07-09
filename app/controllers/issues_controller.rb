@@ -31,9 +31,10 @@ class IssuesController < ApplicationController
         partial: 'issues/issue_miniature',
         locals: {
           issue: BoardIssue.new(issue, @board.find_stat(issue)),
-          column: @board.columns.first
+          column: @board_bag.default_column
         }
       )
+      broadcast_column(@board_bag.default_column)
     else
       render nothing: true
     end
@@ -51,8 +52,15 @@ class IssuesController < ApplicationController
   end
 
   def move_to
-    github_api.move_to(@board, @board.columns.find(params[:column_id]), number, !!params[:force])
-    broadcast
+    column_from = IssueStatService.find(@board, number).try(:column)
+    issue_stat = github_api.move_to(
+      @board, @board.columns.find(params[:column_id]),
+      number, force?
+    )
+    if force?
+      broadcast_column(column_from) if column_from
+      broadcast_column(issue_stat.column)
+    end
 
     render json: begin
       Board.includes(columns: :issue_stats).find(@board).columns.map do |column|
@@ -65,8 +73,9 @@ class IssuesController < ApplicationController
   end
 
   def close
-    issue = github_api.close(@board, number)
-    @board_bag.update_cache(issue)
+    board_issue = github_api.close(@board, number)
+    @board_bag.update_cache(board_issue.issue)
+    broadcast_column(board_issue.column)
 
     respond_to do |format|
       format.html { redirect_to board_url(@board) }
@@ -75,19 +84,18 @@ class IssuesController < ApplicationController
   end
 
   def archive
-    issue = github_api.archive(@board, number)
-    @board_bag.update_cache(issue)
+    board_issue = github_api.archive(@board, number)
+    @board_bag.update_cache(board_issue.issue)
+    broadcast_column(board_issue.column)
 
     respond_to do |format|
       format.html { redirect_to board_url(@board) }
       format.json do
-        issue_stat = @board.find_stat(issue)
-
         render json: {
-          column_id: issue_stat.column_id,
+          column_id: board_issue.column_id,
           html: render_to_string(
             partial: 'columns/wip_badge.html',
-            locals: { column: issue_stat.column }
+            locals: { column: board_issue.column }
           )
         }
       end
@@ -138,16 +146,6 @@ class IssuesController < ApplicationController
     params[:number].to_i
   end
 
-  def broadcast
-    FayePusher.broadcast_board(
-      current_user,
-      @board,
-      number: number,
-      action: action_name,
-      column_id: params[:column_id]
-    )
-  end
-
   def fetch_cumulative_graph
     Graphs::CumulativeWorker.perform_async(@board.id, encrypted_github_token)
   end
@@ -158,5 +156,9 @@ class IssuesController < ApplicationController
 
   def fetch_lines_graph
     Graphs::LinesWorker.perform_async(@board.id, encrypted_github_token)
+  end
+
+  def force?
+    !!params[:force]
   end
 end
