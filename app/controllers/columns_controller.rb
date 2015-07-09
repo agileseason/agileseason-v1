@@ -1,6 +1,19 @@
 class ColumnsController < ApplicationController
   include PatchAttributes
   before_action :fetch_board_for_update
+  before_action :fetch_resource, only: [:show, :update, :destroy]
+
+  def show
+    render json: {
+      column_id: @column.id,
+      html: render_to_string(
+        partial: 'issues/issue_miniature',
+          collection: @board_bag.column_issues(@column),
+          as: :issue,
+          locals: { column: @column }
+        )
+    }
+  end
 
   def new
   end
@@ -20,20 +33,19 @@ class ColumnsController < ApplicationController
   end
 
   def update
-    @column = @board.columns.find(params[:id])
     if params[:issues]
       issue_ids = params[:issues].reject { |n| n == 'empty' }.uniq
       @column.update(issues: issue_ids)
+      broadcast
     end
     render nothing: true
   end
 
   def destroy
-    column = @board.columns.find(params[:id])
     # FIX : Replace json on redirect_to or add animation for column hiding.
-    if column.issue_stats.blank?
-      column.destroy
-      render json: { result: true, message: "Column \"#{column.name}\" was successfully deleted.", id: column.id }
+    if @column.issue_stats.blank?
+      @column.destroy
+      render json: { result: true, message: "Column \"#{@column.name}\" was successfully deleted.", id: @column.id }
     else
       render json: { result: false, message: "Can't delete column with issues!" }
     end
@@ -50,6 +62,15 @@ class ColumnsController < ApplicationController
   end
 
   private
+
+  def broadcast
+    FayePusher.broadcast_board(
+      current_user,
+      @board,
+      action: action_name,
+      column_id: @column.id
+    )
+  end
 
   def move_to(direction)
     transporter = ColumnTransporter.new(@board.columns.find(params[:id]))
@@ -69,7 +90,8 @@ class ColumnsController < ApplicationController
   end
 
   def fetch_resource
-    @board.columns.find(params[:id])
+    @column = @board.columns.find(params[:id])
+    @column
   end
 
   def render_result

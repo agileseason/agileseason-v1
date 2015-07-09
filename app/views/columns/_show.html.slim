@@ -8,5 +8,7 @@
   = render partial: 'columns/menu', locals: { column: column }
 
   .issues.scroller
-    - @board_bag.column_issues(column).each do |i|
-      = render partial: 'issues/issue_miniature', locals: { issue: i, column: column }
+    = render partial: 'issues/issue_miniature',
+      collection: @board_bag.column_issues(column),
+      as: :issue,
+      locals: { column: column }

@@ -52,7 +52,6 @@ class IssuesController < ApplicationController
 
   def move_to
     github_api.move_to(@board, @board.columns.find(params[:column_id]), number, !!params[:force])
-    broadcast
 
     render json: begin
       Board.includes(columns: :issue_stats).find(@board).columns.map do |column|
@@ -136,16 +135,6 @@ class IssuesController < ApplicationController
 
   def number
     params[:number].to_i
-  end
-
-  def broadcast
-    FayePusher.broadcast_board(
-      current_user,
-      @board,
-      number: number,
-      action: action_name,
-      column_id: params[:column_id]
-    )
   end
 
   def fetch_cumulative_graph

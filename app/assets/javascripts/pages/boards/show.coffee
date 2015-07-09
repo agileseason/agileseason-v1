@@ -113,9 +113,15 @@ subscribe_board_update = ->
 
     window.faye_board = new Faye.Client($board.data('faye-url'))
     subscription = window.faye_board.subscribe $board.data('faye-channel'), (message) ->
-      #console.log message
       return if $board.data('faye-client-id') == message.client_id
-      $('.alert-refresh').show()
+
+      if message.data.action == 'update'
+        column = $("#column_#{message.data.column_id}")
+        $.get(
+          column.data('url')
+          (data) ->
+            column.find('.issues').html(data.html)
+        )
 
     window.faye_board.on 'transport:down', ->
       #subscription.cancel()
