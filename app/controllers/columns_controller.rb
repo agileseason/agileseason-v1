@@ -36,7 +36,7 @@ class ColumnsController < ApplicationController
     if params[:issues]
       issue_ids = params[:issues].reject { |n| n == 'empty' }.uniq
       @column.update(issues: issue_ids)
-      broadcast
+      broadcast_column(@column)
     end
     render nothing: true
   end
@@ -62,15 +62,6 @@ class ColumnsController < ApplicationController
   end
 
   private
-
-  def broadcast
-    FayePusher.broadcast_board(
-      current_user,
-      @board,
-      action: action_name,
-      column_id: @column.id
-    )
-  end
 
   def move_to(direction)
     transporter = ColumnTransporter.new(@board.columns.find(params[:id]))

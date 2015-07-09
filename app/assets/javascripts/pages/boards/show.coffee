@@ -115,7 +115,7 @@ subscribe_board_update = ->
     subscription = window.faye_board.subscribe $board.data('faye-channel'), (message) ->
       return if $board.data('faye-client-id') == message.client_id
 
-      if message.data.action == 'update'
+      if message.data.action == 'update_column'
         column = $("#column_#{message.data.column_id}")
         $.get(
           column.data('url')

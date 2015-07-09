@@ -31,9 +31,10 @@ class IssuesController < ApplicationController
         partial: 'issues/issue_miniature',
         locals: {
           issue: BoardIssue.new(issue, @board.find_stat(issue)),
-          column: @board.columns.first
+          column: @board_bag.default_column
         }
       )
+      broadcast_column(@board_bag.default_column)
     else
       render nothing: true
     end
