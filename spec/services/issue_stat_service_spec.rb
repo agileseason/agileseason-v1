@@ -54,13 +54,14 @@ describe IssueStatService do
       subject { service.move!(column_2, issue_stat, user, force) }
       let(:column_1) { board.columns.first }
       let(:column_2) { board.columns.first }
+      before { column_1.update(issues: [issue_stat.number.to_s]) }
 
       context 'not force' do
         let(:force) { false }
         it { expect { subject }.to change(Lifetime, :count).by(0) }
         it { expect { subject }.to change(Activity, :count).by(0) }
         it { expect(subject.column).to eq column_2 }
-        it { expect(subject.column.issues).to be_blank }
+        it { expect(subject.column.issues).to eq [issue_stat.number.to_s] }
       end
 
       context 'force' do
@@ -91,6 +92,32 @@ describe IssueStatService do
 
     context :without_issue_stat do
       it { expect { subject }.to change(IssueStat, :count).by(1) }
+    end
+  end
+
+  describe '.unarchive!' do
+    subject { service.unarchive!(board, issue_stat.number, user) }
+    before { allow(Activities::UnarchiveActivity).to receive(:create_for) }
+    let!(:issue_stat) { create(:issue_stat, board: board, number: 1, archived_at: archived_at) }
+
+    context 'valid' do
+      let(:archived_at) { Time.current }
+      it { is_expected.not_to be_archived }
+
+      describe 'activities' do
+        before { subject }
+        it { expect(Activities::UnarchiveActivity).to have_received(:create_for) }
+      end
+    end
+
+    context 'not valid' do
+      let(:archived_at) { nil }
+      it { is_expected.to be_nil }
+
+      describe 'activities' do
+        before { subject }
+        it { expect(Activities::UnarchiveActivity).not_to have_received(:create_for) }
+      end
     end
   end
 

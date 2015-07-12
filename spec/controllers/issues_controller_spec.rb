@@ -1,6 +1,7 @@
 RSpec.describe IssuesController, type: :controller do
   let(:user) { create(:user) }
   let(:board) { create(:board, :with_columns, user: user) }
+  let(:column_1) { board.columns.first }
   let(:issue) { stub_issue(number: 1) }
   before { stub_sign_in(user) }
   before { allow(controller).to receive(:broadcast_column) }
@@ -41,7 +42,7 @@ RSpec.describe IssuesController, type: :controller do
 
   describe '#close' do
     let(:request) { get :close, board_github_full_name: board.github_full_name, number: 1 }
-    let(:issue_stat) { build(:issue_stat, board: board, column: board.columns.first) }
+    let(:issue_stat) { build(:issue_stat, board: board, column: column_1) }
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
     before do
       allow_any_instance_of(GithubApi).
@@ -51,14 +52,14 @@ RSpec.describe IssuesController, type: :controller do
     before { allow(Graphs::CumulativeWorker).to receive(:perform_async) }
     before { request }
 
-    it { expect(response).to redirect_to(board_url(board)) }
+    it { expect(response).to redirect_to(controller.un board_url(board)) }
     it { expect(Graphs::IssueStatsWorker).to have_received(:perform_async) }
     it { expect(Graphs::CumulativeWorker).to have_received(:perform_async) }
     it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
   end
 
   describe '#archive' do
-    let(:issue_stat) { build(:issue_stat, board: board, column: board.columns.first) }
+    let(:issue_stat) { build(:issue_stat, board: board, column: column_1) }
     let(:request) { get :archive, board_github_full_name: board.github_full_name, number: 1 }
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
     before do
@@ -67,8 +68,19 @@ RSpec.describe IssuesController, type: :controller do
     end
     before { request }
 
-    it { expect(response).to redirect_to(board_url(board)) }
+    it { expect(response).to redirect_to(controller.un board_url(board)) }
     it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+  end
+
+  describe '#unarchive' do
+    let(:issue_stat) { create(:issue_stat, board: board, column: column_1) }
+    let(:request) { get :unarchive, board_github_full_name: board.github_full_name, number: 1 }
+    before { allow(IssueStatService).to receive(:unarchive!).and_return(issue_stat) }
+    before { request }
+
+    it { expect(response).to redirect_to(controller.un board_url(board)) }
+    it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+    it { expect(IssueStatService).to have_received(:unarchive!) }
   end
 
   describe '#assignee' do

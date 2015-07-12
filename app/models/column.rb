@@ -22,4 +22,10 @@ class Column < ActiveRecord::Base
     self['issues'] = [] if self['issues'].nil?
     self['issues']
   end
+
+  def update_sort_issues(issues)
+    issues = [] if issues.nil?
+    issue_ids = issues.map(&:to_s).reject { |n| n == 'empty' }.uniq
+    update(issues: issue_ids)
+  end
 end

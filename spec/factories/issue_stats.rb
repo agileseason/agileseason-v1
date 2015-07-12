@@ -7,6 +7,12 @@ FactoryGirl.define do
     end
     closed_at nil
 
+    after(:build) do |issue_stat|
+      if issue_stat.board.present? && issue_stat.column.nil?
+        issue_stat.column = issue_stat.board.columns.first
+      end
+    end
+
     trait :open do
       closed_at nil
     end
