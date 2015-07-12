@@ -35,8 +35,7 @@ class ColumnsController < ApplicationController
 
   def update
     if params[:issues]
-      issue_ids = params[:issues].reject { |n| n == 'empty' }.uniq
-      @column.update(issues: issue_ids)
+      @column.update_sort_issues(params[:issues])
       broadcast_column(@column)
     end
     render nothing: true

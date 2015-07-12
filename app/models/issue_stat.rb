@@ -24,7 +24,9 @@ class IssueStat < ActiveRecord::Base
     closed_at.present?
   end
 
-  def archived?
+  def archive?
     archived_at.present?
   end
+
+  alias :archived? :archive?
 end

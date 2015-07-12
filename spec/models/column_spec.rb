@@ -1,4 +1,4 @@
-RSpec.describe Column, type: :model do
+describe Column do
   describe 'validations' do
     subject { Column.new }
     it { is_expected.to validate_presence_of :name }
@@ -83,5 +83,32 @@ RSpec.describe Column, type: :model do
     let!(:issue_stat_3) { create(:issue_stat, :archived, board: board, column: column) }
 
     it { is_expected.to have(2).items }
+  end
+
+  describe '#update_sort_issues' do
+    subject { column.reload.issues }
+    let(:column) { board.columns.first }
+    let(:board) { create(:board, :with_columns) }
+    before { column.update_sort_issues(issues) }
+
+    context 'nil' do
+      let(:issues) { nil }
+      it { is_expected.to eq [] }
+    end
+
+    context 'empty' do
+      let(:issues) { [] }
+      it { is_expected.to eq [] }
+    end
+
+    context 'filter "empty" from client' do
+      let(:issues) { ['1', 'empty', '3'] }
+      it { is_expected.to eq ['1', '3'] }
+    end
+
+    context 'numbers to strings' do
+      let(:issues) { [1, 2, 3] }
+      it { is_expected.to eq ['1', '2', '3'] }
+    end
   end
 end

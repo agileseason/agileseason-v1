@@ -23,12 +23,12 @@ describe BoardBag do
     end
 
     context :columns_with_issues do
-      let(:issue) { OpenStruct.new(number: 1, state: state) }
-      let!(:issue_stat) { create(:issue_stat, number: issue.number, board: board, column: column) }
-      let(:state) { 'open' }
+      let(:issue_1) { stub_issue(number: 1) }
+      let(:issue_2) { stub_issue(number: 2) }
+      let!(:issue_stat) { create(:issue_stat, number: issue_1.number, board: board, column: column_2) }
       before do
         allow_any_instance_of(Octokit::Client).
-          to receive(:issues).with(board.github_id).and_return([issue])
+          to receive(:issues).with(board.github_id).and_return([issue_1, issue_2])
       end
       before { Timecop.freeze(Time.current) }
       before do
@@ -43,18 +43,14 @@ describe BoardBag do
       end
       after { Timecop.return }
 
-      context 'unknown open issues added to first column' do
-        let(:board) { create(:board, :with_columns) }
-        let(:column) { column_1 }
-        it { expect(subject[column_1.id]).to have(1).item }
-        it { expect(subject[column_1.id].first.issue).to eq issue }
+      context 'known issues dont move to first column' do
+        it { expect(subject[column_2.id]).to have(1).items }
+        it { expect(subject[column_2.id].first.issue).to eq issue_1 }
       end
 
-      context 'known issues dont move to first column' do
-        let(:column) { column_2 }
-        it { expect(subject[column_1.id]).to be_empty }
-        it { expect(subject[column_2.id]).to have(1).items }
-        it { expect(subject[column_2.id].first.issue).to eq issue }
+      context 'unknown open issues added to first column' do
+        it { expect(subject[column_1.id]).to have(1).item }
+        it { expect(subject[column_1.id].first.issue).to eq issue_2 }
       end
     end
   end

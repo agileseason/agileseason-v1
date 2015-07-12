@@ -25,7 +25,7 @@ class IssueStatService
     def move!(column, issue_stat, user, force = false)
       return issue_stat if issue_stat.column == column && !force
       if force
-        column.update(issues: column.issues.unshift(issue_stat.number.to_s))
+        column.update_sort_issues(column.issues.unshift(issue_stat.number))
       end
 
       issue_stat.update!(column: column)
@@ -55,6 +55,16 @@ class IssueStatService
       leave_all_column(issue_stat)
       issue_stat.update!(archived_at: Time.current)
       Activities::ArchiveActivity.create_for(issue_stat, user) if user.present?
+      issue_stat
+    end
+
+    def unarchive!(board, number, user)
+      issue_stat = find(board, number)
+      return unless issue_stat.archive?
+
+      move!(issue_stat.column, issue_stat, user, true)
+      issue_stat.update!(archived_at: nil)
+      #Activities::UnarchiveActivity.create_for(issue_stat, user) if user.present?
       issue_stat
     end
 

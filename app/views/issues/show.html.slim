@@ -52,7 +52,6 @@
         = render partial: 'issues/actions/edit_labels',   locals: { board: @board_bag, issue: @issue }
         = render partial: 'issues/actions/assign',        locals: { issue: @issue }
         = render partial: 'issues/actions/edit_due_date', locals: { board: @board, issue: @issue }
-        = render partial: 'issues/actions/close',         locals: { board: @board, issue: @issue }
-        = render partial: 'issues/actions/archive',       locals: { board: @board, issue: @issue }
-
-
+        = render partial: 'issues/actions/close',         locals: { board: @board, issue: @issue } if @issue.open?
+        = render partial: 'issues/actions/archive',       locals: { board: @board, issue: @issue } if @issue.closed? && !@issue.archive?
+        = render partial: 'issues/actions/unarchive',     locals: { board: @board, issue: @issue } if @issue.archive?

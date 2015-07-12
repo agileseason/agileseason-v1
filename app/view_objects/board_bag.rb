@@ -1,6 +1,6 @@
 class BoardBag
   pattr_initialize :github_api, :board
-  delegate :github_id, :github_name, :github_full_name, :columns, :to_param, to: :board
+  delegate :github_id, :github_name, :github_full_name, :columns, :issue_stats, :to_param, to: :board
 
   # All issues
   def issues

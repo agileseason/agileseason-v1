@@ -3,7 +3,7 @@ class IssuesController < ApplicationController
   before_action :fetch_board, only: [:show, :search, :new]
   before_action :fetch_board_for_update, except: [:show, :search, :new]
 
-  after_action :fetch_cumulative_graph, only: [:move_to, :close, :archive]
+  after_action :fetch_cumulative_graph, only: [:move_to, :close, :archive, :unarchive]
   after_action :fetch_lines_graph, only: [:move_to]
   after_action :fetch_control_chart, only: [:close]
 
@@ -78,7 +78,7 @@ class IssuesController < ApplicationController
     broadcast_column(board_issue.column)
 
     respond_to do |format|
-      format.html { redirect_to board_url(@board) }
+      format.html { redirect_to un board_url(@board) }
       format.json { render json: { closed: true } }
     end
   end
@@ -89,7 +89,7 @@ class IssuesController < ApplicationController
     broadcast_column(board_issue.column)
 
     respond_to do |format|
-      format.html { redirect_to board_url(@board) }
+      format.html { redirect_to un board_url(@board) }
       format.json do
         render json: {
           column_id: board_issue.column_id,
@@ -100,6 +100,12 @@ class IssuesController < ApplicationController
         }
       end
     end
+  end
+
+  def unarchive
+    issue_stat = IssueStatService.unarchive!(@board_bag, number, current_user)
+    broadcast_column(issue_stat.column)
+    redirect_to un board_url(@board_bag)
   end
 
   def assignee
