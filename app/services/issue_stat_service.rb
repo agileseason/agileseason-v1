@@ -62,9 +62,9 @@ class IssueStatService
       issue_stat = find(board, number)
       return unless issue_stat.archive?
 
+      Activities::UnarchiveActivity.create_for(issue_stat, user)
       move!(issue_stat.column, issue_stat, user, true)
       issue_stat.update!(archived_at: nil)
-      #Activities::UnarchiveActivity.create_for(issue_stat, user) if user.present?
       issue_stat
     end
 
