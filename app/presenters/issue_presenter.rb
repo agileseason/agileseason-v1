@@ -2,9 +2,9 @@ class IssuePresenter < Keynote::Presenter
   presents :issue
   delegate :labels, :number, to: :issue
 
-  def labels_html(board)
+  def labels_html
     build_html do
-      labels.each do |label|
+      labels.sort_by(&:name).each do |label|
         div class: :label, style: "background-color:##{label.color}; color:##{color(label)}" do
           label.name
         end
