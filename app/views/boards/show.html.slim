@@ -6,8 +6,11 @@
     data-faye-client-id="#{current_user.remember_token}"
   ]
   .alert-timeout
-    .title Connection lost
-    a.button href="#{un board_url(@board)}" Refresh
+    .title
+      | You have been disconnected from the
+      br
+      | Agile Season server for too long.
+    a.button href="#{un board_url(@board)}" Reload now
   .board-columns
     - @board_bag.columns.each do |column|
       = render partial: 'columns/show', locals: { column: column }
