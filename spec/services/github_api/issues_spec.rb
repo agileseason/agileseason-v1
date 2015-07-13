@@ -41,10 +41,13 @@ describe GithubApi::Issues do
   describe '#create_issue' do
     subject { service.create_issue(board, issue) }
     let(:board) { create(:board, :with_columns, number_of_columns: 2) }
-    let(:issue) { stub_issue(title: 'title_1', body: 'body_1', labels: labels) }
+    let(:issue) { stub_issue(labels: labels) }
     let(:labels) { ['bug', 'feature'] }
     let(:expected_labels) { ['bug', 'feature'] }
-    before { allow_any_instance_of(Octokit::Client).to receive(:create_issue).and_return(issue) }
+    before do
+      allow_any_instance_of(Octokit::Client).
+        to receive(:create_issue).and_return(issue)
+    end
     after { subject }
 
     it do
@@ -60,7 +63,10 @@ describe GithubApi::Issues do
     subject { service.move_to(board, move_to_column, issue.number) }
     let(:board) { create(:board, :with_columns, user: user) }
     let(:move_to_column) { board.columns.first }
-    before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
+    before do
+      allow_any_instance_of(Octokit::Client).
+        to receive(:issue).and_return(issue)
+    end
     before { allow(IssueStatService).to receive(:move!) }
 
     after { subject }
@@ -81,8 +87,8 @@ describe GithubApi::Issues do
     after { subject }
 
     it do
-      expect_any_instance_of(Octokit::Client)
-        .to receive(:close_issue).with(board.github_id, issue.number)
+      expect_any_instance_of(Octokit::Client).
+        to receive(:close_issue).with(board.github_id, issue.number)
     end
     it { expect(IssueStatService).to receive(:close!).with(board, issue, user) }
   end
@@ -97,8 +103,8 @@ describe GithubApi::Issues do
     after { subject }
 
     it do
-      expect_any_instance_of(Octokit::Client)
-        .to receive(:reopen_issue).with(board.github_id, issue.number)
+      expect_any_instance_of(Octokit::Client).
+        to receive(:reopen_issue).with(board.github_id, issue.number)
     end
     it do
       expect(IssueStatService).

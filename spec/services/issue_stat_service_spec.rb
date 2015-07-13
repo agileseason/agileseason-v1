@@ -1,6 +1,8 @@
 describe IssueStatService do
   let(:user) { create(:user) }
-  let(:board) { create(:board, :with_columns, number_of_columns: 2, user: user) }
+  let(:board) do
+    create(:board, :with_columns, number_of_columns: 2, user: user)
+  end
   let(:service) { IssueStatService }
 
   describe '.create!' do
@@ -23,14 +25,20 @@ describe IssueStatService do
 
   describe '.move!' do
     subject { service.move!(column_2, issue_stat, user) }
-    let!(:lifetime) { create(:lifetime, issue_stat: issue_stat, column: column_1) }
+    let!(:lifetime) do
+      create(:lifetime, issue_stat: issue_stat, column: column_1)
+    end
     let(:issue_stat) { create(:issue_stat, column: column_1) }
     let(:fake_token) { 'adsf' }
     let(:encrypt_token) { '????' }
     let(:fake_api) { OpenStruct.new(github_token: fake_token) }
+
     before { allow(user).to receive(:github_api).and_return(fake_api) }
     before { allow(Graphs::CumulativeWorker).to receive(:perform_async) }
-    before { allow(Encryptor).to receive(:encrypt).with(fake_token).and_return(encrypt_token) }
+    before do
+      allow(Encryptor).
+        to receive(:encrypt).with(fake_token).and_return(encrypt_token)
+    end
 
     context 'new column' do
       let(:column_1) { board.columns.first }
@@ -42,7 +50,6 @@ describe IssueStatService do
 
       context 'check external commands' do
         after { subject }
-
         it 'create activity by issue_stat params' do
           expect(Activities::ColumnChangedActivity).
             to receive(:create_for).with(issue_stat, nil, column_2, user)
@@ -79,7 +86,10 @@ describe IssueStatService do
     subject { service.close!(board, issue, user) }
 
     context :with_issue_stat do
-      let!(:issue_stat) { create(:issue_stat, :open, board: board, number: issue.number) }
+      let!(:issue_stat) do
+        create(:issue_stat, :open, board: board, number: issue.number)
+      end
+
       it { expect { subject }.to change(IssueStat, :count).by(0) }
       it { is_expected.to_not be_nil }
       it { expect(subject.closed_at).to_not be_nil }
@@ -98,7 +108,9 @@ describe IssueStatService do
   describe '.unarchive!' do
     subject { service.unarchive!(board, issue_stat.number, user) }
     before { allow(Activities::UnarchiveActivity).to receive(:create_for) }
-    let!(:issue_stat) { create(:issue_stat, board: board, number: 1, archived_at: archived_at) }
+    let!(:issue_stat) do
+      create(:issue_stat, board: board, number: 1, archived_at: archived_at)
+    end
 
     context 'valid' do
       let(:archived_at) { Time.current }
@@ -106,7 +118,9 @@ describe IssueStatService do
 
       describe 'activities' do
         before { subject }
-        it { expect(Activities::UnarchiveActivity).to have_received(:create_for) }
+        it do
+          expect(Activities::UnarchiveActivity).to have_received(:create_for)
+        end
       end
     end
 
@@ -116,7 +130,10 @@ describe IssueStatService do
 
       describe 'activities' do
         before { subject }
-        it { expect(Activities::UnarchiveActivity).not_to have_received(:create_for) }
+        it do
+          expect(Activities::UnarchiveActivity).
+            not_to have_received(:create_for)
+        end
       end
     end
   end
@@ -127,12 +144,24 @@ describe IssueStatService do
     before { allow(Activities::ArchiveActivity).to receive(:create_for) }
 
     context :with_issue_stat do
-      let!(:issue_stat) { create(:issue_stat, board: board, number: issue.number, archived_at: nil) }
+      let!(:issue_stat) do
+        create(
+          :issue_stat, board: board, number: issue.number,
+          archived_at: nil
+        )
+      end
+
       it { expect { subject }.to change(IssueStat, :count).by(0) }
 
       context 'lifetime update out_at' do
-        let!(:lifetime_1) { create(:lifetime, issue_stat: issue_stat, column: board.columns.first, out_at: nil) }
+        let!(:lifetime_1) do
+          create(
+            :lifetime, issue_stat: issue_stat,
+            column: board.columns.first, out_at: nil
+          )
+        end
         before { subject }
+
         it { expect(lifetime_1.reload.out_at).to_not be_nil }
       end
 
@@ -156,14 +185,19 @@ describe IssueStatService do
 
       context 'not skip, user present' do
         let(:user) { nil }
-        it { expect(Activities::ArchiveActivity).not_to have_received(:create_for) }
+        it do
+          expect(Activities::ArchiveActivity).
+            not_to have_received(:create_for)
+        end
       end
     end
   end
 
   describe '.archived?' do
     subject { service.archived?(board, number) }
-    let(:issue_stat) { create(:issue_stat, board: board, number: 1, archived_at: archived_at) }
+    let(:issue_stat) do
+      create(:issue_stat, board: board, number: 1, archived_at: archived_at)
+    end
     let(:number) { issue_stat.number }
     let(:archived_at) { nil }
 
@@ -185,7 +219,10 @@ describe IssueStatService do
   describe '.set_due_date' do
     subject { service.set_due_date(user, board, number, new_due_date) }
     let!(:issue_stat) do
-      create(:issue_stat, board: board, number: number, due_date_at: due_date_at)
+      create(
+        :issue_stat, board: board, number: number,
+        due_date_at: due_date_at
+      )
     end
     let(:number) { 1 }
     let(:due_date_at) { nil }
