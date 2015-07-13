@@ -125,6 +125,6 @@ subscribe_board_update = ->
 
     window.faye_board.on 'transport:down', ->
       #subscription.cancel()
-      window.setTimeout (-> $('.alert-timeout').show()), 1000
+      window.setTimeout (-> $('.alert-timeout').show()), 2000
   catch err
     console.log err

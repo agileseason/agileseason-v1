@@ -1,10 +1,28 @@
 describe IssuePresenter do
   let(:presenter) { present(:issue, issue) }
-  let(:issue) { OpenStruct.new(labels: [label]) }
-  let(:label) { OpenStruct.new(name: 'bug', color: color) }
+  let(:issue) { stub_issue(labels: labels) }
+  let(:labels) { [] }
+
+  describe '#labels_html' do
+    subject { presenter.labels_html }
+
+    context 'with labels' do
+      let(:label_1) { OpenStruct.new(name: 'feature', color: 'fff') }
+      let(:label_2) { OpenStruct.new(name: 'bug', color: 'fff') }
+      let(:labels) { [label_1, label_2] }
+
+      it { is_expected.to eq '<div class="label" style="background-color:#fff; color:#fff">bug</div><div class="label" style="background-color:#fff; color:#fff">feature</div>' }
+    end
+
+    context 'without labels' do
+      it { is_expected.to be_empty }
+    end
+  end
 
   describe '#color' do
     subject { presenter.color(label) }
+    let(:label) { OpenStruct.new(name: 'bug', color: color) }
+    let(:labels) { [label] }
 
     context 'red' do
       let(:color) { 'fc2929' }
