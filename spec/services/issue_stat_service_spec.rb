@@ -75,7 +75,7 @@ describe IssueStatService do
   end
 
   describe '.close!' do
-    let(:issue) { stub_issue }
+    let(:issue) { stub_closed_issue }
     subject { service.close!(board, issue, user) }
 
     context :with_issue_stat do

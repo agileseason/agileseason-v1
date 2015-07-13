@@ -43,6 +43,7 @@ RSpec.describe IssuesController, type: :controller do
   describe '#close' do
     let(:request) { get :close, board_github_full_name: board.github_full_name, number: 1 }
     let(:issue_stat) { build(:issue_stat, board: board, column: column_1) }
+
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
     before do
       allow_any_instance_of(GithubApi).
@@ -56,6 +57,28 @@ RSpec.describe IssuesController, type: :controller do
     it { expect(Graphs::IssueStatsWorker).to have_received(:perform_async) }
     it { expect(Graphs::CumulativeWorker).to have_received(:perform_async) }
     it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+  end
+
+  describe '#reopen' do
+    let(:request) do
+      get :reopen, board_github_full_name: board.github_full_name, number: 1
+    end
+    let(:board_issue) { BoardIssue.new(stub_issue(number: 1), issue_stat) }
+    let(:issue_stat) do
+      create(:issue_stat, :closed, board: board, column: column_1, number: 1)
+    end
+
+    before { allow(Graphs::IssueStatsWorker).to receive(:perform_async) }
+    before do
+      allow_any_instance_of(GithubApi).
+        to receive(:reopen).and_return(board_issue)
+    end
+    before { allow_any_instance_of(BoardBag).to receive(:update_cache) }
+    before { request }
+
+    it { expect(response).to redirect_to(controller.un board_url(board)) }
+    it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+    it { expect(Graphs::IssueStatsWorker).to have_received(:perform_async) }
   end
 
   describe '#archive' do

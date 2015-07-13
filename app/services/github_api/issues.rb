@@ -33,6 +33,12 @@ class GithubApi
       BoardIssue.new(github_issue, issue_stat)
     end
 
+    def reopen(board, number)
+      github_issue = client.reopen_issue(board.github_id, number)
+      issue_stat = IssueStatService.reopen!(board, github_issue, @user)
+      BoardIssue.new(github_issue, issue_stat)
+    end
+
     def archive(board, number)
       github_issue = issue(board, number)
       return unless github_issue.state == 'closed'

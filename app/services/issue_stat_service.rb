@@ -45,7 +45,14 @@ class IssueStatService
     # FIX : Move close! and add close? to state_machine.
     def close!(board, github_issue, user)
       issue_stat = find_or_create_issue_stat(board, github_issue, user)
-      issue_stat.update(closed_at: (github_issue.closed_at || Time.current))
+      issue_stat.update(closed_at: github_issue.closed_at)
+      issue_stat
+    end
+
+    # FIX : Так же плохо, что код в close, reopen зависит от внешнего кода его вызывающего.
+    def reopen!(board, github_issue, user)
+      issue_stat = find_or_create_issue_stat(board, github_issue, user)
+      issue_stat.update(closed_at: nil)
       issue_stat
     end
 
