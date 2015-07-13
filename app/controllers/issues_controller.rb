@@ -3,9 +3,11 @@ class IssuesController < ApplicationController
   before_action :fetch_board, only: [:show, :search, :new]
   before_action :fetch_board_for_update, except: [:show, :search, :new]
 
-  after_action :fetch_cumulative_graph, only: [:move_to, :close, :archive, :unarchive]
+  after_action :fetch_cumulative_graph, only: [
+    :move_to, :close, :archive, :unarchive
+  ]
   after_action :fetch_lines_graph, only: [:move_to]
-  after_action :fetch_control_chart, only: [:close]
+  after_action :fetch_control_chart, only: [:close, :reopen]
 
   def show
     @direct_post = S3Api.direct_post
@@ -81,6 +83,13 @@ class IssuesController < ApplicationController
       format.html { redirect_to un board_url(@board) }
       format.json { render json: { closed: true } }
     end
+  end
+
+  def reopen
+    board_issue = github_api.reopen(@board, number)
+    @board_bag.update_cache(board_issue.issue)
+    broadcast_column(board_issue.column)
+    redirect_to un board_url(@board)
   end
 
   def archive
