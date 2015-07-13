@@ -14,7 +14,7 @@
     .issue-content
       .title.b-editable-form
         .issue-title = k(:issue, @issue).title
-        a.url href="#{@issue.html_url}" target="_blank" ##{@issue.number}
+        a.url href="#{@issue.html_url}" ##{@issue.number}
         .due-date class="#{ :none unless @issue.due_date_at }" = k(:issue, @issue).due_date_at
         = simple_form_for :issue,
           url: update_board_issues_url(@board, @issue.number),

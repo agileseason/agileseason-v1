@@ -39,7 +39,7 @@ module ApplicationHelper
   end
 
   def replace_issue_numbers(text, repo_url)
-    text.gsub(/#([0-9]+)/, "<a href='#{repo_url}/issues/\\1' target='_blank'>#\\1</a>")
+    text.gsub(/#([0-9]+)/, "<a href='#{repo_url}/issues/\\1'>#\\1</a>")
   end
 
   def replace_checkbox(text)
