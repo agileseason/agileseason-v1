@@ -146,7 +146,9 @@ describe IssueStatService do
     context :with_issue_stat do
       let!(:issue_stat) do
         create(
-          :issue_stat, board: board, number: issue.number,
+          :issue_stat,
+          board: board,
+          number: issue.number,
           archived_at: nil
         )
       end
@@ -156,8 +158,10 @@ describe IssueStatService do
       context 'lifetime update out_at' do
         let!(:lifetime_1) do
           create(
-            :lifetime, issue_stat: issue_stat,
-            column: board.columns.first, out_at: nil
+            :lifetime,
+            issue_stat: issue_stat,
+            column: board.columns.first,
+            out_at: nil
           )
         end
         before { subject }
@@ -220,7 +224,9 @@ describe IssueStatService do
     subject { service.set_due_date(user, board, number, new_due_date) }
     let!(:issue_stat) do
       create(
-        :issue_stat, board: board, number: number,
+        :issue_stat,
+        board: board,
+        number: number,
         due_date_at: due_date_at
       )
     end
