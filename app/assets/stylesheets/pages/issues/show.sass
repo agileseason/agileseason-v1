@@ -27,6 +27,30 @@
   .b-issue-modal
     background: $card
 
+    &.open
+      .issue-close
+        display: block
+      .issue-reopen,
+      .issue-archive,
+      .issue-unarchive
+        display: none
+
+    &.closed
+      .issue-reopen,
+      .issue-archive
+        display: block
+      .issue-close,
+      .issue-unarchive
+        display: none
+
+    &.archived
+      .issue-close,
+      .issue-reopen,
+      .issue-archive
+        display: none
+      .issue-unarchive,
+        display: block
+
   .content
     margin: 0 auto
     padding: 30px 70px

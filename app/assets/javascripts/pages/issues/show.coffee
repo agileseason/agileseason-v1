@@ -230,6 +230,30 @@ $(document).on 'ready page:load', ->
     # отправить на сервер набор лейблов
     #$.post $(@).data('url'), { labels: labels }
 
+  # закрыть тикет
+  $('.button.issue-close').on 'click', (e) ->
+    $('.b-issue-modal').
+      removeClass('open').
+      addClass('closed')
+
+  # открыть снова тикет
+  $('.button.issue-reopen').on 'click', (e) ->
+    $('.b-issue-modal').
+      removeClass('closed').
+      addClass('open')
+
+  # отправить тикет в архив
+  $('.button.issue-archive').on 'click', (e) ->
+    $('.b-issue-modal').
+      removeClass('closed').
+      addClass('archived')
+
+  # отправить тикет из архива снова на борд
+  $('.button.issue-unarchive').on 'click', (e) ->
+    $('.b-issue-modal').
+      removeClass('archived').
+      addClass('closed')
+
 # private ###########################################################
 
 highlight_code = ->

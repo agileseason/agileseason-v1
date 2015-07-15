@@ -81,7 +81,7 @@ class IssuesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to un board_url(@board) }
-      format.json { render json: { closed: true } }
+      format.json { render json: { state: board_issue.full_state } }
     end
   end
 
