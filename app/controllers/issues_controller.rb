@@ -79,17 +79,15 @@ class IssuesController < ApplicationController
     @board_bag.update_cache(board_issue.issue)
     broadcast_column(board_issue.column)
 
-    respond_to do |format|
-      format.html { redirect_to un board_url(@board) }
-      format.json { render json: { state: board_issue.full_state } }
-    end
+    render nothing: true
   end
 
   def reopen
     board_issue = github_api.reopen(@board, number)
     @board_bag.update_cache(board_issue.issue)
     broadcast_column(board_issue.column)
-    redirect_to un board_url(@board)
+
+    render nothing: true
   end
 
   def archive
@@ -97,24 +95,20 @@ class IssuesController < ApplicationController
     @board_bag.update_cache(board_issue.issue)
     broadcast_column(board_issue.column)
 
-    respond_to do |format|
-      format.html { redirect_to un board_url(@board) }
-      format.json do
-        render json: {
-          column_id: board_issue.column_id,
-          html: render_to_string(
-            partial: 'columns/wip_badge.html',
-            locals: { column: board_issue.column }
-          )
-        }
-      end
-    end
+    render json: {
+      column_id: board_issue.column_id,
+      html: render_to_string(
+        partial: 'columns/wip_badge.html',
+        locals: { column: board_issue.column }
+      )
+    }
   end
 
   def unarchive
     issue_stat = IssueStatService.unarchive!(@board_bag, number, current_user)
     broadcast_column(issue_stat.column)
-    redirect_to un board_url(@board_bag)
+
+    render nothing: true
   end
 
   def assignee
