@@ -82,7 +82,7 @@ describe BoardIssue do
 
   describe 'full_state' do
     subject { board_issue.full_state }
-      let(:issue_stat) { build(:issue_stat) }
+    let(:issue_stat) { build(:issue_stat) }
 
     context 'open' do
       let(:issue) { stub_issue }
