@@ -53,7 +53,7 @@ RSpec.describe IssuesController, type: :controller do
     before { allow(Graphs::CumulativeWorker).to receive(:perform_async) }
     before { request }
 
-    it { expect(response).to redirect_to(controller.un board_url(board)) }
+    it { expect(response).to have_http_status(:success) }
     it { expect(Graphs::IssueStatsWorker).to have_received(:perform_async) }
     it { expect(Graphs::CumulativeWorker).to have_received(:perform_async) }
     it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
@@ -76,7 +76,7 @@ RSpec.describe IssuesController, type: :controller do
     before { allow_any_instance_of(BoardBag).to receive(:update_cache) }
     before { request }
 
-    it { expect(response).to redirect_to(controller.un board_url(board)) }
+    it { expect(response).to have_http_status(:success) }
     it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
     it { expect(Graphs::IssueStatsWorker).to have_received(:perform_async) }
   end
@@ -91,7 +91,7 @@ RSpec.describe IssuesController, type: :controller do
     end
     before { request }
 
-    it { expect(response).to redirect_to(controller.un board_url(board)) }
+    it { expect(response).to have_http_status(:success) }
     it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
   end
 
@@ -101,7 +101,7 @@ RSpec.describe IssuesController, type: :controller do
     before { allow(IssueStatService).to receive(:unarchive!).and_return(issue_stat) }
     before { request }
 
-    it { expect(response).to redirect_to(controller.un board_url(board)) }
+    it { expect(response).to have_http_status(:success) }
     it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
     it { expect(IssueStatService).to have_received(:unarchive!) }
   end

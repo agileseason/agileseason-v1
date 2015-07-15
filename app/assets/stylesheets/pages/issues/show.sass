@@ -18,14 +18,38 @@
     padding-bottom: 5px
     position: static
 
-  .b-issue-modal
-    background: $card
-
   .container
     max-width: 1400px
     min-width: 900px
     margin: 0 auto
     padding: 0px 0 20px 0
+
+  .b-issue-modal
+    background: $card
+
+    &.open
+      .issue-close
+        display: block
+      .issue-reopen,
+      .issue-archive,
+      .issue-unarchive
+        display: none
+
+    &.closed
+      .issue-reopen,
+      .issue-archive
+        display: block
+      .issue-close,
+      .issue-unarchive
+        display: none
+
+    &.archived
+      .issue-close,
+      .issue-reopen,
+      .issue-archive
+        display: none
+      .issue-unarchive,
+        display: block
 
   .content
     margin: 0 auto
@@ -40,9 +64,10 @@
       border: 1px solid #eee
       max-width: 100%
 
+    // checkboxes in description and comments
     .task
       cursor: pointer
-      margin-bottom: 6px
+      margin: 6px 4px 6px 0
 
   .issue-actions
     position: absolute

@@ -22,4 +22,9 @@ class BoardIssue
   def visible?
     issue_stat.present? && !archived?
   end
+
+  def full_state
+    return 'archived' if archive?
+    state
+  end
 end
