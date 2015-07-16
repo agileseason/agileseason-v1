@@ -41,6 +41,7 @@ $(document).on 'page:change', ->
   # скрыть тикет после архивации
   $('.board').on 'click', '.issue .archive', ->
     $(@).parent('.issue').addClass('hidden')
+
   # обновить WIP у колонки после архивации тикета
   $('.issue .archive').on 'ajax:success', (e, badge) ->
     window.update_wip_column(badge)
@@ -97,6 +98,7 @@ new_issue_forms = ->
     return if data == ''
 
     $form.find('textarea').val('') # в данном случае нужно очищать поле ввода
+    $form.find('label input').prop('checked', false)
     $('.cancel', @).trigger 'click'
 
     $issues = $('.issues', $form.closest('.board-column'))
