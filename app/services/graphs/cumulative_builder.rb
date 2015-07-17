@@ -25,6 +25,7 @@ module Graphs
             column_id: data[0][:column_id],
             issues: 0,
             issues_cumulative: 0,
+            issues_tooltip: 0,
             # FIX : add to_js method for Time
             collected_on: (Time.at(data[0][:collected_on] / 1000) - 1.day).utc.to_i * 1000
           }
@@ -36,10 +37,14 @@ module Graphs
     def series_by_history
       histories_by_interval.each_with_object(init_series) do |history, series|
         history.data.each do |column_data|
-          point = column_data.merge(
+          next if series[column_data[:column_id]].nil?
+
+          point = column_data.
+            merge(
+              issues_tooltip: issues_tooltip(column_data),
               collected_on: history.collected_on.in_time_zone.to_js
-          )
-          series[column_data[:column_id]][:data] << point if series[column_data[:column_id]]
+            )
+          series[column_data[:column_id]][:data] << point
         end
       end
     end
@@ -56,6 +61,18 @@ module Graphs
 
     def date_from
       @interval == :month ? Date.today.prev_month : @board.created_at.to_date.prev_day
+    end
+
+    def last_column
+      @last_column ||= @board.columns.last
+    end
+
+    def issues_tooltip(column_data)
+      if column_data[:column_id] == last_column.id
+        column_data[:issues_cumulative]
+      else
+        column_data[:issues]
+      end
     end
   end
 end
