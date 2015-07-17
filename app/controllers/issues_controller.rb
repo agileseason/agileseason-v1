@@ -140,6 +140,10 @@ class IssuesController < ApplicationController
   end
 
   def issue_params
+    # For variant when uncheck all labels
+    params[:issue] ||= {}
+    params[:issue][:labels] ||= []
+
     params
       .require(:issue)
       .permit(:title, :body, labels: [])

@@ -223,12 +223,11 @@ $(document).on 'ready page:load', ->
       labels.push $(@).val()
       html_labels.push('<div class="label" style="' + $(@).parent().attr('style') + '">' + $(@).val() + '</div>')
 
-    # обновить текущий список лейблов тикета на борде и в попапе
+    # обновить текущий список лейблов тикета на странице
     $('.b-issue-labels').html(html_labels)
 
-    $(@).closest('form').submit()
     # отправить на сервер набор лейблов
-    #$.post $(@).data('url'), { labels: labels }
+    $(@).closest('form').submit()
 
   # закрыть тикет
   $('.button.issue-close').on 'click', (e) ->
