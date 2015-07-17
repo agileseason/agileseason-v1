@@ -41,7 +41,7 @@
             },
             tooltip: {
                 headerFormat: '<span><b>Total: {point.y}</b> issues</span><br/><span style="color:#888">{point.key}<br/></span>',
-                pointFormat: '<span style="color:{series.color}">\u25CF</span><b> {point.issues}</b> - {series.name}<br/>',
+                pointFormat: '<span style="color:{series.color}">\u25CF</span><b> {point.issues_tooltip}</b> - {series.name}<br/>',
                 shared: true
             },
             plotOptions: {
@@ -68,7 +68,7 @@
                       {
                         x: <%= data[:collected_on] %>,
                         y: <%= data[:issues_cumulative] %>,
-                        issues: <%= data[:issues] %>,
+                        issues_tooltip: <%= data[:issues_tooltip] %>,
                       },
                     <% end %>
                   ]
