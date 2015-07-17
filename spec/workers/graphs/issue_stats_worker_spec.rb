@@ -1,9 +1,11 @@
 describe Graphs::IssueStatsWorker do
   let(:worker) { Graphs::IssueStatsWorker.new }
+
   describe '.perform' do
-    subject { board.issue_stats }
+    subject(:issue_stats) { board.issue_stats }
     let(:board) { create(:board, :with_columns, created_at: 10.days.ago) }
     let(:arrange) {}
+
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return(issues) }
     before { arrange }
     before { worker.perform(board.id, Encryptor.encrypt('fake_token')) }
@@ -18,18 +20,24 @@ describe Graphs::IssueStatsWorker do
       let(:issues) { [issue_1, issue_2] }
       let(:issue_1) { stub_issue(state: 'closed', created_at: 2.days.ago, updated_at: 2.days.ago, closed_at: 2.days.ago) }
       let(:issue_2) { stub_issue(state: 'open', created_at: 2.days.ago, updated_at: 2.days.ago, closed_at: nil) }
+
       it { is_expected.to have(1).item }
-      it { expect(subject.first.number).to eq issue_2.number }
+
+      describe 'check fields' do
+        subject { issue_stats.first }
+        its(:number) { is_expected.to eq issue_2.number }
+        its(:created_at) { is_expected.to eq issue_2.created_at }
+        its(:updated_at) { is_expected.to eq issue_2.updated_at }
+        its(:closed_at) { is_expected.to eq issue_2.closed_at }
+      end
     end
 
-    context 'add_new' do
+    context 'add new issues' do
       let(:issues) { [issue_1, issue_2] }
       let(:issue_1) { stub_issue(created_at: Time.current - 1.day, updated_at: Time.current - 6.hours, closed_at: Time.current) }
       let(:issue_2) { stub_issue(created_at: Time.current - 1.day, updated_at: Time.current - 6.hours, closed_at: nil) }
-      it { expect(subject.map(&:number).sort).to eq [issue_1.number, issue_2.number] }
-      it { expect(subject.map(&:created_at).map(&:to_s)).to eq [issue_1.created_at, issue_2.created_at].map(&:to_s) }
-      it { expect(subject.map(&:updated_at).map(&:to_s)).to eq [issue_1.updated_at.to_s, issue_2.updated_at].map(&:to_s) }
-      it { expect(subject.map(&:closed_at).map(&:to_s)).to eq [issue_1.closed_at, issue_2.closed_at].map(&:to_s) }
+
+      it { is_expected.to have(2).items }
     end
 
     context 'update issue_1.closed_at and add new issue_2' do
@@ -37,11 +45,13 @@ describe Graphs::IssueStatsWorker do
       let(:issues) { [issue_1, issue_2] }
       let(:issue_1) { stub_issue(number: 1, created_at: Time.current - 2.day, updated_at: Time.current - 6.hours, closed_at: Time.current) }
       let(:issue_2) { stub_issue(number: 2, created_at: Time.current - 1.day, updated_at: Time.current - 6.hours, closed_at: nil) }
+
       it { is_expected.to have(2).items }
-      it { expect(subject.map(&:number).sort).to eq [issue_1.number, issue_2.number] }
-      it { expect(subject.map(&:created_at).map(&:to_s)).to eq [issue_1.created_at, issue_2.created_at].map(&:to_s) }
-      it { expect(subject.map(&:updated_at).map(&:to_s)).to eq [issue_1.updated_at.to_s, issue_2.updated_at].map(&:to_s) }
-      it { expect(subject.map(&:closed_at).map(&:to_s)).to eq [issue_1.closed_at, issue_2.closed_at].map(&:to_s) }
+
+      describe 'check updated closed_at' do
+        subject { issue_stats.find_by(number: issue_1.number) }
+        its(:closed_at) { is_expected.to eq issue_1.closed_at }
+      end
     end
 
     context 'update only if need' do
