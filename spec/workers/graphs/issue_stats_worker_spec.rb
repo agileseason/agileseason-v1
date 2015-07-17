@@ -26,8 +26,8 @@ describe Graphs::IssueStatsWorker do
       describe 'check fields' do
         subject { issue_stats.first }
         its(:number) { is_expected.to eq issue_2.number }
-        its(:created_at) { is_expected.to eq issue_2.created_at }
-        its(:updated_at) { is_expected.to eq issue_2.updated_at }
+        its(:created_at) { is_expected.to be_the_same_time issue_2.created_at }
+        its(:updated_at) { is_expected.to be_the_same_time issue_2.updated_at }
         its(:closed_at) { is_expected.to eq issue_2.closed_at }
       end
     end
@@ -50,7 +50,7 @@ describe Graphs::IssueStatsWorker do
 
       describe 'check updated closed_at' do
         subject { issue_stats.find_by(number: issue_1.number) }
-        its(:closed_at) { is_expected.to eq issue_1.closed_at }
+        its(:closed_at) { is_expected.to be_the_same_time issue_1.closed_at }
       end
     end
 
