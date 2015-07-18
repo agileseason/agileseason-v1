@@ -9,7 +9,8 @@ describe FrequencyService do
   end
 
   describe '#fetch_group' do
-    subject { service.fetch_group }
+    # FIX : Replace on chart_series
+    subject { service.send(:fetch_group) }
 
     context 'empty but have zero point' do
       it { is_expected.to eq [zero_point] }
@@ -39,8 +40,8 @@ describe FrequencyService do
     end
   end
 
-  describe '#average_elapsed_days' do
-    subject { service.average_elapsed_days }
+  describe '#avg_lifetime' do
+    subject { service.avg_lifetime }
 
     context 'no closed issues' do
       let!(:issue_open) { create(:issue_stat, :open, board: board) }
@@ -52,6 +53,36 @@ describe FrequencyService do
       let!(:issue_2) { create(:issue_stat, :closed, wip: 2, board: board) }
       let!(:issue_open) { create(:issue_stat, :open, board: board) }
       it { is_expected.to eq 1.5 }
+    end
+  end
+
+  describe '#avg_lifetime_percentile' do
+    subject { service.avg_lifetime_percentile(persentile) }
+    let(:persentile) { 0.8 }
+
+    context 'without closed issues' do
+      let!(:issue_open) { create(:issue_stat, :open, board: board) }
+      it { is_expected.to be_nil }
+    end
+
+    context 'one issue' do
+      let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: board) }
+      it { is_expected.to eq 1 }
+    end
+
+    context 'only in percentile', :focus do
+      let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_2) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_3) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_4) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_5) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_6) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_7) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_8) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_9) { create(:issue_stat, :closed, wip: 19, board: board) }
+      let!(:issue_0) { create(:issue_stat, :closed, wip: 20, board: board) }
+
+      it { is_expected.to eq 1 }
     end
   end
 

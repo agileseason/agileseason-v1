@@ -7,11 +7,18 @@
       .stats
         .avg
           | Issue Avg Lifetime:
-          span #{@frequency.average_elapsed_days(1.month.ago)} days
-        /.avg-percentile Issue Avg Lifetime <br /> #{80}% persentile: #{20} days
+          span #{@frequency.avg_lifetime(1.month.ago)} days
+
+        .avg-percentile
+          | Issue Avg Lifetime
+          br
+          | 80% persentile:
+          span #{@frequency.avg_lifetime_percentile(0.8, 1.month.ago)} days
+
         .issues
           | Closed issues:
           span #{@frequency.closed_issues(1.month.ago).count}
+
         .throughput
           | Throughput:
           span #{@frequency.throughput_html(1.month.ago)}
@@ -21,13 +28,13 @@
       .stats
         .avg
           | Issue Avg Lifetime:
-          span #{@frequency.average_elapsed_days} days
+          span #{@frequency.avg_lifetime} days
 
-        /.avg-percentile
+        .avg-percentile
           | Issue Avg Lifetime
           br
-          | #{80}% persentile:
-          span #{25} days
+          | 80% persentile:
+          span #{@frequency.avg_lifetime_percentile(0.8)} days
 
         .issues
           | Closed issues:
