@@ -1,20 +1,40 @@
 = render partial: '/layouts/submenu'
 
-= render partial: 'graph'
+.graph-area
+  .info
+    .row
+      .title Last month
+      .stats
+        .avg
+          | Issue Avg Lifetime:
+          span #{@frequency.average_elapsed_days(1.month.ago)} days
+        /.avg-percentile Issue Avg Lifetime <br /> #{80}% persentile: #{20} days
+        .issues
+          | Closed issues:
+          span #{@frequency.closed_issues(1.month.ago).count}
+        .throughput
+          | Throughput:
+          span #{@frequency.throughput_html(1.month.ago)}
 
-// FIX: move this if's to FrequencyPresenter
-.notes Total closed issues: #{@duration.total_closed_issues}
-.notes
-  - if @duration.average_elapsed_days
-    | Total average elapsed days: #{@duration.average_elapsed_days}
-  - else
-    | Total average elapsed days: -
+    .row
+      .title All times
+      .stats
+        .avg
+          | Issue Avg Lifetime:
+          span #{@frequency.average_elapsed_days} days
 
-// FIX : Remove it block with style. @blackchestnut
-.forecast
-  .subtitle Forecast duration for #{@duration.total_open_issues} open issues
-  .average
-    - if @duration.average_forecast_elapsed_days.nil?
-      | Average: can't be calculated - no closed issues
-    - else
-      | Average: #{@duration.average_forecast_elapsed_days.to_i}..#{@duration.forecast_elapsed_days} days
+        /.avg-percentile
+          | Issue Avg Lifetime
+          br
+          | #{80}% persentile:
+          span #{25} days
+
+        .issues
+          | Closed issues:
+          span #{@frequency.closed_issues.count}
+
+        .throughput
+          | Throughput:
+          span #{@frequency.throughput_html}
+
+  = render partial: 'graph'

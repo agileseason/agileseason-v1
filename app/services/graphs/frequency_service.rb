@@ -3,47 +3,48 @@ class FrequencyService
     @board = board
   end
 
+  def chart_series
+    group_durations = fetch_group
+    max = group_durations.try(:last).try(:first).to_i
+    normolized = (1..max).each_with_object({}) { |day, hash| hash[day] = 0 }
+    group_durations.each do |pair|
+      normolized[pair.first] = pair.second
+    end
+    normolized.sort
+  end
+
+  def average_elapsed_days(from_at = @board.created_at)
+    issues = closed_issues(from_at)
+    return if issues.blank?
+    (issues.to_a.sum(&:elapsed_days) / issues.count).round(2)
+  end
+
+  def closed_issues(from_at = @board.created_at)
+    @board.issue_stats.closed.where('closed_at >= ?', from_at)
+  end
+
+  def throughput(from_at = @board.created_at)
+    issue_stats = @board.issue_stats.closed.where('closed_at >= ?', from_at)
+    return if issue_stats.blank?
+
+    passed_days = (Time.current - from_at) / 86400
+    issue_stats.count / passed_days
+  end
+
+  def throughput_html(from_at = @board.created_at)
+    issue_per_day = throughput(from_at)
+    if issue_per_day.nil?
+      '-'
+    else
+      "#{issue_per_day.round(2)} issues per day"
+    end
+  end
+
   def fetch_group
     @board.issue_stats.closed.each_with_object({ 0 => 0 }) do |issue, hash|
       duration = issue.elapsed_days.to_i + 1
       count = hash[duration] || 0
       hash[duration] = count + 1
     end.sort
-  end
-
-  def average_forecast_elapsed_days
-    @average_forecast_elapsed_days ||= begin
-      if average_elapsed_days.present?
-        (total_open_issues * average_elapsed_days).round(2)
-      end
-    end
-  end
-
-  def forecast_elapsed_days
-    @forecast_elapsed_days ||= begin
-      duration_groups = fetch_group
-      if duration_groups.present?
-        total_elapsed_days = duration_groups.sum { |pair| pair.first * pair.second }
-        issues_count = duration_groups.sum(&:second)
-        average_days = total_elapsed_days.to_f / issues_count
-        (@board.issue_stats.open.count * average_days).round(0)
-      end
-    end
-  end
-
-  def average_elapsed_days
-    @average_elapsed_days ||= begin
-      if total_closed_issues > 0
-        (@board.issue_stats.closed.map(&:elapsed_days).sum / total_closed_issues).round(2)
-      end
-    end
-  end
-
-  def total_open_issues
-    @total_open_issues ||= @board.issue_stats.open.count
-  end
-
-  def total_closed_issues
-    @total_closed_issues ||= @board.issue_stats.closed.count
   end
 end
