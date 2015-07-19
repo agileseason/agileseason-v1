@@ -1,7 +1,7 @@
 describe ApplicationHelper do
   describe '.markdown' do
-    subject { helper.markdown(text, repo_url) }
-    let(:repo_url) { 'http://github.com/a/b' }
+    subject { helper.markdown(text, board) }
+    let(:board) { build_stubbed(:board) }
 
     context 'check numbers' do
       context 'blank' do
@@ -22,7 +22,8 @@ describe ApplicationHelper do
       context 'with #number' do
         let(:text) { "##{number}" }
         let(:number) { 10 }
-        it { is_expected.to eq "<p><a href='#{repo_url}/issues/#{number}'>##{number}</a></p>\n" }
+
+        it { is_expected.to eq "<p><a href='#{un show_board_issues_url(board, number)}'>##{number}</a></p>\n" }
       end
 
       context 'with #abs' do
@@ -39,7 +40,8 @@ describe ApplicationHelper do
         let(:text) { "text ##{number_1} text2 ##{number_2}" }
         let(:number_1) { 10 }
         let(:number_2) { 999 }
-        it { is_expected.to eq "<p>text <a href='#{repo_url}/issues/#{number_1}'>##{number_1}</a> text2 <a href='http://github.com/a/b/issues/#{number_2}'>##{number_2}</a></p>\n" }
+
+        it { is_expected.to eq "<p>text <a href='#{un show_board_issues_url(board, number_1)}'>##{number_1}</a> text2 <a href='#{un show_board_issues_url(board, number_2)}'>##{number_2}</a></p>\n" }
       end
     end
 

@@ -21,7 +21,7 @@
     / FIX : Why data-initial not in .editable same as description?
     .comment-form.b-editable-form
       .comment-text data-url="#{update_comment_board_issues_url(board, number, comment.id)}"
-        = markdown(comment.body, board.github_url)
+        = markdown(comment.body, board)
 
       = simple_form_for :comment,
         url: update_comment_board_issues_url(board, number, comment.id),
