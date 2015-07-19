@@ -11,7 +11,7 @@
               text: false
           },
           xAxis: {
-              categories: <%= raw(@chart_series.map(&:first)) %>,
+              categories: <%= raw(@chart_series_all.map(&:first)) %>,
               title: {
                   text: 'Lifetime in days'
               },
@@ -25,12 +25,12 @@
                   text: 'Frequency / Issues count'
               }
           },
-          legend: false,
           plotOptions: {
               column: {
-                  pointPadding: 0.1,
-                  groupPadding: 0,
                   borderWidth: 0,
+                  groupPadding: 0,
+                  grouping: false,
+                  pointPadding: 0.1,
                   shadow: false
               }
           },
@@ -39,8 +39,15 @@
               pointFormat: ''
           },
           series: [{
-              name: 'Days',
-              data: <%= raw(@chart_series.map(&:second)) %>
+              name: 'All times',
+              pointPlacement: -0.2,
+              color: 'rgba(248,161,63,1)',
+              data: <%= raw(@chart_series_all.map(&:second)) %>
+          },{
+              name: 'Last month',
+              pointPlacement: -0.2,
+              color: 'rgba(186,60,61,.9)',
+              data: <%= raw(@chart_series_month.map(&:second)) %>
           }]
       });
   });

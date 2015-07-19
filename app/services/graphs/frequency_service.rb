@@ -1,14 +1,23 @@
 class FrequencyService
   pattr_initialize :board
 
-  def chart_series
-    group_durations = fetch_group
-    max = group_durations.try(:last).try(:first).to_i
-    normolized = (1..max).each_with_object({}) { |day, hash| hash[day] = 0 }
-    group_durations.each do |pair|
-      normolized[pair.first] = pair.second
+  ZERO_POINT = { 0 => 0 }
+
+  def chart_series(from_at = board.created_at)
+    issues = closed_issues(from_at)
+    max = issues.map(&:elapsed_days).max
+    return ZERO_POINT if max.nil?
+
+    normolized = (1..max.ceil).each_with_object(ZERO_POINT) do |day, hash|
+      hash[day] = 0
     end
-    normolized.sort
+
+    issues.each do |issue|
+      duration = issue.elapsed_days.ceil
+      normolized[duration] = normolized[duration] + 1
+    end
+
+    normolized
   end
 
   def avg_lifetime(from_at = board.created_at)
@@ -50,8 +59,8 @@ class FrequencyService
 
   private
 
-  def fetch_group
-    closed_issues.each_with_object({ 0 => 0 }) do |issue, hash|
+  def fetch_group(issues)
+    issues.each_with_object({ 0 => 0 }) do |issue, hash|
       duration = issue.elapsed_days.to_i + 1
       count = hash[duration] || 0
       hash[duration] = count + 1

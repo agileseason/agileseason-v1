@@ -3,40 +3,45 @@ describe FrequencyService do
   let(:service) { FrequencyService.new(board) }
   let(:zero_point) { [0, 0] }
 
-  describe '#chart_series' do
-    subject { service.chart_series }
+  describe '#chart_series', :focus do
+    subject { service.chart_series1 }
     it { is_expected.not_to be_nil }
-  end
-
-  describe '#fetch_group' do
-    # FIX : Replace on chart_series
-    subject { service.send(:fetch_group) }
 
     context 'empty but have zero point' do
-      it { is_expected.to eq [zero_point] }
+      it { is_expected.to eq FrequencyService::ZERO_POINT }
     end
 
     context 'only open issues - only zero point again' do
       let!(:issue) { create(:issue_stat, :open, board: board) }
-      it { is_expected.to eq [zero_point] }
+      it { is_expected.to eq FrequencyService::ZERO_POINT }
     end
 
     context 'one closed issue plus zero point' do
       let!(:issue) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
-      let(:expected_duration) { (issue.closed_at - issue.created_at).to_i / 86400 + 1 }
-      it { is_expected.to have(2).item }
-      it { expect(subject.last.first).to eq expected_duration }
-      it { expect(subject.last.second).to eq 1 }
+
+      it { is_expected.to have(3).items }
+      its([0]) { is_expected.to eq 0 }
+      its([1]) { is_expected.to eq 0 }
+      its([2]) { is_expected.to eq 1 }
     end
 
     context 'sort by duration (2 points + 1 zero)' do
       let!(:issue_1) { create(:issue_stat, :closed, wip: 2, board: board) }
       let!(:issue_2) { create(:issue_stat, :closed, wip: 1, board: board) }
-      let(:expected_duration_1) { (issue_1.closed_at - issue_1.created_at).to_i / 86400 + 1 }
-      let(:expected_duration_2) { (issue_2.closed_at - issue_2.created_at).to_i / 86400 + 1 }
+
       it { is_expected.to have(3).item }
-      it { expect(subject.second.first).to eq expected_duration_2 }
-      it { expect(subject.third.first).to eq expected_duration_1 }
+      its([0]) { is_expected.to eq 0 }
+      its([1]) { is_expected.to eq 1 }
+      its([2]) { is_expected.to eq 1 }
+    end
+
+    context 'sort by duration (1 points + 1 zero)' do
+      let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_2) { create(:issue_stat, :closed, wip: 1, board: board) }
+
+      it { is_expected.to have(3).item }
+      its([0]) { is_expected.to eq 0 }
+      its([1]) { is_expected.to eq 2 }
     end
   end
 
@@ -70,7 +75,7 @@ describe FrequencyService do
       it { is_expected.to eq 1 }
     end
 
-    context 'only in percentile', :focus do
+    context 'only in percentile' do
       let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: board) }
       let!(:issue_2) { create(:issue_stat, :closed, wip: 1, board: board) }
       let!(:issue_3) { create(:issue_stat, :closed, wip: 1, board: board) }

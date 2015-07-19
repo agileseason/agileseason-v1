@@ -4,7 +4,8 @@ module Graphs
 
     def index
       @frequency = ::FrequencyService.new(@board)
-      @chart_series = @frequency.chart_series
+      @chart_series_all = @frequency.chart_series.sort
+      @chart_series_month = @frequency.chart_series(1.month.ago).sort
     end
   end
 end
