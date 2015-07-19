@@ -59,14 +59,6 @@ class FrequencyService
 
   private
 
-  def fetch_group(issues)
-    issues.each_with_object({ 0 => 0 }) do |issue, hash|
-      duration = issue.elapsed_days.to_i + 1
-      count = hash[duration] || 0
-      hash[duration] = count + 1
-    end.sort
-  end
-
   def percentile_elapsed_days_bound(percentile, elapsed_days)
     min, max = elapsed_days.minmax
     (max - min) * percentile + min

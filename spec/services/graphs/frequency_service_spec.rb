@@ -3,8 +3,8 @@ describe FrequencyService do
   let(:service) { FrequencyService.new(board) }
   let(:zero_point) { [0, 0] }
 
-  describe '#chart_series', :focus do
-    subject { service.chart_series1 }
+  describe '#chart_series' do
+    subject { service.chart_series }
     it { is_expected.not_to be_nil }
 
     context 'empty but have zero point' do
