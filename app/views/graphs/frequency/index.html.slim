@@ -1,20 +1,48 @@
 = render partial: '/layouts/submenu'
 
-= render partial: 'graph'
+.graph-area
+  .info
+    .row
+      .title Last month
+      .stats
+        .avg
+          | Issue Avg Lifetime:
+          span #{stat_to_html(@frequency_month.avg_lifetime)} days
 
-// FIX: move this if's to FrequencyPresenter
-.notes Total closed issues: #{@duration.total_closed_issues}
-.notes
-  - if @duration.average_elapsed_days
-    | Total average elapsed days: #{@duration.average_elapsed_days}
-  - else
-    | Total average elapsed days: -
+        .avg-percentile
+          | Issue Avg Lifetime
+          br
+          | 80% persentile:
+          span #{stat_to_html(@frequency_month.avg_lifetime_percentile(0.8))} days
 
-// FIX : Remove it block with style. @blackchestnut
-.forecast
-  .subtitle Forecast duration for #{@duration.total_open_issues} open issues
-  .average
-    - if @duration.average_forecast_elapsed_days.nil?
-      | Average: can't be calculated - no closed issues
-    - else
-      | Average: #{@duration.average_forecast_elapsed_days.to_i}..#{@duration.forecast_elapsed_days} days
+        .issues
+          | Closed issues:
+          span #{@frequency_month.issues.count}
+
+        .throughput
+          | Throughput:
+          span #{stat_to_html(@frequency_month.throughput)} issues per day
+
+    .row
+      .title All times
+      .stats
+        .avg
+          | Issue Avg Lifetime:
+          span #{stat_to_html(@frequency_all.avg_lifetime)} days
+
+        .avg-percentile
+          | Issue Avg Lifetime
+          br
+          | 80% persentile:
+          span #{stat_to_html(@frequency_all.avg_lifetime_percentile(0.8))} days
+
+        .issues
+          | Closed issues:
+          span #{@frequency_all.issues.count}
+
+        .throughput
+          | Throughput:
+          span #{stat_to_html(@frequency_all.throughput)} issues per day
+
+  .graph
+    = render partial: 'graph'

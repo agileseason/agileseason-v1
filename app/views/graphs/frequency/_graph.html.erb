@@ -1,49 +1,54 @@
-<div>
-  <div id="container"></div>
-  <script type="text/javascript" charset="utf-8">
-    $(function () {
-        $('#container').highcharts({
-            chart: {
-                height: 600,
-                marginTop: 40,
-                type: 'column'
-            },
-            title: {
-                text: false
-            },
-            xAxis: {
-                categories: <%= raw(@chart_series_data.map(&:first)) %>,
-                title: {
-                    text: 'Elapsed Days'
-                },
-                min: 0,
-                showFirstLabel: false,
-                tickInterval: 5
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Frequency / Issues count'
-                }
-            },
-            legend: false,
-            plotOptions: {
-                column: {
-                    pointPadding: 0.05,
-                    groupPadding: 0,
-                    borderWidth: 0,
-                    shadow: false
-                }
-            },
-            tooltip: {
-                headerFormat: 'Issues: <b>{point.y}</b><br/>Closed for: <b>{point.x}</b>d<br>',
-                pointFormat: ''
-            },
-            series: [{
-                name: 'Days',
-                data: <%= raw(@chart_series_data.map(&:second)) %>
-            }]
-        });
-    });
-  </script>
-</div>
+<div id='container'></div>
+<script type='text/javascript' charset='utf-8'>
+  $(function () {
+      $('#container').highcharts({
+          chart: {
+              height: 600,
+              marginTop: 40,
+              type: 'column'
+          },
+          title: {
+              text: false
+          },
+          xAxis: {
+              categories: <%= raw(@frequency_all.chart_series.map(&:first)) %>,
+              title: {
+                  text: 'Lifetime in days'
+              },
+              min: 0,
+              showFirstLabel: false,
+              tickInterval: 5
+          },
+          yAxis: {
+              min: 0,
+              title: {
+                  text: 'Frequency / Issues count'
+              }
+          },
+          plotOptions: {
+              column: {
+                  borderWidth: 0,
+                  groupPadding: 0,
+                  grouping: false,
+                  pointPadding: 0.1,
+                  shadow: false
+              }
+          },
+          tooltip: {
+              headerFormat: 'Issues: <b>{point.y}</b><br/>Closed for: <b>{point.x}</b>d<br>',
+              pointFormat: ''
+          },
+          series: [{
+              name: 'All times',
+              pointPlacement: -0.2,
+              color: 'rgba(248,161,63,1)',
+              data: <%= raw(@frequency_all.chart_series.map(&:second)) %>
+          },{
+              name: 'Last month',
+              pointPlacement: -0.2,
+              color: 'rgba(186,60,61,.9)',
+              data: <%= raw(@frequency_month.chart_series.map(&:second)) %>
+          }]
+      });
+  });
+</script>
