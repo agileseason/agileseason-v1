@@ -33,20 +33,22 @@ module Graphs
 
     def build_tooltip(series)
       total_y = 0
-      index = 0
-      series.reverse_each do |hash|
-        issues = hash[:issues]
+
+      series.reverse.each_with_index do |hash, index|
         y = hash[:y]
-        total_y += y
         finish_date = Time.current + y.days
-        hash[:tooltip] = "Open Issues: <b>#{issues}</b><br/>Forecast by monthly throughput: <b>#{y}</b>d"
+        hash[:tooltip] =
+          "Open Issues: <b>#{hash[:issues]}</b>" +
+          "<br/>Forecast by monthly throughput: <b>#{y}</b>d"
+
+        total_y += y
         if index > 0
           previous_delay = total_y.round(2)
-          finish_date +=  previous_delay.days
+          finish_date += previous_delay.days
           hash[:tooltip] += "<br/>With previous delay: <b>#{previous_delay}</b>d"
         end
+
         hash[:tooltip] += "<br/>Finish Date: <b>#{finish_date.strftime('%Y-%m-%d')}</b>"
-        index += 1
       end
     end
 
