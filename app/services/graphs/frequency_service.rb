@@ -1,13 +1,21 @@
 class FrequencyService
-  pattr_initialize :board
-
   ZERO_POINT = { 0 => 0 }
 
-  def chart_series(from_at = board.created_at)
-    issues = closed_issues(from_at)
-    max = issues.map(&:elapsed_days).max
-    return ZERO_POINT if max.nil?
+  pattr_initialize :board, :from_at
 
+  def issues
+    @issues ||= board.
+      reload.
+      issue_stats.
+      closed.
+      where('closed_at >= ?', from_at).
+      to_a
+  end
+
+  def chart_series
+    return ZERO_POINT if issues.blank?
+
+    max = issues.map(&:elapsed_days).max
     normolized = (1..max.ceil).each_with_object(ZERO_POINT) do |day, hash|
       hash[day] = 0
     end
@@ -20,15 +28,13 @@ class FrequencyService
     normolized
   end
 
-  def avg_lifetime(from_at = board.created_at)
-    issues = closed_issues(from_at)
+  def avg_lifetime
     return if issues.blank?
 
-    (issues.to_a.sum(&:elapsed_days) / issues.count).round(2)
+    (issues.sum(&:elapsed_days) / issues.count).round(2)
   end
 
-  def avg_lifetime_percentile(persentile, from_at = board.created_at)
-    issues = closed_issues(from_at)
+  def avg_lifetime_percentile(persentile)
     return if issues.blank?
 
     bound = percentile_elapsed_days_bound(persentile, issues.map(&:elapsed_days))
@@ -36,25 +42,11 @@ class FrequencyService
     (percentile_issues.sum(&:elapsed_days) / percentile_issues.count).round(2)
   end
 
-  def closed_issues(from_at = board.created_at)
-    board.issue_stats.closed.where('closed_at >= ?', from_at)
-  end
-
-  def throughput(from_at = board.created_at)
-    issue_stats = board.issue_stats.closed.where('closed_at >= ?', from_at)
-    return if issue_stats.blank?
+  def throughput
+    return if issues.blank?
 
     passed_days = (Time.current - from_at) / 86400
-    issue_stats.count / passed_days
-  end
-
-  def throughput_html(from_at = board.created_at)
-    issue_per_day = throughput(from_at)
-    if issue_per_day.nil?
-      '-'
-    else
-      "#{issue_per_day.round(2)} issues per day"
-    end
+    issues.count / passed_days
   end
 
   private

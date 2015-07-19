@@ -7,42 +7,42 @@
       .stats
         .avg
           | Issue Avg Lifetime:
-          span #{@frequency.avg_lifetime(1.month.ago)} days
+          span #{stat_to_html(@frequency_month.avg_lifetime)} days
 
         .avg-percentile
           | Issue Avg Lifetime
           br
           | 80% persentile:
-          span #{@frequency.avg_lifetime_percentile(0.8, 1.month.ago)} days
+          span #{stat_to_html(@frequency_month.avg_lifetime_percentile(0.8))} days
 
         .issues
           | Closed issues:
-          span #{@frequency.closed_issues(1.month.ago).count}
+          span #{@frequency_month.issues.count}
 
         .throughput
           | Throughput:
-          span #{@frequency.throughput_html(1.month.ago)}
+          span #{stat_to_html(@frequency_month.throughput)} issues per day
 
     .row
       .title All times
       .stats
         .avg
           | Issue Avg Lifetime:
-          span #{@frequency.avg_lifetime} days
+          span #{stat_to_html(@frequency_all.avg_lifetime)} days
 
         .avg-percentile
           | Issue Avg Lifetime
           br
           | 80% persentile:
-          span #{@frequency.avg_lifetime_percentile(0.8)} days
+          span #{stat_to_html(@frequency_all.avg_lifetime_percentile(0.8))} days
 
         .issues
           | Closed issues:
-          span #{@frequency.closed_issues.count}
+          span #{@frequency_all.issues.count}
 
         .throughput
           | Throughput:
-          span #{@frequency.throughput_html}
+          span #{stat_to_html(@frequency_all.throughput)} issues per day
 
   .graph
     = render partial: 'graph'

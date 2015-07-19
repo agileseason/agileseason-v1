@@ -2,10 +2,17 @@ module Graphs
   class FrequencyController < ApplicationController
     before_action :fetch_board
 
+    helper_method :stat_to_html
+
     def index
-      @frequency = ::FrequencyService.new(@board)
-      @chart_series_all = @frequency.chart_series.sort
-      @chart_series_month = @frequency.chart_series(1.month.ago).sort
+      @frequency_all = ::FrequencyService.new(@board, @board.created_at)
+      @frequency_month = ::FrequencyService.new(@board, 1.month.ago)
+    end
+
+    private
+
+    def stat_to_html(value)
+      value.nil? ? '-' : value.round(2)
     end
   end
 end

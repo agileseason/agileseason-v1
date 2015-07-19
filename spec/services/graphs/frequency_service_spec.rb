@@ -1,6 +1,7 @@
 describe FrequencyService do
-  let(:board) { create(:board, :with_columns) }
-  let(:service) { FrequencyService.new(board) }
+  let(:board) { create(:board, :with_columns, created_at: now - 1.year) }
+  let(:now) { Time.local(2015, 1, 1, 0, 0, 0) }
+  let(:service) { FrequencyService.new(board, board.created_at) }
   let(:zero_point) { [0, 0] }
 
   describe '#chart_series' do
@@ -42,6 +43,14 @@ describe FrequencyService do
       it { is_expected.to have(3).item }
       its([0]) { is_expected.to eq 0 }
       its([1]) { is_expected.to eq 2 }
+    end
+
+    context 'from other board' do
+      let(:other_board) { create(:board, :with_columns) }
+      let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_2) { create(:issue_stat, :closed, wip: 1, board: board) }
+
+      it { is_expected.to eq FrequencyService::ZERO_POINT }
     end
   end
 
@@ -92,10 +101,8 @@ describe FrequencyService do
   end
 
   describe '#throughput' do
-    subject { service.throughput(from_at) }
-    let(:board) { create(:board, :with_columns, created_at: now - 1.year) }
-    let(:now) { Time.local(2015, 1, 1, 0, 0, 0) }
-    let(:from_at) { 1.month.ago }
+    subject { service.throughput }
+    let(:board) { create(:board, :with_columns, created_at: now - 1.month) }
 
     context 'without issues' do
       it { is_expected.to be_nil }

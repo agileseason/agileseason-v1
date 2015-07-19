@@ -11,7 +11,7 @@
               text: false
           },
           xAxis: {
-              categories: <%= raw(@chart_series_all.map(&:first)) %>,
+              categories: <%= raw(@frequency_all.chart_series.map(&:first)) %>,
               title: {
                   text: 'Lifetime in days'
               },
@@ -42,12 +42,12 @@
               name: 'All times',
               pointPlacement: -0.2,
               color: 'rgba(248,161,63,1)',
-              data: <%= raw(@chart_series_all.map(&:second)) %>
+              data: <%= raw(@frequency_all.chart_series.map(&:second)) %>
           },{
               name: 'Last month',
               pointPlacement: -0.2,
               color: 'rgba(186,60,61,.9)',
-              data: <%= raw(@chart_series_month.map(&:second)) %>
+              data: <%= raw(@frequency_month.chart_series.map(&:second)) %>
           }]
       });
   });
