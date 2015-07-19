@@ -1,8 +1,6 @@
 module Graphs
   class ForecastBuilder
-    def initialize(board)
-      @board = board
-    end
+    pattr_initialize :board
 
     def categories
       @board.columns.map(&:name)
@@ -20,11 +18,10 @@ module Graphs
 
     def series_forecast
       series = @board.columns.each_with_object([]) do |column, array|
-        issues = column.issue_stats.open.count
-        forecast_day = (issues * forecast_wip).round(2)
+        issues_count = column.issue_stats.open.count
         data = {
-          issues: issues,
-          y: forecast_day
+          issues: issues_count,
+          y: forecast_days(issues_count)
         }
         array << data
       end
@@ -41,18 +38,25 @@ module Graphs
         issues = hash[:issues]
         y = hash[:y]
         total_y += y
-        hash[:tooltip] = "Open Issues: <b>#{issues}</b><br/>By Average: <b>#{y}</b>d"
-        hash[:tooltip] += "<br/>With previous delay: <b>#{total_y.round(2)}</b>d" unless index == 0
+        finish_date = Time.current + y.days
+        hash[:tooltip] = "Open Issues: <b>#{issues}</b><br/>Forecast by monthly throughput: <b>#{y}</b>d"
+        if index > 0
+          previous_delay = total_y.round(2)
+          finish_date +=  previous_delay.days
+          hash[:tooltip] += "<br/>With previous delay: <b>#{previous_delay}</b>d"
+        end
+        hash[:tooltip] += "<br/>Finish Date: <b>#{finish_date.strftime('%Y-%m-%d')}</b>"
         index += 1
       end
     end
 
-    def average_wip
-      @average_wip ||= StatsCalc.average_wip(@board.issue_stats.closed)
+    def issues_per_day
+      @issues_per_day ||= FrequencyService.new(board, 1.month.ago).throughput
     end
 
-    def forecast_wip
-      @forecast_wip ||= average_wip > 0 ? average_wip : 1
+    def forecast_days(issues_count)
+      return issues_count if issues_per_day.nil? || issues_per_day.zero?
+      (issues_count / issues_per_day).round(2)
     end
   end
 end
