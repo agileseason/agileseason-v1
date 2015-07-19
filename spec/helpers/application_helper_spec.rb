@@ -23,7 +23,12 @@ describe ApplicationHelper do
         let(:text) { "##{number}" }
         let(:number) { 10 }
 
-        it { is_expected.to eq "<p><a href='#{un show_board_issues_url(board, number)}'>##{number}</a></p>\n" }
+        it do
+          is_expected.
+            to eq(
+              "<p><a href='#{un show_board_issues_url(board, number)}'>##{number}</a></p>\n"
+            )
+        end
       end
 
       context 'with #abs' do
@@ -41,7 +46,13 @@ describe ApplicationHelper do
         let(:number_1) { 10 }
         let(:number_2) { 999 }
 
-        it { is_expected.to eq "<p>text <a href='#{un show_board_issues_url(board, number_1)}'>##{number_1}</a> text2 <a href='#{un show_board_issues_url(board, number_2)}'>##{number_2}</a></p>\n" }
+        it do
+          is_expected.
+            to eq(
+              "<p>text <a href='#{un show_board_issues_url(board, number_1)}'>##{number_1}</a> " +
+              "text2 <a href='#{un show_board_issues_url(board, number_2)}'>##{number_2}</a></p>\n"
+            )
+        end
       end
     end
 
