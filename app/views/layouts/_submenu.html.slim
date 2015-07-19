@@ -14,16 +14,16 @@ ul.b-submenu
         a href="#{un board_graphs_control_index_url(@board)}" Control Chart
 
     li
-      - if params[:controller] == 'graphs/forecast'
-        span Forecast Duration
-      - else
-        a href="#{un board_graphs_forecast_index_url(@board)}" Forecast Duration
-
-    li
       - if params[:controller] == 'graphs/frequency'
         span Frequency
       - else
         a href="#{un board_graphs_frequency_index_url(@board)}" Frequency
+
+    li
+      - if params[:controller] == 'graphs/forecast'
+        span Forecast Duration
+      - else
+        a href="#{un board_graphs_forecast_index_url(@board)}" Forecast Duration
 
   - else
     li
@@ -31,6 +31,6 @@ ul.b-submenu
 
   li
     - if params[:controller] == 'graphs/lines'
-      span Lines
+      span Lines of Code
     - else
-      a href="#{un board_graphs_lines_url(@board)}" Lines
+      a href="#{un board_graphs_lines_url(@board)}" Lines of Code

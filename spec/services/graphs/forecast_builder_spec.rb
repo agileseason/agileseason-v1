@@ -1,5 +1,10 @@
 describe Graphs::ForecastBuilder do
   let(:builder) { Graphs::ForecastBuilder.new(board) }
+  before do
+    allow_any_instance_of(FrequencyService).
+      to receive(:throughput).
+      and_return(1)
+  end
 
   describe '#categories' do
     subject { builder.categories }
