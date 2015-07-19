@@ -8,7 +8,7 @@
       img.avatar src="#{comment.user.avatar_url}"
   .comment-body
     .user-login #{comment.user.login}&nbsp;
-    .date = comment.created_at.localtime.strftime('%h %d, %H:%M')
+    .date = comment.created_at.in_time_zone(Time.zone.name).strftime('%h %d, %H:%M')
 
     - if can? :update, board
       span.controls
