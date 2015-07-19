@@ -14,7 +14,7 @@ class FrequencyService
 
     issues.each do |issue|
       duration = issue.elapsed_days.ceil
-      normolized[duration] = normolized[duration] + 1
+      normolized[duration] += 1
     end
 
     normolized
