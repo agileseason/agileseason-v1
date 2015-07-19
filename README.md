@@ -17,6 +17,7 @@ Look at the our development board for example - [agileseason.com](http://agilese
 - [x] Attach images by drag & drop
 - [ ] Roadmap
 - [ ] Timeline
+- [ ] Bus factor
 
 ### Kanban
 
