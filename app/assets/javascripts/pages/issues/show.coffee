@@ -23,6 +23,12 @@ $(document).on 'ready page:load', ->
 
   init_uploading($('input:file', $('.add-comment-form')))
 
+  $('.b-issue-modal').on 'keydown', 'textarea', (e) ->
+    if e.keyCode == 13 && (e.metaKey || e.ctrlKey)
+      $(@.form).find('input:submit').click()
+      $(@).blur()
+      false
+
   # редактировать название тикета
   $('.issue-title').click ->
     $title = $(@).closest('.title')
