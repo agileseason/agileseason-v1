@@ -7,7 +7,7 @@
 
   = render partial: 'columns/menu', locals: { column: column }
 
-  .issues.scroller
+  .issues.scroller class="#{'js-can-update' if can?(:update, @board)}"
     = render partial: 'issues/issue_miniature',
       collection: @board_bag.column_issues(column),
       as: :issue,

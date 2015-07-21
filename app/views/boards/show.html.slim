@@ -5,17 +5,20 @@
     data-faye-channel="#{FayePusher.board_channel(@board)}"
     data-faye-client-id="#{current_user.remember_token}"
   ]
+
   .alert-timeout
     .title
       | You have been disconnected from the
       br
       | Agile Season server for too long.
     a.button href="#{un board_url(@board)}" Reload now
+
   .board-columns
     - @board_bag.columns.each do |column|
       = render partial: 'columns/show', locals: { column: column }
 
-    .board-column
-      div.new-column : span Append a new column
-      .create-column
-        = render partial: 'columns/new', locals: { board: @board }
+    - if can?(:update, @board)
+      .board-column
+        .new-column : span Append a new column
+        .create-column
+          = render partial: 'columns/new', locals: { board: @board }
