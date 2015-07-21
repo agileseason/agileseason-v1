@@ -23,14 +23,16 @@ $(document).on 'ready page:load', ->
 
   init_uploading($('input:file', $('.add-comment-form')))
 
-  $('.b-issue-modal').on 'keydown', 'textarea', (e) ->
+  $issue_modal = $('.b-issue-modal.js-can-update')
+
+  $issue_modal.on 'keydown', 'textarea', (e) ->
     if e.keyCode == 13 && (e.metaKey || e.ctrlKey)
       $(@.form).find('input:submit').click()
       $(@).blur()
       false
 
   # редактировать название тикета
-  $('.issue-title').click ->
+  $('.issue-title', $issue_modal).click ->
     $title = $(@).closest('.title')
     $textarea = $('textarea', $title)
 
@@ -60,7 +62,7 @@ $(document).on 'ready page:load', ->
 
     highlight_code()
 
-  $('.move-to-column li').click ->
+  $('.move-to-column li', $issue_modal).click ->
     $('.move-to-column li').removeClass 'active'
     $(@).addClass 'active'
 
