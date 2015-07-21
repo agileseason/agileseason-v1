@@ -24,19 +24,20 @@
   - unless issue.comments.blank?
     span.octicon.octicon-comment
 
-  - if issue.open?
-    a.button.close [
-      href="#{close_board_issues_url(@board, issue.number)}"
+  - if can?(:update, @board)
+    - if issue.open?
+      a.button.close [
+        href="#{close_board_issues_url(@board, issue.number)}"
+        data-type='json'
+        data-remote='true'
+        title='Click to close'
+      ] Close
+
+    a.button.archive [
+      class="#{:hidden unless issue.closed?}"
+      href="#{archive_board_issues_url(@board, issue.number)}"
       data-type='json'
       data-remote='true'
-      title='Click to close'
-    ] Close
-
-  a.button.archive [
-    class="#{:hidden unless issue.closed?}"
-    href="#{archive_board_issues_url(@board, issue.number)}"
-    data-type='json'
-    data-remote='true'
-  ] Archive
+    ] Archive
 
   .due-date class="#{:none unless issue.due_date_at}" = k(:issue, issue).due_date_at
