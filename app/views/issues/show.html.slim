@@ -37,7 +37,7 @@
                 ] = column.name
 
       - unless k(:issue, @issue).body_empty?
-        .issue-description = markdown(@issue.body.html_safe, @board.github_url)
+        .issue-description = markdown(@issue.body.html_safe, @board)
 
       .issue-comments data-url="#{comments_board_issues_url @board, @issue.number}"
         - @comments.each do |comment|
