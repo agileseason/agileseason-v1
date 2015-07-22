@@ -56,10 +56,10 @@ What happens when Agile Season refreshes your GitHub repositories
 
 We pass your GitHub token to our [Ruby on Rails] app
 (the app whose source code you are reading right now),
-which runs on [Linode].
+which runs on [Linode]. Linode is a "Cloud Hosting".
 
 As part of this process,
-we temporarily store your [encrypted]: ../lib/encryptor.rb GitHub token in the Redis database
+we temporarily store your [encrypted] GitHub token in the Redis database
 when enqueueing a Sidekiq workers.
 
 ```bash
@@ -69,8 +69,7 @@ grep -R encrypted_github_token app
 [Ruby on Rails]: http://rubyonrails.org
 [Linode]: https://www.linode.com
 [Sidekiq]: https://github.com/mperham/sidekiq
-
-Linode is a "Cloud Hosting",
+[encrypted]: ../lib/encryptor.rb
 
 Employee access
 ---------------
