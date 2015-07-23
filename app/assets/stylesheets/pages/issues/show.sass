@@ -1,5 +1,6 @@
 @import compass/css3/border-radius
 @import compass/css3/box-shadow
+@import compass/css3/box-sizing
 @import compass/css3/text-shadow
 @import compass/css3/transition
 @import globals/variables
@@ -144,6 +145,7 @@
 
     .label
       +border-radius(0 0 4px 4px)
+      +box-sizing(border-box)
       font-size: 14px
       line-height: 18px
       margin-right: 5px
@@ -520,7 +522,7 @@
 
       form
         padding: 10px 0 0 10px
-        width: 353px
+        width: 356px
 
       .labels-block
         label.check_boxes
