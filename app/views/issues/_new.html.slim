@@ -5,7 +5,7 @@
   .labels
     - unless board_bag.labels.empty?
       - board_bag.labels.each do |label|
-        label.label for="#{label.name}" style="background: ##{label.color};"
+        label.label for="#{label.name}" style="#{k(:issue, board_bag).css_style_for(label)}"
           input type="checkbox" id="#{label.name}" name="issue[labels][]" value="#{label.name}"
           .label-name = label.name
 

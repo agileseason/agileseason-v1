@@ -1,12 +1,14 @@
 @import compass/css3/border-radius
+@import compass/css3/box-sizing
 
 .b-issue-labels
   max-height: 13px
 
   .label
     +border-radius(0 0 2px 2px)
+    +box-sizing(border-box)
     background: #eeeeee
-    color: white !important
+    color: white
     display: inline
     font-size: 10px
     line-height: 11px

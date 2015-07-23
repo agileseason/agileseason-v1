@@ -5,7 +5,7 @@ class IssuePresenter < Keynote::Presenter
   def labels_html
     build_html do
       labels.sort_by(&:name).each do |label|
-        div class: :label, style: "background-color:##{label.color}; color:##{color(label)}" do
+        div class: :label, style: css_style_for(label) do
           label.name
         end
       end
@@ -16,18 +16,32 @@ class IssuePresenter < Keynote::Presenter
     issue.due_date_at.try(:utc).try(:strftime, '%b %d %H:%M')
   end
 
-  # FIX : Public method only for test - not single responsibility.
-  # FIX : Need extract to gem.
-  def color(label)
-    hex = label.color.hex
-    if hex == 16_777_215 # white
-      '000'
-    elsif hex >= 16_525_609 # red
-      'fff'
-    elsif hex <= 5_446_119 # dark blue
-      'fff'
+  # FIX : Extract work with labels to other presenter. See issues/_new.html.slim
+  def css_style_for(label)
+    border_color = label.color == 'ffffff' ? 'eee' : label.color
+    "background-color:##{label.color}; color:##{color_for(label)}; border: 1px solid ##{border_color}"
+  end
+
+  def color_for(label)
+    case label.color
+    # Github standart colors
+    when 'ffffff' then '000'
+    when 'e6e6e6' then '000'
+    when 'fef2c0' then '000'
+    when '84b6eb' then '000'
+    when 'cccccc' then '000'
+    when 'fbca04' then '000'
+    when 'f7c6c7' then '000'
+    when 'fad8c7' then '000'
+    when 'fef2c0' then '000'
+    when 'bfe5bf' then '000'
+    when 'bfdadc' then '000'
+    when 'c7def8' then '000'
+    when 'bfd4f2' then '000'
+    when 'd4c5f9' then '000'
+
     else
-      '000'
+      'fff'
     end
   end
 
