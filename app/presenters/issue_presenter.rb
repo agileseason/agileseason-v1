@@ -5,8 +5,32 @@ class IssuePresenter < Keynote::Presenter
   def labels_html
     build_html do
       labels.sort_by(&:name).each do |label|
-        div class: :label, style: css_style_for(label) do
+        div(class: :label, style: css_style_for(label)) do
           label.name
+        end
+      end
+    end
+  end
+
+  def labels_edit_html(board)
+    build_html do
+      board.labels.sort_by(&:name).each do |label|
+        div.label(style: css_style_for(label)) do
+          is_checked = issue.labels.map(&:name).any? { |l| l == label.name }
+          options = {
+            type: :checkbox,
+            id: label.name,
+            name: 'issue[labels][]',
+            value: "#{label.name}",
+            'data-url' => "#{update_board_issues_url(board, issue)}",
+          }
+
+          options[:checked] = 'checked' if is_checked
+
+          input(options)
+          div(class: 'label-name') do
+            label.name
+          end
         end
       end
     end
