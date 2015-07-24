@@ -8,7 +8,8 @@
   data-faye-channel="#{FayePusher.issue_channel(@board)}"
   data-faye-client-id="#{current_user.remember_token}"
 ]
-  = render partial: 'issues/labels', locals: { issue: @issue, board: @board }
+
+  = k(:issue, @issue).labels_html
 
   .content
     .issue-content

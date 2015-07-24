@@ -6,7 +6,7 @@
   data-url="#{un show_board_issues_url(@board, issue.number)}"
 ]
 
-  = render partial: 'issues/labels', locals: { issue: issue, board: @board }
+  = k(:issue, issue).labels_html
 
   .issue-title
     span.issue-name data-number="#{issue.number}"
