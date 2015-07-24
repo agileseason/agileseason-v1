@@ -6,24 +6,7 @@
         url: update_board_issues_url(board, issue.number),
         remote: true,
         method: :post do |f|
-        - board.labels.each do |label|
-          label.label style="#{k(:issue, issue).css_style_for(label)}"
-            - if issue.labels.map(&:name).any? { |l| l == label.name }
-              input[
-                type="checkbox"
-                id="#{label.name}"
-                name="issue[labels][]"
-                value="#{label.name}"
-                data-url="#{update_board_issues_url(board, issue)}"
-                checked="checked"]
-            - else
-              input[
-                type="checkbox"
-                id="#{label.name}"
-                name="issue[labels][]"
-                value="#{label.name}"
-                data-url="#{update_board_issues_url(board, issue)}"]
-            .label-name = label.name
+        = k(:issue, issue).labels_edit_html(board)
         = f.button :submit
 
   div
