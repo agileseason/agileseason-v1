@@ -5,7 +5,7 @@ class MixpanelCharge < MixpanelTrack
     tracker.people.track_charge(user_id, sum)
   end
 
-private
+  private
 
   def profile_parameters(user)
     parameters = {

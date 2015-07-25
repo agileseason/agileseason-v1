@@ -6,7 +6,7 @@ class MixpanelTrack
     tracker.track(user_id, event, options)
   end
 
-private
+  private
 
   def tracker
     @tracker ||= Mixpanel::Tracker.new(token)

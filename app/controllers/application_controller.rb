@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
   end
 
   concerning :MixpanelTracking do
-    def ui_event event, options = {}
+    def ui_event(event, options = {})
       if signed_in?
         MixpanelTracker.new.track_user_event(current_user, event, @board, options)
       else
@@ -81,7 +81,7 @@ class ApplicationController < ActionController::Base
 
     private
 
-    def cookie_value value
+    def cookie_value(value)
       { value: value, expires: 2.months.from_now }
     end
 
