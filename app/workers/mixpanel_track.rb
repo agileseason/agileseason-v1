@@ -3,6 +3,7 @@ class MixpanelTrack
   sidekiq_options queue: :mixpanel
 
   def perform(user_id, event, options)
+    return unless can_track?
     tracker.track(user_id, event, options)
   end
 
@@ -14,5 +15,9 @@ private
 
   def token
     ENV['AGILE_SEASON_MIXPANEL_TOKEN']
+  end
+
+  def can_track?
+    token.present?
   end
 end

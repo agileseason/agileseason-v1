@@ -8,6 +8,7 @@ describe MixpanelTrack do
     let(:tracker) { worker.send :tracker }
 
     before { allow(tracker).to receive :track }
+    before { allow(worker).to receive(:can_track?).and_return(true) }
     before { worker.perform(user_id, event, options) }
 
     it do
