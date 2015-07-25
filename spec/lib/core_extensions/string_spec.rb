@@ -71,18 +71,18 @@ describe String do
     subject { url.extract_domain }
 
     context 'with_www' do
-      let(:url) { "http://www.test.org/test" }
+      let(:url) { 'http://www.test.org/test' }
       it { is_expected.to eq 'www.test.org' }
     end
 
     context 'without_www' do
-      let(:url) { "http://test.org/test" }
+      let(:url) { 'http://test.org/test' }
       it { is_expected.to eq 'test.org' }
     end
   end
 
   describe '#extract_path' do
-    subject { "http://www.test.org/test/test".extract_path }
+    subject { 'http://www.test.org/test/test'.extract_path }
     it { is_expected.to eq '/test/test' }
   end
 
