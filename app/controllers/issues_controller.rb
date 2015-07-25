@@ -20,6 +20,7 @@ class IssuesController < ApplicationController
   end
 
   def search
+    ui_event(:issue_search)
     issues = github_api.search_issues(@board, params[:query])
     render partial: 'search_result', locals: { issues: issues, board: @board }
   end
@@ -27,6 +28,7 @@ class IssuesController < ApplicationController
   def create
     @issue = Issue.new(issue_params)
     if @issue.valid?
+      ui_event(:issue_create)
       issue = github_api.create_issue(@board, @issue)
       @board_bag.update_cache(issue)
       render(

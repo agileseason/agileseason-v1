@@ -38,6 +38,27 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  concerning :MixpanelTracking do
+    def ui_event event, options = {}
+      if signed_in?
+        MixpanelTracker.new.track_user_event(current_user, event, @board, options)
+      else
+        options.merge!(guest_event_options)
+        MixpanelTracker.new.track_guest_event(session[:guest_id], event, options)
+      end
+    end
+
+    private
+
+    def guest_event_options
+      {
+        source: cookies[:source],
+        campaign: cookies[:campaign],
+        medium: cookies[:medium]
+      }
+    end
+  end
+
   concerning :UtmTracking do
     def track_guest
       session[:guest_id] ||= SecureRandom.hex(16)

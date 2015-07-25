@@ -6,6 +6,7 @@ class CommentsController < ApplicationController
 
   def create
     comment = github_api.add_comment(@board, number, params[:comment][:body])
+    ui_event(:issue_comment)
     broadcast(comment)
     render partial: 'show', locals: { comment: comment, board: @board, number: number }
   end

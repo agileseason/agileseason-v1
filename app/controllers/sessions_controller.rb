@@ -34,6 +34,7 @@ class SessionsController < ApplicationController
       }
     )
 
+    ui_event :registration
     MixpanelTracker.new.link_user(user, session[:guest_id])
 
     flash[:signed_up] = true
