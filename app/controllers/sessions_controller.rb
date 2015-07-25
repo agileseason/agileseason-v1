@@ -31,7 +31,15 @@ class SessionsController < ApplicationController
     user = User.create!(
       github_username: github_username_auth,
       email: github_email_address_auth,
+      utm: {
+        source: cookies[:source],
+        medium: cookies[:medium],
+        campaign: cookies[:campaign]
+      }
     )
+    # TODO Mixpanel registratcion event.
+    # TODO Mixpanel send profile.
+
     flash[:signed_up] = true
     user
   end
