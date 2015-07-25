@@ -12,7 +12,7 @@ class String
   end
 
   def uncapitalize
-    self.first.downcase + self.slice(1..-1)
+    first.downcase + slice(1..-1)
   end
 
   def with_http
