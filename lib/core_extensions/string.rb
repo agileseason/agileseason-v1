@@ -32,10 +32,10 @@ class String
   end
 
   def prettify
-    self.gsub(/\r?\n/, ' ').squeeze("\s").strip
+    gsub(/\r?\n/, ' ').squeeze("\s").strip
   end
 
   def has_protocol?
-    self.starts_with?('https://') || self.starts_with?('http://')
+    starts_with?('https://') || starts_with?('http://')
   end
 end
