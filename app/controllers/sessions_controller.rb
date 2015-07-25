@@ -20,18 +20,23 @@ class SessionsController < ApplicationController
   private
 
   def find_user
-    if user = User.where(github_username: github_username_auth).first
-      # TODO mixpanel sign_in
-    end
-
-    user
+    User.where(github_username: github_username_auth).first
   end
 
   def create_user
     user = User.create!(
       github_username: github_username_auth,
       email: github_email_address_auth,
+      utm: {
+        source: cookies[:source],
+        medium: cookies[:medium],
+        campaign: cookies[:campaign]
+      }
     )
+
+    ui_event :registration
+    MixpanelTracker.new.link_user(user, session[:guest_id])
+
     flash[:signed_up] = true
     user
   end

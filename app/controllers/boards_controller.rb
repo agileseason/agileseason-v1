@@ -34,6 +34,7 @@ class BoardsController < ApplicationController
     @board.columns << build_columns
 
     if @board.save
+      ui_event(:board_create)
       redirect_to un board_url(@board)
     else
       render 'new'
