@@ -29,7 +29,7 @@ class MixpanelTracker
   private
 
   def skip?
-    Rails.env.test?
+    Rails.env.test? || ENV['AGILE_SEASON_MIXPANEL_TOKEN'].blank?
   end
 
   def user_event_options(user, board)

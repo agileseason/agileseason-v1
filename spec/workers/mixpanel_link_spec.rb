@@ -9,7 +9,6 @@ describe MixpanelLink do
 
     before { allow(tracker).to receive :alias }
     before { allow(tracker).to receive(:people).and_return people }
-    before { allow(worker).to receive(:can_track?).and_return(true) }
     before { worker.perform(user.id, guest_id) }
 
     it do

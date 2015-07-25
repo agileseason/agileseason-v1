@@ -1,6 +1,5 @@
 class MixpanelLink < MixpanelTrack
   def perform user_id, guest_id
-    return unless can_track?
     user = User.find(user_id)
     tracker.alias(user_id, guest_id)
     tracker.people.set(user.id, options(user))

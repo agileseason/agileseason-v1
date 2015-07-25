@@ -1,6 +1,5 @@
 class MixpanelCharge < MixpanelTrack
   def perform(user_id, sum)
-    return unless can_track?
     user = User.find(user_id)
     tracker.people.set(user_id, profile_parameters(user))
     tracker.people.track_charge(user_id, sum)

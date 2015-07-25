@@ -16,8 +16,4 @@ private
   def token
     ENV['AGILE_SEASON_MIXPANEL_TOKEN']
   end
-
-  def can_track?
-    token.present?
-  end
 end

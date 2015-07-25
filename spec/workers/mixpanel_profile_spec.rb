@@ -8,7 +8,6 @@ describe MixpanelProfile do
     let(:people) { double set: nil }
 
     before { allow(tracker).to receive(:people).and_return people }
-    before { allow(worker).to receive(:can_track?).and_return(true) }
     before { worker.perform(user, options) }
 
     it do
