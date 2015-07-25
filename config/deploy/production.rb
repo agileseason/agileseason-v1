@@ -14,3 +14,4 @@ set :enable_ssl, false
 
 set :sidekiq_processes, 1
 set :sidekiq_concurrency, 2
+set :sidekiq_options_per_process, ['--queue default --queue mixpanel']

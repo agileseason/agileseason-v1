@@ -40,19 +40,21 @@ class ApplicationController < ActionController::Base
 
   concerning :UtmTracking do
     def track_guest
+      session[:guest_id] ||= SecureRandom.hex(16)
+
       # UTM parameters
       if params[:utm_source].present?
-        cookies[:source] = cookie_value params[:utm_source]
+        cookies[:source] = cookie_value(params[:utm_source])
       else
         cookies[:source] ||= request_referrer
       end
 
       if params[:utm_campaign].present?
-        cookies[:campaign] = cookie_value params[:utm_campaign]
+        cookies[:campaign] = cookie_value(params[:utm_campaign])
       end
 
       if params[:utm_medium].present?
-        cookies[:medium] = cookie_value params[:utm_medium]
+        cookies[:medium] = cookie_value(params[:utm_medium])
       end
     end
 
@@ -65,9 +67,9 @@ class ApplicationController < ActionController::Base
     def request_referrer
       referer = request.headers['HTTP_REFERER']
       if referer.present?
-        cookie_value referer.extract_domain.sub(request.domain || Pumba::DOMAIN, 'direct')
+        cookie_value(referer.extract_domain.sub(request.domain || Pumba::DOMAIN, 'direct'))
       else
-        cookie_value 'direct'
+        cookie_value('direct')
       end
     end
   end
