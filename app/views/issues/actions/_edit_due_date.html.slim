@@ -5,6 +5,6 @@
     input.time type='text' value="#{issue.due_date_at.try(:utc).try(:strftime, '%H:%M') || '12:00'}"
     a.save Save date & time
 
-  a.button.set-due-date data-date="#{(issue.due_date_at || DateTime.now).utc.strftime('%m/%d/%Y')}" data-disable_with="asgasga"
+  a.button.set-due-date data-date="#{(issue.due_date_at || DateTime.now).utc.strftime('%m/%d/%Y')}" data-disable_with='Due Date'
     span.octicon.octicon-clock
     | Due Date
