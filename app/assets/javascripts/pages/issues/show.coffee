@@ -174,7 +174,7 @@ $(document).on 'ready page:load', ->
     $popup.show()
 
   # сохранение крайней даты
-  $('.edit-due-date .button.save').click ->
+  $('.edit-due-date .save').click ->
     date = $('input.date').val()
     time = $('input.time').val()
     $.ajax
