@@ -17,6 +17,6 @@ class MixpanelTrack
   end
 
   def token
-    ENV['AGILE_SEASON_MIXPANEL_TOKEN']
+    ENV['AGILE_SEASON_MIXPANEL_TOKEN'] || Agileseason::MIXPANEL_TOKEN
   end
 end

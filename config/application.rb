@@ -12,6 +12,8 @@ require File.expand_path('../../lib/time_with_timezone', __FILE__)
 require 'xproc/global'
 
 module Agileseason
+  MIXPANEL_TOKEN = ENV['AGILE_SEASON_MIXPANEL_TOKEN']
+
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
