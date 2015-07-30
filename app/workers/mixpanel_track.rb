@@ -11,12 +11,14 @@ class MixpanelTrack
   def tracker
     logger.info '********************************'
     logger.info "* TOKEN = #{token} *"
+    logger.info "* OTHER_ENV_1 = #{ENV['S3_BUCKET_NAME']} *"
+    logger.info "* OTHER_ENV_2 = #{ENV['AGILE_SEASON_MIXPANEL_TOKEN']} *"
     logger.info '********************************'
     raise 'Error token' if token.blank? && !Rails.env.test?
     @tracker ||= Mixpanel::Tracker.new(token)
   end
 
   def token
-    ENV['AGILE_SEASON_MIXPANEL_TOKEN'] || Agileseason::MIXPANEL_TOKEN
+    ENV['AGILE_SEASON_MIXPANEL_TOKEN']
   end
 end
