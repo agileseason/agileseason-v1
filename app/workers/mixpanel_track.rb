@@ -3,6 +3,10 @@ class MixpanelTrack
   sidekiq_options queue: :mixpanel
 
   def perform(user_id, event, options)
+    logger.info '********************************'
+    logger.info "* TOKEN = #{token} *"
+    logger.info '********************************'
+    raise 'Error token' if token.blank?
     tracker.track(user_id, event, options)
   end
 
