@@ -1,8 +1,8 @@
 class MixpanelLink < MixpanelTrack
-  def perform(user_id, guest_id)
+  def perform(token, user_id, guest_id)
     user = User.find(user_id)
-    tracker.alias(user_id, guest_id)
-    tracker.people.set(user.id, options(user))
+    tracker(token).alias(user_id, guest_id)
+    tracker(token).people.set(user.id, options(user))
   end
 
   private

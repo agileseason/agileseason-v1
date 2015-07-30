@@ -2,23 +2,13 @@ class MixpanelTrack
   include Sidekiq::Worker
   sidekiq_options queue: :mixpanel
 
-  def perform(user_id, event, options)
-    tracker.track(user_id, event, options)
+  def perform(token, user_id, event, options)
+    tracker(token).track(user_id, event, options)
   end
 
   private
 
-  def tracker
-    logger.info '********************************'
-    logger.info "* TOKEN = #{token} *"
-    logger.info "* OTHER_ENV_1 = #{ENV['S3_BUCKET_NAME']} *"
-    logger.info "* OTHER_ENV_2 = #{ENV['AGILE_SEASON_MIXPANEL_TOKEN']} *"
-    logger.info '********************************'
-    raise 'Error token' if token.blank? && !Rails.env.test?
+  def tracker(token)
     @tracker ||= Mixpanel::Tracker.new(token)
-  end
-
-  def token
-    ENV['AGILE_SEASON_MIXPANEL_TOKEN']
   end
 end

@@ -3,12 +3,13 @@ describe MixpanelTrack do
     let(:user_id) { 123 }
     let(:event) { 'some event' }
     let(:options) { { zzz: true } }
+    let(:token) { 'fake_token' }
 
     let(:worker) { MixpanelTrack.new }
-    let(:tracker) { worker.send :tracker }
+    let(:tracker) { worker.send(:tracker, token) }
 
     before { allow(tracker).to receive :track }
-    before { worker.perform(user_id, event, options) }
+    before { worker.perform(token, user_id, event, options) }
 
     it do
       expect(tracker).

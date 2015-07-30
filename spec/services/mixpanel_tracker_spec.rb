@@ -1,6 +1,8 @@
 describe MixpanelTracker do
   let(:service) { MixpanelTracker.new }
+  let(:token) { 'fake_token' }
   before { allow(service).to receive(:skip?).and_return(false) }
+  before { allow(service).to receive(:token).and_return(token) }
 
   describe '#track_user_event' do
     let(:user) { create(:user, :with_utm) }
@@ -17,7 +19,7 @@ describe MixpanelTracker do
       it do
         expect(MixpanelTrack).
           to have_received(:perform_async).
-          with(user.id, event, kind_of(Hash))
+          with(token, user.id, event, kind_of(Hash))
       end
     end
   end
@@ -37,7 +39,7 @@ describe MixpanelTracker do
       it do
         expect(MixpanelTrack).
           to have_received(:perform_async).
-          with(guest_id, event, options)
+          with(token, guest_id, event, options)
       end
     end
   end
@@ -53,7 +55,7 @@ describe MixpanelTracker do
       it do
         expect(MixpanelLink).
           to have_received(:perform_async).
-          with(user.id, guest_id)
+          with(token, user.id, guest_id)
       end
     end
   end
@@ -70,7 +72,7 @@ describe MixpanelTracker do
       it do
         expect(MixpanelProfile).
           to have_received(:perform_async).
-          with(user, options)
+          with(token, user, options)
       end
     end
   end
@@ -86,7 +88,7 @@ describe MixpanelTracker do
       it do
         expect(MixpanelCharge).
           to have_received(:perform_async).
-          with(user, sum)
+          with(token, user, sum)
       end
     end
   end
