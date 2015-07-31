@@ -63,5 +63,7 @@ Rails.application.routes.draw do
 
   get '/awstest', to: 'awstest#index'
 
+  post 'mixpanel/client_event', to: 'mixpanel#client_event'
+
   root 'landing#index'
 end
