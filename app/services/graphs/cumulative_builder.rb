@@ -11,7 +11,7 @@ module Graphs
 
     def min_y
       return 0 if @interval == :all
-      series.try(:[], @board.columns.last.id).try(:[], :data).try(:first).try(:[], :issues).to_i
+      series.try(:[], @board.columns.last.id).try(:[], :data).try(:first).try(:[], :issues_cumulative).to_i
     end
 
     private
