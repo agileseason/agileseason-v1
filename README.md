@@ -27,7 +27,7 @@ Look at the our development board for example - [agileseason.com](http://agilese
 
 - [x] Cumulative Flow
 - [x] Control Chart
-- [x] Forecast Duration
+- [x] Frequency
 
 ### Scrum [MVP 2]
 
