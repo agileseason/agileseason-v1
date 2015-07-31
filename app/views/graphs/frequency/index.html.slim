@@ -6,14 +6,14 @@
       .title Last month
       .stats
         .avg
-          | Issue Avg Lifetime:
-          span #{stat_to_html(@frequency_month.avg_lifetime)} days
+          | Issue Avg Cycle time:
+          span #{stat_to_html(@frequency_month.avg_cycle_time)} days
 
         .avg-percentile
-          | Issue Avg Lifetime
+          | Issue Avg Cycle time
           br
           | 80% persentile:
-          span #{stat_to_html(@frequency_month.avg_lifetime_percentile(0.8))} days
+          span #{stat_to_html(@frequency_month.avg_cycle_time_percentile(0.8))} days
 
         .issues
           | Closed issues:
@@ -27,14 +27,14 @@
       .title All times
       .stats
         .avg
-          | Issue Avg Lifetime:
-          span #{stat_to_html(@frequency_all.avg_lifetime)} days
+          | Issue Avg Cycle time:
+          span #{stat_to_html(@frequency_all.avg_cycle_time)} days
 
         .avg-percentile
-          | Issue Avg Lifetime
+          | Issue Avg Cycle time
           br
           | 80% persentile:
-          span #{stat_to_html(@frequency_all.avg_lifetime_percentile(0.8))} days
+          span #{stat_to_html(@frequency_all.avg_cycle_time_percentile(0.8))} days
 
         .issues
           | Closed issues:

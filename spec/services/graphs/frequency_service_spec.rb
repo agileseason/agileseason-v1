@@ -54,8 +54,8 @@ describe FrequencyService do
     end
   end
 
-  describe '#avg_lifetime' do
-    subject { service.avg_lifetime }
+  describe '#avg_cycle_time' do
+    subject { service.avg_cycle_time }
 
     context 'no closed issues' do
       let!(:issue_open) { create(:issue_stat, :open, board: board) }
@@ -70,8 +70,8 @@ describe FrequencyService do
     end
   end
 
-  describe '#avg_lifetime_percentile' do
-    subject { service.avg_lifetime_percentile(persentile) }
+  describe '#avg_cycle_time_percentile' do
+    subject { service.avg_cycle_time_percentile(persentile) }
     let(:persentile) { 0.8 }
 
     context 'without closed issues' do
