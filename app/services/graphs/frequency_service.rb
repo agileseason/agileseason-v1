@@ -28,13 +28,13 @@ class FrequencyService
     normolized
   end
 
-  def avg_lifetime
+  def avg_cycle_time
     return if issues.blank?
 
     (issues.sum(&:elapsed_days) / issues.count).round(2)
   end
 
-  def avg_lifetime_percentile(persentile)
+  def avg_cycle_time_percentile(persentile)
     return if issues.blank?
 
     bound = percentile_elapsed_days_bound(persentile, issues.map(&:elapsed_days))
