@@ -1,3 +1,4 @@
+# TODO Need rethink this chart.
 module Graphs
   class ForecastBuilder
     pattr_initialize :board
