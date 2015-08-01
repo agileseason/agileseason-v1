@@ -28,4 +28,8 @@ class Column < ActiveRecord::Base
     issue_ids = issues.map(&:to_s).reject { |n| n == 'empty' }.uniq
     update(issues: issue_ids)
   end
+
+  def auto_assign?
+    is_auto_assign.present?
+  end
 end

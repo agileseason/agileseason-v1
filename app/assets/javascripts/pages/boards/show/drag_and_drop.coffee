@@ -38,7 +38,9 @@ $(document).on 'page:change', ->
       move_to_path = "/boards/#{board}/issues/#{issue_number}/move_to/#{column_number}"
       $.ajax
         url: move_to_path
-        success: (badges) -> window.update_wip_column(badge) for badge in badges
+        success: (data) ->
+          $("#issues_#{data.number}").replaceWith(data.html_miniature)
+          window.update_wip_column(badge) for badge in data.badges
 
   $(".droppable").on "dropout", (event, ui) ->
     $(@).removeClass 'over'
