@@ -292,12 +292,15 @@ subscribe_issue_update = ->
   return unless $issue.data('faye-on')
   return if window.faye_issues
 
-  window.faye_issues = new Faye.Client($issue.data('faye-url'))
-  window.faye_issues.subscribe $issue.data('faye-channel'), (message) ->
-    $fetch_issue = $('.b-issue-modal')
-    return if $fetch_issue.data('faye-client-id') == message.client_id
-    return if $fetch_issue.data('number') != parseInt(message.data.number)
-    $('.issue-comments').append(message.data.html) if message.data.action == 'create'
+  try
+    window.faye_issues = new Faye.Client($issue.data('faye-url'))
+    window.faye_issues.subscribe $issue.data('faye-channel'), (message) ->
+      $fetch_issue = $('.b-issue-modal')
+      return if $fetch_issue.data('faye-client-id') == message.client_id
+      return if $fetch_issue.data('number') != parseInt(message.data.number)
+      $('.issue-comments').append(message.data.html) if message.data.action == 'create'
+  catch err
+    console.log err
 
 show_dragging = ->
   $('.drag-n-drop-overlay').addClass 'active'
