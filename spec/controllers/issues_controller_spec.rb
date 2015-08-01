@@ -3,11 +3,11 @@ RSpec.describe IssuesController, type: :controller do
   let(:board) { create(:board, :with_columns, user: user) }
   let(:column_1) { board.columns.first }
   let(:issue) { stub_issue(number: 1) }
+  let(:github_api) { GithubApi.new('fake_token', user) }
   before { stub_sign_in(user) }
   before { allow(controller).to receive(:broadcast_column) }
 
   describe '#show' do
-    let(:github_api) { GithubApi.new('fake_token', user) }
     let(:request) { get :show, board_github_full_name: board.github_full_name, number: 1 }
     before { allow(controller).to receive(:github_api).and_return(github_api) }
     before { allow(github_api).to receive(:issue).and_return(issue) }
@@ -29,6 +29,39 @@ RSpec.describe IssuesController, type: :controller do
 
       it { expect(assigns :issue).to be_present }
       it { expect((assigns :issue).number).to eq issue.number }
+    end
+  end
+
+  describe '#move_to', :focus do
+    let(:board) { create(:board, :with_columns, user: user) }
+    let(:column_to) { board.columns.first }
+    let(:request) { get :move_to, board_github_full_name: board.github_full_name, number: 1, column_id: column_to.id }
+    before { allow(controller).to receive(:github_api).and_return(github_api) }
+    before { allow(github_api). to receive(:move_to) }
+    before { allow(github_api).to receive(:repos).and_return([]) }
+    before { allow(github_api).to receive(:issues).and_return([issue]) }
+
+    context 'not auto_assing' do
+      before { request }
+      it { expect(github_api).to have_received(:move_to) }
+    end
+
+    context 'auto_assign' do
+      before { allow(github_api).to receive(:issue).and_return(issue) }
+      before { allow(github_api).to receive(:assign).and_return(issue) }
+      before { column_to.update(is_auto_assign: true) }
+      before { request }
+
+      it { expect(github_api).to have_received(:move_to) }
+
+      context 'without assignee' do
+        it { expect(github_api).to have_received(:assign) }
+      end
+
+      context 'with assignee' do
+        let(:issue) { stub_issue(number: 1, assignee: {}) }
+        it { expect(github_api).not_to have_received(:assign) }
+      end
     end
   end
 

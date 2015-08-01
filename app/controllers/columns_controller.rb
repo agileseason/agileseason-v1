@@ -77,7 +77,7 @@ class ColumnsController < ApplicationController
   def column_params
     params
       .require(:column)
-      .permit(:name, :issues)
+      .permit(:name, :issues, :is_auto_assign)
   end
 
   def fetch_resource

@@ -51,6 +51,24 @@
           ]
         li.delimiter
         li
+          - if column.auto_assign?
+            input.js-patch [
+              name='is_auto_assign'
+              type='checkbox'
+              data-url="#{update_attribute_board_column_url(@board, column)}"
+              value="#{column.auto_assign?}"
+              checked='checked'
+            ]
+          - else
+            input.js-patch [
+              name='is_auto_assign'
+              type='checkbox'
+              data-url="#{update_attribute_board_column_url(@board, column)}"
+              value="#{column.auto_assign?}"
+            ]
+          label Auto&nbsp;Assign
+        li.delimiter
+        li
           a.delete [
             href="#{board_column_url(@board, column)}"
             data-confirm='Are you sure?'
