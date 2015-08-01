@@ -32,7 +32,7 @@ RSpec.describe IssuesController, type: :controller do
     end
   end
 
-  describe '#move_to', :focus do
+  describe '#move_to' do
     let(:board) { create(:board, :with_columns, user: user) }
     let(:column_to) { board.columns.first }
     let(:request) do
