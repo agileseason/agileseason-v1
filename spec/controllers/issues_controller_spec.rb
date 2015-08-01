@@ -35,7 +35,14 @@ RSpec.describe IssuesController, type: :controller do
   describe '#move_to', :focus do
     let(:board) { create(:board, :with_columns, user: user) }
     let(:column_to) { board.columns.first }
-    let(:request) { get :move_to, board_github_full_name: board.github_full_name, number: 1, column_id: column_to.id }
+    let(:request) do
+      get(
+        :move_to,
+        board_github_full_name: board.github_full_name,
+        number: 1,
+        column_id: column_to.id
+      )
+    end
     before { allow(controller).to receive(:github_api).and_return(github_api) }
     before { allow(github_api). to receive(:move_to) }
     before { allow(github_api).to receive(:repos).and_return([]) }
