@@ -267,9 +267,6 @@ highlight_code = ->
   $('pre code').each (i, block) ->
     hljs.highlightBlock block
 
-find_issue = (number) ->
-  $(".issue[data-number='#{number}']")
-
 update_by_checkbox = ($checkbox) ->
   event.stopPropagation()
   $comment_text = $checkbox.closest('.comment-text')
