@@ -45,13 +45,12 @@ class IssuesController < ApplicationController
   end
 
   def update
-    issue = github_api.update_issue(
-      @board,
-      number,
-      issue_params
-    )
-    @board_bag.update_cache(issue)
+    update_issue(issue_params)
+    render nothing: true
+  end
 
+  def update_labels
+    update_issue(issue_labels_params)
     render nothing: true
   end
 
@@ -150,14 +149,28 @@ class IssuesController < ApplicationController
     @github_issue ||= @board_bag.issues_hash[number] || github_api.issue(@board, number)
   end
 
+  def update_issue(issue_params)
+    issue = github_api.update_issue(
+      @board,
+      number,
+      issue_params
+    )
+    @board_bag.update_cache(issue)
+  end
+
   def issue_params
+    params.
+      require(:issue).
+      permit(:title, :body)
+  end
+
+  def issue_labels_params
     # For variant when uncheck all labels
     params[:issue] ||= {}
     params[:issue][:labels] ||= []
-
-    params
-      .require(:issue)
-      .permit(:title, :body, labels: [])
+    params.
+      require(:issue).
+      permit(labels: [])
   end
 
   def login_diff
