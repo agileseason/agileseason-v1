@@ -20,7 +20,7 @@
         = simple_form_for :issue,
           url: update_board_issues_url(@board, @issue.number),
           remote: true,
-          method: :post do |f|
+          method: :patch do |f|
           = f.input :title, label: false, as: :text
           = f.button :magic_submit, value: 'Update'
 

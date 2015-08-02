@@ -1,15 +1,15 @@
 RSpec.describe IssuesController, type: :controller do
   let(:user) { create(:user) }
-  let(:board) { create(:board, :with_columns, user: user) }
+  let(:board) { create(:kanban_board, :with_columns, user: user) }
   let(:column_1) { board.columns.first }
   let(:issue) { stub_issue(number: 1) }
   let(:github_api) { GithubApi.new('fake_token', user) }
   before { stub_sign_in(user) }
   before { allow(controller).to receive(:broadcast_column) }
+  before { allow(controller).to receive(:github_api).and_return(github_api) }
 
   describe '#show' do
     let(:request) { get :show, board_github_full_name: board.github_full_name, number: 1 }
-    before { allow(controller).to receive(:github_api).and_return(github_api) }
     before { allow(github_api).to receive(:issue).and_return(issue) }
     before { allow(github_api).to receive(:labels).and_return([]) }
     before { allow(github_api).to receive(:issue_comments).and_return([]) }
@@ -29,6 +29,71 @@ RSpec.describe IssuesController, type: :controller do
 
       it { expect(assigns :issue).to be_present }
       it { expect((assigns :issue).number).to eq issue.number }
+    end
+  end
+
+  describe '#update' do
+    let(:request) do
+      patch(
+        :update, board_github_full_name: board.github_full_name,
+        number: issue.number, issue: params
+      )
+    end
+    let(:params) { { title: 'test edit title' } }
+    before { allow(github_api).to receive(:issues).and_return([]) }
+    before { allow(github_api).to receive(:update_issue).and_return(issue) }
+
+    context 'direct' do
+      before { request }
+
+      it { expect(response).to have_http_status(:success) }
+      it do
+        expect(github_api).
+          to have_received(:update_issue).
+          with(board, issue.number, params)
+      end
+    end
+
+    context 'cache' do
+      after { request }
+
+      it do
+        expect_any_instance_of(BoardBag).
+          to receive(:update_cache).with(issue)
+      end
+    end
+  end
+
+
+  describe '#update_labels' do
+    let(:request) do
+      patch(
+        :update_labels, board_github_full_name: board.github_full_name,
+        number: issue.number, issue: params
+      )
+    end
+    let(:params) { { labels: ['label-1', 'label-2'] } }
+    before { allow(github_api).to receive(:issues).and_return([]) }
+    before { allow(github_api).to receive(:update_issue).and_return(issue) }
+
+    context 'direct' do
+      before { request }
+
+      it { expect(response).to have_http_status(:success) }
+      it do
+        expect(github_api).
+          to have_received(:update_issue).
+          with(board, issue.number, params)
+      end
+    end
+
+    context 'cache' do
+      after { request }
+
+      it do
+        expect_any_instance_of(BoardBag).
+          to receive(:update_cache).with(issue)
+      end
     end
   end
 
@@ -156,19 +221,6 @@ RSpec.describe IssuesController, type: :controller do
       get :assignee, board_github_full_name: board.github_full_name, number: 1, login: 'github_user'
       expect(response).to have_http_status(:success)
     end
-  end
-
-  describe '#update' do
-    before do
-      allow_any_instance_of(GithubApi).to receive(:update_issue).and_return(issue)
-      allow_any_instance_of(GithubApi).to receive(:issues).and_return([])
-
-      post :update, board_github_full_name: board.github_full_name,
-        number: 1,
-        issue: { title: 'dsgf' }
-    end
-
-    it { expect(response).to have_http_status(:success) }
   end
 
   describe '#due_date' do

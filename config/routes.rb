@@ -30,7 +30,8 @@ Rails.application.routes.draw do
       get ':number/unarchive', to: 'issues#unarchive', as: :unarchive
       get ':number/assignee/:login', to: 'issues#assignee', as: :assignee
       post ':number/due_date', to: 'issues#due_date', as: :due_date
-      post ':number/update', to: 'issues#update', as: :update
+      patch ':number/update', to: 'issues#update', as: :update
+      patch ':number/update_labels', to: 'issues#update_labels', as: :update_labels
 
       get ':number/comments', to: 'comments#index', as: :comments
       post ':number/comment', to: 'comments#create', as: :add_comment
