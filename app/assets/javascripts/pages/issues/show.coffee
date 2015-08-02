@@ -224,7 +224,7 @@ $(document).on 'ready page:load', ->
     $(@).parent().prev().show()
 
   # изменить набор лейблов тикета
-  $('.label input').on 'change', ->
+  $('label input').on 'change', ->
     labels = []
     html_labels = []
     $(@).parents('.labels-block').find('input:checked').each ->
