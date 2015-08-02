@@ -35,8 +35,10 @@ RSpec.describe IssuesController, type: :controller do
   describe '#update' do
     let(:request) do
       patch(
-        :update, board_github_full_name: board.github_full_name,
-        number: issue.number, issue: params
+        :update,
+        board_github_full_name: board.github_full_name,
+        number: issue.number,
+        issue: params
       )
     end
     let(:params) { { title: 'test edit title' } }
@@ -68,8 +70,10 @@ RSpec.describe IssuesController, type: :controller do
   describe '#update_labels' do
     let(:request) do
       patch(
-        :update_labels, board_github_full_name: board.github_full_name,
-        number: issue.number, issue: params
+        :update_labels,
+        board_github_full_name: board.github_full_name,
+        number: issue.number,
+        issue: params
       )
     end
     let(:params) { { labels: ['label-1', 'label-2'] } }

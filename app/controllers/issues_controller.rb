@@ -159,18 +159,18 @@ class IssuesController < ApplicationController
   end
 
   def issue_params
-    params
-      .require(:issue)
-      .permit(:title, :body)
+    params.
+      require(:issue).
+      permit(:title, :body)
   end
 
   def issue_labels_params
     # For variant when uncheck all labels
     params[:issue] ||= {}
     params[:issue][:labels] ||= []
-    params
-      .require(:issue)
-      .permit(labels: [])
+    params.
+      require(:issue).
+      permit(labels: [])
   end
 
   def login_diff
