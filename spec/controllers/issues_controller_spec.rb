@@ -66,7 +66,6 @@ RSpec.describe IssuesController, type: :controller do
     end
   end
 
-
   describe '#update_labels' do
     let(:request) do
       patch(
