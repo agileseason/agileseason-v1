@@ -17,7 +17,7 @@ class IssuePresenter < Keynote::Presenter
   def labels_edit_html(board)
     build_html do
       board.labels.sort_by(&:name).each do |label|
-        div.label(style: k(:label, label).css_style) do
+        label(style: k(:label, label).css_style) do
           options = {
             type: :checkbox,
             id: label.name,

@@ -534,16 +534,17 @@
         label.check_boxes
           display: none
 
-        .label
-          padding: 3px
-          display: inline-block
-          color: #fff
+        label
           +border-radius(4px)
-          background: #aaa
-          margin: 0 10px 10px 0
-          width: 160px
           +transition(width ease-out 0.2s)
+          background: #aaa
+          color: #fff
+          cursor: pointer
+          display: inline-block
+          margin: 0 10px 10px 0
+          padding: 3px
           position: relative
+          width: 160px
 
           input
             display: inline-block
