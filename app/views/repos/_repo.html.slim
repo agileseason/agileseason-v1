@@ -5,10 +5,13 @@ li
 
   span.actions
     - if k(:repo, repo).board
-      a href="#{board_url(k(:repo, repo).board)}" Link to Board
+      a.light-button href="#{un board_url(k(:repo, repo).board)}"
+        | Go to Board
     - elsif current_user.repo_admin?(repo.id)
-      a.button.create_board href="#{new_board_url( github_id: repo.id )}"
-        span Create Board
+      - if repo.private
+        span.price Private - $4
+      a.button.create_board href="#{new_board_url(github_id: repo.id)}"
+        | Create Board
       span.button-preloader
     - else
       span Not enough permissions

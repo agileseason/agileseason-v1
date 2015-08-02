@@ -1,5 +1,7 @@
-@import mixins/link
+@import compass/css3/border-radius
 @import globals/variables
+@import mixins/button
+@import mixins/link
 
 .b-wizard
   display: none
@@ -16,6 +18,26 @@
     list-style: none
     margin: 0
     padding: 0
+
+    .actions
+      float: right
+
+      .price
+        +border-radius(4px)
+        background: #fffef8
+        border: 1px solid #fcd880
+        color: #e5a303
+        font-size: 12px
+        margin-right: 8px
+        padding: 4px 6px
+
+      .button, .light-button
+        margin-top: -5px
+
+      .light-button
+        +light_button
+        +border-radius(15px)
+        padding: 5px 7px
 
   .new-board-form
     display: none
