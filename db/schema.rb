@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150801164201) do
+ActiveRecord::Schema.define(version: 20150803083329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,18 @@ ActiveRecord::Schema.define(version: 20150801164201) do
   add_index "repo_histories", ["board_id"], name: "index_repo_histories_on_board_id", using: :btree
   add_index "repo_histories", ["collected_on", "board_id"], name: "index_repo_histories_on_collected_on_and_board_id", unique: true, using: :btree
 
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "board_id"
+    t.datetime "date_to"
+    t.decimal  "cost"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "subscriptions", ["board_id"], name: "index_subscriptions_on_board_id", using: :btree
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "email",           null: false
     t.string   "github_username", null: false
@@ -122,4 +134,6 @@ ActiveRecord::Schema.define(version: 20150801164201) do
   add_foreign_key "activities", "users", on_delete: :cascade
   add_foreign_key "lifetimes", "columns"
   add_foreign_key "lifetimes", "issue_stats"
+  add_foreign_key "subscriptions", "boards"
+  add_foreign_key "subscriptions", "users"
 end
