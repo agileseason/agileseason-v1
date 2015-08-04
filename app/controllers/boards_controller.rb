@@ -2,8 +2,9 @@ class BoardsController < ApplicationController
   load_and_authorize_resource
   skip_authorize_resource only: [:new, :create]
 
-  before_action :check_permissions, only: [:create]
-  before_action :fetch_board,       only: [:show, :destroy]
+  before_action :check_permissions,  only: [:create]
+  before_action :fetch_board,        only: [:show, :destroy]
+  before_action :check_subscription, only: [:show]
 
   def index
     @boards_lists = [

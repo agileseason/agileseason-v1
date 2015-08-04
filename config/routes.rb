@@ -54,6 +54,7 @@ Rails.application.routes.draw do
     end
 
     resources :activities, only: [:index]
+    resources :subscriptions, only: [:new, :create]
     post 'preview', to: 'markdown#preview', as: :preview
   end
 
