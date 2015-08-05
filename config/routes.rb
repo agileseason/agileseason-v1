@@ -54,7 +54,11 @@ Rails.application.routes.draw do
     end
 
     resources :activities, only: [:index]
-    resources :subscriptions, only: [:new, :create]
+
+    resource :subscriptions, only: [:new] do
+      get :early_access
+    end
+
     post 'preview', to: 'markdown#preview', as: :preview
   end
 

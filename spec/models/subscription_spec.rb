@@ -11,4 +11,16 @@ describe Subscription do
         is_greater_than_or_equal_to(0)
     end
   end
+
+  describe 'default order' do
+    subject { Subscription.all }
+    let(:user) { create(:user) }
+    let(:board) { create(:board, :with_columns, user: user) }
+    let!(:subscription_new) { create(:subscription, user: user, board: board, date_to: Time.current) }
+    let!(:subscription_old) { create(:subscription, user: user, board: board, date_to: Time.current - 1.month) }
+
+    it { is_expected.to have(2).items }
+    its(:first) { is_expected.to eq subscription_old }
+    its(:last) { is_expected.to eq subscription_new }
+  end
 end

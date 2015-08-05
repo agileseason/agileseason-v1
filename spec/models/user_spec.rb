@@ -1,4 +1,8 @@
-describe User, type: :model do
+describe User do
+  describe 'relations' do
+    it { is_expected.to have_many(:subscriptions) }
+  end
+
   describe '#login' do
     subject { user.login }
     let(:user) { build(:user, github_username: 'gh_user') }

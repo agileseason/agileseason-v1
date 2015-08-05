@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_many :boards
+  has_many :subscriptions
 
   before_create :generate_remember_token
 
