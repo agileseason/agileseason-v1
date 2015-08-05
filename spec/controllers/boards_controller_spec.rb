@@ -26,7 +26,7 @@ describe BoardsController, type: :controller do
     end
   end
 
-  describe 'GET new' do
+  describe '#new' do
     let(:repo) { OpenStruct.new(id: 1, name: 'foo', full_name: 'bar/foo') }
     before do
       allow_any_instance_of(GithubApi).
@@ -40,20 +40,44 @@ describe BoardsController, type: :controller do
     end
   end
 
-  describe 'GET show' do
+  describe '#show' do
+    let(:request) { get(:show, github_full_name: board.github_full_name) }
     let(:user) { create(:user) }
-    let(:board) { create(:board, :with_columns, user: user) }
     let(:issue) { stub_issue(labels: [label_1]) }
     let(:label_1) { OpenStruct.new(name: 'techdebt', color: '000') }
     let(:label_2) { OpenStruct.new(name: 'bug', color: '000') }
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([issue]) }
     before { allow_any_instance_of(GithubApi).to receive(:labels).and_return([label_1, label_2]) }
     before { allow_any_instance_of(GithubApi).to receive(:collaborators).and_return([]) }
+    before do
+      allow_any_instance_of(BoardBag).
+        to receive(:private_repo?).
+        and_return(is_private)
+    end
     before { stub_sign_in(user) }
+    before { request }
 
-    it 'returns http success' do
-      get :show, github_full_name: board.github_full_name
-      expect(response).to have_http_status(:success)
+    context 'private subscribed board' do
+      let(:board) { create(:board, :with_columns, :subscribed, user: user) }
+      let(:is_private) { true }
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(response).to render_template(:show) }
+    end
+
+    context 'private not subscribed board' do
+      let(:board) { create(:board, :with_columns, user: user) }
+      let(:is_private) { true }
+
+      it { expect(response).to redirect_to(un(new_board_subscription_url(board))) }
+    end
+
+    context 'public not subscribed board' do
+      let(:board) { create(:board, :with_columns, user: user) }
+      let(:is_private) { false }
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(response).to render_template(:show) }
     end
   end
 
