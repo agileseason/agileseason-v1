@@ -69,7 +69,10 @@ describe BoardsController, type: :controller do
       let(:board) { create(:board, :with_columns, user: user) }
       let(:is_private) { true }
 
-      it { expect(response).to redirect_to(un(new_board_subscription_url(board))) }
+      it do
+        expect(response).
+          to redirect_to(un(new_board_subscriptions_url(board)))
+      end
     end
 
     context 'public not subscribed board' do
