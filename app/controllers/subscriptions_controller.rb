@@ -6,7 +6,9 @@ class SubscriptionsController < ApplicationController
 
   def early_access
     subscription = Subscriber.early_access(@board, current_user)
-    redirect_to un(board_url(@board)),
+    redirect_to(
+      un(board_url(@board)),
       notice: "Subscribed until #{subscription.date_to.strftime('%d-%m-%Y')}"
+    )
   end
 end
