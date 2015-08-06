@@ -90,8 +90,9 @@ describe BoardsController, type: :controller do
     before do
       allow_any_instance_of(User).
         to receive(:repo_admin?).and_return(true)
+
       allow_any_instance_of(GithubApi).
-        to receive(:cached_repos).and_return([])
+        to receive(:issues).and_return([])
     end
     before { stub_sign_in(user) }
     before do
@@ -121,7 +122,7 @@ describe BoardsController, type: :controller do
     end
   end
 
-  describe 'DELETE destroy' do
+  describe '#destroy' do
     let(:user) { create(:user) }
     let(:repo) { OpenStruct.new(id: board.github_id) }
     let(:request) { delete(:destroy, github_full_name: board.github_full_name) }
@@ -135,6 +136,7 @@ describe BoardsController, type: :controller do
       before { request }
       let(:reader?) { false }
       let(:board) { create(:board, :with_columns, user: user) }
+
       it { expect(response).to have_http_status(:redirect) }
       it { expect(response).to redirect_to(boards_url) }
       it { expect(Board.where(id: board.id).count).to be_zero }
