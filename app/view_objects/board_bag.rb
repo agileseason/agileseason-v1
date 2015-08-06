@@ -80,7 +80,7 @@ class BoardBag
 
   def private_repo?
     repo = @github_api.cached_repos.detect { |r| r.full_name == @board.github_full_name }
-    repo.nil? || repo.private
+    repo.present? && repo.private
   end
 
   def subscribed?

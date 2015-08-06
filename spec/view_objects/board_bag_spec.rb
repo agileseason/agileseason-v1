@@ -157,4 +157,66 @@ describe BoardBag do
 
     it { is_expected.to eq column_1 }
   end
+
+  describe '#private_repo?' do
+    subject { bag.private_repo? }
+
+    context 'known repo' do
+      let(:repo) { OpenStruct.new(full_name: board.github_full_name, private: is_private) }
+      before do
+        allow(github_api).
+          to receive(:cached_repos).
+          and_return([repo])
+      end
+
+      context 'private repo' do
+        let(:is_private) { true }
+        it { is_expected.to eq true }
+      end
+
+      context 'public repo' do
+        let(:is_private) { false }
+        it { is_expected.to eq false }
+      end
+    end
+
+    context 'unknown repo' do
+      before do
+        allow(github_api).
+          to receive(:cached_repos).
+          and_return([])
+      end
+
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe '#subscribed?' do
+    subject { bag.subscribed? }
+
+    context 'public repo' do
+      before { allow(bag).to receive(:private_repo?).and_return(false) }
+      it { is_expected.to eq true }
+    end
+
+    context 'private repo' do
+      let(:board) { build(:board, subscribed_at: subscribed_at) }
+      before { allow(bag).to receive(:private_repo?).and_return(true) }
+
+      context 'active subscription' do
+        let(:subscribed_at) { Time.current + 1.day }
+        it { is_expected.to eq true }
+      end
+
+      context 'not active subscription' do
+        let(:subscribed_at) { nil }
+        it { is_expected.to eq false }
+      end
+
+      context 'old subscription' do
+        let(:subscribed_at) { Time.current - 1.day }
+        it { is_expected.to eq false }
+      end
+    end
+  end
 end
