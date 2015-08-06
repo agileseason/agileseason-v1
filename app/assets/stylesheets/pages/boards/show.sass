@@ -132,15 +132,19 @@
 
     .popup
       +popup
-      top: -20px
-      z-index: 3
+      font-size: 14px
+      height: auto
       left: 100%
+      top: 0
+      width: 240px
+      z-index: 3
 
       .delete
         +light_button
 
       ul
         list-style-type: none
+        margin: 6px 0
         padding: 0 10px
 
         li
@@ -286,13 +290,6 @@
         .input
           display: inline-block
           vertical-align: middle
-
-  .popup
-    +popup
-    font-size: 14px
-    height: auto
-    top: 100%
-    width: 240px
 
     .octicon.octicon-triangle-up
       display: block
