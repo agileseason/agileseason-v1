@@ -6,6 +6,8 @@ class BoardsController < ApplicationController
   before_action :fetch_board,        only: [:show, :destroy]
   before_action :check_subscription, only: [:show]
 
+  after_action :first_init_issues, only: [:create]
+
   def index
     @boards_lists = [
       { title: 'My Boards', boards: BoardPick.list_by(k(:user, current_user).boards) },
@@ -48,7 +50,7 @@ class BoardsController < ApplicationController
     redirect_to un(boards_url), notice: "Your board \"#{@board.name}\" was successfully deleted."
   end
 
-private
+  private
 
   def guest?
     !can?(:update, @board)
@@ -84,5 +86,9 @@ private
 
   def issue_new
     Issue.new(labels: @board_bag.labels.map(&:name))
+  end
+
+  def first_init_issues
+    BoardBag.new(github_api, @board).board_issues
   end
 end
