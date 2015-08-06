@@ -5,7 +5,6 @@ describe Subscriber do
 
     context 'private board without subscription' do
       let(:board) { create(:kanban_board, :with_columns, user: user) }
-
       it { expect { subject }.to change(Subscription, :count).by(1) }
 
       describe 'check subscription' do
@@ -37,13 +36,13 @@ describe Subscriber do
 
       context 'actual subscription' do
         let(:subscribed_at) { Time.current + 1.day }
+
         it { expect { subject }.not_to change(Subscription, :count) }
         it { is_expected.to eq subscription }
       end
 
       context 'not actual subscription' do
         let(:subscribed_at) { Time.current - 1.day }
-
         it { expect { subject }.to change(Subscription, :count).by(1) }
       end
     end

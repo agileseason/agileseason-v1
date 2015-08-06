@@ -6,14 +6,17 @@ ul.list.subscriptions
     .safe
       | 1 month free
       br
-      | save %16
+      | save 16%
   li
     .cost 3 month - $12
   li
     .cost 1 month - $4
 
 .row
-  a.promo href="#" Get free early access to three monthly subscription
+  a.promo href="#{early_access_board_subscriptions_url(@board)}"
+    | Get free early access to three monthly subscription
 
 .row
-  .note Agile Season is 100% free for Open Source, forever
+  .note
+    | Agile Season is 100% free for Open Source, forever
+    span.octicon.octicon-mark-github
