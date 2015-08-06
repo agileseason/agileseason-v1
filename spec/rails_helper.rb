@@ -59,6 +59,7 @@ RSpec.configure do |config|
   config.include OauthHelper
   config.include AuthenticationHelper
   config.include GithubHelper
+  config.include Unescaper
 
   DatabaseCleaner.strategy = :truncation
   config.before(:suite) do

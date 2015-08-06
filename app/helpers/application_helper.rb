@@ -1,6 +1,8 @@
 require 'redcarpet'
 
 module ApplicationHelper
+  include Unescaper
+
   def github_token
     session[:github_token]
   end
@@ -11,10 +13,6 @@ module ApplicationHelper
 
   def github_api
     @github_api ||= GithubApi.new(github_token, current_user)
-  end
-
-  def un(url)
-    CGI::unescape(url)
   end
 
   concerning :Markdown do

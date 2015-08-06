@@ -6,6 +6,7 @@ class Board < ActiveRecord::Base
   has_many :issue_stats, dependent: :destroy
   has_many :visible_issue_stats, -> { visible }, class_name: IssueStat
   has_many :activities, -> { order(created_at: :desc) }, dependent: :delete_all
+  has_many :subscriptions
 
   validates :name, presence: true
   validates :type, presence: true

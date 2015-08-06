@@ -2,19 +2,21 @@
   = f.input :github_id, as: :hidden
   = f.input :github_name, as: :hidden
   = f.input :github_full_name, as: :hidden
-  = f.input :name
-  .columns
-    .label-column Type
+  .row
+    = f.input :name
+
+  .row
+    .label Type
     .type
       = f.collection_radio_buttons :type, [['Boards::KanbanBoard', 'Kanban'], ['Boards::ScrumBoard', 'Scrum will be on the next release']], :first, :last
 
   .errors = @board.errors[:columns].first if @board.errors[:columns]
-  .columns
-    .label-column Columns
+
+  .row
+    .label Columns
     ul
-      - ['Backlog', 'To do', 'In progress', 'Test', 'Done', '', '', '', ''].each do |column|
-        li
-          = text_field_tag :name, column, name: 'board[column][name][]'
+      - ['Backlog', 'To do', 'In progress', 'Test', 'Done', '', '', ''].each do |column|
+        li = text_field_tag :name, column, name: 'board[column][name][]'
 
   .submit-area
     a href="#{boards_url}" Cancel

@@ -1,6 +1,7 @@
 class BoardBag
   pattr_initialize :github_api, :board
-  delegate :github_id, :github_name, :github_full_name, :columns, :issue_stats, :to_param, to: :board
+  delegate :github_id, :github_name, :github_full_name, :columns, :issue_stats,
+           :to_param, :subscribed_at, to: :board
 
   # All issues
   def issues
@@ -75,6 +76,17 @@ class BoardBag
 
   def default_column
     columns.first
+  end
+
+  def private_repo?
+    repo = @github_api.cached_repos.detect { |r| r.full_name == @board.github_full_name }
+    repo.present? && repo.private
+  end
+
+  def subscribed?
+    return true unless private_repo?
+
+    subscribed_at.present? && subscribed_at >= Time.current
   end
 
   private

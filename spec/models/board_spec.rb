@@ -1,4 +1,8 @@
 describe Board, type: :model do
+  describe 'relations' do
+    it { is_expected.to have_many(:subscriptions) }
+  end
+
   describe 'validations' do
     subject { Board.new }
     it { is_expected.to validate_presence_of :name }

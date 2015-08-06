@@ -1,5 +1,7 @@
-@import mixins/link
+@import compass/css3
 @import globals/variables
+@import mixins/button
+@import mixins/link
 
 .b-wizard
   display: none
@@ -8,17 +10,6 @@
 
   .button
     margin-left: 10px
-
-  li
-    margin-bottom: 20px
-
-  .repos-list
-    list-style: none
-    margin: 0
-    padding: 0
-
-  .new-board-form
-    display: none
 
   .menu
     list-style: none
@@ -40,26 +31,59 @@
       margin: 0 10px
       color: #7f756c
 
-  form
-    label
-      width: 80px
+  .repos-list
+    list-style: none
+    margin: 0
+    padding: 0
 
+    li
+      margin-bottom: 20px
+
+    .actions
+      float: right
+
+      .price
+        +border-radius(4px)
+        background: #fffef8
+        border: 1px solid #fcd880
+        color: #e5a303
+        font-size: 12px
+        margin-right: 8px
+        padding: 4px 6px
+
+      .button, .light-button
+        +box-sizing(border-box)
+        margin-top: -5px
+        text-align: center
+        width: 120px
+
+      .light-button
+        +light_button
+        +border-radius(15px)
+        display: inline-block
+        font-size: 14px
+        padding: 5px 7px
+
+  .new-board-form
+    display: none
+
+  form
     .error
       margin-left: 10px
 
     input:disabled + .collection_radio_buttons
       color: $lightgrey
 
-    .input
-      margin-bottom: 10px
+    .row
+      margin-bottom: 16px
 
-    .columns
-      margin-bottom: 10px
-
-      .label-column
+      .label
         display: inline-block
         vertical-align: top
         width: 90px
+
+      input[type="text"]
+        padding: 4px 6px
 
       .type
         display: inline-block
@@ -67,8 +91,8 @@
 
         label
           padding-bottom: 0
-          width: 300px
           padding-bottom: 10px
+          width: 300px
 
           label
             padding-bottom: 0

@@ -1,3 +1,4 @@
+# FIX Remove this file, move method to the BoardBag.
 class BoardPresenter < Keynote::Presenter
   presents :board
 

@@ -38,6 +38,10 @@ FactoryGirl.define do
       end
     end
 
+    trait :subscribed do
+      subscribed_at Time.current.next_year
+    end
+
     factory :kanban_board, parent: :board, class: 'Boards::KanbanBoard' do
       type 'Boards::KanbanBoard'
     end

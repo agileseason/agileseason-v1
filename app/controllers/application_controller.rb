@@ -95,6 +95,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  concerning :SubscriptionsChecker do
+    def check_subscription
+      redirect_to un new_board_subscriptions_url(@board) unless @board_bag.subscribed?
+    end
+  end
+
   private
 
   def force_https

@@ -15,23 +15,19 @@ html
   body class="p-#{controller_name}-#{action_name}" id="#{controller_name}_#{action_name}"
     .drag-n-drop-overlay
 
-    - if params[:controller] != 'boards' && params[:controller] != 'docs' && (params[:action] != 'show' || params[:action] != 'index')
+    = render partial: 'layouts/notice'
+    / FIX : Do something with this if-statement
+    - if (params[:controller] == 'boards' && params[:action] == 'show' && @board.present? && @board.persisted?) || (params[:controller] != 'boards' && params[:controller] != 'docs' && (params[:action] != 'show' || params[:action] != 'index'))
       = render partial: 'layouts/menu'
 
     .container
-      = render partial: '/layouts/notice'
       = yield
 
     - if @board
       .b-activities data-paginate="true" data-page="2" data-url="#{board_activities_url @board}"
 
-    - if params[:controller] == 'boards' && params[:action] == 'show'
-      - if @board && @board.persisted?
-        = render partial: 'layouts/menu'
-
-    - if signed_in? && @board && @board.persisted?
+    - if signed_in? && @board.present? && @board.persisted?
       = render partial: 'dashboard_modal'
 
     = render partial: 'modal'
-
     = render partial: 'layouts/yandex_metrika' if Rails.env.production?
