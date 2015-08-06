@@ -63,7 +63,7 @@ $(window).resize ->
 resize_height = ->
   resize_lock = false
 
-  height = $(window).height()# - $('.b-menu').outerHeight(true)
+  height = $(window).height() - $('.b-menu').outerHeight(true)
   $('.board').height(height)
 
 column_menu = ->
