@@ -32,6 +32,44 @@ RSpec.describe IssuesController, type: :controller do
     end
   end
 
+  describe '#create' do
+    let(:request) do
+      post(
+        :create,
+        board_github_full_name: board.github_full_name,
+        number: issue.number,
+        issue: params
+      )
+    end
+    before { allow(github_api).to receive(:create_issue).and_return(issue) }
+    before { allow(github_api).to receive(:issues).and_return([]) }
+
+    context 'response' do
+      let(:params) { { title: 'test edit title' } }
+      before { request }
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(github_api).to have_received(:create_issue) }
+    end
+
+    context 'behavior' do
+      before { allow(Issue).to receive(:new).and_return(Issue.new) }
+      before { request }
+
+      context 'with labels' do
+        let(:params) do
+          { title: 'test edit title', labels: ['label-1', 'label-2'] }
+        end
+        it { expect(Issue).to have_received(:new).with(params) }
+      end
+
+      context 'without labels' do
+        let(:params) { { title: 'test edit title' } }
+        it { expect(Issue).to have_received(:new).with(params) }
+      end
+    end
+  end
+
   describe '#update' do
     let(:request) do
       patch(
@@ -45,7 +83,7 @@ RSpec.describe IssuesController, type: :controller do
     before { allow(github_api).to receive(:issues).and_return([]) }
     before { allow(github_api).to receive(:update_issue).and_return(issue) }
 
-    context 'direct' do
+    context 'response' do
       before { request }
 
       it { expect(response).to have_http_status(:success) }
@@ -56,7 +94,7 @@ RSpec.describe IssuesController, type: :controller do
       end
     end
 
-    context 'cache' do
+    context 'behavior' do
       after { request }
 
       it do

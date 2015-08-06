@@ -26,7 +26,7 @@ class IssuesController < ApplicationController
   end
 
   def create
-    @issue = Issue.new(issue_params)
+    @issue = Issue.new(issue_create_params)
     if @issue.valid?
       ui_event(:issue_create)
       issue = github_api.create_issue(@board, @issue)
@@ -45,7 +45,7 @@ class IssuesController < ApplicationController
   end
 
   def update
-    update_issue(issue_params)
+    update_issue(issue_update_params)
     render nothing: true
   end
 
@@ -158,10 +158,16 @@ class IssuesController < ApplicationController
     @board_bag.update_cache(issue)
   end
 
-  def issue_params
+  def issue_create_params
     params.
       require(:issue).
-      permit(:title, :body)
+      permit(:title, labels: [])
+  end
+
+  def issue_update_params
+    params.
+      require(:issue).
+      permit(:title)
   end
 
   def issue_labels_params
