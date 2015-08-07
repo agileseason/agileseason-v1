@@ -30,4 +30,7 @@ html
       = render partial: 'dashboard_modal'
 
     = render partial: 'modal'
-    = render partial: 'layouts/yandex_metrika' if Rails.env.production?
+
+    - if Rails.env.production?
+      = render partial: 'layouts/yandex_metrika'
+      = render partial: 'layouts/intercom/observe'
