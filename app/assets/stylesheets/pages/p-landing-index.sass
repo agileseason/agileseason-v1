@@ -1,4 +1,5 @@
 @import compass/css3/border-radius
+@import compass/css3/box-sizing
 @import compass/css3/text-shadow
 @import globals/variables
 
@@ -14,24 +15,106 @@ $image-path: "pages/p-landing-index"
     padding: 0
     text-align: center
 
-  .pane
-    +border-radius(4px)
-    display: inline-block
-    margin-top: -120px
-    padding: 20px 60px 40px
-    position: relative
-    top: 50%
+    .pane
+      display: inline-block
+      padding: 20px 60px 40px
+      margin: 200px 0 160px
 
-    a
-      color: $text-usual
+      a
+        +border-radius(4px)
+        background: #fff
+        color: $text-usual
+        font-size: 18px
+        font-weight: bold
+        padding: 15px 30px
+
+      .main-title
+        +text-shadow(0 2px 5px rgba(0, 0, 0, 0.5))
+        color: #fff
+        font-size: 60px
+        font-weight: bold
+        margin: 0
+
+      .subtitle
+        +text-shadow(0 2px 5px rgba(0, 0, 0, 0.5))
+        color: #fff
+        font-size: 26px
+        margin: 0 0 20px 0
+
+    .section
       background: #fff
-      font-size: 18px
-      padding: 15px 30px
-      +border-radius(4px)
-      font-weight: bold
+      padding: 40px 60px 10px
 
-  .main-title
-    color: #fff
-    font-size: 60px
-    font-weight: bold
-    +text-shadow(0 2px 5px rgba(0, 0, 0, 0.5))
+      h3
+        font-size: 24px
+        margin: 20px 0 40px
+
+      ul
+        width: 320px
+        margin: auto
+        text-align: left
+
+        &.features
+          width: 220px
+
+      a
+        +border-radius(4px)
+        background: $orange
+        color: #fff
+        font-size: 18px
+        padding: 15px 30px
+        display: inline-block
+
+      .board-example
+        background: image-url("#{$image-path}/board-example.png")
+        background-size: cover
+        width: 960px
+        height: 560px
+        margin: auto
+
+      .column
+        display: inline-block
+        vertical-align: top
+        margin: 0 40px
+
+        &.mute
+          opacity: 0.4
+
+        h3
+          text-align: left
+          margin-bottom: 10px
+
+          .coming-soon
+            font-size: 12px
+            vertical-align: top
+            margin-left: 10px
+
+      .our-board
+        width: 300px
+        span
+          font-size: 12px
+
+      .plan
+        +border-radius(4px)
+        +box-sizing(border-box)
+        border: 1px solid #ccc
+        display: inline-block
+        margin: 0 40px
+        padding: 20px
+        width: 340px
+        height: 360px
+
+        h4
+          border-bottom: 1px dotted gainsboro
+          font-size: 20px
+          font-weight: 700
+          margin: 0 0 32px
+          padding: 30px 0
+
+        .price
+          margin-left: 30px
+
+          span
+            font-size: 110px
+          small
+            font-size: 12px
