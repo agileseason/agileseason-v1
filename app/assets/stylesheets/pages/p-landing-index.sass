@@ -43,11 +43,11 @@ $image-path: "pages/p-landing-index"
 
     .section
       background: #fff
-      padding: 40px 60px 10px
+      padding: 50px 40px 60px
 
       h3
         font-size: 24px
-        margin: 20px 0 40px
+        margin: 0 0 40px
 
       ul
         width: 320px
@@ -57,13 +57,24 @@ $image-path: "pages/p-landing-index"
         &.features
           width: 220px
 
-      a
+        &.terms
+          display: inline-block
+          width: auto
+          margin-bottom: 20px
+
+          li
+            float: left
+            margin-right: 20px
+
+      a.button
         +border-radius(4px)
         background: $orange
         color: #fff
         font-size: 18px
         padding: 15px 30px
         display: inline-block
+        &:hover
+          background: $orange-hover
 
       .board-example
         background: image-url("#{$image-path}/board-example.png")
@@ -99,7 +110,7 @@ $image-path: "pages/p-landing-index"
         +box-sizing(border-box)
         border: 1px solid #ccc
         display: inline-block
-        margin: 0 40px
+        margin: 0 40px 40px
         padding: 20px
         width: 340px
         height: 360px
@@ -118,3 +129,16 @@ $image-path: "pages/p-landing-index"
             font-size: 110px
           small
             font-size: 12px
+
+    .delimiter
+      border-bottom: 1px dotted gainsboro
+      background: #fff
+      width: 100%
+      height: 1px
+
+    .section.footer
+      background: #ddd
+      padding-bottom: 60px
+
+      p
+        margin: auto
