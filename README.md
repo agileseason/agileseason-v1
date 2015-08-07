@@ -11,7 +11,7 @@ Look at the our development board for example - [agileseason.com](http://agilese
 
 ## Features List
 
-- [x] Agile board with custom colomns
+- [x] Agile board with custom columns
 - [x] Drag and drop issues between columns
 - [x] Search and sort issues
 - [x] Attach images by drag & drop
@@ -25,9 +25,9 @@ Look at the our development board for example - [agileseason.com](http://agilese
 
 #### Graphs
 
-- [x] Cumulative Flow
+- [x] Cumulative Flow Diagram
 - [x] Control Chart
-- [x] Frequency
+- [x] Frequency Diagram
 
 ### Scrum [MVP 2]
 
@@ -35,8 +35,8 @@ Look at the our development board for example - [agileseason.com](http://agilese
 
 #### Graphs
 
-- [ ] Velocity
-- [ ] Burndown chart
+- [ ] Velocity Chart
+- [ ] Burndown Chart
 - [ ] Forecast Duration
 
 ## Development
