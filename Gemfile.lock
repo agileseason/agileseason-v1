@@ -197,6 +197,8 @@ GEM
     http_parser.rb (0.6.0)
     i18n (0.7.0)
     ice_nine (0.11.1)
+    intercom-rails (0.2.28)
+      activesupport (> 3.0)
     jbuilder (2.3.0)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
@@ -478,6 +480,7 @@ DEPENDENCIES
   gravatar_image_tag
   guard
   guard-rspec
+  intercom-rails
   jbuilder
   jquery-rails
   jquery-ui-rails
