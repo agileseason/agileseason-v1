@@ -18,6 +18,7 @@ IntercomRails.config do |config|
   # == Enabled Environments
   # Which environments is auto inclusion of the Javascript enabled for
   #
+  #config.enabled_environments = ['development', 'production']
   config.enabled_environments = ['production']
 
   # == Current user method/variable
@@ -49,7 +50,7 @@ IntercomRails.config do |config|
 
   config.user.custom_data = {
     github_username: :github_username,
-    :github => Proc.new { |current_user| "https://github.com/#{current_user.github_username}" }
+    github: Proc.new { |current_user| "https://github.com/#{current_user.github_username}" }
   }
 
   # == User -> Company association
