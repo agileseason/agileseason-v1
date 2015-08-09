@@ -271,12 +271,12 @@ update_by_checkbox = ($checkbox) ->
   event.stopPropagation()
   $comment_text = $checkbox.closest('.comment-text')
 
-  checkbox_index = $checkbox.parent().children('input').index($checkbox) # because of <br><br>
-  checkbox_value = $checkbox.is(':checked')
-
   initial_comment = $('textarea', $comment_text.parent()).val()
+  checkbox_index = $checkbox.parents('.comment-text').find('input').index($checkbox)
+  checkbox_value = if $checkbox.is(':checked') then '[x]' else '[ ]'
+
   update_comment =
-    replaceNthMatch(initial_comment, /(\[(?:x|\s)\])/, checkbox_index + 1, if checkbox_value then '[x]' else '[ ]')
+    replaceNthMatch(initial_comment, /(\[(?:x|\s)\])/, checkbox_index + 1, checkbox_value)
 
   $('textarea', $comment_text.parent())
     .val(update_comment)
