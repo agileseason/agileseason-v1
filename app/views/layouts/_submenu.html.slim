@@ -3,9 +3,9 @@ ul.b-submenu
     // FIX : Remove copy-paste from li... @blackchestnut
     li
       - if params[:controller] == 'graphs/cumulative'
-        span Cumulative Flow
+        span Cumulative Flow Diagram
       - else
-        a href="#{un board_graphs_cumulative_index_url(@board)}" Cumulative Flow
+        a href="#{un board_graphs_cumulative_index_url(@board)}" Cumulative Flow Diagram
 
     li
       - if params[:controller] == 'graphs/control'
@@ -15,9 +15,9 @@ ul.b-submenu
 
     li
       - if params[:controller] == 'graphs/frequency'
-        span Frequency
+        span Cycle Time Diagram
       - else
-        a href="#{un board_graphs_frequency_index_url(@board)}" Frequency
+        a href="#{un board_graphs_frequency_index_url(@board)}" Cycle Time Diagram
 
     / TODO Need rethink this chart.
     /li
