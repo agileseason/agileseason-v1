@@ -27,7 +27,7 @@ Look at the our development board for example - [agileseason.com](http://agilese
 
 - [x] Cumulative Flow Diagram
 - [x] Control Chart
-- [x] Frequency Diagram
+- [x] Cycle Time Diagram
 
 ### Scrum [MVP 2]
 
