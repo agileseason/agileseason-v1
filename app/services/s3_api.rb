@@ -7,7 +7,7 @@ class S3Api
     def direct_post
       bucket.
         presigned_post(
-          key: "uploads/#{SecureRandom.uuid}/${filename}",
+          key: "#{dir_path}/${filename}",
           # content_type_starts_with: 'image/',
           content_type: 'image/png',
           acl: 'public-read',
@@ -28,6 +28,10 @@ class S3Api
 
     def bucket
       @bucket ||= client.bucket("agile-season-#{Rails.env}")
+    end
+
+    def dir_path
+      "uploads/#{Time.current.strftime('%Y-%m-%d')}_#{SecureRandom.uuid}"
     end
   end
 end
