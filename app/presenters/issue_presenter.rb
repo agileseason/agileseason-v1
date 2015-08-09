@@ -5,7 +5,7 @@ class IssuePresenter < Keynote::Presenter
   def labels_html
     build_html do
       div(class: 'b-issue-labels') do
-        next if labels.blank?
+        next if labels.blank? # NOTE If statement for exclude '[]' in html.
 
         labels.sort_by(&:name).each do |label|
           div.label(label.name, style: k(:label, label).css_style)
