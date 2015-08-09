@@ -5,10 +5,10 @@ class IssuePresenter < Keynote::Presenter
   def labels_html
     build_html do
       div(class: 'b-issue-labels') do
-        if labels.present?
-          labels.sort_by(&:name).each do |label|
-            div.label(label.name, style: k(:label, label).css_style)
-          end
+        next if labels.blank?
+
+        labels.sort_by(&:name).each do |label|
+          div.label(label.name, style: k(:label, label).css_style)
         end
       end
     end
