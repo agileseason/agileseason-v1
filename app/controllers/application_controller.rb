@@ -11,8 +11,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user, :signed_in?
 
-  layout :layout_by_resource
-
   unless Rails.env.test?
     rescue_from Exception, with: :runtime_error
     rescue_from SyntaxError, with: :runtime_error
@@ -104,16 +102,6 @@ class ApplicationController < ActionController::Base
   end
 
   private
-
-  def layout_by_resource
-    if request.xhr?
-      false
-    elsif public_access?
-      'landing'
-    else
-      'application'
-    end
-  end
 
   def force_https
     if !request.ssl? && force_https?
