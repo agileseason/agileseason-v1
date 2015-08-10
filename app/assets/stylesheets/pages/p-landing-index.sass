@@ -25,7 +25,7 @@ $image-path: "pages/p-landing-index"
 
     .heared
       text-align: center
-      padding: 40px 0 30px
+      padding: 60px 0 60px
 
       h1
         font-family: Comic Sans Ms
@@ -117,6 +117,7 @@ $image-path: "pages/p-landing-index"
   section.demo
     background: #f5f5f5
     text-align: center
+    padding-top: 20px
 
     img
       width: 100%
@@ -151,26 +152,13 @@ $image-path: "pages/p-landing-index"
       display: inline-block
       vertical-align: top
       width: 23%
-      margin-right: 5%
 
       &:last-child
         margin-right: 0
 
-      &.discount
-        position: relative
-
-        .economy
-          position: absolute
-          background: image-url("#{$image-path}/highligh.png") 0 0 no-repeat
-          height: 65px
-          width: 130px
-          font-family: Comic Sans Ms
-          right: -25px
-          font-size: 18px
-          line-height: 18px
-          padding: 8px 0 0 5px
-          opacity: 0.8
-          z-index: -1
+      &.per-month
+        .price
+          color: #e17816
 
       .price
         color: #00a651
