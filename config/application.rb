@@ -12,6 +12,9 @@ require File.expand_path('../../lib/time_with_timezone', __FILE__)
 require 'xproc/global'
 
 module Agileseason
+  DOMAIN = Rails.env.production? ? 'https://agileseason.com' : 'http://agileseason.dev'
+  SUPPORT_EMAIL = 'support@agileseason.com'
+
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
