@@ -1,87 +1,47 @@
-.pane
-  h1.main-title Agile Season
-  h2.subtitle
-    | Beautiful agile board with management statistics
-    br
-    | for Github issues
-  a href='/auth/github' Sign In with GitHub
+section.main
+  .heared
+    h1 Agile season
+    h2 Agile board with management statistics<br />for Github issues
 
-.section
-  h3 Agile Season it is beautiful and useful place for your development team
-  .board-example
+  .container
+    .left
+      p Agile season keeps all status changes of&nbsp;each issue on&nbsp;the&nbsp;board. It&nbsp;draws cumulative flow, control chart, lines of&nbsp;code and&nbsp;frequency diagram by&nbsp;the&nbsp;statistic data.
+      p The&nbsp;diagrams help your team to&nbsp;analyze its&nbsp;work to&nbsp;reveal bottlenecks, reduce cycle time of&nbsp;an&nbsp;issue and&nbsp;prognose the&nbsp;time for the&nbsp;completion of&nbsp;your project.
 
-.delimiter
-.section
-  h3 Features
+    .right
+      a.button.demo href='http://agileseason.com/boards/agileseason/agileseason' Our developer board as demo
+      br
+      a.button.sign-in href='/auth/github'
+        span.octicon.octicon-mark-github
+        span Sign in with github
+      .note It is <a href='https://github.com/agileseason/agileseason/blob/master/doc/SECURITY.md'>safe</a>. Free for public repository
+
+section.demo
+  = image_tag 'pages/p-landing-index/demo.png'
+
+section.prices
+  .col.per-month
+    .price $4
+    p per 1 month for a private<br />repository
+
+  .col
+    .price free
+    p forever for a public<br />repository
+
+section.footer
   ul
-    li Agile board with custom columns
-    li Drag and drop issues between columns
-    li Search and sort issues
-    li Attach images by drag & drop
-
-.section
-  .column
-    h3 Kanban
-    ul.features
-      li WIP limit on columns
-      li Cumulative Flow Diagram
-      li Control Chart
-      li Frequency Diagram
-
-  .column.mute
-    h3
-      | Scrum
-      span.coming-soon
-        | *Coming soon
-    ul.features
-      li Sprints
-      li Velocity Chart
-      li Burndown Chart
-      li Forecast Duration Diagram
-
-.section
-  a.button.our-board href='http://agileseason.com/boards/agileseason/agileseason'
-    | Look at the our development board for example
-    br
-    span.name agileseason.com/boards/agileseason/agileseason
-
-.delimiter
-.section
-  h3 Pricing
-  .plan
-    h4
-      | Open Source
-    .price
-      span $0
-      small
-        | /month
-
-  .plan
-    h4
-      | Private Repos
-    .price
-      span $4
-      small
-        | /month
-  br
-  a.button href='/auth/github' Try it free
-
-.delimiter
-.section.footer
-  ul.terms.list
     li : a href='https://github.com/agileseason/agileseason' Source Code
     li : a href='https://github.com/agileseason/agileseason/blob/master/doc/TERMS.md' Terms
     li : a href='https://github.com/agileseason/agileseason/blob/master/doc/PRIVACY.md' Privacy
     li : a href='https://github.com/agileseason/agileseason/blob/master/doc/SECURITY.md' Security
 
   p
-    ' Agile Season is maintained by
+    ' Agile Season is maintained by&nbsp;
     a href='https://github.com/blackchestnut' @blackchestnut
-    '  and
+    '  and&nbsp;
     a href='https://github.com/Sfolt' @Sfolt
-    '.
+    ' . Agile Season is Copyright © 2015 Alexander Kalinichev
 
   p
-    ' Agile Season is Copyright © 2015 Alexander Kalinichev. It is open source software and may be redistributed under the terms specified in the
-    a href='https://github.com/agileseason/agileseason#license' LICENSE
-    '.
+    ' It is&nbsp;open source software and may be&nbsp;redistributed under the terms specified in the&nbsp;
+    a href='https://github.com/agileseason/agileseason#license' license
