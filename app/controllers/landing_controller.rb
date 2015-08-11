@@ -5,4 +5,9 @@ class LandingController < ApplicationController
   def index
     return redirect_to boards_url if current_user
   end
+
+  def demo
+    session[:return_url] = "#{Agileseason::DOMAIN}/boards/agileseason/agileseason"
+    redirect_to '/auth/github'
+  end
 end

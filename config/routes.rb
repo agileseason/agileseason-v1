@@ -68,6 +68,7 @@ Rails.application.routes.draw do
   get '/sign_out', to: 'sessions#destroy'
 
   get '/awstest', to: 'awstest#index'
+  get '/demo', to: 'landing#demo', as: :demo
 
   post 'mixpanel/client_event', to: 'mixpanel#client_event'
 
