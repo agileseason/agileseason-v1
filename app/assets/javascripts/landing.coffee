@@ -1,3 +1,6 @@
+#= require jquery
+#= require jquery-ui
+
 $(document).on 'page:change', ->
   return unless document.body.id == 'landing_index'
 
