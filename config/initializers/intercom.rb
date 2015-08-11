@@ -49,6 +49,7 @@ IntercomRails.config do |config|
   # user object, or a Proc which will be passed the current user.
 
   config.user.custom_data = {
+    name: :github_username,
     github_username: :github_username,
     github: Proc.new { |current_user| "https://github.com/#{current_user.github_username}" }
   }

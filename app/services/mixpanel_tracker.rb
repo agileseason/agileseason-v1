@@ -39,6 +39,7 @@ class MixpanelTracker
   def user_event_options(user, board)
     {
       email: user.email,
+      name: user.github_username,
       github_username: user.github_username,
       user_created: user.created_at.to_date.to_s,
       board_id: board.try(:id),
