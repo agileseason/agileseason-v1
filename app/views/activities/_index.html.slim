@@ -2,10 +2,9 @@
   .activity
     /type will be a special github icon
     /a.type
+
+    .avatar style="background-image: url(#{gravatar_image_url(activity.user.email, size: 24, secure: true)})"
     .description
       span.user = activity.user.github_username
-      ' #{activity.description}
-      a.issue-url [
-        href="#{un show_board_issues_url(@board, activity.issue_stat.number)}"
-      ] issue&nbsp;##{activity.issue_stat.number}
+      == activity.description(un show_board_issues_url(@board, activity.issue_stat.number))
       .date = "#{activity.created_at.strftime('%B %-d')} at #{activity.created_at.strftime('%H:%M')}"

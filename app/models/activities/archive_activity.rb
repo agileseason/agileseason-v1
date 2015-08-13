@@ -8,8 +8,8 @@ module Activities
       )
     end
 
-    def description
-      'archived'
+    def description(issue_url)
+      "archived #{link_to(issue_url)}"
     end
   end
 end

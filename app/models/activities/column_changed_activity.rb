@@ -9,16 +9,15 @@ module Activities
       )
     end
 
-    def description
-      # FIX : Add column from after save it.
-      "move to '#{column_to}'"
+    def description(issue_url)
+      "moved #{link_to(issue_url)} from #{column_name(:column_from)} to the #{column_name(:column_to)}"
     end
 
     private
 
-    def column_to
-      if data && data[:column_to]
-        data[:column_to]
+    def column_name(key)
+      if data && data[key]
+        data[key]
       else
         '???'
       end

@@ -52,7 +52,7 @@ describe IssueStatService do
         after { subject }
         it 'create activity by issue_stat params' do
           expect(Activities::ColumnChangedActivity).
-            to receive(:create_for).with(issue_stat, nil, column_2, user)
+            to receive(:create_for).with(issue_stat, column_1, column_2, user)
         end
       end
     end
@@ -74,7 +74,7 @@ describe IssueStatService do
       context 'force' do
         let(:force) { true }
         it { expect { subject }.to change(Lifetime, :count).by(1) }
-        it { expect { subject }.to change(Activity, :count).by(1) }
+        it { expect { subject }.to change(Activity, :count).by(0) }
         it { expect(subject.column).to eq column_2 }
         it { expect(subject.column.issues).to eq [issue_stat.number.to_s] }
       end

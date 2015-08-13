@@ -8,8 +8,8 @@ module Activities
       )
     end
 
-    def description
-      'sent to board'
+    def description(issue_url)
+      "#{link_to(issue_url)} sent to the board"
     end
   end
 end

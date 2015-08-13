@@ -28,17 +28,16 @@ class IssueStatService
         column.update_sort_issues(column.issues.unshift(issue_stat.number))
       end
 
+      if user.present? && issue_stat.column != column
+        Activities::ColumnChangedActivity.
+          create_for(issue_stat, issue_stat.column, column, user)
+      end
       issue_stat.update!(column: column)
       leave_all_column(issue_stat)
       issue_stat.lifetimes.create!(
         column: column,
         in_at: Time.current
       )
-      # FIX : Save info about previous column after #126
-      if user.present?
-        Activities::ColumnChangedActivity.
-          create_for(issue_stat, nil, column, user)
-      end
       issue_stat
     end
 

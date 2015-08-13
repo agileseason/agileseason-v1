@@ -9,8 +9,8 @@ module Activities
       )
     end
 
-    def description
-      "changed due date to - #{due_date}"
+    def description(issue_url)
+      "changed due date for #{link_to(issue_url)} on #{due_date}"
     end
 
     private
