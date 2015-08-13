@@ -24,13 +24,13 @@
         li.active
           span
             span.a-child.octicon.octicon-graph &nbsp;
-            span.a-child Statistic
+            span.a-child Metrics
 
       - else
         li
           a href="#{un board_graphs_cumulative_index_url(@board)}"
             span.a-child.octicon.octicon-graph &nbsp;
-            span.a-child Statistic
+            span.a-child Metrics
 
       - if can? :update, @board
         - if params[:controller] == 'settings' && params[:action] == 'show'
