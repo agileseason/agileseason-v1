@@ -1,20 +1,20 @@
-describe FrequencyService do
+describe Graphs::FrequencyService do
   let(:board) { create(:board, :with_columns, created_at: now - 1.year) }
   let(:now) { Time.local(2015, 1, 1, 0, 0, 0) }
-  let(:service) { FrequencyService.new(board, board.created_at) }
-  let(:zero_point) { [0, 0] }
+  let(:service) { Graphs::FrequencyService.new(board, board.created_at) }
+  let(:zero_point) { { 0 => 0 } }
 
   describe '#chart_series' do
     subject { service.chart_series }
     it { is_expected.not_to be_nil }
 
     context 'empty but have zero point' do
-      it { is_expected.to eq FrequencyService::ZERO_POINT }
+      it { is_expected.to eq zero_point }
     end
 
     context 'only open issues - only zero point again' do
       let!(:issue) { create(:issue_stat, :open, board: board) }
-      it { is_expected.to eq FrequencyService::ZERO_POINT }
+      it { is_expected.to eq zero_point }
     end
 
     context 'one closed issue plus zero point' do
@@ -40,17 +40,17 @@ describe FrequencyService do
       let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: board) }
       let!(:issue_2) { create(:issue_stat, :closed, wip: 1, board: board) }
 
-      it { is_expected.to have(3).item }
+      it { is_expected.to have(2).items }
       its([0]) { is_expected.to eq 0 }
       its([1]) { is_expected.to eq 2 }
     end
 
     context 'from other board' do
       let(:other_board) { create(:board, :with_columns) }
-      let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: board) }
-      let!(:issue_2) { create(:issue_stat, :closed, wip: 1, board: board) }
+      let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: other_board) }
+      let!(:issue_2) { create(:issue_stat, :closed, wip: 1, board: other_board) }
 
-      it { is_expected.to eq FrequencyService::ZERO_POINT }
+      it { is_expected.to eq zero_point }
     end
   end
 
