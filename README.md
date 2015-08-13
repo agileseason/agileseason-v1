@@ -5,7 +5,7 @@ Agile Season
 [![Test Coverage](https://codeclimate.com/github/agileseason/agileseason/badges/coverage.svg)](https://codeclimate.com/github/agileseason/agileseason)
 [![Dependency Status](https://gemnasium.com/agileseason/agileseason.svg)](https://gemnasium.com/agileseason/agileseason)
 
-Agile board with management stats for github issues
+Agile board for github issues with metrics
 
 Look at the our development board for example - [agileseason.com](http://agileseason.com/boards/agileseason/agileseason)
 
