@@ -6,6 +6,10 @@
 
 $image-path: "pages/p-landing-index"
 
+@font-face
+  font-family: 'SignPainter'
+  src: asset-url('SignPainter.otf')
+
 .p-landing-index
   min-width: 1200px
   padding: 0
@@ -25,104 +29,170 @@ $image-path: "pages/p-landing-index"
 
     .heared
       text-align: center
-      padding: 60px 0 60px
+      padding: 60px 0 40px
 
       h1
-        font-family: Comic Sans Ms
+        font-family: "SignPainter"
         font-weight: normal
         font-size: 56px
         margin: 0
         background: image-url("#{$image-path}/logo.png") 0 50% no-repeat
         display: inline-block
-        padding: 0 0 0 59px
+        padding: 18px 0 0 59px
         background-size: 55px
         color: #4A4643
 
       h2
         color: #7D736D
-        font-family: Comic Sans Ms
         font-weight: normal
-        font-size: 18px
-        padding: 0
-        margin: 0
+        font-size: 20px
+        line-height: 24px
+        margin: 10px 0 0 0
 
     .left
       display: inline-block
       vertical-align: top
-      width: 660px
-      margin-right: 80px
+      width: 700px
+      margin-right: 40px
       font-size: 22px
 
       p
-        margin: 0 0 20px 0
+        margin: 0 0 10px 0
 
     .right
       font-size: 22px
       display: inline-block
       vertical-align: top
-      width: 360px
+      width: 280px
 
-      .button
-        +border-radius(100px)
-        cursor: pointer
-        display: block
-        padding: 13px 20px
-        text-align: center
-        text-decoration: none
+  .button
+    +border-radius(100px)
+    cursor: pointer
+    display: block
+    padding: 13px 20px
+    text-align: center
+    text-decoration: none
 
-        span
-          cursor: pointer
+    span
+      cursor: pointer
 
-        &:hover
-          +filter(sepia(0.4))
-          text-decoration: none
+    &:hover
+      +filter(sepia(0.4))
+      text-decoration: none
 
-        &.demo
-          color: #e17816
-          border: 1px solid #e17816
-          position: relative
+    &.demo
+      color: #e17816
+      border: 1px solid #e17816
+      position: relative
 
-          &:after
-            content: ' '
-            position: absolute
-            background: image-url("#{$image-path}/demo-light.png") 0 0 no-repeat
-            width: 388px
-            height: 102px
-            left: -10px
-            top: -20px
+      &:after
+        content: ' '
+        position: absolute
+        background: image-url("#{$image-path}/demo-light.png") 0 0 no-repeat
+        width: 309px
+        background-size: 309px auto
+        height: 102px
+        left: -10px
+        top: -13px
 
-        &.sign-in
-          border: 1px solid #00a651
-          color: #00a651
-          position: relative
+    &.sign-in
+      border: 1px solid #00a651
+      color: #00a651
+      position: relative
 
-          &:after
-            background: image-url("#{$image-path}/sign-in-light.png") 0 0 no-repeat
-            content: ' '
-            height: 88px
-            left: -10px
-            position: absolute
-            top: -18px
-            width: 377px
+      &:after
+        background: image-url("#{$image-path}/sign-in-light.png") 0 0 no-repeat
+        content: ' '
+        height: 88px
+        left: -10px
+        position: absolute
+        top: -7px
+        width: 377px
+        background-size: 290px auto
 
-          .octicon
-            font-size: 22px
-            margin-right: 5px
+      .octicon
+        font-size: 22px
+        margin-right: 5px
 
-      .note
-        font-size: 16px
-        margin-top: 10px
-        text-align: center
+  .note
+    font-size: 16px
+    margin-top: 10px
+    text-align: center
 
   section.demo
     background: #f5f5f5
     text-align: center
     padding-top: 20px
+    height: 300px
+    overflow: hidden
+    border-bottom: 1px solid #ddd
 
     img
       width: 100%
       max-width: 1366px
       margin-bottom: -4px
+
+  section.metrics
+    text-align: center
+
+    .container
+      text-align: left
+      padding: 20px 40px
+      max-width: 1100px
+      display: inline-block
+
+      h3
+        font-size: 42px
+        font-weight: 200
+        margin: 40px 0 0 0
+
+      .cumulative-flow
+        display: inline-block
+        width: 760px
+        margin-right: 40px
+        vertical-align: top
+
+        img
+          width: 100%
+
+      .control-chart
+        display: inline-block
+        width: 760px
+        margin-left: 40px
+        vertical-align: top
+
+        img
+          width: 100%
+
+      .text
+        display: inline-block
+        width: 300px
+        vertical-align: top
+
+      p
+        font-size: 22px
+
+  section.action
+    text-align: center
+    padding: 140px 0 40px
+
+    .note
+      margin-top: 20px
+
+    a.button.sign-in
+      display: inline-block
+      padding: 20px 60px
+      font-size: 36px
+
+      &:after
+        height: 115px
+        width: 527px
+        background-size: 508px auto
+        top: -17px
+
+      .octicon
+        font-size: 36px
+        margin-right: 10px
 
   section.footer
     text-align: center
