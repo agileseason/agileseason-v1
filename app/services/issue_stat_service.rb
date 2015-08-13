@@ -28,7 +28,7 @@ class IssueStatService
         column.update_sort_issues(column.issues.unshift(issue_stat.number))
       end
 
-      if user.present?
+      if user.present? && issue_stat.column != column
         Activities::ColumnChangedActivity.
           create_for(issue_stat, issue_stat.column, column, user)
       end
