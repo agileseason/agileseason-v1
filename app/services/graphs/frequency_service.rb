@@ -13,8 +13,7 @@ module Graphs
     def chart_series
       return zero_point if issues.blank?
 
-      max = issues.map(&:elapsed_days).max
-      normolized = (1..max.ceil).each_with_object(zero_point) do |day, hash|
+      normolized = (1..max_cycle_time).each_with_object(zero_point) do |day, hash|
         hash[day] = 0
       end
 
@@ -56,6 +55,10 @@ module Graphs
 
     def zero_point
       { 0 => 0 }
+    end
+
+    def max_cycle_time
+      issues.map(&:elapsed_days).max.ceil
     end
   end
 end
