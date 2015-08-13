@@ -1,20 +1,18 @@
-@import compass/css3/transition
+@import compass/css3
 @import mixins/date
 
 .b-activities
   +transition(right ease 0.1s)
-  border-top: 1px solid #eee
-  border-left: 1px solid #eee
   background: #fff
+  border-left: 1px solid #eee
+  border-top: 1px solid #eee
   height: 100%
-  //height: calc(100% - 38px)
   overflow-x: hidden
   overflow-y: auto
   position: fixed
-  right: -300px
-  //top: 38px
+  right: -390px
   top: 0
-  width: 300px
+  width: 390px
   z-index: 3
 
   &.active
@@ -32,7 +30,7 @@
       height: 1px
       left: 20px
       position: absolute
-      width: 260px
+      width: 350px
 
     &:last-child
       &:after
@@ -45,9 +43,16 @@
       vertical-align: top
       width: 28px
 
+    .avatar
+      +border-radius(100px)
+      display: inline-block
+      height: 24px
+      margin: -1px 8px 0 0
+      width: 24px
+
     .description
       display: inline-block
-      width: 260px
+      width: 310px
       vertical-align: top
 
     .date
@@ -56,6 +61,10 @@
 
     .user
       font-weight: bold
+      margin-right: 6px
+
+    a.issue-url
+      display: inline-block
 
   .no-activities
     text-align: center
