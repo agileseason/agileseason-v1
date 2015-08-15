@@ -35,7 +35,7 @@ class CommentsController < ApplicationController
     FayePusher.broadcast_issue(
       current_user,
       @board,
-      action: action_name,
+      action: "comment_#{action_name}",
       number: number,
       html: render_to_string(
         partial: 'show',

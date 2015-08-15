@@ -277,15 +277,16 @@ update_by_checkbox = ($checkbox) ->
 subscribe_issue_update = ->
   $issue = $('.b-issue-modal')
   return unless $issue.data('faye-on')
-  return if window.faye_issues
+  return unless window.faye
 
   try
-    window.faye_issues = new Faye.Client($issue.data('faye-url'))
-    window.faye_issues.subscribe $issue.data('faye-channel'), (message) ->
+    window.faye.apply $issue.data('faye-channel'), $issue
+
+    $issue.on 'faye:comment_create', (e, data) ->
       $fetch_issue = $('.b-issue-modal')
-      return if $fetch_issue.data('faye-client-id') == message.client_id
-      return if $fetch_issue.data('number') != parseInt(message.data.number)
-      $('.issue-comments').append(message.data.html) if message.data.action == 'create'
+      return unless $fetch_issue.data('number') == parseInt(data.number)
+      $('.issue-comments').append(data.html)
+
   catch err
     console.log err
 

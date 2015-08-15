@@ -110,27 +110,27 @@ window.update_wip_column = (badge) ->
 subscribe_board_update = ->
   $board = $('.board')
   return unless $board.data('faye-on')
-  console.log '[faye] subscribe_board_update'
-  return if window.faye_board
 
   try
-    window.faye_board = new Faye.Client($board.data('faye-url'))
-    console.log '[faye] new Faye.Client'
-    subscription = window.faye_board.subscribe $board.data('faye-channel'), (message) ->
-      return if $board.data('faye-client-id') == message.client_id
+    unless window.faye
+      window.faye = new FayeCaller(
+        $board.data('faye-url'),
+        $board.data('faye-client-id'),
+        $board
+      )
 
-      if message.data.action == 'update_column'
-        column = $("#column_#{message.data.column_id}")
-        $.get(
-          column.data('url')
-          (data) ->
-            column.find('.issues').html(data.html)
-        )
+    window.faye.apply $board.data('faye-channel'), $board
 
-    window.faye_board.on 'transport:down', ->
-      console.log '[faye] transport:down'
-      #subscription.cancel()
-      # NOTE временное решение, пока не пойму откуда приходит 2е подключение на продакшене.
-      #window.setTimeout (-> $('.alert-timeout').show()), 5000
+    $board.on 'faye:update_column', (e, data) ->
+      column = $("#column_#{data.column_id}")
+      $.get(
+        column.data('url')
+        (data) ->
+          column.find('.issues').html(data.html)
+      )
+
+    $board.on 'faye:disconnect', ->
+      window.setTimeout (-> $('.alert-timeout').show()), 5000
+
   catch err
     console.log err
