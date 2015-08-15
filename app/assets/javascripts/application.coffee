@@ -12,6 +12,7 @@
 #= require highcharts.js
 #= require replace_nth_match.js
 #= require js-patch.coffee
+#= require faye-browser
 #= require turbolinks
 #= require_tree .
 

@@ -5,7 +5,6 @@ html
     = stylesheet_link_tag '/octicons/octicons.css', media: 'all', 'data-turbolinks-track' => true
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
-    = javascript_include_tag "#{FayePusher::URL}/client.js" if FayePusher.on?
     = csrf_meta_tags
     = render partial: 'application/favicons'
 
