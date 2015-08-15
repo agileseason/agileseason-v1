@@ -10,8 +10,6 @@ $(document).on 'page:change', ->
   # пересчитать высоту борда в зависимости от высоты окна браузера
   resize_height()
 
-  $('textarea', '.new_issue').elastic()
-
   # открыть форму добавления тикета или колонки
   $('.new-issue, .new-column').click ->
     $(@).next().show()
@@ -84,6 +82,8 @@ column_menu = ->
       alert(data.message)
 
 new_issue_forms = ->
+  $('textarea', '.new_issue').elastic()
+
   $('form.new_issue').on 'submit', ->
     $form = $(@)
     if $form.data('blocked')

@@ -1,4 +1,4 @@
-= simple_form_for(issue, url: board_issues_url(board_bag), remote: true) do |f|
+= simple_form_for(issue, url: board_issues_url(board_bag), remote: true, html: { class: 'new_issue submit-by-enter' }) do |f|
   = f.input :title, as: :text, input_html: { placeholder: 'Issue title' }
   = f.input :body, as: :text
 
