@@ -7,6 +7,7 @@ class WebhooksController < ApplicationController
   def github
     # TODO Remove webhook if board delete or user sigin in long time ago.
     if trusted_request? && board.present?
+      # TODO Fix dublicate last issue on board if creating via github.
       BoardBag.new(nil, board).update_cache(issue)
     end
     render nothing: true
