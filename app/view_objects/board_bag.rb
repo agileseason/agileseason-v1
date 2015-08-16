@@ -39,6 +39,8 @@ class BoardBag
   end
 
   def update_cache(issue)
+    return unless Rails.cache.exist?(cache_key(:issues_hash))
+
     issues_hash[issue.number] = issue
     Rails.cache.write(
       cache_key(:issues_hash),
@@ -110,19 +112,19 @@ class BoardBag
     end
   end
 
-  def cache_key(posfix)
-    if posfix == :issues_hash
-      "board_bag_#{posfix}_#{board.id}_#{board.updated_at.to_i}"
+  def cache_key(postfix)
+    if postfix == :issues_hash
+      "board_bag_#{postfix}_#{board.id}_#{board.updated_at.to_i}"
     else
-      "board_bag_#{posfix}_#{board.id}"
+      "board_bag_#{postfix}_#{board.id}"
     end
   end
 
-  def cached(posfix, expires_in, &block)
+  def cached(postfix, expires_in, &block)
     if Rails.env.test?
       block.call
     else
-      Rails.cache.fetch(cache_key(posfix), expires_in: expires_in) do
+      Rails.cache.fetch(cache_key(postfix), expires_in: expires_in) do
         block.call
       end
     end
