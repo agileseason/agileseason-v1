@@ -38,6 +38,7 @@ class BoardBag
     end
   end
 
+  # TODO not update cache if data old or eq
   def update_cache(issue)
     return unless Rails.cache.exist?(cache_key(:issues_hash))
 
