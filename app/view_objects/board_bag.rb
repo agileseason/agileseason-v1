@@ -99,13 +99,13 @@ class BoardBag
   end
 
   def ordered_issues(column)
-    column.issues.each_with_object([]) do |number, array|
-      one_issue = issues_by_columns[column.id].detect do |issue|
+    column.issues.map do |number|
+      issues_by_columns[column.id].detect do |issue|
         number.to_i == issue.number && !issue.archive?
       end
-
-      array << one_issue if one_issue.present?
-    end
+    end.
+    compact.
+    uniq { |issue| issue.number } # NOTE Need for remove magic duplication.
   end
 
   def ugnordered_issues(column)
