@@ -67,7 +67,7 @@ class BoardBag
   # FIX : Refactoring this method.
   def column_issues(column)
     if column.issues
-      ordered_issues(column) + unordered_issues(column)
+      ordered_issues(column) + ugnordered_issues(column)
     else
       if issues[column.id]
         issues[column.id].reject(&:archive?)
@@ -108,10 +108,10 @@ class BoardBag
     end
   end
 
-  def unordered_issues(column)
-    issues_by_columns[column.id].select do |issue|
-      !ordered_issues(column).include?(issue) && !issue.archive?
-    end
+  def ugnordered_issues(column)
+    missing_issue_numbers(column).
+      map { |number| issues_hash[number] }.
+      select { |issue| !issue.archive? }
   end
 
   def cache_key(postfix)
@@ -130,5 +130,9 @@ class BoardBag
         block.call
       end
     end
+  end
+
+  def missing_issue_numbers(column)
+    issues_by_columns[column.id].map(&:number) - column.issues.map(&:to_i)
   end
 end
