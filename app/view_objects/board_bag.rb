@@ -67,7 +67,8 @@ class BoardBag
   # FIX : Refactoring this method.
   def column_issues(column)
     if column.issues
-      ordered_issues(column) + ugnordered_issues(column)
+      ordered_issues(column, column.issues) +
+        ordered_issues(column, missing_issue_numbers(column))
     else
       if issues[column.id]
         issues[column.id].reject(&:archive?)
@@ -98,20 +99,14 @@ class BoardBag
     @issue_stat_mapper ||= IssueStatsMapper.new(board)
   end
 
-  def ordered_issues(column)
-    column.issues.map do |number|
+  def ordered_issues(column, issue_numbers)
+    issue_numbers.map do |number|
       issues_by_columns[column.id].detect do |issue|
         number.to_i == issue.number && !issue.archive?
       end
     end.
     compact.
     uniq { |issue| issue.number } # NOTE Need for remove magic duplication.
-  end
-
-  def ugnordered_issues(column)
-    missing_issue_numbers(column).
-      map { |number| issues_hash[number] }.
-      select { |issue| !issue.archive? }
   end
 
   def cache_key(postfix)

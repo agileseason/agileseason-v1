@@ -148,15 +148,6 @@ describe BoardBag do
     let(:github_issue_3) { OpenStruct.new(number: 3, archive?: true) }
     before do
       allow(bag).
-        to receive(:issues_hash).
-        and_return(
-          1 => github_issue_1,
-          2 => github_issue_2,
-          3 => github_issue_3
-        )
-    end
-    before do
-      allow(bag).
         to receive(:issues_by_columns).
         and_return(
           column_1.id => [github_issue_1, github_issue_2, github_issue_3]
