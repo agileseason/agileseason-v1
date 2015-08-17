@@ -103,6 +103,7 @@ class BoardBag
       one_issue = issues_by_columns[column.id].detect do |issue|
         number.to_i == issue.number && !issue.archive?
       end
+
       array << one_issue if one_issue.present?
     end
   end

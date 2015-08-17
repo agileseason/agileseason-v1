@@ -165,6 +165,13 @@ describe BoardBag do
       it { is_expected.to have(2).items }
       it { expect(subject.first).to eq github_issue_1 }
     end
+
+    context 'with partial column.issues - unknown added to tail' do
+      let(:issues) { [github_issue_2.number.to_s] }
+      it { is_expected.to have(2).items }
+      it { expect(subject.first).to eq github_issue_2 }
+      it { expect(subject.last).to eq github_issue_1 }
+    end
   end
 
   describe '#default_column' do
