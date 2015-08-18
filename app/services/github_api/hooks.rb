@@ -39,6 +39,14 @@ class GithubApi
       )
     end
 
+    def remove_issue_hook(board)
+      begin
+        client.remove_hook(board.github_id, board.github_hook_id)
+      rescue
+      end
+      board.update(github_hook_id: nil)
+    end
+
     def try_find_hook(board)
       hooks(board).detect { |hook| hook.config.url == callback_url }
     end

@@ -7,13 +7,13 @@
 
     - if @board.kanban?
       .box
-        h4.subtitle Features Kanban
+        .subtitle Features Kanban
         = simple_form_for(@board.kanban_settings, url: board_settings_url(board), method: :patch) do |f|
           = f.input :rolling_average_window
           = f.button :submit, value: 'Update'
     - elsif @board.scrum?
       .box
-        h4.subtitle Features Scrum
+        .subtitle Features Scrum
         = simple_form_for(@board.scrum_settings, url: board_settings_url(board), method: :patch) do |f|
           = f.input :days_per_iteration
           = f.input :start_iteration, collection: ScrumSettings::START_ITERATION_DAYS, include_blank: false
@@ -21,13 +21,26 @@
 
 
   - if can? :destroy, @board
+    .box
+      .subtitle Additional GitHub synchronization
+      p Webhook for fast sync issues which created via GitHub directly.
+      - if @board.github_hook_id.nil?
+        a.button href="#{un apply_hook_board_settings_url(@board)}" Create hook
+      - else
+        a.button [
+          href="#{un remove_hook_board_settings_url(@board)}"
+          data-confirm='Are you sure?'
+          data-method='delete'
+        ] Delete hook
+
     .box.danger
-      title Make this board public
+      .subtitle Make this board public
       p Make this repository visible to anyone. Work only for public repository.
       = simple_form_for(@board.danger_settings, url: board_settings_url(board), method: :patch) do |f|
         = f.input :is_public, as: :boolean
         = f.button :submit, value: 'Update'
+
     .box.danger
-      title Delete this board
+      .subtitle Delete this board
       p Once you delete a board, there is no going back. Please be certain.
       a.button href="#{board_url(@board)}" data-confirm='Are you sure?' data-method='delete' Delete

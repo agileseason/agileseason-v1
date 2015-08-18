@@ -23,6 +23,16 @@ class SettingsController < ApplicationController
     end
   end
 
+  def apply_hook
+    github_api.apply_issues_hook(@board)
+    redirect_to un(board_settings_url(@board)), notice: 'Hook successfully created.'
+  end
+
+  def remove_hook
+    github_api.remove_issue_hook(@board)
+    redirect_to un(board_settings_url(@board)), notice: 'Hook successfully removed.'
+  end
+
   private
 
   def render_show(board)

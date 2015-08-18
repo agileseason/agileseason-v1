@@ -42,6 +42,8 @@ Rails.application.routes.draw do
     resource :settings, only: [:show, :update] do
       member do
         patch :rename
+        get :apply_hook
+        delete :remove_hook
       end
     end
 
