@@ -66,10 +66,27 @@ describe BoardBag do
       allow_any_instance_of(Octokit::Client).
         to receive(:issues).and_return([])
     end
+    before { Rails.cache.clear }
+    before { data_in_cache }
     before { bag.update_cache(issue) }
 
-    it { is_expected.to_not be_nil }
-    it { is_expected.to eq issue }
+    context 'has data in cache' do
+      let(:data_in_cache) do
+        Rails.cache.write(
+          bag.send(:cache_key, :issues_hash),
+          nil,
+          expires_in: 5.minutes
+        )
+      end
+
+      it { is_expected.to_not be_nil }
+      it { is_expected.to eq issue }
+    end
+
+    context 'no data in cache' do
+      let(:data_in_cache) {}
+      it { is_expected.to be_nil }
+    end
   end
 
   describe '#collaborators' do
@@ -147,6 +164,13 @@ describe BoardBag do
       let(:issues) { nil }
       it { is_expected.to have(2).items }
       it { expect(subject.first).to eq github_issue_1 }
+    end
+
+    context 'with partial column.issues - unknown added to tail' do
+      let(:issues) { [github_issue_2.number.to_s] }
+      it { is_expected.to have(2).items }
+      it { expect(subject.first).to eq github_issue_2 }
+      it { expect(subject.last).to eq github_issue_1 }
     end
   end
 

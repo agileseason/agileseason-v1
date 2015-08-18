@@ -87,19 +87,23 @@ describe BoardsController, type: :controller do
   describe '#create' do
     subject { Board.where(user_id: user.id).first }
     let(:user) { create(:user) }
+    let(:board_name) { 'test-1' }
+    let(:column_names) { ['c1', 'c2', '', nil] }
     before do
       allow_any_instance_of(User).
         to receive(:repo_admin?).and_return(true)
 
       allow_any_instance_of(GithubApi).
         to receive(:issues).and_return([])
+
+      allow(WebhookWorker).to receive(:perform_async)
     end
     before { stub_sign_in(user) }
     before do
       post(
         :create,
         board: {
-          name: 'test-1',
+          name: board_name,
           type: 'Boards::KanbanBoard',
           github_id: '123',
           github_name: 'test-1',
@@ -110,15 +114,21 @@ describe BoardsController, type: :controller do
     end
 
     context 'success' do
-      let(:column_names) { ['c1', 'c2', '', nil] }
-
       its(:name) { is_expected.to eq 'test-1' }
       it { expect(subject.columns.map(&:name)).to eq ['c1', 'c2'] }
+      it { expect(WebhookWorker).to have_received(:perform_async) }
+    end
+
+    context 'blank name' do
+      let(:board_name) { '' }
+      it { is_expected.to be_nil }
+      it { expect(WebhookWorker).not_to have_received(:perform_async) }
     end
 
     context 'to few columns' do
       let(:column_names) { ['c1'] }
       it { is_expected.to be_nil }
+      it { expect(WebhookWorker).not_to have_received(:perform_async) }
     end
   end
 
@@ -130,16 +140,30 @@ describe BoardsController, type: :controller do
       allow_any_instance_of(GithubApi).
         to receive(:cached_repos).and_return([repo])
     end
+    before do
+      allow_any_instance_of(GithubApi).
+        to receive(:remove_issue_hook)
+    end
     before { stub_sign_in(user) }
 
     context 'owner' do
-      before { request }
       let(:reader?) { false }
-      let(:board) { create(:board, :with_columns, user: user) }
+      let(:board) { create(:kanban_board, :with_columns, user: user) }
 
-      it { expect(response).to have_http_status(:redirect) }
-      it { expect(response).to redirect_to(boards_url) }
-      it { expect(Board.where(id: board.id).count).to be_zero }
+      context 'response' do
+        before { request }
+        it { expect(response).to have_http_status(:redirect) }
+        it { expect(response).to redirect_to(boards_url) }
+        it { expect(Board.where(id: board.id).count).to be_zero }
+      end
+
+      context 'behaviour' do
+        after { request }
+        it do
+          expect_any_instance_of(GithubApi).
+            to receive(:remove_issue_hook).with(board)
+        end
+      end
     end
 
     context 'not owner but reader' do

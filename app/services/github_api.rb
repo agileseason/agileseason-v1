@@ -3,11 +3,12 @@ require 'base64'
 require 'active_support/core_ext/object/with_options'
 
 class GithubApi
-  include GithubApi::Repos
-  include GithubApi::Labels
-  include GithubApi::Issues
-  include GithubApi::Stats
   include GithubApi::Comments
+  include GithubApi::Hooks
+  include GithubApi::Issues
+  include GithubApi::Labels
+  include GithubApi::Repos
+  include GithubApi::Stats
 
   SERVICES_TEAM_NAME = 'Services'
 

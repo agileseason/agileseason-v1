@@ -42,6 +42,8 @@ Rails.application.routes.draw do
     resource :settings, only: [:show, :update] do
       member do
         patch :rename
+        get :apply_hook
+        delete :remove_hook
       end
     end
 
@@ -70,6 +72,7 @@ Rails.application.routes.draw do
   get '/awstest', to: 'awstest#index'
   get '/demo', to: 'landing#demo', as: :demo
   get '/mixpanel_events/client_event', to: 'mixpanel_events#client_event'
+  post '/webhooks/github'
 
   root 'landing#index'
 end

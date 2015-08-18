@@ -37,6 +37,7 @@ class BoardsController < ApplicationController
     @board.columns << build_columns
 
     if @board.save
+      WebhookWorker.perform_async(@board.id, encrypted_github_token)
       ui_event(:board_create)
       redirect_to un board_url(@board)
     else
@@ -46,6 +47,7 @@ class BoardsController < ApplicationController
 
   def destroy
     authorize! :destroy, @board
+    github_api.remove_issue_hook(@board)
     @board.destroy
     redirect_to un(boards_url), notice: "Your board \"#{@board.name}\" was successfully deleted."
   end

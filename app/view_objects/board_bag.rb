@@ -38,7 +38,10 @@ class BoardBag
     end
   end
 
+  # TODO not update cache if data old or eq
   def update_cache(issue)
+    return unless Rails.cache.exist?(cache_key(:issues_hash))
+
     issues_hash[issue.number] = issue
     Rails.cache.write(
       cache_key(:issues_hash),
@@ -64,7 +67,8 @@ class BoardBag
   # FIX : Refactoring this method.
   def column_issues(column)
     if column.issues
-      ordered_issues(column) + unordered_issues(column)
+      ordered_issues(column, column.issues) +
+        ordered_issues(column, missing_issue_numbers(column))
     else
       if issues[column.id]
         issues[column.id].reject(&:archive?)
@@ -95,36 +99,35 @@ class BoardBag
     @issue_stat_mapper ||= IssueStatsMapper.new(board)
   end
 
-  def ordered_issues(column)
-    column.issues.each_with_object([]) do |number, array|
-      one_issue = issues_by_columns[column.id].detect do |issue|
+  def ordered_issues(column, issue_numbers)
+    issue_numbers.map do |number|
+      issues_by_columns[column.id].detect do |issue|
         number.to_i == issue.number && !issue.archive?
       end
-      array << one_issue if one_issue.present?
-    end
+    end.
+      compact.
+      uniq(&:number) # NOTE Need for remove magic duplication.
   end
 
-  def unordered_issues(column)
-    issues_by_columns[column.id].select do |issue|
-      !ordered_issues(column).include?(issue) && !issue.archive?
-    end
-  end
-
-  def cache_key(posfix)
-    if posfix == :issues_hash
-      "board_bag_#{posfix}_#{board.id}_#{board.updated_at.to_i}"
+  def cache_key(postfix)
+    if postfix == :issues_hash
+      "board_bag_#{postfix}_#{board.id}_#{board.updated_at.to_i}"
     else
-      "board_bag_#{posfix}_#{board.id}"
+      "board_bag_#{postfix}_#{board.id}"
     end
   end
 
-  def cached(posfix, expires_in, &block)
+  def cached(postfix, expires_in, &block)
     if Rails.env.test?
       block.call
     else
-      Rails.cache.fetch(cache_key(posfix), expires_in: expires_in) do
+      Rails.cache.fetch(cache_key(postfix), expires_in: expires_in) do
         block.call
       end
     end
+  end
+
+  def missing_issue_numbers(column)
+    issues_by_columns[column.id].map(&:number) - column.issues.map(&:to_i)
   end
 end
