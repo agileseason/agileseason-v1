@@ -41,7 +41,7 @@ class GithubApi
 
     def remove_issue_hook(board)
       begin
-        client.remove_hook(board.github_id, board.github_hook_id)
+        client.remove_hook(board.github_id, board.github_hook_id) if board.github_hook_id.present?
       rescue
       end
       board.update(github_hook_id: nil)
@@ -52,7 +52,7 @@ class GithubApi
     end
 
     def callback_url
-      'http://37847032.ngrok.io/webhooks/github'
+      'https://agileseason.com/webhooks/github'
     end
 
     def secret
