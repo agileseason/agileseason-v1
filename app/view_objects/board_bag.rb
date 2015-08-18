@@ -105,8 +105,8 @@ class BoardBag
         number.to_i == issue.number && !issue.archive?
       end
     end.
-    compact.
-    uniq { |issue| issue.number } # NOTE Need for remove magic duplication.
+      compact.
+      uniq(&:number) # NOTE Need for remove magic duplication.
   end
 
   def cache_key(postfix)

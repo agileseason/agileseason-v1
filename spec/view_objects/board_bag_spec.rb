@@ -84,7 +84,7 @@ describe BoardBag do
     end
 
     context 'no data in cache' do
-      let(:data_in_cache) { }
+      let(:data_in_cache) {}
       it { is_expected.to be_nil }
     end
   end
