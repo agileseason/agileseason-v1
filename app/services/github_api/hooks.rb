@@ -56,6 +56,7 @@ class GithubApi
     end
 
     def secret
+      # TODO Remove this code duplication. See: webhook_controller.
       @secret ||= Rails.application.secrets.secret_key_base.first(20)
     end
   end
