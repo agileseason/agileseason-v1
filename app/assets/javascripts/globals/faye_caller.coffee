@@ -10,7 +10,7 @@ class @FayeCaller
     @client.on 'transport:down', =>
       @node.trigger "faye:disconnect"
 
-    @log '[faye] client connect'
+    @log 'client connect'
 
   apply: (channel, node) ->
     @unsubscribe exist_channel for exist_channel in @channels
@@ -20,10 +20,10 @@ class @FayeCaller
     subscription = @client.subscribe channel, (message) =>
       return if @client_id == message.client_id
       node.trigger "faye:#{message.data.action}", message.data
-      @log "[faye] trigger faye:#{message.data.action}"
+      @log "trigger faye:#{message.data.action}"
 
     @channels.push channel
-    @log "[faye] subscribe: #{channel}"
+    @log "subscribe: #{channel}"
 
   unsubscribe: (channel) ->
     @client.unsubscribe channel
@@ -31,7 +31,8 @@ class @FayeCaller
     index = @channels.indexOf channel
     @channels.splice(index, 1) if index >= 0
 
-    @log "[faye] unsubscribe: #{channel}"
+    @log "unsubscribe: #{channel}"
 
   log: (message) ->
-    console.log message
+    time = new Date().toLocaleTimeString().toString()
+    console.log "[faye][#{time}] #{message}"
