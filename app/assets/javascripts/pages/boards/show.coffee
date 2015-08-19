@@ -130,7 +130,7 @@ subscribe_board_update = ->
       )
 
     $board.on 'faye:disconnect', ->
-      window.setTimeout (-> $('.alert-timeout').show()), 5000
+      window.setTimeout (-> $('.alert-timeout').show()), 1000 * 60 * 5
 
   catch err
     console.log err
