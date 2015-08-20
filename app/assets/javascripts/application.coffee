@@ -10,6 +10,8 @@
 
 #= require jquery.elastic.source
 #= require highcharts.js
+#= require baron.js
+#= require widget.js
 #= require replace_nth_match.js
 #= require js-patch.coffee
 #= require faye-browser
@@ -17,7 +19,7 @@
 #= require_tree .
 
 # ---  Fileupload loaded after all  ---
-#= require vendor/jquery.fileupload
+#= require jquery.fileupload
 #= require jquery.scrollTo
 
 # Turbolinks and mentrika.yandex.ru
