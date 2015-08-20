@@ -42,6 +42,7 @@ class WebhooksController < ApplicationController
   end
 
   def secret
+    # NOTE Secret is not displayed in Github interface.
     @secret ||= Rails.application.secrets.secret_key_base.first(20)
   end
 end
