@@ -20,19 +20,19 @@
           = f.button :submit, value: 'Update'
 
 
-  - if can? :destroy, @board
-    .box
-      .subtitle Additional GitHub synchronization
-      p Webhook for fast sync issues which created via GitHub directly.
-      - if @board.github_hook_id.nil?
-        a.button href="#{un apply_hook_board_settings_url(@board)}" Create hook
-      - else
-        a.button [
-          href="#{un remove_hook_board_settings_url(@board)}"
-          data-confirm='Are you sure?'
-          data-method='delete'
-        ] Delete hook
+  .box
+    .subtitle Additional GitHub synchronization
+    p Webhook for fast sync issues which created via GitHub directly.
+    - if @board.github_hook_id.nil?
+      a.button href="#{un apply_hook_board_settings_url(@board)}" Create hook
+    - else
+      a.button [
+        href="#{un remove_hook_board_settings_url(@board)}"
+        data-confirm='Are you sure?'
+        data-method='delete'
+      ] Delete hook
 
+  - if can? :destroy, @board
     .box.danger
       .subtitle Make this board public
       p Make this repository visible to anyone. Work only for public repository.
