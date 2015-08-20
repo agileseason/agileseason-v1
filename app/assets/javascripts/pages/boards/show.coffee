@@ -129,8 +129,8 @@ subscribe_board_update = ->
           column.find('.issues').html(data.html)
       )
 
-    $board.on 'faye:disconnect', ->
-      window.setTimeout (-> $('.alert-timeout').show()), 1000 * 60 * 5
+    #$board.on 'faye:disconnect', ->
+      #window.setTimeout (-> $('.alert-timeout').show()), 1000 * 60 * 5
 
   catch err
     console.log err
