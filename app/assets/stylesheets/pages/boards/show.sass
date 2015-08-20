@@ -7,6 +7,8 @@
 
 @import globals/variables
 
+$image-path: "pages/p-boards-show"
+
 .p-boards-show
   background: #f5f5f5
   .container
@@ -75,6 +77,9 @@
         display: block
 
       a.button.archive.hidden
+        display: none
+
+      a.ready
         display: none
 
     &:last-child
@@ -328,7 +333,7 @@
     border-bottom: 1px solid #ddd
     margin-bottom: 2px
     overflow: hidden
-    padding: 0 10px 15px
+    padding: 0 10px 5px
     position: relative
 
     .octicon
@@ -372,21 +377,88 @@
       margin-right: 4px
       display: inline
 
-    .due-date
-      color: $orange
+    .buttons
+      margin-top: 5px
       display: inline-block
-      float: right
-      font-size: 12px
-      font-weight: bold
-      letter-spacing: -0.2px
-      margin-top: 6px
-      padding: 2px 6px 2px 6px
+      vertical-align: middle
+      width: 70px
 
-      &.none
+      a.button
+        +button
+        +border-radius(2px)
         display: none
+        float: right
+        font-size: 9px
+        letter-spacing: 0.1em
+        padding: 4px 10px 5px
+        text-align: right
+        text-transform: uppercase
 
-    .b-assignee
-      margin: 10px 0 0
+      .ready
+        display: inline-block
+        text-transform: uppercase
+        font-size: 9px
+        letter-spacing: 0.1em
+        background: image-url("#{$image-path}/ready.png") 0 0 no-repeat transparent
+        height: 15px
+        width: 50px
+        color: #777
+        border: none
+        padding: 5px 0 0 5px
+        background-size: 50px
+        float: right
+        opacity: 0.2
+        margin-right: -10px
+
+        &:hover
+          color: $button-hover
+          background: image-url("#{$image-path}/ready-hover.png") 0 0 no-repeat transparent
+          border: none
+          background-size: 50px
+          opacity: 1
+
+        &.active
+          background: image-url("#{$image-path}/ready-active.png") 0 0 no-repeat transparent
+          color: #fff
+          background-size: 50px
+          opacity: 1
+
+          &:hover
+            background: image-url("#{$image-path}/ready-active-hover.png") 0 0 no-repeat transparent
+            background-size: 50px
+
+    .icons
+      margin-top: 5px
+      display: inline-block
+      vertical-align: middle
+      width: 149px
+
+      &>div, &>span
+        vertical-align: middle
+        display: inline-block
+
+      .due-date
+        color: $orange
+        display: inline-block
+        font-size: 12px
+        font-weight: bold
+        letter-spacing: -0.2px
+        padding: 2px 3px
+
+        &.none
+          display: none
+
+      .b-assignee
+        display: inline-block
+
+        &.hidden
+          display: none
+
+        .user
+          margin: 0
+
+      .octicon-book
+        margin-right: 5px
 
     .issue-title
       color: $text-usual
@@ -400,20 +472,6 @@
       color: $text-usual
       cursor: pointer
       display: inline
-
-    a.button
-      +button
-      display: none
-      float: right
-      font-size: 9px
-      letter-spacing: 0.1em
-      margin: 5px 0 0 5px
-      padding: 5px 10px
-      text-align: right
-      text-transform: uppercase
-
-      &.close
-        display: none
 
   .issue-modal
     color: $text-usual

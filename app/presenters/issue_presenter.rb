@@ -44,6 +44,10 @@ class IssuePresenter < Keynote::Presenter
     issue.due_date_at.try(:utc).try(:strftime, '%b %d %H:%M')
   end
 
+  def due_date_on
+    issue.due_date_at.try(:utc).try(:strftime, '%b %d')
+  end
+
   def archived?(board)
     IssueStatService.archived?(board, number)
   end

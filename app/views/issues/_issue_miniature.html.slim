@@ -17,28 +17,34 @@
   /.issue-data
     /= render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @board_bag.labels }
 
-  = render partial: 'issues/assignee', locals: { issue: issue }
+  .icons
+    = render partial: 'issues/assignee', locals: { issue: issue }
 
-  span.octicon.octicon-book class="#{:show unless k(:issue, issue).body_empty?}"
-  span.octicon.octicon-comment-discussion class="#{:show unless issue.comments == 0}"
+    - unless k(:issue, issue).body_empty?
+      span.octicon.octicon-book
 
-  - unless issue.comments.blank?
-    span.octicon.octicon-comment
+    - unless issue.comments == 0
+      span.octicon.octicon-comment-discussion
 
-  - if can?(:update, @board)
-    - if issue.open?
-      a.button.close [
-        href="#{close_board_issues_url(@board, issue.number)}"
+    .due-date class="#{:none unless issue.due_date_at}" = k(:issue, issue).due_date_on
+
+
+  .buttons
+    a.ready Ready
+
+    - if can?(:update, @board)
+      - if issue.open?
+        a.button.close [
+          href="#{close_board_issues_url(@board, issue.number)}"
+          data-type='json'
+          data-remote='true'
+          title='Click to close'
+        ] Close
+
+      a.button.archive [
+        class="#{:hidden unless issue.closed?}"
+        href="#{archive_board_issues_url(@board, issue.number)}"
         data-type='json'
         data-remote='true'
-        title='Click to close'
-      ] Close
+      ] Archive
 
-    a.button.archive [
-      class="#{:hidden unless issue.closed?}"
-      href="#{archive_board_issues_url(@board, issue.number)}"
-      data-type='json'
-      data-remote='true'
-    ] Archive
-
-  .due-date class="#{:none unless issue.due_date_at}" = k(:issue, issue).due_date_at
