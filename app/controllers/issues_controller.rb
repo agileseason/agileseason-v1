@@ -66,7 +66,7 @@ class IssuesController < ApplicationController
 
     if force?
       broadcast_column(column_from) if column_from
-      broadcast_column(issue_stat.column)
+      broadcast_column(column_to)
     end
 
     render json: {
