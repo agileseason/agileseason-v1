@@ -129,8 +129,13 @@ subscribe_board_update = ->
           column.find('.issues').html(data.html)
       )
 
-    #$board.on 'faye:disconnect', ->
-      #window.setTimeout (-> $('.alert-timeout').show()), 1000 * 60 * 5
+    $board.on 'faye:disconnect', ->
+      timeout = 1000 * 60 * 20
+      window.setTimeout (->
+          # TODO remove this log after test faye
+          console.log "[faye client] lastConnectedAt: #{window.faye.lastConnectedAt}, now: #{new Date()}"
+          $('.alert-timeout').show() if window.faye.lastConnectedAt < new Date() - timeout
+        ), timeout
 
   catch err
     console.log err

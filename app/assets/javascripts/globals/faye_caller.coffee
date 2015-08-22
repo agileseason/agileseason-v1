@@ -6,9 +6,12 @@ class @FayeCaller
       retry: 5
     )
     @channels = []
+    @subscriptions = {}
+    @lastConnectedAt = null
 
     @client.on 'transport:down', =>
-      @node.trigger "faye:disconnect"
+      @node.trigger 'faye:disconnect'
+      @log 'client disconnect'
 
     @log 'client connect'
 
@@ -17,22 +20,32 @@ class @FayeCaller
     @subscribe channel, node
 
   subscribe: (channel, node) ->
-    subscription = @client.subscribe channel, (message) =>
+    @subscriptions[channel] = @client.subscribe channel, (message) =>
       return if @client_id == message.client_id
       node.trigger "faye:#{message.data.action}", message.data
       @log "trigger faye:#{message.data.action}"
 
     @channels.push channel
+    @lastConnectedAt = new Date()
     @log "subscribe: #{channel}"
 
   unsubscribe: (channel) ->
     @client.unsubscribe channel
+    @deleteFromChannels channel
 
-    index = @channels.indexOf channel
-    @channels.splice(index, 1) if index >= 0
+    subscription = @subscriptions[channel]
+    subscription.cancel() if subscription
+    @deleteFromSubscriptions channel
 
     @log "unsubscribe: #{channel}"
 
   log: (message) ->
     time = new Date().toLocaleTimeString().toString()
     console.log "[faye][#{time}] #{message}"
+
+  deleteFromChannels: (channel) ->
+    index = @channels.indexOf channel
+    @channels.splice(index, 1) if index >= 0
+
+  deleteFromSubscriptions: (channel) ->
+    delete @subscriptions[channel]
