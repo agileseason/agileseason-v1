@@ -12,7 +12,7 @@ describe S3Api do
       expect(bucket).
         to have_received(:presigned_post).
         with(
-          key: "uploads/#{expected_path_prefix}_abc/${filename}",
+          key: "uploads/#{expected_path_prefix}/abc/${filename}",
           content_type: 'image/png',
           acl: 'public-read',
           success_action_status: '201'

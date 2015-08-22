@@ -31,7 +31,7 @@ class S3Api
     end
 
     def dir_path
-      "uploads/#{Time.current.strftime('%Y-%m-%d')}_#{SecureRandom.uuid}"
+      "uploads/#{Time.current.strftime('%Y-%m-%d')}/#{SecureRandom.uuid}"
     end
   end
 end
