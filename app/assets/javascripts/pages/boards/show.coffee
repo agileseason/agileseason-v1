@@ -122,6 +122,7 @@ subscribe_board_update = ->
     window.faye.apply $board.data('faye-channel'), $board
 
     $board.on 'faye:update_column', (e, data) ->
+      # NOTE Timeout because sometimes by this time column not updated.
       window.setTimeout (->
           column = $("#column_#{data.column_id}")
           $.get(
