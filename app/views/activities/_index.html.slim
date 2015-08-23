@@ -3,7 +3,7 @@
     /type will be a special github icon
     /a.type
 
-    .avatar style="background-image: url(#{gravatar_image_url(activity.user.email, size: 24, secure: true)})"
+    img.avatar src="#{github_avatar_url(activity.user)}"
     .description
       span.user = activity.user.github_username
       == activity.description(un show_board_issues_url(@board, activity.issue_stat.number))
