@@ -15,7 +15,7 @@ module ApplicationHelper
     @github_api ||= GithubApi.new(github_token, current_user)
   end
 
-  def github_avatar_url user
+  def github_avatar_url(user)
     "https://avatars.githubusercontent.com/#{user.github_username}"
   end
 
