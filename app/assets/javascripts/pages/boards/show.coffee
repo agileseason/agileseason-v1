@@ -119,7 +119,7 @@ subscribe_board_update = ->
         $board
       )
 
-    window.faye.apply $board.data('faye-channel'), $board
+    window.faye.apply($board.data('faye-channel'), $board)
 
     $board.on 'faye:update_column', (e, data) ->
       # NOTE Timeout because sometimes by this time column not updated.
@@ -133,12 +133,10 @@ subscribe_board_update = ->
         ), 1000
 
     $board.on 'faye:disconnect', ->
-      timeout = 1000 * 60 * 20
-      window.setTimeout (->
-          # TODO remove this log after test faye
-          console.log "[faye client] lastConnectedAt: #{window.faye.lastConnectedAt}, now: #{new Date()}"
-          $('.alert-timeout').show() if window.faye.lastConnectedAt < new Date() - timeout
-        ), timeout
+      # TODO remove this log after test faye
+      console.log "[faye client] lastConnectedAt: #{window.faye.lastConnectedAt}, now: #{new Date()}"
+      timeout = 1000 * 60 * 30
+      $('.alert-timeout').show() if window.faye.lastConnectedAt < new Date() - timeout
 
   catch err
     console.log err
