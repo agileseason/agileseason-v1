@@ -13,7 +13,7 @@ $(document).keyup (e) ->
       # вернуться к борду
       Turbolinks.visit($('.b-menu .boards a').attr('href'))
 
-$(document).ready ->
+$(document).on 'page:change', ->
   # для textarea не переходим на новую строку
   # для input не игнорируем cmd+enter
   $('form.submit-by-enter').on 'keydown', 'textarea, input', (e) ->
