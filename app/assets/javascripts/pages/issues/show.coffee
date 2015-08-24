@@ -283,6 +283,7 @@ subscribe_issue_update = ->
     window.faye.apply $issue.data('faye-channel'), $issue
 
     $issue.on 'faye:comment_create', (e, data) ->
+      window.faye.updateProcessTime()
       $fetch_issue = $('.b-issue-modal')
       return unless $fetch_issue.data('number') == parseInt(data.number)
       $('.issue-comments').append(data.html)

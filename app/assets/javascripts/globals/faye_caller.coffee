@@ -8,6 +8,7 @@ class @FayeCaller
     @channels = []
     @subscriptions = {}
     @lastConnectedAt = null
+    @lastProcessedAt = null
 
     @client.on 'transport:down', =>
       @node.trigger 'faye:disconnect'
@@ -42,6 +43,12 @@ class @FayeCaller
   log: (message) ->
     time = new Date().toLocaleTimeString().toString()
     console.log "[faye][#{time}] #{message}"
+
+  lastActionAt: ->
+    if @lastConnectedAt > @lastProcessedAt then @lastConnectedAt else @lastProcessedAt
+
+  updateProcessTime: ->
+    @lastProcessedAt = new Date()
 
   deleteFromChannels: (channel) ->
     index = @channels.indexOf channel

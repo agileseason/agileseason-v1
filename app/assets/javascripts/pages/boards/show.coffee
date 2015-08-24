@@ -122,6 +122,7 @@ subscribe_board_update = ->
     window.faye.apply($board.data('faye-channel'), $board)
 
     $board.on 'faye:update_column', (e, data) ->
+      window.faye.updateProcessTime()
       # NOTE Timeout because sometimes by this time column not updated.
       window.setTimeout (->
           column = $("#column_#{data.column_id}")
@@ -136,7 +137,7 @@ subscribe_board_update = ->
       # TODO remove this log after test faye
       console.log "[faye client] lastConnectedAt: #{window.faye.lastConnectedAt}, now: #{new Date()}"
       timeout = 1000 * 60 * 30
-      $('.alert-timeout').show() if window.faye.lastConnectedAt < new Date() - timeout
+      $('.alert-timeout').show() if window.faye.lastActionAt() < new Date() - timeout
 
   catch err
     console.log err
