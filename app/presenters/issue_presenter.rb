@@ -36,6 +36,7 @@ class IssuePresenter < Keynote::Presenter
   end
 
   def label_include?(label)
+    return false if labels.blank?
     labels.any? { |issue_label| issue_label.name == label.name }
   end
 
