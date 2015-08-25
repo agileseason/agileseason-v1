@@ -1,4 +1,4 @@
-$(document).keyup (e) ->
+$(document).keydown (e) ->
   # клик по esc
   if (e.keyCode == 27)
     if $('.comment-form.active').length
@@ -13,10 +13,11 @@ $(document).keyup (e) ->
       # вернуться к борду
       Turbolinks.visit($('.b-menu .boards a').attr('href'))
 
-$(document).on 'page:change', ->
-  # для textarea не переходим на новую строку
-  # для input не игнорируем cmd+enter
-  $('form.submit-by-enter').on 'keydown', 'textarea, input', (e) ->
-    if e.keyCode == 13
-      $(@.form).find('input:submit').click()
+  else if (e.keyCode == 13)
+    # Для textarea не переходим на новую строку.
+    # Для input не игнорируем cmd+enter.
+    # Пришлось вешать на body, т.к. если фокус немного сместится,
+    # то в event.target будет уже body, а не поля ввода.
+    if $('.simple_form.new_issue').is(':visible')
+      $('.simple_form.new_issue').find('input:submit').click()
       false
