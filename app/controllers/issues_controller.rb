@@ -143,6 +143,15 @@ class IssuesController < ApplicationController
     render text: k(:issue, issue_stat).due_date_at
   end
 
+  def ready
+    issue_stat = IssueStat.find_by(number: params[:number])
+    if issue_stat.update(issue_stat_params)
+      render json: issue_stat_params.to_json
+    else
+      render nothing: true
+    end
+  end
+
   private
 
   def github_issue
@@ -162,6 +171,10 @@ class IssuesController < ApplicationController
     params.
       require(:issue).
       permit(:title, labels: [])
+  end
+
+  def issue_stat_params
+    params.require(:issue_stat).permit(:is_ready)
   end
 
   def issue_update_params

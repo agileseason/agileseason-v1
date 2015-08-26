@@ -275,4 +275,28 @@ RSpec.describe IssuesController, type: :controller do
     it { expect(response.body).to eq 'Nov 10 12:00' }
     it { expect(issue.reload.due_date_at).to eq date }
   end
+
+  describe '#ready' do
+    context 'true' do
+      let!(:issue_stat) { create :issue_stat, board: board, number: 1 }
+
+      before do
+        patch :ready, board_github_full_name: board.github_full_name, number: 1, issue_stat: { is_ready: 'true' }
+      end
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(issue_stat.reload.is_ready).to eq true }
+    end
+
+    context 'flase' do
+      let!(:issue_stat) { create :issue_stat, board: board, number: 1, is_ready: true }
+
+      before do
+        patch :ready, board_github_full_name: board.github_full_name, number: 1, issue_stat: { is_ready: 'false' }
+      end
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(issue_stat.reload.is_ready).to eq false }
+    end
+  end
 end

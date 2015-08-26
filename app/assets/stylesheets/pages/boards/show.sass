@@ -72,15 +72,17 @@ $image-path: "pages/p-boards-show"
     width: 260px
 
     &.last
-      a.button.close,
-      a.button.archive
-        display: block
-
-      a.button.archive.hidden
+      .is_ready
         display: none
 
-      a.ready
-        display: none
+      .issue
+        &:hover
+          a.button.close,
+          a.button.archive
+            display: block
+
+          a.button.archive.hidden
+            display: none
 
     &:last-child
       margin-right: 0
@@ -327,12 +329,12 @@ $image-path: "pages/p-boards-show"
   .ui-sortable-helper
     +box-shadow(0 25px 20px -10px rgba(100, 100, 100, 0.3))
 
-  .issue
+  .issue:not(form)
     +border-radius(2px)
     background-color: #fff
     border-bottom: 1px solid #ddd
     margin-bottom: 2px
-    overflow: hidden
+    //overflow: hidden
     padding: 0 10px 5px
     position: relative
 
@@ -346,6 +348,11 @@ $image-path: "pages/p-boards-show"
 
     &:hover
       cursor: -webkit-grab
+
+      .buttons
+        .is_ready
+          input[type='submit']
+            display: inline-block
 
     &.ui-draggable-dragging
       cursor: -webkit-grabbing
@@ -394,44 +401,65 @@ $image-path: "pages/p-boards-show"
         text-align: right
         text-transform: uppercase
 
-      .ready
-        display: inline-block
-        text-transform: uppercase
-        font-size: 9px
-        letter-spacing: 0.1em
-        background: image-url("#{$image-path}/ready.png") 0 0 no-repeat transparent
-        height: 15px
-        width: 50px
-        color: #777
-        border: none
-        padding: 5px 0 0 5px
-        background-size: 50px
-        float: right
-        opacity: 0.2
-        margin-right: -10px
+      .is_ready
+        .octicon.octicon-check
+          display: none
 
-        &:hover
-          color: $button-hover
-          background: image-url("#{$image-path}/ready-hover.png") 0 0 no-repeat transparent
+        input[type='submit']
+          display: none
+          text-transform: uppercase
+          font-size: 9px
+          letter-spacing: 0.1em
+          background: image-url("#{$image-path}/ready.png") 0 0 no-repeat transparent
+          //height: 15px
+          width: 50px
+          color: #777
           border: none
+          //padding: 5px 0 0 5px
           background-size: 50px
-          opacity: 1
-
-        &.active
-          background: image-url("#{$image-path}/ready-active.png") 0 0 no-repeat transparent
-          color: #fff
-          background-size: 50px
-          opacity: 1
+          float: right
+          opacity: 0.2
+          //margin-right: -10px
+          +border-radius(0)
+          margin: 0 -5px 0 0
+          padding: 0
+          //position: static
+          line-height: 15px
+          height: 20px
+          //text-indent: -99999px
+          //position: absolute
+          //top: 7px
+          //right: -5px
 
           &:hover
-            background: image-url("#{$image-path}/ready-active-hover.png") 0 0 no-repeat transparent
+            color: $button-hover
+            background: image-url("#{$image-path}/ready-hover.png") 0 0 no-repeat transparent
+            border: none
             background-size: 50px
+            opacity: 1
+            width: 50px
+
+        &.active
+          input[type='submit']
+            display: inline-block
+            //right: 10px
+            //text-indent: 0
+            background: image-url("#{$image-path}/ready-active.png") 0 0 no-repeat transparent
+            color: #fff
+            background-size: 50px
+            opacity: 1
+            margin-right: -20px
+            width: 50px
+
+            &:hover
+              background: image-url("#{$image-path}/ready-active-hover.png") 0 0 no-repeat transparent
+              background-size: 50px
 
     .icons
-      margin-top: 5px
       display: inline-block
       vertical-align: middle
       width: 149px
+      height: 28px
 
       &>div, &>span
         vertical-align: middle
@@ -450,6 +478,9 @@ $image-path: "pages/p-boards-show"
 
       .b-assignee
         display: inline-block
+        margin: 0 5px 0 0
+        width: 28px
+        height: 28px
 
         &.hidden
           display: none

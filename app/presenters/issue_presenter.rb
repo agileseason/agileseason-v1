@@ -59,4 +59,8 @@ class IssuePresenter < Keynote::Presenter
   def title
     issue.title.slice(0, 1).capitalize + issue.title.slice(1..-1)
   end
+
+  def is_ready?
+    IssueStat.find_by(number: issue.number).is_ready
+  end
 end

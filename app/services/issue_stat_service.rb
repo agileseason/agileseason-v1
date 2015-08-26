@@ -107,6 +107,12 @@ class IssueStatService
       issue_stat
     end
 
+    def ready(user, board, number, is_ready)
+      issue_stat = find(board, number)
+      issue_stat.update(is_ready: is_ready)
+      issue_stat
+    end
+
     private
 
     def leave_all_column(issue_stat)

@@ -6,7 +6,7 @@ $(document).on 'page:change', ->
     $(@).remove()
 
   $('.issues').on 'click', '.issue.draggable', (e) ->
-    unless $(e.target).is('a, .button')
+    unless $(e.target).is('a, .button, button')
       $(@).closest('.issue').addClass 'current-issue'
       Turbolinks.visit $(@).data('url')
 

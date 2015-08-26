@@ -88,7 +88,37 @@
         color: #fff
 
         .octicon
-          colot: #fff
+          color: #fff
+
+    .is_ready
+      .octicon.octicon-check
+        position: absolute
+        top: 12px
+        left: 11px
+        color: $button
+
+      .button
+        display: block
+        width: 100%
+        text-align: left
+        padding-left: 30px
+
+      &:hover
+        .octicon.octicon-check
+          color: $ajax-link-hover
+
+      &.active
+        .octicon.octicon-check
+          color: #fff
+
+        .button
+          background: $button
+          border: 1px solid $button
+          color: #fff
+
+          &:hover
+            background: $button-hover
+            border: 1px solid $button-hover
 
   .title
     +issue_form

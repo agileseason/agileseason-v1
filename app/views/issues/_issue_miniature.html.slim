@@ -30,7 +30,7 @@
 
 
   .buttons
-    a.ready Ready
+    = render partial: 'issues/actions/is_ready', locals: { issue: issue, board: @board }
 
     - if can?(:update, @board)
       - if issue.open?
