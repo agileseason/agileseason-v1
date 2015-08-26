@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       get ':number/unarchive', to: 'issues#unarchive', as: :unarchive
       get ':number/assignee/:login', to: 'issues#assignee', as: :assignee
       post ':number/due_date', to: 'issues#due_date', as: :due_date
+      patch ':number/ready', to: 'issues#ready', as: :ready
       patch ':number/update', to: 'issues#update', as: :update
       patch ':number/update_labels', to: 'issues#update_labels', as: :update_labels
 
@@ -40,6 +41,8 @@ Rails.application.routes.draw do
       post ':number/update_comment/:id', to: 'comments#update', as: :update_comment
       delete ':number/delete_comment/:id', to: 'comments#delete', as: :delete_comment
     end
+
+    resources :issue_stats, only: :update
 
     resource :settings, only: [:show, :update] do
       member do

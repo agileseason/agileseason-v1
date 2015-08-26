@@ -1,0 +1,9 @@
+.is_ready class="#{k(:issue, issue).ready? ? 'active' : '' }"
+  = simple_form_for :issue_stat,
+    url: ready_board_issues_url(board, issue.number),
+    remote: true,
+    method: :patch do |f|
+    = f.input :is_ready, label: false,
+      input_html: { value: k(:issue, issue).ready? ? false : true }, as: :hidden
+    = f.button :submit, value: 'Ready'
+    .octicon.octicon-check

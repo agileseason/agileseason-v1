@@ -6,6 +6,7 @@ FactoryGirl.define do
       n
     end
     closed_at nil
+    is_ready false
 
     after(:build) do |issue_stat|
       if issue_stat.board.present? && issue_stat.column.nil?

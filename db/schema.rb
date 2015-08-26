@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150817180314) do
+ActiveRecord::Schema.define(version: 20150822104046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20150817180314) do
     t.datetime "archived_at"
     t.integer  "column_id"
     t.datetime "due_date_at"
+    t.boolean  "is_ready",    default: false
   end
 
   add_index "issue_stats", ["board_id"], name: "index_issue_stats_on_board_id", using: :btree

@@ -259,7 +259,8 @@ RSpec.describe IssuesController, type: :controller do
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
 
     it 'return http success' do
-      get :assignee, board_github_full_name: board.github_full_name, number: 1, login: 'github_user'
+      get :assignee, board_github_full_name: board.github_full_name,
+        number: 1, login: 'github_user'
       expect(response).to have_http_status(:success)
     end
   end
@@ -268,11 +269,38 @@ RSpec.describe IssuesController, type: :controller do
     let(:date) { '10/11/2015 12:00' }
     let!(:issue) { create(:issue_stat, board: board, number: 1, due_date_at: nil) }
     before do
-      post :due_date, board_github_full_name: board.github_full_name, number: 1, due_date: date
+      post :due_date, board_github_full_name: board.github_full_name,
+        number: 1, due_date: date
     end
 
     it { expect(response).to have_http_status(:success) }
     it { expect(response.body).to eq 'Nov 10 12:00' }
     it { expect(issue.reload.due_date_at).to eq date }
+  end
+
+  describe '#ready' do
+    context 'true' do
+      let!(:issue_stat) { create :issue_stat, board: board, number: 1 }
+
+      before do
+        patch :ready, board_github_full_name: board.github_full_name,
+          number: 1, issue_stat: { is_ready: 'true' }
+      end
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(issue_stat.reload.is_ready).to eq true }
+    end
+
+    context 'flase' do
+      let!(:issue_stat) { create :issue_stat, board: board, number: 1, is_ready: true }
+
+      before do
+        patch :ready, board_github_full_name: board.github_full_name,
+          number: 1, issue_stat: { is_ready: 'false' }
+      end
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(issue_stat.reload.is_ready).to eq false }
+    end
   end
 end

@@ -56,15 +56,15 @@ $(document).on 'ready page:load', ->
     $('.move-to-column li').removeClass 'active'
     $(@).addClass 'active'
 
-  #$('.preview').click ->
-    #string = $('textarea', $(@).closest('form')).val()
+  # кнопака «ready»
+  $('.issue-actions').on 'ajax:success', '.is_ready', (e, data) ->
+    if data.is_ready && data.is_ready == 'true'
+      $(@).closest('.is_ready').addClass 'active'
+      $(@).find('.issue_stat_is_ready input').val('false')
 
-    #$.post $(@).data('url'), string: string, (markdown) =>
-      #$(@).closest('form').addClass('preview-mode')
-      #$('.preview-textarea', $(@).closest('form')).html(markdown)
-
-  #$('.write').click ->
-    #$(@).closest('form').removeClass('preview-mode')
+    else if data.is_ready && data.is_ready == 'false'
+      $(@).closest('.is_ready').removeClass 'active'
+      $(@).find('.issue_stat_is_ready input').val('true')
 
   $('.issue-comments, .add-comment-form')
     # указываю, в какую форму загружать картинку
