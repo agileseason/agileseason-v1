@@ -47,16 +47,18 @@ class SettingsController < ApplicationController
       permit(:name)
   end
 
+  # NOTE Scrum not released yet
   def scrum_settings_params
     params.
       require(:scrum_settings).
       permit(:days_per_iteration, :start_iteration)
   end
 
+  # NOTE No kanban settings
   def kanban_settings_params
     params.
       require(:kanban_settings).
-      permit(:rolling_average_window)
+      permit
   end
 
   def danger_settings_params

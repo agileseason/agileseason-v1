@@ -1,6 +1,7 @@
 describe Graphs::ControlService do
-  let(:service) { Graphs::ControlService.new(board) }
+  let(:service) { Graphs::ControlService.new(board, rolling_window) }
   let(:board) { create(:kanban_board, :with_columns) }
+  let(:rolling_window) { 6 }
 
   describe '#issues_series_data' do
     subject { service.issues_series_data }
@@ -64,7 +65,6 @@ describe Graphs::ControlService do
   describe '#rolling_average_series_data' do
     subject { service.rolling_average_series_data }
     let(:rolling_window) { 7 }
-    before { board.rolling_average_window = rolling_window }
 
     context :empty do
       it { is_expected.to be_empty }

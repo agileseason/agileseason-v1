@@ -1,8 +1,9 @@
 module Graphs
   class ControlService
-    def initialize(board, issue_link_getter = -> (number) {})
+    def initialize(board, rolling_window, issue_link_getter = -> (_number) {})
       @board = board
       @issue_link_getter = issue_link_getter
+      @rolling_window = rolling_window
     end
 
     def issues_series_data
@@ -26,7 +27,7 @@ module Graphs
 
     def rolling_average_series_data
       return [] if issues.blank?
-      rolling_average = issues.each_slice(rolling_window).map do |slice_issues|
+      rolling_average = issues.each_slice(@rolling_window).map do |slice_issues|
         rolling_average_level = StatsCalc.average_wip(slice_issues)
         issue = slice_issues.last
         rolling_point(issue, rolling_average_level)
@@ -42,11 +43,7 @@ module Graphs
     private
 
     def rolling_point(issue, value)
-      { x: issue.closed_at.to_js, y: value, window: rolling_window }
-    end
-
-    def rolling_window
-      @rolling_window ||= @board.kanban_settings.rolling_average_window
+      { x: issue.closed_at.to_js, y: value, window: @rolling_window }
     end
 
     def issues

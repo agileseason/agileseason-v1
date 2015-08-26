@@ -1,3 +1,5 @@
+@import mixins/link
+
 .graph
   #container
     margin-bottom: 18px
@@ -8,5 +10,17 @@
 
   .footer
     min-height: 20px
+    position: relative
+
     .help
-      float: right
+      position: absolute
+      top: 0
+      right: 0
+
+    a.preference
+      +ajax_link
+
+    .preference-content
+      padding: 10px 0
+      input[type=submit]
+        margin-left: 10px

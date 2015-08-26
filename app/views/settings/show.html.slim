@@ -6,7 +6,7 @@
       = f.button :submit, value: 'Rename'
 
     - if @board.kanban?
-      .box
+      /.box
         .subtitle Features Kanban
         = simple_form_for(@board.kanban_settings, url: board_settings_url(board), method: :patch) do |f|
           = f.input :rolling_average_window

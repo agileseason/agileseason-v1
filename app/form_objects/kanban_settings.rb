@@ -5,8 +5,7 @@ class KanbanSettings
   include ActiveModel::Conversion
   include ActiveModel::Validations
 
-  attribute :rolling_average_window, Integer
-  validates :rolling_average_window, numericality: { only_integer: true }
+  # NOTE Now no fields
 
   def persisted?
     false
@@ -14,7 +13,6 @@ class KanbanSettings
 
   def save_to(board)
     return false unless valid?
-    board.rolling_average_window = rolling_average_window
     board.save
   end
 end
