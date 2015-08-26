@@ -334,7 +334,6 @@ $image-path: "pages/p-boards-show"
     background-color: #fff
     border-bottom: 1px solid #ddd
     margin-bottom: 2px
-    //overflow: hidden
     padding: 0 10px 5px
     position: relative
 
@@ -406,30 +405,22 @@ $image-path: "pages/p-boards-show"
           display: none
 
         input[type='submit']
-          display: none
-          text-transform: uppercase
-          font-size: 9px
-          letter-spacing: 0.1em
-          background: image-url("#{$image-path}/ready.png") 0 0 no-repeat transparent
-          //height: 15px
-          width: 50px
-          color: #777
-          border: none
-          //padding: 5px 0 0 5px
-          background-size: 50px
-          float: right
-          opacity: 0.2
-          //margin-right: -10px
           +border-radius(0)
-          margin: 0 -5px 0 0
-          padding: 0
-          //position: static
-          line-height: 15px
+          background: image-url("#{$image-path}/ready.png") 0 0 no-repeat transparent
+          background-size: 50px
+          border: none
+          color: #777
+          display: none
+          float: right
+          font-size: 9px
           height: 20px
-          //text-indent: -99999px
-          //position: absolute
-          //top: 7px
-          //right: -5px
+          letter-spacing: 0.1em
+          line-height: 15px
+          margin: 0 -5px 0 0
+          opacity: 0.2
+          padding: 0
+          text-transform: uppercase
+          width: 50px
 
           &:hover
             color: $button-hover
@@ -441,14 +432,12 @@ $image-path: "pages/p-boards-show"
 
         &.active
           input[type='submit']
-            display: inline-block
-            //right: 10px
-            //text-indent: 0
             background: image-url("#{$image-path}/ready-active.png") 0 0 no-repeat transparent
-            color: #fff
             background-size: 50px
-            opacity: 1
+            color: #fff
+            display: inline-block
             margin-right: -20px
+            opacity: 1
             width: 50px
 
             &:hover
