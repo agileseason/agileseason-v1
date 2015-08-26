@@ -3,4 +3,10 @@
 .graph
   = render partial: 'graph'
   .footer
+    a.preference Preference
+    .preference-content.hidden
+      = simple_form_for(:preference, url: preferences_url, method: :patch) do |f|
+        label Rolling Average Window
+        = f.input_field :rolling_average_window, value: rolling_average_window
+        = f.button :submit, value: 'Save'
     a.help href="#{control_docs_url}" How to read this chart

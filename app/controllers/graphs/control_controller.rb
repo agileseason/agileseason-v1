@@ -1,5 +1,9 @@
 class Graphs::ControlController < ApplicationController
+  include PreferenceHelper
+
   before_action :fetch_board
+
+  helper_method :rolling_average_window
 
   def index
     @chart_series_data = chart_series_data
@@ -8,7 +12,12 @@ class Graphs::ControlController < ApplicationController
   private
 
   def chart_series_data
-    control_service = Graphs::ControlService.new(@board, -> (number) { issue_link(number) })
+    control_service = Graphs::ControlService.new(
+      @board,
+      rolling_average_window,
+      -> (number) { issue_link(number) }
+    )
+
     {
       issues: control_service.issues_series_data,
       average: control_service.average_series_data,

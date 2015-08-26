@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     get :control, on: :member
   end
 
+  resource :preferences, only: [:update]
+
   resources :boards,
             except: [:edit],
             param: :github_full_name,

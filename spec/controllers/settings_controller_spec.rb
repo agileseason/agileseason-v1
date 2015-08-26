@@ -25,20 +25,10 @@ describe SettingsController, type: :controller do
       get(
         :update,
         board_github_full_name: board.github_full_name,
-        kanban_settings: { rolling_average_window: 1 }
+        kanban_settings: { foo: :bar }
       )
       expect(response).to have_http_status(:redirect)
       expect(response).to redirect_to(CGI::unescape(board_settings_url(board)))
-    end
-
-    it 'returns http success if fail' do
-      get(
-        :update,
-        board_github_full_name: board.github_full_name,
-        kanban_settings: { rolling_average_window: nil }
-      )
-      expect(response).to have_http_status(:success)
-      expect(response).to render_template(:show)
     end
   end
 
