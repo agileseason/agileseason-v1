@@ -2,9 +2,7 @@ class PreferencesController < ApplicationController
   include PreferenceHelper
 
   def update
-    preference_params.each do |key, value|
-      self.public_send("#{key}=", value)
-    end
+    preference_params.each { |key, value| public_send("#{key}=", value) }
     redirect_to :back
   end
 

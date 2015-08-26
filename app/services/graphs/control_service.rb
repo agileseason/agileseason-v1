@@ -1,6 +1,6 @@
 module Graphs
   class ControlService
-    def initialize(board, rolling_window, issue_link_getter = -> (number) {})
+    def initialize(board, rolling_window, issue_link_getter = -> (_number) {})
       @board = board
       @issue_link_getter = issue_link_getter
       @rolling_window = rolling_window

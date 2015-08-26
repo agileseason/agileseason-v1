@@ -58,7 +58,7 @@ class SettingsController < ApplicationController
   def kanban_settings_params
     params.
       require(:kanban_settings).
-      permit()
+      permit
   end
 
   def danger_settings_params
