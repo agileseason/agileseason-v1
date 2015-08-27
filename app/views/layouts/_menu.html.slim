@@ -5,14 +5,25 @@
         a.octicon.octicon-three-bars
 
     - if @board && @board.persisted?
-      - unless params[:controller] == 'boards' && params[:action] == 'index'
+      - unless controller_name == 'boards' && params[:action] == 'index'
         li.boards
-          - if params[:controller] == 'boards'
+          - if controller_name == 'boards'
             a.active
               span #{k(:board, @board).name} board
           - else
             a.current-board-link href="#{un board_url(@board)}"
               span #{k(:board, @board).name} board
+
+      - if controller_name == 'roadmaps'
+        li.roadmap.active
+          span.octicon.octicon-list-ordered &nbsp;
+          span Roadmap
+
+      - else
+        li.roadmap
+          a href="#{un board_roadmap_url(@board)}" title='Roadmap'
+            span.a-child.octicon.octicon-list-ordered &nbsp;
+            span.a-child Roadmap
 
       - if ['cumulative', 'control', 'forecast', 'frequency', 'lines'].include?(controller_name)
         li.active
@@ -27,17 +38,15 @@
             span.a-child Metrics
 
       - if can? :update, @board
-        - if params[:controller] == 'settings' && params[:action] == 'show'
-          li.settings.active
-            span.octicon.octicon-gear
-            | &nbsp;
+        - if controller_name == 'settings' && params[:action] == 'show'
+          li.board-settings.active
+            span.octicon.octicon-gear &nbsp;
             span Settings
 
         - else
           li
             a href="#{un board_settings_url(@board)}" title='Board Settings'
-              span.a-child.octicon.octicon-gear
-              | &nbsp;
+              span.a-child.octicon.octicon-gear &nbsp;
               span.a-child Settings
 
       li.icon-button.activities-link data-url="#{board_activities_url @board}"
