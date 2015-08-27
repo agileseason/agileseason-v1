@@ -14,7 +14,7 @@
             a.current-board-link href="#{un board_url(@board)}"
               span #{k(:board, @board).name} board
 
-      - if ['graphs/cumulative', 'graphs/control', 'graphs/forecast', 'graphs/frequency', 'graphs/lines'].any? { |v| v == params[:controller] }
+      - if ['cumulative', 'control', 'forecast', 'frequency', 'lines'].include?(controller_name)
         li.active
           span
             span.a-child.octicon.octicon-graph &nbsp;
