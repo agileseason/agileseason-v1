@@ -8,6 +8,7 @@ gem 'cancancan'
 gem 'coffee-rails'
 gem 'compass-rails'
 gem 'dalli'
+gem 'd3_rails'
 gem 'enumerize'
 gem 'faye'
 gem 'intercom-rails'
@@ -38,6 +39,12 @@ gem 'virtus'
 gem 'whenever'
 gem 'will_paginate'
 gem 'xproc'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-jquery'
+  gem 'rails-assets-jquery-ui'
+  gem 'rails-assets-jquery.scrollTo'
+end
 
 group :production do
   gem 'newrelic_rpm'
@@ -79,11 +86,4 @@ group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'docile', github: 'blackchestnut/docile'
   gem 'timecop'
-end
-
-# assets
-source 'https://rails-assets.org' do
-  gem 'rails-assets-jquery'
-  gem 'rails-assets-jquery-ui'
-  gem 'rails-assets-jquery.scrollTo'
 end

@@ -15,6 +15,7 @@
 #= require replace_nth_match.js
 #= require js-patch.coffee
 #= require faye-browser
+#= require d3
 #= require turbolinks
 #= require_tree .
 
