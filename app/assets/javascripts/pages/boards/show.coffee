@@ -38,7 +38,7 @@ $(document).on 'page:change', ->
 
   # скрыть тикет после архивации
   $('.board').on 'click', '.issue .archive', ->
-    $(@).parent('.issue').addClass('hidden')
+    $(@).closest('.issue').addClass('hidden')
 
   # обновить WIP у колонки после архивации тикета
   $('.issue .archive').on 'ajax:success', (e, badge) ->
@@ -46,7 +46,7 @@ $(document).on 'page:change', ->
 
   # изменить тикет и открыть архивацию после успешного закрытия
   $('.board').on 'click', '.issue .close', ->
-    $(@).parents('.issue').addClass('closed').removeClass('open')
+    $(@).closest('.issue').addClass('closed').removeClass('open')
     $(@).next('.archive').removeClass('hidden')
     $(@).remove()
 
