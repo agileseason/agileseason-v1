@@ -2,7 +2,6 @@ $(document).on 'ready page:load', ->
   $('.b-dashboard').on 'wizard:load', ->
     $dashboard = $('.b-dashboard')
     $wizard = $('.b-wizard', $dashboard)
-    console.log 'wizard:load'
 
     $('.boards a.new').click (e) ->
       $(@).addClass 'loading'
@@ -23,8 +22,6 @@ $(document).on 'ready page:load', ->
       e.preventDefault()
 
     $wizard.on 'repos:list:load', ->
-      console.log 'repos:list:load'
-
       $('.menu li', $wizard).removeClass('active').addClass 'disabled'
       $('.menu li', $wizard).first().removeClass('disabled').addClass('active')
 
@@ -43,8 +40,6 @@ $(document).on 'ready page:load', ->
         e.preventDefault()
 
     $wizard.on 'board:form:load', ->
-      console.log 'board:form:load'
-
       $('.menu li', $wizard).first().removeClass('active')
       $('.menu li', $wizard).last().removeClass('disabled').addClass('active')
 

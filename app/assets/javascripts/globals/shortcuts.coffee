@@ -9,9 +9,11 @@ $(document).keydown (e) ->
       # закрыть форму добавления тикета
       $('.simple_form.new_issue .cancel').trigger 'click'
 
+    # закрыть лог событий
     else if $('.b-activities').hasClass 'active'
       $('.overlay', '.b-activities').trigger 'click'
 
+    # закрыть поиск
     else if $('.search').hasClass 'active'
       $('.overlay', '.search').trigger 'click'
 

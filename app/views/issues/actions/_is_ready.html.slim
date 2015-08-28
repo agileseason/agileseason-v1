@@ -5,5 +5,5 @@
     method: :patch do |f|
     = f.input :is_ready, label: false,
       input_html: { value: k(:issue, issue).ready? ? false : true }, as: :hidden
-    = f.button :submit, value: params[:controller] == 'issues' ? 'Ready to next stage' : 'Ready'
+    = f.button :submit, value: (params[:controller] == 'issues' && params[:action] == 'show') ? 'Ready to next stage' : 'Ready'
     .octicon.octicon-check
