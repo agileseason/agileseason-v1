@@ -36,3 +36,14 @@ $(document).on 'page:change', ->
         success: (data) ->
           $("#issues_#{data.number}").replaceWith(data.html_miniature)
           window.update_wip_column(badge) for badge in data.badges
+          click_ready_button $("#issues_#{data.number}")
+
+click_ready_button = ($current_issue) ->
+  $ready_button = $('.is_ready', $current_issue)
+
+  if $ready_button.hasClass 'active'
+    $('.issue_stat_is_ready input', $current_issue).val('false')
+
+    setTimeout ->
+      $('input:submit', $current_issue).trigger 'click'
+      $ready_button.removeClass 'active'
