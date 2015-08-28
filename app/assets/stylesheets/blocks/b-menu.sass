@@ -13,23 +13,13 @@
 
   li
     display: inline-block
-    margin: 20px 20px 0 0
     font-size: 18px
 
     &.active
       padding: 15px
 
-    &.boards
-      position: relative
-
-      span
-        cursor: pointer
-
-    &.exit, &.user
-      text-align: right
-
     a
-      border-radius: 35px
+      +border-radius(35px)
       cursor: pointer
       display: inline-block
       padding: 15px
@@ -51,9 +41,9 @@
 
       &.active,
       &.active:hover
-        cursor: default
-        color: $text-usual
         border: none
+        color: $text-usual
+        cursor: default
 
         span
           cursor: default
@@ -77,36 +67,45 @@
         background: $orange-hover
         color: #fff
 
-  .activities-link
+  .icon-button
     float: right
+    margin: 20px 20px 20px 0
 
     a
-      background: rgba(60,60,60,0.1)
-      line-height: 18px
+      border: 1px solid $orange
+      color: $orange
+      height: 48px
+      line-height: 240%
+      padding: 0
+      text-align: center
+      width: 48px
 
       &:hover
         color: $orange-hover
+        border-color: $orange-hover
 
-        span.octicon-megaphone
+        span.octicon-bell
           color: $orange-hover
 
-      span.octicon-megaphone
-        color: $text-usual
+      span.octicon-bell
+        color: $orange
 
   .search
     float: right
+    margin: 20px 20px 20px 0
 
     &.active
       .field
-        position: relative
-        z-index: 2
-        top: 0
-        padding: 20px 70px 20px 20px
-        margin: -35px -90px 0 0px
         background: #fff
+        margin: -35px -90px 0 0px
+        padding: 20px 70px 20px 20px
+        position: relative
+        top: 0
+        z-index: 2
 
       .search-input
         input
+          background: #fff
           padding: 14px 14px
           width: 350px
 
@@ -124,11 +123,18 @@
       &:hover
         span.octicon-search
           color: $orange-hover
+
+        input
+          border-color: $orange-hover
+
+      span.octicon-search
+        color: $orange
+
       input
+        background: $menu-bg
+        +border-radius(35px)
         +transition(all ease 0.1s)
-        background: rgba(60,60,60,0.1)
-        border-radius: 35px
-        border: none
+        border: 1px solid $orange
         cursor: pointer
         font-size: 16px
         height: 20px
@@ -139,7 +145,7 @@
     span.octicon-search
       color: $text-usual
       cursor: pointer
-      margin-left: -30px
+      margin-left: -33px
       vertical-align: middle
 
     .search-popup
