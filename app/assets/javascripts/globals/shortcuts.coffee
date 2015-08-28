@@ -9,6 +9,12 @@ $(document).keydown (e) ->
       # закрыть форму добавления тикета
       $('.simple_form.new_issue .cancel').trigger 'click'
 
+    else if $('.b-activities').hasClass 'active'
+      $('.overlay', '.b-activities').trigger 'click'
+
+    else if $('.search').hasClass 'active'
+      $('.overlay', '.search').trigger 'click'
+
     else if document.body.id == 'issues_show'
       # вернуться к борду
       Turbolinks.visit($('.b-menu .boards a').attr('href'))
