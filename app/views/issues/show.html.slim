@@ -50,7 +50,6 @@
     - if can?(:update, @board)
       .issue-actions
         .overlay
-        = render partial: 'issues/actions/is_ready', locals: { issue: @issue, board: @board }
         = render partial: 'issues/actions/edit_labels',   locals: { board: @board_bag, issue: @issue }
         = render partial: 'issues/actions/assign',        locals: { issue: @issue }
         = render partial: 'issues/actions/edit_due_date', locals: { board: @board, issue: @issue }
@@ -84,3 +83,5 @@
         ]
           span.octicon.octicon-package
           | Send to board
+
+        = render partial: 'issues/actions/is_ready', locals: { issue: @issue, board: @board }

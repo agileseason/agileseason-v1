@@ -51,13 +51,14 @@ $(document).on 'page:change', ->
     $(@).remove()
 
   # кнопака «ready»
+  $('.board').on 'ajax:before', '.is_ready', ->
+    $(@).closest('.is_ready').toggleClass 'active'
+
   $('.board').on 'ajax:success', '.is_ready', (e, data) ->
     if data.is_ready && data.is_ready == 'true'
-      $(@).closest('.is_ready').addClass 'active'
       $(@).find('.issue_stat_is_ready input').val('false')
 
     else if data.is_ready && data.is_ready == 'false'
-      $(@).closest('.is_ready').removeClass 'active'
       $(@).find('.issue_stat_is_ready input').val('true')
 
 $(window).resize ->
