@@ -46,7 +46,7 @@ $(document).on 'page:change', ->
 
   # изменить тикет и открыть архивацию после успешного закрытия
   $('.board').on 'click', '.issue .close', ->
-    $(@).parent('.issue').addClass('closed').removeClass('open')
+    $(@).parents('.issue').addClass('closed').removeClass('open')
     $(@).next('.archive').removeClass('hidden')
     $(@).remove()
 
