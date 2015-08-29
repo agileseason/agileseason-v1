@@ -30,7 +30,10 @@ window.init_uploading = ($input) ->
       image_url = window.build_s3_image_url(url, key)
 
       text = $('textarea', $(@).closest('.b-editable-form')).val()
-      $('textarea', $(@).closest('.b-editable-form')).focus().val("").val("#{text}#{image_url}\n")
+      $('textarea', $(@).closest('.b-editable-form'))
+        .val("#{text}#{image_url}\n")
+        .focus()
+        .trigger 'change'
 
       $('.progress', $(@).closest('form')).hide()
       $('.info', $(@).closest('form')).show()
