@@ -102,9 +102,6 @@ $(document).on 'ready page:load', ->
       $parent.addClass 'current-comment'
       $('.comment-form', $parent).addClass 'active'
 
-      $comment_height = $('.comment-text', $parent).height()
-      $('textarea', $parent).css('height', $comment_height)
-
       $initial_value = $('textarea', $parent).val()
       $('textarea', $parent).data('initial-value': $initial_value)
 
