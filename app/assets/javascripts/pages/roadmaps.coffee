@@ -1,29 +1,23 @@
 $(document).on 'page:change', ->
   return unless document.body.id == 'roadmaps_show'
 
+  $canvas = $('.canvas')
+
   # Issues
-  issues = [
-    { row: 0, from: 0, cycletime: 40, number: 84 }
-    { row: 1, from: 0, cycletime: 140, number: 90 }
-    { row: 0, from: 60, cycletime: 90, number: 75 }
-  ]
+  issues = $canvas.data('chart-issues')
   issueHeigth = 40
   rowOffset = 20
 
   # Dates as xAxis
-  yXAxis = (issueHeigth + rowOffset) * 2 # Max row from 'issues' + 1
-  dates = [
-    { from: 0, text: '06 Aug' },
-    { from: 60, text: '07 Aug' }
-  ]
+  yXAxis = (issueHeigth + rowOffset) * $canvas.data('chart-issue-rows')
+  dates = $canvas.data('chart-dates')
 
-  height = 280
-  width = 2000
-
+  # Prepare svg canvas
   svg = d3.select('.canvas')
     .append('svg')
-    .attr('width', width)
-    .attr('height', height)
+    .attr
+      height: 280
+      width: 2000
 
   # Issue Cycletime Rectangle
   svg.selectAll('rect')
