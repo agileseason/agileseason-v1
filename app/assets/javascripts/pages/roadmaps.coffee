@@ -7,10 +7,9 @@ $(document).on 'page:change', ->
   issues = $canvas.data('chart-issues')
   issueHeigth = 30
   rowOffset = 2
-  max_issue_row = d3.max(issues, (e) -> e.row + 1) # Plus 1 for xAxis
+  max_issue_row = d3.max(issues, (e) -> e.row) + 2 # Plus 2 for xAxis
 
   # Dates as xAxis
-  yXAxis = (issueHeigth + rowOffset) * $canvas.data('chart-issue-rows')
   dates = $canvas.data('chart-dates')
 
   # Prepare svg canvas
@@ -64,5 +63,29 @@ $(document).on 'page:change', ->
       .attr
         class: 'x-axis'
         x: (e) -> xScale(e.from)
-        y: (e) -> yXAxis
+        y: (e) -> chart_height
       .text((e) -> e.text)
+
+  # Line now
+  xNow = $canvas.data('chart-now')
+  svg
+    .append('line')
+    .style('stroke-dasharray', '3, 3')
+    .attr
+      class: 'now'
+      x1: xScale(xNow)
+      y1: 0
+      x2: xScale(xNow)
+      y2: chart_height
+  svg
+    .selectAll('text.now')
+    .data([14, chart_height])
+    .enter()
+      .append('text')
+      .attr
+        class: 'now-title'
+        x: xScale(xNow)
+        y: (e) -> e
+        dx: 6
+        dy: -2
+      .text('Now')

@@ -1,7 +1,7 @@
 class RoadmapsController < ApplicationController
   before_action :fetch_board, only: [:show]
 
-  helper_method :chart_issues, :chart_dates, :chart_issue_rows
+  helper_method :chart_issues, :chart_dates, :chart_issue_rows, :chart_now
 
   ISSUE_WIDTH = 40
   NORM_COEFF = 1.0 / 86400 * ISSUE_WIDTH
@@ -67,14 +67,18 @@ class RoadmapsController < ApplicationController
       issue.closed_at
     else
       prev = @min_forecast_closed_at
-      @min_forecast_closed_at += avg_cycletime
+      @min_forecast_closed_at += avg_cycle_time
       prev
     end
     (closed_at.to_i - issue.created_at.to_i) * NORM_COEFF
   end
 
-  def avg_cycletime
-    3.days
+  def avg_cycle_time
+    @avg_cycle_time ||= (1.0 / frequency_info.throughput).days
+  end
+
+  def frequency_info
+    @frequency_info ||= Graphs::FrequencyService.new(@board, 1.month.ago)
   end
 
   def normalization_from
@@ -82,13 +86,17 @@ class RoadmapsController < ApplicationController
   end
 
   def issue_stats
-    #@issue_stats ||= @board.issue_stats.order(:created_at)
-    @issue_stats ||= [
-      IssueStat.new(number: 1, created_at: Time.current - 10.days, closed_at: Time.current - 1.day),
-      IssueStat.new(number: 2, created_at: Time.current - 5.days, closed_at: Time.current - 3.days - 4.hours),
-      IssueStat.new(number: 3, created_at: Time.current - 3.days, closed_at: Time.current - 1.day),
-      IssueStat.new(number: 4, created_at: Time.current - 3.days, closed_at: nil),
-      IssueStat.new(number: 5, created_at: Time.current - 2.days, closed_at: nil),
-    ]
+    @issue_stats ||= @board.issue_stats.order(:created_at)
+    #@issue_stats ||= [
+      #IssueStat.new(number: 1, created_at: Time.current - 10.days, closed_at: Time.current - 1.day),
+      #IssueStat.new(number: 2, created_at: Time.current - 5.days, closed_at: Time.current - 3.days - 4.hours),
+      #IssueStat.new(number: 3, created_at: Time.current - 3.days, closed_at: Time.current - 1.day),
+      #IssueStat.new(number: 4, created_at: Time.current - 3.days, closed_at: nil),
+      #IssueStat.new(number: 5, created_at: Time.current - 2.days, closed_at: nil),
+    #]
+  end
+
+  def chart_now
+    (Time.current.to_i - normalization_from) * NORM_COEFF
   end
 end
