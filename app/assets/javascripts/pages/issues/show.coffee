@@ -11,7 +11,7 @@ $(document).on 'ready page:load', ->
   $('textarea').elastic()
   highlight_code()
 
-  init_uploading($('input:file', $('.add-comment-form')))
+  init_uploading $('input:file')
 
   $issue_modal = $('.b-issue-modal.js-can-update')
 
