@@ -40,6 +40,7 @@ $(document).on 'page:change', ->
         x: (e) -> xScale(e.from)
         y: (e, i) ->
           e.row * (issueHeigth + rowOffset)
+        number: (e) -> e.number
 
   # Issues numbers
   svg.selectAll('text')
@@ -89,3 +90,6 @@ $(document).on 'page:change', ->
         dx: 6
         dy: -2
       .text('Now')
+
+  $canvas.on 'click', '.issue', ->
+    window.location = $canvas.data('chart-issue-url-prefix') + $(@).attr('number')
