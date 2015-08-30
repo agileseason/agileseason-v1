@@ -4,6 +4,17 @@ h1 Roadmap
   data-chart-dates="#{chart_dates}"
   data-chart-now="#{chart_now}"
   data-chart-issue-url-prefix="#{un show_board_issues_url(@board, '')}"
+  data-chart-mode="#{params[:mode]}"
 ]
-
   .tooltip
+
+.preferences
+  ul.scale.list
+    li : a href="#{un board_roadmap_url(@board, '', mode: '1:1')}" 1:1
+    li : a href="#{un board_roadmap_url(@board, '')}" Scale
+
+  ul.columns-filter.list
+    - @board.columns.each do |column|
+      li
+        input type='checkbox'
+        label = column.name

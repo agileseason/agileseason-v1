@@ -2,19 +2,18 @@ $(document).on 'page:change', ->
   return unless document.body.id == 'roadmaps_show'
 
   $canvas = $('.canvas')
+  is_no_scale = $canvas.data('chart-mode') == '1:1'
 
   # Issues
   issues = $canvas.data('chart-issues')
   issueHeigth = 30
   rowOffset = 2
   max_issue_row = d3.max(issues, (e) -> e.row) + 2 # Plus 2 for xAxis
-
-  # Dates as xAxis
-  dates = $canvas.data('chart-dates')
+  max_issue_x = d3.max(issues, (e) -> e.from + e.cycletime)
 
   # Prepare svg canvas
   chart_height = max_issue_row * (issueHeigth + rowOffset)
-  chart_width = 1300
+  chart_width = if is_no_scale then max_issue_x else $(document).width() - 50
   svg = d3.select('.canvas')
     .append('svg')
     .attr
@@ -22,11 +21,13 @@ $(document).on 'page:change', ->
       width: chart_width
 
   # Scale
-  max_issue_from = d3.max(issues, (e) -> e.from + e.cycletime)
-  xScale = d3.scale.
-    linear().
-    domain([0, max_issue_from]). # Data minimum and maximum
-    range([0, chart_width])  # pixels to map
+  if is_no_scale
+    xScale = (x) -> x
+  else
+    xScale = d3.scale.
+      linear().
+      domain([0, max_issue_x]). # Data minimum and maximum
+      range([0, chart_width])  # pixels to map
 
   # Issue Cycletime Rectangle
   svg.selectAll('rect')
@@ -47,21 +48,8 @@ $(document).on 'page:change', ->
       .on 'mouseout', (d, i) ->
         issue_mouseout(@, d, i)
 
-  # Issues numbers
-  #svg.selectAll('text')
-    #.data(issues)
-    #.enter()
-      #.append('text')
-        #.attr
-          #class: (issue) -> "issue-number issue-number-#{issue.number}"
-          #x: (e) -> xScale(e.from) # Copy paste from rect - issues
-          #y: (e) ->
-            #e.row * (issueHeigth + rowOffset)
-          #dx: 6
-          #dy: issueHeigth / 1.6
-        #.text((e) -> "##{e.number}")
-
   # xAxis as Dates
+  dates = $canvas.data('chart-dates')
   svg.selectAll('text.x-axis')
     .data(dates)
     .enter()
@@ -117,21 +105,11 @@ issue_mouseover = (node, issue, row) ->
       left: "#{left}px"
       top: "#{top}px"
 
-  #d3.select(".canvas .issue-number-#{issue.number}")
-    #.transition()
-    #.duration 50
-    #.style opacity: 1
-
 issue_mouseout = ($node, issue, row) ->
   d3.select('.canvas .tooltip')
     .transition()
     .duration 0
     .style opacity: 0
-
-  #d3.select(".canvas .issue-number-#{issue.number}")
-    #.transition()
-    #.duration 25
-    #.style opacity: 0
 
 tooltip_content = (issue) ->
   "<div class='number'>##{issue.number}</div>
