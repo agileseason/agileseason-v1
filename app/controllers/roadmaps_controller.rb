@@ -76,7 +76,13 @@ class RoadmapsController < ApplicationController
   end
 
   def avg_cycle_time
-    @avg_cycle_time ||= (1.0 / frequency_info.throughput).days
+    @avg_cycle_time ||= avg_days_per_issue.days
+  end
+
+  def avg_days_per_issue
+    throughput = frequency_info.throughput
+    return 1 if throughput.nil?
+    1.0 / throughput
   end
 
   def frequency_info
