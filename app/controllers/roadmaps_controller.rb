@@ -36,8 +36,10 @@ class RoadmapsController < ApplicationController
     @min_forecast_closed_at = Time.current
     issues = issue_stats.
       map do |i|
+        issue = @board_bag.issues_hash[i.number]
         {
           number: i.number,
+          title: issue.title,
           from: (i.created_at.to_i - normalization_from) * NORM_COEFF,
           cycletime: cycletime(i),
           state: i.closed_at.nil? ? 'open' : 'closed'

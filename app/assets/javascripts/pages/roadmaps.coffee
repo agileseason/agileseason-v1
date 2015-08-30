@@ -34,27 +34,32 @@ $(document).on 'page:change', ->
     .enter()
     .append('rect')
       .attr
-        class: (e) -> "issue #{e.state}"
-        width: (e) -> xScale(e.cycletime)
+        class: (d) -> "issue #{d.state}"
+        width: (d) -> xScale(d.cycletime)
         height: issueHeigth
-        x: (e) -> xScale(e.from)
-        y: (e, i) ->
-          e.row * (issueHeigth + rowOffset)
-        number: (e) -> e.number
+        x: (d) -> xScale(d.from)
+        y: (d) ->
+          d.row * (issueHeigth + rowOffset)
+        number: (d) -> d.number
+        title: (d) -> d.title
+      .on 'mouseover', (d, i) ->
+        issue_mouseover(@, d, i)
+      .on 'mouseout', (d, i) ->
+        issue_mouseout(@, d, i)
 
   # Issues numbers
-  svg.selectAll('text')
-    .data(issues)
-    .enter()
-      .append('text')
-        .attr
-          class: 'issue-number'
-          x: (e) -> xScale(e.from) # Copy paste from rect - issues
-          y: (e) ->
-            e.row * (issueHeigth + rowOffset)
-          dx: 6
-          dy: issueHeigth / 1.6
-        .text((e) -> "##{e.number}")
+  #svg.selectAll('text')
+    #.data(issues)
+    #.enter()
+      #.append('text')
+        #.attr
+          #class: (issue) -> "issue-number issue-number-#{issue.number}"
+          #x: (e) -> xScale(e.from) # Copy paste from rect - issues
+          #y: (e) ->
+            #e.row * (issueHeigth + rowOffset)
+          #dx: 6
+          #dy: issueHeigth / 1.6
+        #.text((e) -> "##{e.number}")
 
   # xAxis as Dates
   svg.selectAll('text.x-axis')
@@ -93,3 +98,44 @@ $(document).on 'page:change', ->
 
   $canvas.on 'click', '.issue', ->
     window.location = $canvas.data('chart-issue-url-prefix') + $(@).attr('number')
+
+issue_mouseover = (node, issue, row) ->
+  $node = $(node)
+  #right
+  left = parseInt($node.attr('x')) + parseInt($node.attr('width')) + 4
+  top = parseInt($node.attr('y'))
+  # bottom
+  #left = parseInt($node.attr('x')) + 4
+  #top = parseInt($node.attr('y')) + parseInt($node.attr('height')) + 20
+
+  d3.select('.canvas .tooltip')
+    .html tooltip_content(issue)
+    .transition()
+    .duration 100
+    .style opacity: 0.95
+    .style
+      left: "#{left}px"
+      top: "#{top}px"
+
+  #d3.select(".canvas .issue-number-#{issue.number}")
+    #.transition()
+    #.duration 50
+    #.style opacity: 1
+
+issue_mouseout = ($node, issue, row) ->
+  d3.select('.canvas .tooltip')
+    .transition()
+    .duration 0
+    .style opacity: 0
+
+  #d3.select(".canvas .issue-number-#{issue.number}")
+    #.transition()
+    #.duration 25
+    #.style opacity: 0
+
+tooltip_content = (issue) ->
+  "<div class='number'>##{issue.number}</div>
+    <div class='title'>#{issue.title}</div>
+    <div>Created at TODO: creted_at</div>
+    <div>Closed at TODO: creted_at</div>
+    "

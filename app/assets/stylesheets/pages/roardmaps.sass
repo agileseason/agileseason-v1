@@ -1,9 +1,12 @@
+@import compass/css3
+
 .p-roadmaps-show
   .canvas
-    width: 100%
     height: 500px
-    white-space: nowrap
     overflow-x: auto
+    position: relative
+    white-space: nowrap
+    width: 100%
 
     .issue
       &:hover
@@ -17,6 +20,7 @@
     .issue-number
       fill: #fff
       font-size: 12px
+      opacity: 0
 
     .x-axis
       fill: #999
@@ -28,3 +32,25 @@
     .now-title
       fill: #555
       font-size: 12px
+
+  .tooltip
+    +border-radius(4px)
+    +box-shadow(1px 2px 6px 0px rgba(90,80,80,0.4))
+    background-color: #fff
+    font-size: 14px
+    height: 100px
+    opacity: 0
+    overflow: hidden
+    padding: 10px
+    position: absolute
+    width: 260px
+
+    .number
+      font-weight: 700
+
+    .title
+      color: #555
+      font-size: 14px
+      padding: 0
+      word-wrap: break-word
+      margin-bottom: 10px
