@@ -34,11 +34,11 @@ class RoadmapsController < ApplicationController
     @min_forecast_closed_at = Time.current
     issues = issue_stats.
       map do |i|
-        issue = @board_bag.issues_hash[i.number]
+        github_issue = @board_bag.issues_hash[i.number]
         closed_at = calculate_closed_at(i)
         {
           number: i.number,
-          title: issue.title,
+          title: github_issue.present? ? github_issue.title : '<unknown>',
           from: (i.created_at.to_i - normalization_from) * NORM_COEFF,
           cycletime: (closed_at.to_i - i.created_at.to_i) * NORM_COEFF,
           state: i.state,
