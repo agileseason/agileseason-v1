@@ -29,4 +29,8 @@ class IssueStat < ActiveRecord::Base
   end
 
   alias :archived? :archive?
+
+  def state
+    closed? ? :closed : :open
+  end
 end

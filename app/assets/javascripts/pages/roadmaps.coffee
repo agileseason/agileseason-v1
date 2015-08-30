@@ -136,6 +136,7 @@ issue_mouseout = ($node, issue, row) ->
 tooltip_content = (issue) ->
   "<div class='number'>##{issue.number}</div>
     <div class='title'>#{issue.title}</div>
-    <div>Created at TODO: creted_at</div>
-    <div>Closed at TODO: creted_at</div>
+    <div>Created at <b>#{issue.created_at}</b></div>
+    <div>Closed at <b>#{issue.closed_at}</b></div>
+    <div>Current column is <b>#{issue.column}</b> #{if issue.is_archive then '[archived]' else ''}</div>
     "

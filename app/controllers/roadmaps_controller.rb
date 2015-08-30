@@ -37,12 +37,17 @@ class RoadmapsController < ApplicationController
     issues = issue_stats.
       map do |i|
         issue = @board_bag.issues_hash[i.number]
+        closed_at = calculate_closed_at(i)
         {
           number: i.number,
           title: issue.title,
           from: (i.created_at.to_i - normalization_from) * NORM_COEFF,
-          cycletime: cycletime(i),
-          state: i.closed_at.nil? ? 'open' : 'closed'
+          cycletime: (closed_at.to_i - i.created_at.to_i) * NORM_COEFF,
+          state: i.state,
+          created_at: i.created_at.strftime('%d %b'),
+          closed_at: "#{closed_at.strftime('%d %b')} #{'(?)' unless i.closed?}",
+          column: i.column.name,
+          is_archive: i.archived?
         }
       end
     rows_optimizer(issues)
@@ -64,15 +69,12 @@ class RoadmapsController < ApplicationController
     issues
   end
 
-  def cycletime(issue)
-    closed_at = if issue.closed_at.present?
-      issue.closed_at
-    else
-      prev = @min_forecast_closed_at
-      @min_forecast_closed_at += avg_cycle_time
-      prev
-    end
-    (closed_at.to_i - issue.created_at.to_i) * NORM_COEFF
+  def calculate_closed_at(issue)
+    return issue.closed_at if issue.closed_at.present?
+
+    closed_at = @min_forecast_closed_at
+    @min_forecast_closed_at += avg_cycle_time
+    closed_at
   end
 
   def avg_cycle_time
@@ -88,7 +90,7 @@ class RoadmapsController < ApplicationController
   end
 
   def issue_stats
-    @issue_stats ||= @board.issue_stats.order(:created_at)
+    @issue_stats ||= @board.issue_stats.includes(:column).order(:created_at)
     #@issue_stats ||= [
       #IssueStat.new(number: 1, created_at: Time.current - 10.days, closed_at: Time.current - 1.day),
       #IssueStat.new(number: 2, created_at: Time.current - 5.days, closed_at: Time.current - 3.days - 4.hours),
