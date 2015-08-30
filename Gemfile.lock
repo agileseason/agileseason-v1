@@ -128,6 +128,8 @@ GEM
       sprockets (< 2.13)
     connection_pool (2.2.0)
     cookiejar (0.3.2)
+    d3_rails (3.5.5)
+      railties (>= 3.1.0)
     daemons (1.2.3)
     dalli (2.7.4)
     database_cleaner (1.4.1)
@@ -469,6 +471,7 @@ DEPENDENCIES
   codeclimate-test-reporter
   coffee-rails
   compass-rails
+  d3_rails
   dalli
   database_cleaner
   docile!
@@ -523,3 +526,6 @@ DEPENDENCIES
   whenever
   will_paginate
   xproc
+
+BUNDLED WITH
+   1.10.6
