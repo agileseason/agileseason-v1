@@ -1,7 +1,7 @@
 class RoadmapsController < ApplicationController
   before_action :fetch_board, only: [:show]
 
-  helper_method :chart_issues, :chart_dates, :chart_issue_rows, :chart_now
+  helper_method :chart_issues, :chart_dates, :chart_now
 
   ISSUE_WIDTH = 40
   NORM_COEFF = 1.0 / 86400 * ISSUE_WIDTH
@@ -15,6 +15,7 @@ class RoadmapsController < ApplicationController
     issues.to_json
   end
 
+  # TODO Refactoring this method.
   def chart_dates
     @chart_dates ||= issue_stats.
       uniq { |i| i.created_at.to_date }.
@@ -28,10 +29,7 @@ class RoadmapsController < ApplicationController
       to_json
   end
 
-  def chart_issue_rows
-    issues.map { |e| e[:row] }.max + 1
-  end
-
+  # TODO Refactoring this method.
   def issues
     @min_forecast_closed_at = Time.current
     issues = issue_stats.
@@ -91,13 +89,6 @@ class RoadmapsController < ApplicationController
 
   def issue_stats
     @issue_stats ||= @board.issue_stats.includes(:column).order(:created_at)
-    #@issue_stats ||= [
-      #IssueStat.new(number: 1, created_at: Time.current - 10.days, closed_at: Time.current - 1.day),
-      #IssueStat.new(number: 2, created_at: Time.current - 5.days, closed_at: Time.current - 3.days - 4.hours),
-      #IssueStat.new(number: 3, created_at: Time.current - 3.days, closed_at: Time.current - 1.day),
-      #IssueStat.new(number: 4, created_at: Time.current - 3.days, closed_at: nil),
-      #IssueStat.new(number: 5, created_at: Time.current - 2.days, closed_at: nil),
-    #]
   end
 
   def chart_now
