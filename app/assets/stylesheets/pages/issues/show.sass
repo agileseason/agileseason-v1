@@ -91,20 +91,13 @@
           color: #fff
 
     .is_ready
+      +light_button
+      +border-radius(100px)
       margin-top: 50px
       position: relative
-
-      .octicon.octicon-check
-        position: absolute
-        top: 12px
-        left: 11px
-        color: $button
-
-      .button
-        display: block
-        width: 100%
-        text-align: left
-        padding-left: 30px
+      display: block
+      text-align: left
+      padding: 10px 10px 10px 30px
 
       &:hover
         .octicon.octicon-check
@@ -114,14 +107,19 @@
         .octicon.octicon-check
           color: #fff
 
-        .button
-          background: $button
-          border: 1px solid $button
-          color: #fff
+        background: $button
+        border: 1px solid $button
+        color: #fff
 
-          &:hover
-            background: $button-hover
-            border: 1px solid $button-hover
+        &:hover
+          background: $button-hover
+          border: 1px solid $button-hover
+
+      .octicon.octicon-check
+        position: absolute
+        top: 12px
+        left: 11px
+        color: $button
 
   .title
     +issue_form

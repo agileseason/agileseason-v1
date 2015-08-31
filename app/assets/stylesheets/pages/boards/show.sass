@@ -333,8 +333,7 @@ $image-path: "pages/p-boards-show"
 
       .buttons
         .is_ready
-          input[type='submit']
-            display: inline-block
+          display: inline-block
 
     &.ui-draggable-dragging
       cursor: -webkit-grabbing
@@ -384,48 +383,41 @@ $image-path: "pages/p-boards-show"
         text-transform: uppercase
 
       .is_ready
-        .octicon.octicon-check
-          display: none
+        +border-radius(0)
+        background: image-url("#{$image-path}/ready.png") 0 0 no-repeat transparent
+        background-size: 50px
+        border: none
+        color: #777
+        display: none
+        float: right
+        font-size: 9px
+        height: 20px
+        letter-spacing: 0.1em
+        line-height: 15px
+        margin: 0 -5px 0 0
+        opacity: 0.2
+        padding: 2px 0 0 5px
+        text-transform: uppercase
+        width: 45px
 
-        input[type='submit']
-          +border-radius(0)
-          background: image-url("#{$image-path}/ready.png") 0 0 no-repeat transparent
-          background-size: 50px
+        &:hover
+          color: $button-hover
+          background: image-url("#{$image-path}/ready-hover.png") 0 0 no-repeat transparent
           border: none
-          color: #777
-          display: none
-          float: right
-          font-size: 9px
-          height: 20px
-          letter-spacing: 0.1em
-          line-height: 15px
-          margin: 0 -5px 0 0
-          opacity: 0.2
-          padding: 0
-          text-transform: uppercase
-          width: 50px
-
-          &:hover
-            color: $button-hover
-            background: image-url("#{$image-path}/ready-hover.png") 0 0 no-repeat transparent
-            border: none
-            background-size: 50px
-            opacity: 1
-            width: 50px
+          background-size: 50px
+          opacity: 1
 
         &.active
-          input[type='submit']
-            background: image-url("#{$image-path}/ready-active.png") 0 0 no-repeat transparent
-            background-size: 50px
-            color: #fff
-            display: inline-block
-            margin-right: -20px
-            opacity: 1
-            width: 50px
+          background: image-url("#{$image-path}/ready-active.png") 0 0 no-repeat transparent
+          background-size: 50px
+          color: #fff
+          display: inline-block
+          margin-right: -20px
+          opacity: 1
 
-            &:hover
-              background: image-url("#{$image-path}/ready-active-hover.png") 0 0 no-repeat transparent
-              background-size: 50px
+          &:hover
+            background: image-url("#{$image-path}/ready-active-hover.png") 0 0 no-repeat transparent
+            background-size: 50px
 
     .icons
       display: inline-block

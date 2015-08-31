@@ -30,7 +30,11 @@
 
 
   .buttons
-    = render partial: 'issues/actions/is_ready', locals: { issue: issue, board: @board }
+    = link_to 'ready',
+      ready_board_issues_url(@board, issue.number, issue_stat: {is_ready: k(:issue, issue).ready? ? false : true}),
+      class: k(:issue, issue).ready? ? 'is_ready active' : 'is_ready',
+      remote: true,
+      method: :patch
 
     - if can?(:update, @board)
       - if issue.open?

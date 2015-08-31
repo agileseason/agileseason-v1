@@ -57,14 +57,8 @@ $(document).on 'ready page:load', ->
     $(@).addClass 'active'
 
   # кнопака «ready»
-  $('.issue-actions').on 'ajax:success', '.is_ready', (e, data) ->
-    if data.is_ready && data.is_ready == 'true'
-      $(@).closest('.is_ready').addClass 'active'
-      $(@).find('.issue_stat_is_ready input').val('false')
-
-    else if data.is_ready && data.is_ready == 'false'
-      $(@).closest('.is_ready').removeClass 'active'
-      $(@).find('.issue_stat_is_ready input').val('true')
+  $('.issue-actions').on 'ajax:before', '.is_ready', ->
+    $(@).toggleClass 'active'
 
   $('.issue-comments, .add-comment-form')
     # указываю, в какую форму загружать картинку

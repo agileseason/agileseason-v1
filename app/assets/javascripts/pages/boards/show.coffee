@@ -52,14 +52,7 @@ $(document).on 'page:change', ->
 
   # кнопака «ready»
   $('.board').on 'ajax:before', '.is_ready', ->
-    $(@).closest('.is_ready').toggleClass 'active'
-
-  $('.board').on 'ajax:success', '.is_ready', (e, data) ->
-    if data.is_ready && data.is_ready == 'true'
-      $(@).find('.issue_stat_is_ready input').val('false')
-
-    else if data.is_ready && data.is_ready == 'false'
-      $(@).find('.issue_stat_is_ready input').val('true')
+    $(@).toggleClass 'active'
 
 $(window).resize ->
   return unless document.body.id == 'boards_show' & !resize_lock
