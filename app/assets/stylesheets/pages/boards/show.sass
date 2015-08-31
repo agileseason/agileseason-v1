@@ -55,9 +55,6 @@ $image-path: "pages/p-boards-show"
     width: 260px
 
     &.last
-      .is_ready
-        display: none
-
       .issue
         &:hover
           a.button.close,
@@ -66,6 +63,13 @@ $image-path: "pages/p-boards-show"
 
           a.button.archive.hidden
             display: none
+
+        .buttons
+          .is_ready
+            display: none
+
+            &:hover
+              display: none
 
     &:last-child
       margin-right: 0
