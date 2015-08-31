@@ -38,17 +38,17 @@
               span.a-child.octicon.octicon-list-ordered &nbsp;
               span.a-child Roadmap
 
-        - if can? :update, @board
-          - if controller_name == 'settings' && params[:action] == 'show'
-            li.board-settings.active
-              span.octicon.octicon-gear &nbsp;
-              span Settings
+      - if can? :update, @board
+        - if controller_name == 'settings' && params[:action] == 'show'
+          li.board-settings.active
+            span.octicon.octicon-gear &nbsp;
+            span Settings
 
-          - else
-            li
-              a href="#{un board_settings_url(@board)}" title='Board Settings'
-                span.a-child.octicon.octicon-gear &nbsp;
-                span.a-child Settings
+        - else
+          li
+            a href="#{un board_settings_url(@board)}" title='Board Settings'
+              span.a-child.octicon.octicon-gear &nbsp;
+              span.a-child Settings
 
       li.icon-button.activities-link data-url="#{board_activities_url @board}"
         a: span.octicon.octicon-bell
@@ -68,4 +68,3 @@
       li.icon-button.alert-timeout
         a href="#{un board_url(@board)}" : span.octicon.octicon-sync
         .hint Click to reload the page for synchronization
-
