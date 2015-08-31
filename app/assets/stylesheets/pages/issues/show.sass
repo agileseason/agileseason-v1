@@ -220,6 +220,7 @@
         margin: 6px 4px 6px 0
 
       p
+        line-height: 1.6
         margin-bottom: 16px
         &:last-child
           margin-bottom: 0px
@@ -230,6 +231,9 @@
 
       form.edit-comment, .upload
         display: block
+
+        textarea
+          margin-top: 10px
 
   .comment-body
     +border-radius(2px)
@@ -263,10 +267,6 @@
 
     pre
       width: 605px
-
-    .edit-form
-      textarea
-        //margin-top: 0
 
     img
       display: block
