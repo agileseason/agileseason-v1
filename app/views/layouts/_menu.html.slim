@@ -4,8 +4,8 @@
       li.left-menu-link data-url="#{boards_url}"
         a.octicon.octicon-three-bars
 
-    - if @board && @board.persisted?
-      - unless controller_name == 'boards' && params[:action] == 'index'
+    - if @board.present? && @board.persisted?
+      - unless controller_name == 'boards' && action_name == 'index'
         li.boards
           - if controller_name == 'boards'
             a.active
@@ -39,7 +39,7 @@
               span.a-child Roadmap
 
       - if can? :update, @board
-        - if controller_name == 'settings' && params[:action] == 'show'
+        - if controller_name == 'settings' && action_name == 'show'
           li.board-settings.active
             span.octicon.octicon-gear &nbsp;
             span Settings
