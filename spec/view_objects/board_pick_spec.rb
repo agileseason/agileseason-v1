@@ -26,8 +26,7 @@ describe BoardPick do
     describe '.public_list' do
       subject { BoardPick.public_list }
       let!(:board_1) { create(:board, :with_columns) }
-      let!(:board_2) { create(:board, :with_columns, settings: { is_public: false }) }
-      let!(:board_public) { create(:board, :with_columns, settings: { is_public: true }) }
+      let!(:board_public) { create(:board, :with_columns, :public) }
 
       it { is_expected.to have(1).item }
       its('first.id') { is_expected.to eq board_public.id }

@@ -7,6 +7,7 @@ FactoryGirl.define do
     github_name 'test-board-repo'
     github_full_name 'test/test-board-repo'
     settings nil
+    is_public false
 
     trait :with_columns do
       transient do
@@ -17,6 +18,10 @@ FactoryGirl.define do
           columns << FactoryGirl.build(:column, board: board, name: "column_#{n + 1}", order: n + 1)
         end
       end
+    end
+
+    trait :public do
+      is_public true
     end
 
     trait :set_columns do

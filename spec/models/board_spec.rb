@@ -1,4 +1,4 @@
-describe Board, type: :model do
+describe Board do
   describe 'relations' do
     it { is_expected.to have_many(:subscriptions) }
   end
@@ -102,5 +102,20 @@ describe Board, type: :model do
     let!(:issue_stat) { create(:issue_stat, board: board, number: issue.number) }
     subject { board.find_stat(issue) }
     it { is_expected.to eq issue_stat }
+  end
+
+  describe '#public?' do
+    subject { board.public? }
+    let(:board) { build(:board, is_public: is_public) }
+
+    context :false do
+      let(:is_public) { false }
+      it { is_expected.to eq false }
+    end
+
+    context :true do
+      let(:is_public) { true }
+      it { is_expected.to eq true }
+    end
   end
 end

@@ -44,7 +44,7 @@ class Board < ActiveRecord::Base
   end
 
   def public?
-    settings[:is_public]
+    self.is_public
   end
 
   def public=(value)
