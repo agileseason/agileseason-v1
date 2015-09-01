@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150822104046) do
+ActiveRecord::Schema.define(version: 20150901035817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20150822104046) do
     t.string   "github_full_name", limit: 500
     t.datetime "subscribed_at"
     t.string   "github_hook_id"
+    t.boolean  "is_public",                    default: false
   end
 
   add_index "boards", ["user_id"], name: "index_boards_on_user_id", using: :btree
