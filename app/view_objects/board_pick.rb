@@ -25,8 +25,8 @@ class BoardPick
   end
 
   def self.public_list
-    Board.where.not(settings: nil).
-      select(&:public?).
+    Board.
+      where(is_public: true).
       map { |board| BoardPick.new(board) }
   end
 end

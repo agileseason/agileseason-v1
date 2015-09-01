@@ -13,7 +13,7 @@ class DangerSettings
 
   def save_to(board)
     return false unless valid?
-    board.public = is_public
+    board.is_public = is_public
     board.save
   end
 end

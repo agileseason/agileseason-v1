@@ -44,11 +44,7 @@ class Board < ActiveRecord::Base
   end
 
   def public?
-    settings[:is_public]
-  end
-
-  def public=(value)
-    settings[:is_public] = value
+    is_public
   end
 
   def danger_settings
