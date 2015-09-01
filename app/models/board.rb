@@ -44,7 +44,7 @@ class Board < ActiveRecord::Base
   end
 
   def public?
-    self.is_public
+    is_public
   end
 
   def danger_settings
