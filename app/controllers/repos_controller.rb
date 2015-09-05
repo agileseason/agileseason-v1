@@ -1,12 +1,6 @@
 class ReposController < ApplicationController
   def index
-    @repos = current_user_repos
-    render partial: 'repo', collection: @repos, as: :repo
-  end
-
-private
-  def current_user_repos
-    return [] unless github_token
-    github_api.repos
+    @repo_list = RepoList.new(current_user)
+    render partial: 'repo', collection: @repo_list.menu_repos, as: :repo
   end
 end
