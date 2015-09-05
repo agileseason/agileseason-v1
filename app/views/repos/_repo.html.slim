@@ -1,8 +1,8 @@
 li class="#{repo.to_css}"
 
   a href="#{repo.url}" target='_blank'
-    span.octicon class="#{repo.icon}"
-    span &nbsp;#{repo.full_name}
+    span.octicon class="#{repo.icon}" &nbsp;
+    span = repo.name
 
   span.actions
     - if repo.board.present?

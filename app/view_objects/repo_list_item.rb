@@ -1,10 +1,14 @@
 class RepoListItem < Renderable
   rattr_initialize :repo, :board
 
-  delegate :id, :full_name, to: :repo
+  delegate :id, to: :repo
 
   def url
     repo.html_url
+  end
+
+  def name
+    repo.full_name
   end
 
   def icon
