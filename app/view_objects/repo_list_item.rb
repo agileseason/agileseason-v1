@@ -1,4 +1,4 @@
-class RepoListItem
+class RepoListItem < Renderable
   rattr_initialize :repo, :board
 
   delegate :id, :full_name, to: :repo
@@ -8,7 +8,6 @@ class RepoListItem
   end
 
   def icon
-    return 'octicon-lock' if private?
     'octicon-repo'
   end
 
@@ -16,13 +15,8 @@ class RepoListItem
     repo.permissions.admin
   end
 
-  def private?
-    repo.private
-  end
-
   def price
-    return unless private?
-    'Private - $4'
+    # NOTE Free
   end
 
   def enough_permissions?

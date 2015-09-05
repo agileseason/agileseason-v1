@@ -10,18 +10,18 @@ $(document).on 'ready page:load', ->
         url: $(@).attr('href'),
         success: (html) =>
           $(@).hide().removeClass 'loading'
-          $wizard.show().find('.repos-list').html(html)
+          $wizard.show().find('.repo-list').html(html)
 
           if $('.settings-modal', $dashboard).length
             $('.settings-modal', $dashboard).scrollTo($wizard, 300)
           else
             $(window).scrollTo($wizard, 300)
 
-          $wizard.trigger 'repos:list:load'
+          $wizard.trigger 'repo:list:load'
 
       e.preventDefault()
 
-    $wizard.on 'repos:list:load', ->
+    $wizard.on 'repo:list:load', ->
       $('.menu li', $wizard).removeClass('active').addClass 'disabled'
       $('.menu li', $wizard).first().removeClass('disabled').addClass('active')
 
@@ -32,7 +32,7 @@ $(document).on 'ready page:load', ->
           url: $(@).attr('href'),
           success: (html) =>
             $(@).removeClass 'loading'
-            $('.repos-list', $wizard).hide()
+            $('.repo-list', $wizard).hide()
             $('.new-board-form', $wizard).show().html(html)
 
             $wizard.trigger 'board:form:load'
@@ -45,7 +45,7 @@ $(document).on 'ready page:load', ->
 
       $('.menu li', $wizard).first().click ->
         $('.new-board-form', $wizard).hide()
-        $('.repos-list', $wizard).show()
+        $('.repo-list', $wizard).show()
         $('.menu li', $wizard).removeClass('active').addClass 'disabled'
         $('.menu li', $wizard).first().removeClass('disabled').addClass('active')
 
