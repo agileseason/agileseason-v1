@@ -58,7 +58,8 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include OauthHelper
   config.include AuthenticationHelper
-  config.include GithubHelper
+  config.include GithubIssueHelper
+  config.include GithubRepoHelper
   config.include Unescaper
 
   DatabaseCleaner.strategy = :truncation
