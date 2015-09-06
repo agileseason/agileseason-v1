@@ -18,6 +18,7 @@ module GithubRepoHelper
       full_name: 'repo-test/repo-test-name',
       html_url: 'https://github.com/repo-test/repo-test-name',
       permissions: default_repo_permissions,
+      private: false
     }
   end
 
