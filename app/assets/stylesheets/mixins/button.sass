@@ -1,4 +1,4 @@
-@import compass/css3/border-radius
+@import compass/css3
 @import globals/variables
 @import mixins/preloaders
 
@@ -31,6 +31,58 @@
 
   &.loading + .button-preloader
     +small_button_preloader
+
+=iphone_button
+  +border-radius(100px)
+  border: none
+  color: #fff
+  cursor: pointer
+  display: inline-block
+  font-size: 14px
+  outline: none
+  padding: 7px 15px 8px 40px
+  background: $button
+  position: relative
+  +transition(all ease 0.2s)
+
+  &:hover
+    background: $button-hover
+
+  &:after
+    width: 30px
+    height: 30px
+    background: #fff
+    +box-shadow(0 2px 2px 2px rgba(67,67,67,0.2))
+    content: ' '
+    position: absolute
+    +border-radius(30px)
+    top: 1px
+    +transition(all ease-in 0.2s)
+    left: 1px
+
+  &.true
+    background: $orange
+    padding: 7px 40px 8px 15px
+
+    &:hover
+      background: $orange-hover
+
+    .true
+      display: inline-block
+
+    .false
+      display: none
+
+    &:after
+      left: calc(100% - 31px)
+
+  .true
+    display: none
+
+  .false
+    display: inline-block
+
+
 
 =light_button
   +border-radius(6px)

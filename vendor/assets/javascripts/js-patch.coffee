@@ -15,3 +15,5 @@ window.jQuery.initJsPathForInputs = ->
       }
       success: (data) ->
         Turbolinks.visit(data.redirect_url) if data && data.redirect_url
+
+

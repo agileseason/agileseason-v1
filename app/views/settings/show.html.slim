@@ -1,9 +1,105 @@
 .p-settings-show
-  .box
-    .title Settings
-    = simple_form_for(board, url: rename_board_settings_url(board)) do |f|
-      = f.input :name
-      = f.button :submit, value: 'Rename'
+  .setting
+    /.subtitle Board settings
+    .board-name
+      = simple_form_for(board, url: rename_board_settings_url(board), html: {class: 'board-name'}) do |f|
+        = f.input :name, label: 'Board name'
+        = f.button :submit, value: ' ', class: 'enter-submit'
+
+    .setting
+      p : strong Columns
+
+      .columns-block
+        ul.columns
+          - @board_bag.columns.each do |column|
+            li
+              .column-name
+                input.js-patch.name [
+                  name='name'
+                  type='input'
+                  data-url="#{update_attribute_board_column_url(board, column)}"
+                  placeholder='none'
+                  value="#{column.name}"
+                ]
+
+              .active-settings
+                span.autoassign class="#{'active' if column.auto_assign?}" self autoassign
+                /span.autoclose autoclosing an issue
+
+              .actions
+                a.octicon.octicon-gear
+
+                a.delete.octicon.octicon-trashcan [
+                  class="#{'blocked' if column.visible_issue_stats.size > 0}"
+                  href="#{board_column_url(@board, column)}"
+                  data-confirm='Are you sure?'
+                  data-method='delete'
+                  data-remote='true'
+                ]
+
+                a.octicon.octicon-arrow-down [
+                  class="#{'blocked' if @board_bag.columns.last == column || column.visible_issue_stats.size > 0 }"
+                  href="#{move_right_board_column_url(@board, column)}"
+                ]
+
+                a.octicon.octicon-arrow-up [
+                  class="#{'blocked' if @board_bag.columns.first == column || column.visible_issue_stats.size > 0}"
+                  href="#{move_left_board_column_url(@board, column)}"
+                ]
+
+              .other-settings
+                .autoassign
+                  - if column.auto_assign?
+                    input.js-patch [
+                      name='is_auto_assign'
+                      type='checkbox'
+                      data-url="#{update_attribute_board_column_url(@board, column)}"
+                      value="#{column.auto_assign?}"
+                      checked='checked'
+                    ]
+                  - else
+                    input.js-patch [
+                      name='is_auto_assign'
+                      type='checkbox'
+                      data-url="#{update_attribute_board_column_url(@board, column)}"
+                      value="#{column.auto_assign?}"
+                    ]
+                  label Autoassign&nbsp;yourself
+
+
+                /.autoclose
+                  /input type='checkbox' disabled='disabled'
+                  /label.coming-soon Autoclosign issues
+
+                .wip
+                  span Work in progress limit from&nbsp;
+                  input.js-patch [
+                    name='wip_min'
+                    type='input'
+                    data-url="#{update_attribute_board_column_url(@board, column)}"
+                    placeholder='∞'
+                    value="#{column.wip_min}"
+                  ]
+                  /li
+                  /label WIP Max
+                  span &nbsp;to&nbsp;
+                  input.js-patch [
+                    name='wip_max'
+                    type='input'
+                    data-url="#{update_attribute_board_column_url(@board, column)}"
+                    placeholder='∞'
+                    value="#{column.wip_max}"
+                  ]
+
+          li
+            = render partial: 'columns/new', locals: { board: board }
+
+      .notes
+        p Be responsible for your <a href="#{un board_graphs_cumulative_index_url(@board)}">statistic data</a>.
+        p The statistic data is built upon each issue moved from one column to another.
+        p If you rename, reorder or remove any column the changes will affect on your metrics.
+        p Moving a column with issues is disallow. For safety of your statistic data you can move only empty column.
+
 
     - if @board.kanban?
       /.box
@@ -21,26 +117,34 @@
 
 
   - if can? :destroy, @board
-    .box
-      .subtitle Additional GitHub synchronization
-      p Webhook for fast sync issues which created via GitHub directly.
-      - if @board.github_hook_id.nil?
-        a.button href="#{un apply_hook_board_settings_url(@board)}" Create hook
-      - else
-        a.button [
-          href="#{un remove_hook_board_settings_url(@board)}"
-          data-confirm='Are you sure?'
-          data-method='delete'
-        ] Delete hook
+    br
+    .setting
+      .action
+        = link_to @board.is_public? ? 'Public board' : 'Private board',
+          board_settings_url(@board, @board.danger_settings, danger_settings: { is_public: @board.is_public? ? 'false' : 'true' }),
+          class: "#{@board.is_public? ? 'true' : 'false'} iphone-button is_public",
+          remote: true,
+          method: :patch
 
-    .box.danger
-      .subtitle Make this board public
-      p Make this repository visible to anyone. Work only for public repository.
-      = simple_form_for(@board.danger_settings, url: board_settings_url(board), method: :patch) do |f|
-        = f.input :is_public, as: :boolean
-        = f.button :submit, value: 'Update'
+      .setting-label Make this repository visible to anyone. Work only for public repository.
 
-    .box.danger
-      .subtitle Delete this board
-      p Once you delete a board, there is no going back. Please be certain.
-      a.button href="#{board_url(@board)}" data-confirm='Are you sure?' data-method='delete' Delete
+    .setting
+      .action
+        /.subtitle Delete this board
+        a.button.danger href="#{board_url(@board)}" data-confirm='Are you sure?' data-method='delete'
+          | Delete this board
+      .setting-label.danger Once you delete a board, there is no going back. Please be certain.
+
+    br
+    .setting
+      .action
+        - if @board.github_hook_id.nil?
+          a.button href="#{un apply_hook_board_settings_url(@board)}" Create hook
+        - else
+          a.button [
+            href="#{un remove_hook_board_settings_url(@board)}"
+            data-confirm='Are you sure?'
+            data-method='delete'
+          ] Delete hook
+      .setting-label Webhook for fast sync issues which created via GitHub directly.
+

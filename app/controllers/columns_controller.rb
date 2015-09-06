@@ -24,7 +24,7 @@ class ColumnsController < ApplicationController
     @column.board = @board
     @column.order = @board.columns.last.order + 1
     if @column.save
-      redirect_to un(board_url(@board))
+      redirect_to un(board_settings_url(@board))
     else
       render 'new'
     end
@@ -85,7 +85,7 @@ class ColumnsController < ApplicationController
     @column
   end
 
-  def render_result
-    render json: { redirect_url: un(board_url(@board)) }
-  end
+  #def render_result
+    #render json: { redirect_url: un(board_url(@board)) }
+  #end
 end

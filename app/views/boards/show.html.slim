@@ -9,9 +9,3 @@
   .board-columns
     - @board_bag.columns.each do |column|
       = render partial: 'columns/show', locals: { column: column }
-
-    - if can?(:update, @board)
-      .board-column
-        .new-column : span Append a new column
-        .create-column
-          = render partial: 'columns/new', locals: { board: @board }
