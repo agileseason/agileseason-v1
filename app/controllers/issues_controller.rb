@@ -24,8 +24,7 @@ class IssuesController < ApplicationController
       render(
         partial: 'issues/issue_miniature',
         locals: {
-          issue: BoardIssue.new(issue, @board.find_stat(issue)),
-          column: @board_bag.default_column
+          issue: BoardIssue.new(issue, @board.find_stat(issue))
         }
       )
       broadcast_column(@board_bag.default_column)
@@ -61,16 +60,14 @@ class IssuesController < ApplicationController
     mover.process
 
     # TODO Move to IssueStats::Mover
-    if force?
-      broadcast_column(mover.issue_stat.column)
-      broadcast_column(mover.column)
-    end
+    broadcast_column(mover.issue_stat.column)
+    broadcast_column(mover.column)
 
     render json: {
       number: number,
       html_miniature: render_to_string(
         partial: 'issues/issue_miniature',
-        locals: { issue: BoardIssue.new(github_issue, mover.issue_stat), column: mover.column }
+        locals: { issue: BoardIssue.new(github_issue, mover.issue_stat) }
       ),
       badges: Board.includes(columns: :issue_stats).find(@board.id).columns.map do |column|
         {
