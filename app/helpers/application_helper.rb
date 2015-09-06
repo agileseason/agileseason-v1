@@ -19,6 +19,10 @@ module ApplicationHelper
     "https://avatars.githubusercontent.com/#{user.github_username}"
   end
 
+  def number
+    params[:number].to_i
+  end
+
   concerning :Markdown do
     def markdown(text, board)
       return unless text

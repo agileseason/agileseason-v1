@@ -47,11 +47,12 @@ class GithubApi
       BoardIssue.new(github_issue, issue_stat)
     end
 
-    def assign(board, number, github_username)
-      # FIX : Get issue - don't work override, error: Wrong number of arguments. Expected 4 to 5, got 3.
+    def assign(board, number, assignee)
       issue = issue(board, number)
-      # FIX : Don't work - client.update_issue(board.github_id, number, assignee: github_username)
-      client.update_issue(board.github_id, number, issue.title, issue.body, assignee: github_username)
+      current_assignee = issue.try(:assignee).try(:login)
+      assignee = nil if current_assignee == assignee
+      # NOTE client.update_issue(board.github_id, number, assignee: github_username) doesn't work
+      client.update_issue(board.github_id, number, issue.title, issue.body, assignee: assignee)
     end
 
     def update_issue(board, number, issue_params, issue = issue(board, number))

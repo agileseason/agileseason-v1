@@ -12,7 +12,7 @@ class IssuesController < ApplicationController
   def show
     @direct_post = S3Api.direct_post
     @issue = @board_bag.issue(number)
-    @comments = github_api.issue_comments(@board, number)
+    @comments = issue_comments(@issue)
   end
 
   def create
@@ -118,7 +118,7 @@ class IssuesController < ApplicationController
   end
 
   def assignee
-    issue = github_api.assign(@board, number, login_diff)
+    issue = github_api.assign(@board, number, params[:login])
     @board_bag.update_cache(issue)
 
     render partial: 'issues/assignee', locals: {
@@ -155,12 +155,9 @@ class IssuesController < ApplicationController
     @github_issue ||= @board_bag.issues_hash[number] || github_api.issue(@board, number)
   end
 
+  # TODO Remove this method
   def update_issue(issue_params)
-    issue = github_api.update_issue(
-      @board,
-      number,
-      issue_params
-    )
+    issue = github_api.update_issue(@board, number, issue_params)
     @board_bag.update_cache(issue)
   end
 
@@ -189,14 +186,9 @@ class IssuesController < ApplicationController
       permit(labels: [])
   end
 
-  def login_diff
-    # FIX : Need issues cache...
-    login_prev = github_api.issue(@board, number).try(:assignee).try(:login)
-    params[:login] unless login_prev == params[:login]
-  end
-
-  def number
-    params[:number].to_i
+  def issue_comments(issue)
+    return [] if issue.comments.zero?
+    github_api.issue_comments(@board, issue.number)
   end
 
   def fetch_cumulative_graph

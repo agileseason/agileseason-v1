@@ -1,5 +1,5 @@
 class BoardBag
-  pattr_initialize :github_api, :board
+  rattr_initialize :github_api, :board
   delegate :github_id, :github_name, :github_full_name, :columns, :issue_stats,
            :to_param, :subscribed_at, to: :board
 

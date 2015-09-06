@@ -10,26 +10,12 @@ RSpec.describe IssuesController, type: :controller do
 
   describe '#show' do
     let(:request) { get :show, board_github_full_name: board.github_full_name, number: 1 }
-    before { allow(github_api).to receive(:issue).and_return(issue) }
-    before { allow(github_api).to receive(:labels).and_return([]) }
     before { allow(github_api).to receive(:issue_comments).and_return([]) }
+    before { allow_any_instance_of(BoardBag).to receive(:issue).and_return(issue) }
+    before { request }
 
-    context 'issue in cache' do
-      before { allow(github_api).to receive(:issues).and_return([issue]) }
-      before { request }
-
-      it { expect(github_api).not_to have_received(:issue) }
-      it { expect(board.reload.issue_stats.count).to eq 0 }
-      it { expect((assigns :issue).issue_stat).to be_present }
-    end
-
-    context 'issue not in cache' do
-      before { allow(github_api).to receive(:issues).and_return([]) }
-      before { request }
-
-      it { expect(assigns :issue).to be_present }
-      it { expect((assigns :issue).number).to eq issue.number }
-    end
+    it { expect(assigns :issue).to be_present }
+    it { expect((assigns :issue).number).to eq issue.number }
   end
 
   describe '#create' do
