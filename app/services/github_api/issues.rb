@@ -21,12 +21,6 @@ class GithubApi
       client.issue(board.github_id, number)
     end
 
-    def move_to(board, column, number, force = false)
-      issue_stat = IssueStatService.find(board, number) ||
-                   IssueStatService.create!(board, issue(board, number), @user)
-      IssueStatService.move!(column, issue_stat, @user, force)
-    end
-
     def close(board, number)
       github_issue = client.close_issue(board.github_id, number)
       issue_stat = IssueStatService.close!(board, github_issue, @user)

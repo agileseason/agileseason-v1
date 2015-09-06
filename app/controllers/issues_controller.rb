@@ -51,25 +51,26 @@ class IssuesController < ApplicationController
   end
 
   def move_to
-    column_from = IssueStatService.find(@board, number).try(:column)
-    column_to = @board.columns.find(params[:column_id])
-    issue_stat = github_api.move_to(@board, column_to, number, force?)
+    mover = IssueStats::Mover.new(
+      current_user,
+      @board_bag,
+      params[:column_id],
+      number,
+      force?
+    )
+    mover.process
 
-    if column_to.auto_assign? && github_issue.assignee.nil?
-      issue = github_api.assign(@board, number, current_user.github_username)
-      @board_bag.update_cache(issue)
-    end
-
+    # TODO Move to IssueStats::Mover
     if force?
-      broadcast_column(column_from) if column_from
-      broadcast_column(column_to)
+      broadcast_column(mover.issue_stat.column)
+      broadcast_column(mover.column)
     end
 
     render json: {
       number: number,
       html_miniature: render_to_string(
         partial: 'issues/issue_miniature',
-        locals: { issue: BoardIssue.new(issue || github_issue, issue_stat), column: column_to }
+        locals: { issue: BoardIssue.new(github_issue, mover.issue_stat), column: mover.column }
       ),
       badges: Board.includes(columns: :issue_stats).find(@board.id).columns.map do |column|
         {
