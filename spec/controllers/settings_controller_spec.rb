@@ -27,8 +27,7 @@ describe SettingsController, type: :controller do
         board_github_full_name: board.github_full_name,
         kanban_settings: { foo: :bar }
       )
-      expect(response).to have_http_status(:redirect)
-      expect(response).to redirect_to(CGI::unescape(board_settings_url(board)))
+      expect(response).to have_http_status(:success)
     end
   end
 
