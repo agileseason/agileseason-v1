@@ -70,24 +70,28 @@ describe Graphs::IssueStatsWorker do
     end
 
     context 'auto archive very old (see GithubApi::Issues.closed)' do
+      let(:board) { create(:board, :with_columns, created_at: 10.year.ago) }
       let(:arrange) do
-        board.issue_stats.create!(number: 1, closed_at: 3.month.ago, archived_at: nil)
-        board.issue_stats.create!(number: 2, closed_at: closed_issue.closed_at, archived_at: nil)
+        board.issue_stats.create!(number: 1, closed_at: closed_issue_1.closed_at, archived_at: nil)
+        board.issue_stats.create!(number: 2, closed_at: closed_issue_2.closed_at, archived_at: nil)
         board.issue_stats.create!(number: 3, closed_at: nil, archived_at: nil)
       end
-      let(:closed_issue) do
+      let(:closed_issue_1) do
+        stub_closed_issue(
+          number: 1,
+          created_at: 6.month.ago,
+          closed_at: Graphs::IssueStatsWorker::AUTO_ARCHIVE_BOUND - 1.day
+        )
+      end
+      let(:closed_issue_2) do
         stub_closed_issue(
           number: 2,
-          created_at: 2.day.ago, updated_at: Time.current - 6.hours
+          created_at: 2.day.ago,
+          closed_at: Graphs::IssueStatsWorker::AUTO_ARCHIVE_BOUND + 1.day
         )
       end
-      let(:open_issue) do
-        stub_issue(
-          number: 3,
-          created_at: 2.day.ago, updated_at: Time.current
-        )
-      end
-      let(:issues) { [closed_issue, open_issue] }
+      let(:open_issue) { stub_issue(number: 3, created_at: 2.day.ago) }
+      let(:issues) { [closed_issue_1, closed_issue_2, open_issue] }
 
       it { expect(IssueStat.find_by(number: 1)).to be_archived }
       it { expect(IssueStat.find_by(number: 2)).not_to be_archived }
