@@ -8,7 +8,7 @@ class SettingsController < ApplicationController
   def update
     @settings = build_board_settings
     if @settings.save_to(@board)
-      render json: { notice: 'Settings successfully updated.'}.to_json
+      render json: { notice: 'Settings successfully updated.' }.to_json
     end
   end
 

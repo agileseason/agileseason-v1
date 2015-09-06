@@ -84,8 +84,4 @@ class ColumnsController < ApplicationController
     @column = @board.columns.find(params[:id])
     @column
   end
-
-  #def render_result
-    #render json: { redirect_url: un(board_url(@board)) }
-  #end
 end
