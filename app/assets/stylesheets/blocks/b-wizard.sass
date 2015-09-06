@@ -31,7 +31,7 @@
       margin: 0 10px
       color: #7f756c
 
-  .repos-list
+  .repo-list
     list-style: none
     margin: 0
     padding: 0
@@ -39,30 +39,34 @@
     li
       margin-bottom: 20px
 
-    .actions
-      float: right
+      &.repo-list-item
+        .price
+          display: none
 
-      .price
-        +border-radius(4px)
-        background: #fffef8
-        border: 1px solid #fcd880
-        color: #e5a303
-        font-size: 12px
-        margin-right: 8px
-        padding: 4px 6px
+      .actions
+        float: right
 
-      .button, .light-button
-        +box-sizing(border-box)
-        margin-top: -5px
-        text-align: center
-        width: 120px
+        .price
+          +border-radius(4px)
+          background: #fffef8
+          border: 1px solid #fcd880
+          color: #e5a303
+          font-size: 12px
+          margin-right: 8px
+          padding: 4px 6px
 
-      .light-button
-        +light_button
-        +border-radius(15px)
-        display: inline-block
-        font-size: 14px
-        padding: 5px 7px
+        .button, .light-button
+          +box-sizing(border-box)
+          margin-top: -5px
+          text-align: center
+          width: 120px
+
+        .light-button
+          +light_button
+          +border-radius(15px)
+          display: inline-block
+          font-size: 14px
+          padding: 5px 7px
 
   .new-board-form
     display: none

@@ -1,4 +1,4 @@
-module GithubHelper
+module GithubIssueHelper
   FactoryGirl.define do
     sequence :github_numbers do |number|
       number

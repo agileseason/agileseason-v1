@@ -1,17 +1,14 @@
-li
-  a.repo-name href="http://github.com/#{repo.full_name}" target='_blank'
-    span.octicon class="#{repo.private ? 'octicon-lock' : 'octicon-repo'}"
-    span &nbsp;#{repo.full_name}
+li class="#{repo.to_css}"
+
+  a href="#{repo.url}" target='_blank'
+    span.octicon class="#{repo.icon}" &nbsp;
+    span = repo.name
 
   span.actions
-    - if k(:repo, repo).board
-      a.light-button href="#{un board_url(k(:repo, repo).board)}"
-        | Go to Board
-    - elsif current_user.repo_admin?(repo.id)
-      - if repo.private
-        span.price Private - $4
-      a.button.create_board href="#{new_board_url(github_id: repo.id)}"
-        | Create Board
+    - if repo.board.present?
+      a.light-button href="#{un board_url(repo.board)}" Go to Board
+
+    - elsif repo.can_create_board?
+      span.price = repo.price
+      a.button.create_board href="#{new_board_url(github_id: repo.id)}" Create Board
       span.button-preloader
-    - else
-      span Not enough permissions
