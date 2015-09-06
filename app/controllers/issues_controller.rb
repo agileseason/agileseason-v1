@@ -11,18 +11,8 @@ class IssuesController < ApplicationController
 
   def show
     @direct_post = S3Api.direct_post
-    @issue = BoardIssue.new(
-      github_issue,
-      IssueStatService.find_or_build_issue_stat(@board, github_issue)
-    )
-    # TODO : Find a way to accelerate this request.
+    @issue = @board_bag.issue(number)
     @comments = github_api.issue_comments(@board, number)
-  end
-
-  def search
-    ui_event(:issue_search)
-    issues = github_api.search_issues(@board, params[:query])
-    render partial: 'search_result', locals: { issues: issues, board: @board }
   end
 
   def create
@@ -47,6 +37,12 @@ class IssuesController < ApplicationController
   def update
     update_issue(issue_update_params)
     render nothing: true
+  end
+
+  def search
+    ui_event(:issue_search)
+    issues = github_api.search_issues(@board, params[:query])
+    render partial: 'search_result', locals: { issues: issues, board: @board }
   end
 
   def update_labels
@@ -154,6 +150,7 @@ class IssuesController < ApplicationController
 
   private
 
+  # TODO Remove this method
   def github_issue
     @github_issue ||= @board_bag.issues_hash[number] || github_api.issue(@board, number)
   end

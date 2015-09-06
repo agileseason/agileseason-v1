@@ -3,6 +3,11 @@ class BoardBag
   delegate :github_id, :github_name, :github_full_name, :columns, :issue_stats,
            :to_param, :subscribed_at, to: :board
 
+  def issue(number)
+    issue = issues_hash[number] || github_api.issue(board, number)
+    BoardIssue.new(issue, issue_stat_mapper[issue])
+  end
+
   # All issues
   def issues
     issues_hash.values
