@@ -50,24 +50,25 @@ class IssuesController < ApplicationController
   end
 
   def move_to
-    mover = IssueStats::Mover.new(
+    column_to = @board.columns.find(params[:column_id])
+    issue_stat = IssueStats::Mover.new(
       current_user,
       @board_bag,
-      params[:column_id],
+      column_to,
       number,
       force?
-    )
-    mover.process
+    ).call
 
-    # TODO Move to IssueStats::Mover
-    broadcast_column(mover.issue_stat.column)
-    broadcast_column(mover.column)
+    broadcast_column(issue_stat.column)
+    broadcast_column(column_to)
+
+    IssueStats::AutoAssigner.new(current_user, @board_bag, column_to, number).call
 
     render json: {
       number: number,
       html_miniature: render_to_string(
         partial: 'issues/issue_miniature',
-        locals: { issue: BoardIssue.new(github_issue, mover.issue_stat) }
+        locals: { issue: BoardIssue.new(github_issue, issue_stat) }
       ),
       badges: Board.includes(columns: :issue_stats).find(@board.id).columns.map do |column|
         {

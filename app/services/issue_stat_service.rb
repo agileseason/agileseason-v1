@@ -22,6 +22,8 @@ class IssueStatService
       )
     end
 
+    # TODO Remove is_ready
+    # TODO Move to IssueStats:Mover
     def move!(column, issue_stat, user, force = false)
       return issue_stat if issue_stat.column == column && !force
       if force
