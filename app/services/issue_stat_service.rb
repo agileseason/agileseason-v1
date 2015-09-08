@@ -11,6 +11,8 @@ class IssueStatService
         closed_at: github_issue.closed_at,
       )
 
+      IssueStats::Sorter.new(column, github_issue.number, true).call
+      # TODO Remove move from this line!
       move!(column, issue_stat, user, force: true)
     end
 
@@ -25,11 +27,6 @@ class IssueStatService
     # TODO Remove is_ready
     # TODO Move to IssueStats:Mover
     def move!(column, issue_stat, user, force = false)
-      return issue_stat if issue_stat.column == column && !force
-      if force
-        column.update_sort_issues(column.issues.unshift(issue_stat.number))
-      end
-
       if user.present? && issue_stat.column != column
         Activities::ColumnChangedActivity.
           create_for(issue_stat, issue_stat.column, column, user)

@@ -1,9 +1,13 @@
 module IssueStats
   class Mover
-    pattr_initialize :user, :board_bag, :column, :number, :is_force
+    pattr_initialize :user, :board_bag, :column_to, :number, :is_force_sort
 
     def call
-      IssueStatService.move!(column, issue_stat, user, is_force)
+      if is_force_sort || column_will_change?
+        IssueStatService.move!(column_to, issue_stat, user, is_force_sort)
+      else
+        issue_stat
+      end
     end
 
     # NOTE Public until end refactoring
@@ -17,6 +21,10 @@ module IssueStats
 
     def board
       board_bag.board
+    end
+
+    def column_will_change?
+      column_to != issue_stat.column
     end
   end
 end

@@ -63,6 +63,7 @@ class IssuesController < ApplicationController
     broadcast_column(column_to)
 
     IssueStats::AutoAssigner.new(current_user, @board_bag, column_to, number).call
+    IssueStats::Sorter.new(column_to, number, force?).call
 
     render json: {
       number: number,

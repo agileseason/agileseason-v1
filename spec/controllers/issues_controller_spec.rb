@@ -147,9 +147,18 @@ RSpec.describe IssuesController, type: :controller do
       allow_any_instance_of(IssueStats::AutoAssigner).
         to receive(:call)
     end
-    before { request }
 
-    it { expect(response).to have_http_status(:success) }
+    context 'responce' do
+      before { request }
+      it { expect(response).to have_http_status(:success) }
+    end
+
+    context 'behavior' do
+      after { request }
+      it { expect_any_instance_of(IssueStats::Mover). to receive(:call) }
+      it { expect_any_instance_of(IssueStats::AutoAssigner). to receive(:call) }
+      it { expect_any_instance_of(IssueStats::Sorter). to receive(:call) }
+    end
   end
 
   describe '#search' do
