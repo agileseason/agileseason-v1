@@ -15,14 +15,12 @@ describe IssueStats::Mover do
     context 'column not changed' do
       let(:column_from) { board.columns.first }
       let(:column_to) { board.columns.first }
-      before { column_from.update(issues: [issue_stat.number.to_s]) }
 
       context 'not force' do
         let(:is_force_sort) { false }
         it { expect { subject }.to change(Lifetime, :count).by(0) }
         it { expect { subject }.to change(Activity, :count).by(0) }
         its(:column) { is_expected.to eq column_from }
-        its('column.issues') { is_expected.to eq [issue_stat.number.to_s] }
       end
 
       context 'force' do
@@ -30,7 +28,6 @@ describe IssueStats::Mover do
         it { expect { subject }.to change(Lifetime, :count).by(1) }
         it { expect { subject }.to change(Activity, :count).by(0) }
         its(:column) { is_expected.to eq column_from }
-        its('column.issues') { is_expected.to eq [issue_stat.number.to_s] }
       end
     end
 
@@ -52,7 +49,6 @@ describe IssueStats::Mover do
         it { expect { subject }.to change(Lifetime, :count).by(1) }
         it { expect { subject }.to change(Activity, :count).by(1) }
         its(:column) { is_expected.to eq column_to }
-        its('column.issues') { is_expected.to eq [issue_stat.number.to_s] }
       end
     end
   end

@@ -51,19 +51,20 @@ class IssuesController < ApplicationController
 
   def move_to
     column_to = @board.columns.find(params[:column_id])
-    issue_stat = IssueStats::Mover.new(
+    IssueStats::Mover.new(
       current_user,
       @board_bag,
       column_to,
       number,
       force?
     ).call
-
-    broadcast_column(issue_stat.column)
-    broadcast_column(column_to)
-
     IssueStats::AutoAssigner.new(current_user, @board_bag, column_to, number).call
     IssueStats::Sorter.new(column_to, number, force?).call
+    IssueStats::Unready.new(current_user, @board_bag, number).call
+
+    issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
+    broadcast_column(issue_stat.column)
+    broadcast_column(column_to)
 
     render json: {
       number: number,
@@ -140,12 +141,12 @@ class IssuesController < ApplicationController
   end
 
   def ready
-    issue_stat = IssueStat.find_by(number: params[:number])
-    if issue_stat.update(issue_stat_params)
-      render json: issue_stat_params.to_json
+    if issue_stat_params[:is_ready] == 'true'
+      IssueStats::Ready.new(current_user, @board_bag, number).call
     else
-      render nothing: true
+      IssueStats::Unready.new(current_user, @board_bag, number).call
     end
+    render nothing: true
   end
 
   private

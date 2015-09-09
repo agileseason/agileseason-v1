@@ -1,4 +1,5 @@
 module IssueStats
+  # TODO Remove is_force_sort
   class Mover
     pattr_initialize :user, :board_bag, :column_to, :number, :is_force_sort
 
@@ -13,8 +14,7 @@ module IssueStats
     # NOTE Public until end refactoring
 
     def issue_stat
-      @issue_stat ||= IssueStatService.find(board, number) ||
-        IssueStatService.create!(board, user.github_api.issue(board, number), user)
+      @issue_stat ||= IssueStats::Finder.new(user, board_bag, number).call
     end
 
     private

@@ -44,10 +44,10 @@ class BoardBag
   end
 
   # TODO not update cache if data old or eq
-  def update_cache(issue)
+  def update_cache(github_issue)
     return unless Rails.cache.exist?(cache_key(:issues_hash))
 
-    issues_hash[issue.number] = issue
+    issues_hash[github_issue.number] = github_issue
     Rails.cache.write(
       cache_key(:issues_hash),
       issues_hash,

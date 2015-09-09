@@ -12,7 +12,8 @@ class IssueStatService
       )
 
       IssueStats::Sorter.new(column, github_issue.number, true).call
-      # TODO Remove move from this line!
+      # TODO Remove move! from here!
+      # TODO Call IssueStats::Lifetime
       move!(column, issue_stat, user, force: true)
     end
 
@@ -24,13 +25,14 @@ class IssueStatService
       )
     end
 
-    # TODO Remove is_ready
-    # TODO Move to IssueStats:Mover
+    # TODO Move to IssueStats::Mover
     def move!(column, issue_stat, user, force = false)
+      # TODO Extract IssueStats::ColumnChangeActivity
       if user.present? && issue_stat.column != column
         Activities::ColumnChangedActivity.
           create_for(issue_stat, issue_stat.column, column, user)
       end
+      # TODO Extract IssueStats::Lifetime
       issue_stat.update!(column: column)
       leave_all_column(issue_stat)
       issue_stat.lifetimes.create!(

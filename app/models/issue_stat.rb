@@ -33,4 +33,8 @@ class IssueStat < ActiveRecord::Base
   def state
     closed? ? :closed : :open
   end
+
+  def ready?
+    is_ready
+  end
 end

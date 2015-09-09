@@ -138,8 +138,13 @@ RSpec.describe IssuesController, type: :controller do
     end
     before { allow(controller).to receive(:github_api).and_return(github_api) }
     before { allow(github_api).to receive(:issues).and_return([issue]) }
+    before { allow(github_api).to receive(:issue).and_return(issue) }
     before do
       allow_any_instance_of(IssueStats::Mover).
+        to receive(:call)
+    end
+    before do
+      allow_any_instance_of(IssueStats::Finder).
         to receive(:call).
         and_return(issue_stat)
     end
@@ -155,9 +160,10 @@ RSpec.describe IssuesController, type: :controller do
 
     context 'behavior' do
       after { request }
-      it { expect_any_instance_of(IssueStats::Mover). to receive(:call) }
-      it { expect_any_instance_of(IssueStats::AutoAssigner). to receive(:call) }
-      it { expect_any_instance_of(IssueStats::Sorter). to receive(:call) }
+      it { expect_any_instance_of(IssueStats::Mover).to receive(:call) }
+      it { expect_any_instance_of(IssueStats::AutoAssigner).to receive(:call) }
+      it { expect_any_instance_of(IssueStats::Sorter).to receive(:call) }
+      it { expect_any_instance_of(IssueStats::Unready).to receive(:call) }
     end
   end
 

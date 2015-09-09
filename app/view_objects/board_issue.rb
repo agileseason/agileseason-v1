@@ -2,7 +2,7 @@ class BoardIssue
   attr_accessor :issue, :issue_stat
   delegate :number, :title, :body, :state, :labels, :html_url,
            :assignee, :comments, :all_comments, to: :issue
-  delegate :board, :due_date_at, :column, :column_id, to: :issue_stat
+  delegate :board, :due_date_at, :column, :column_id, :ready?, to: :issue_stat
 
   attr_initialize :issue, :issue_stat
 
