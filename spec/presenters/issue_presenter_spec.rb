@@ -77,24 +77,4 @@ describe IssuePresenter do
       it { is_expected.to eq 'Some title with ABBR ect' }
     end
   end
-
-  describe '#ready?' do
-    let!(:issue) { OpenStruct.new(number: 1) }
-
-    context 'false' do
-      let!(:issue_stat) { create :issue_stat, number: issue.number }
-
-      subject { presenter.ready? }
-
-      it { is_expected.to be_falsy }
-    end
-
-    context 'true' do
-      let!(:issue_stat) { create :issue_stat, number: issue.number, is_ready: true }
-
-      subject { presenter.ready? }
-
-      it { is_expected.to be_truthy }
-    end
-  end
 end
