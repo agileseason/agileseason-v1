@@ -30,6 +30,7 @@ change_url = ($button) ->
     $button
       .removeClass 'true'
       .text('Private board')
+      .closest('.action').next('.setting-label').text('Not visible to anyone.')
 
   else if href.match /true/
     updated_href = href.replace 'true', 'false'
@@ -38,3 +39,4 @@ change_url = ($button) ->
     $button
       .addClass 'true'
       .text('Public board')
+      .closest('.action').next('.setting-label').text('Visible to anyone.')

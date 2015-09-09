@@ -49,22 +49,23 @@
 
               .other-settings
                 .autoassign
-                  - if column.auto_assign?
-                    input.js-patch [
-                      name='is_auto_assign'
-                      type='checkbox'
-                      data-url="#{update_attribute_board_column_url(@board, column)}"
-                      value="#{column.auto_assign?}"
-                      checked='checked'
-                    ]
-                  - else
-                    input.js-patch [
-                      name='is_auto_assign'
-                      type='checkbox'
-                      data-url="#{update_attribute_board_column_url(@board, column)}"
-                      value="#{column.auto_assign?}"
-                    ]
-                  label Autoassign&nbsp;yourself
+                  label
+                    - if column.auto_assign?
+                      input.js-patch [
+                        name='is_auto_assign'
+                        type='checkbox'
+                        data-url="#{update_attribute_board_column_url(@board, column)}"
+                        value="#{column.auto_assign?}"
+                        checked='checked'
+                      ]
+                    - else
+                      input.js-patch [
+                        name='is_auto_assign'
+                        type='checkbox'
+                        data-url="#{update_attribute_board_column_url(@board, column)}"
+                        value="#{column.auto_assign?}"
+                      ]
+                    span Autoassign&nbsp;yourself
 
 
                 /.autoclose
@@ -126,7 +127,7 @@
           remote: true,
           method: :patch
 
-      .setting-label Make this repository visible to anyone. Work only for public repository.
+      .setting-label = @board.is_public? ? 'Visible to anyone.' : 'Not visible to anyone.'
 
     .setting
       .action
