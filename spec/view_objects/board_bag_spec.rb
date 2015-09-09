@@ -4,6 +4,37 @@ describe BoardBag do
   let(:github_api) { GithubApi.new('fake_token', user) }
   let(:bag) { BoardBag.new(github_api, board) }
 
+  describe '#issue' do
+    subject { bag.issue(issue.number) }
+    let(:issue) { stub_issue(number: 1) }
+    before { allow(bag).to receive(:issue_stat_mapper).and_return(double(:[] => nil)) }
+    before { allow(github_api).to receive(:issue).and_return(issue) }
+
+    context 'issue in cache' do
+      before { allow(github_api).to receive(:issues).and_return([issue]) }
+
+      it { is_expected.to be_present }
+      it { is_expected.to be_a(BoardIssue) }
+
+      context 'behavior' do
+        before { subject }
+        it { expect(github_api).not_to have_received(:issue) }
+      end
+    end
+
+    context 'issue not in cache' do
+      before { allow(github_api).to receive(:issues).and_return([]) }
+
+      it { is_expected.to be_present }
+      it { is_expected.to be_a(BoardIssue) }
+
+      context 'behavior' do
+        before { subject }
+        it { expect(github_api).to have_received(:issue) }
+      end
+    end
+  end
+
   describe '#issues_by_columns' do
     subject { bag.issues_by_columns }
     let(:board) { create(:board, :with_columns, number_of_columns: 2) }

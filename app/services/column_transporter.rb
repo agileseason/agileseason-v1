@@ -1,3 +1,4 @@
+# NOTE Rename to ColumnMover.
 class ColumnTransporter
   def initialize(column)
     @column = column

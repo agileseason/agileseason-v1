@@ -104,4 +104,18 @@ RSpec.describe IssueStat, type: :model do
       it { is_expected.to eq true }
     end
   end
+
+  describe '#ready?' do
+    subject { issue_stat.ready? }
+
+    context :true do
+      let(:issue_stat) { build(:issue_stat, is_ready: true) }
+      it { is_expected.to eq true }
+    end
+
+    context :false do
+      let(:issue_stat) { build(:issue_stat, is_ready: false) }
+      it { is_expected.to eq false }
+    end
+  end
 end

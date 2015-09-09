@@ -10,26 +10,12 @@ RSpec.describe IssuesController, type: :controller do
 
   describe '#show' do
     let(:request) { get :show, board_github_full_name: board.github_full_name, number: 1 }
-    before { allow(github_api).to receive(:issue).and_return(issue) }
-    before { allow(github_api).to receive(:labels).and_return([]) }
     before { allow(github_api).to receive(:issue_comments).and_return([]) }
+    before { allow_any_instance_of(BoardBag).to receive(:issue).and_return(issue) }
+    before { request }
 
-    context 'issue in cache' do
-      before { allow(github_api).to receive(:issues).and_return([issue]) }
-      before { request }
-
-      it { expect(github_api).not_to have_received(:issue) }
-      it { expect(board.reload.issue_stats.count).to eq 0 }
-      it { expect((assigns :issue).issue_stat).to be_present }
-    end
-
-    context 'issue not in cache' do
-      before { allow(github_api).to receive(:issues).and_return([]) }
-      before { request }
-
-      it { expect(assigns :issue).to be_present }
-      it { expect((assigns :issue).number).to eq issue.number }
-    end
+    it { expect(assigns :issue).to be_present }
+    it { expect((assigns :issue).number).to eq issue.number }
   end
 
   describe '#create' do
@@ -141,6 +127,7 @@ RSpec.describe IssuesController, type: :controller do
   describe '#move_to' do
     let(:board) { create(:board, :with_columns, user: user) }
     let(:column_to) { board.columns.first }
+    let(:issue_stat) { build(:issue_stat, column: column_to) }
     let(:request) do
       get(
         :move_to,
@@ -150,31 +137,33 @@ RSpec.describe IssuesController, type: :controller do
       )
     end
     before { allow(controller).to receive(:github_api).and_return(github_api) }
-    before { allow(github_api). to receive(:move_to) }
-    before { allow(github_api).to receive(:repos).and_return([]) }
     before { allow(github_api).to receive(:issues).and_return([issue]) }
-
-    context 'not auto_assing' do
-      before { request }
-      it { expect(github_api).to have_received(:move_to) }
+    before { allow(github_api).to receive(:issue).and_return(issue) }
+    before do
+      allow_any_instance_of(IssueStats::Mover).
+        to receive(:call)
+    end
+    before do
+      allow_any_instance_of(IssueStats::Finder).
+        to receive(:call).
+        and_return(issue_stat)
+    end
+    before do
+      allow_any_instance_of(IssueStats::AutoAssigner).
+        to receive(:call)
     end
 
-    context 'auto_assign' do
-      before { allow(github_api).to receive(:issue).and_return(issue) }
-      before { allow(github_api).to receive(:assign).and_return(issue) }
-      before { column_to.update(is_auto_assign: true) }
+    context 'responce' do
       before { request }
+      it { expect(response).to have_http_status(:success) }
+    end
 
-      it { expect(github_api).to have_received(:move_to) }
-
-      context 'without assignee' do
-        it { expect(github_api).to have_received(:assign) }
-      end
-
-      context 'with assignee' do
-        let(:issue) { stub_issue(number: 1, assignee: {}) }
-        it { expect(github_api).not_to have_received(:assign) }
-      end
+    context 'behavior' do
+      after { request }
+      it { expect_any_instance_of(IssueStats::Mover).to receive(:call) }
+      it { expect_any_instance_of(IssueStats::AutoAssigner).to receive(:call) }
+      it { expect_any_instance_of(IssueStats::Sorter).to receive(:call) }
+      it { expect_any_instance_of(IssueStats::Unready).to receive(:call) }
     end
   end
 

@@ -1,7 +1,12 @@
 class BoardBag
-  pattr_initialize :github_api, :board
+  rattr_initialize :github_api, :board
   delegate :github_id, :github_name, :github_full_name, :columns, :issue_stats,
            :to_param, :subscribed_at, to: :board
+
+  def issue(number)
+    issue = issues_hash[number] || github_api.issue(board, number)
+    BoardIssue.new(issue, issue_stat_mapper[issue])
+  end
 
   # All issues
   def issues
@@ -39,10 +44,10 @@ class BoardBag
   end
 
   # TODO not update cache if data old or eq
-  def update_cache(issue)
+  def update_cache(github_issue)
     return unless Rails.cache.exist?(cache_key(:issues_hash))
 
-    issues_hash[issue.number] = issue
+    issues_hash[github_issue.number] = github_issue
     Rails.cache.write(
       cache_key(:issues_hash),
       issues_hash,

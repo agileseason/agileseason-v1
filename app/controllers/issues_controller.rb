@@ -11,18 +11,8 @@ class IssuesController < ApplicationController
 
   def show
     @direct_post = S3Api.direct_post
-    @issue = BoardIssue.new(
-      github_issue,
-      IssueStatService.find_or_build_issue_stat(@board, github_issue)
-    )
-    # TODO : Find a way to accelerate this request.
-    @comments = github_api.issue_comments(@board, number)
-  end
-
-  def search
-    ui_event(:issue_search)
-    issues = github_api.search_issues(@board, params[:query])
-    render partial: 'search_result', locals: { issues: issues, board: @board }
+    @issue = @board_bag.issue(number)
+    @comments = issue_comments(@issue)
   end
 
   def create
@@ -34,8 +24,7 @@ class IssuesController < ApplicationController
       render(
         partial: 'issues/issue_miniature',
         locals: {
-          issue: BoardIssue.new(issue, @board.find_stat(issue)),
-          column: @board_bag.default_column
+          issue: BoardIssue.new(issue, @board.find_stat(issue))
         }
       )
       broadcast_column(@board_bag.default_column)
@@ -49,31 +38,39 @@ class IssuesController < ApplicationController
     render nothing: true
   end
 
+  def search
+    ui_event(:issue_search)
+    issues = github_api.search_issues(@board, params[:query])
+    render partial: 'search_result', locals: { issues: issues, board: @board }
+  end
+
   def update_labels
     update_issue(issue_labels_params)
     render nothing: true
   end
 
   def move_to
-    column_from = IssueStatService.find(@board, number).try(:column)
     column_to = @board.columns.find(params[:column_id])
-    issue_stat = github_api.move_to(@board, column_to, number, force?)
+    IssueStats::Mover.new(
+      current_user,
+      @board_bag,
+      column_to,
+      number,
+      force?
+    ).call
+    IssueStats::AutoAssigner.new(current_user, @board_bag, column_to, number).call
+    IssueStats::Sorter.new(column_to, number, force?).call
+    IssueStats::Unready.new(current_user, @board_bag, number).call
 
-    if column_to.auto_assign? && github_issue.assignee.nil?
-      issue = github_api.assign(@board, number, current_user.github_username)
-      @board_bag.update_cache(issue)
-    end
-
-    if force?
-      broadcast_column(column_from) if column_from
-      broadcast_column(column_to)
-    end
+    issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
+    broadcast_column(issue_stat.column)
+    broadcast_column(column_to)
 
     render json: {
       number: number,
       html_miniature: render_to_string(
         partial: 'issues/issue_miniature',
-        locals: { issue: BoardIssue.new(issue || github_issue, issue_stat), column: column_to }
+        locals: { issue: BoardIssue.new(github_issue, issue_stat) }
       ),
       badges: Board.includes(columns: :issue_stats).find(@board.id).columns.map do |column|
         {
@@ -122,7 +119,7 @@ class IssuesController < ApplicationController
   end
 
   def assignee
-    issue = github_api.assign(@board, number, login_diff)
+    issue = github_api.assign(@board, number, params[:login])
     @board_bag.update_cache(issue)
 
     render partial: 'issues/assignee', locals: {
@@ -144,26 +141,24 @@ class IssuesController < ApplicationController
   end
 
   def ready
-    issue_stat = IssueStat.find_by(number: params[:number])
-    if issue_stat.update(issue_stat_params)
-      render json: issue_stat_params.to_json
+    if issue_stat_params[:is_ready] == 'true'
+      IssueStats::Ready.new(current_user, @board_bag, number).call
     else
-      render nothing: true
+      IssueStats::Unready.new(current_user, @board_bag, number).call
     end
+    render nothing: true
   end
 
   private
 
+  # TODO Remove this method
   def github_issue
     @github_issue ||= @board_bag.issues_hash[number] || github_api.issue(@board, number)
   end
 
+  # TODO Remove this method
   def update_issue(issue_params)
-    issue = github_api.update_issue(
-      @board,
-      number,
-      issue_params
-    )
+    issue = github_api.update_issue(@board, number, issue_params)
     @board_bag.update_cache(issue)
   end
 
@@ -192,14 +187,9 @@ class IssuesController < ApplicationController
       permit(labels: [])
   end
 
-  def login_diff
-    # FIX : Need issues cache...
-    login_prev = github_api.issue(@board, number).try(:assignee).try(:login)
-    params[:login] unless login_prev == params[:login]
-  end
-
-  def number
-    params[:number].to_i
+  def issue_comments(issue)
+    return [] if issue.comments.zero?
+    github_api.issue_comments(@board, issue.number)
   end
 
   def fetch_cumulative_graph

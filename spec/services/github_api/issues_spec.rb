@@ -59,20 +59,6 @@ describe GithubApi::Issues do
     it { expect{subject}.to change(IssueStat, :count).by(1) }
   end
 
-  describe '#move_to' do
-    subject { service.move_to(board, move_to_column, issue.number) }
-    let(:board) { create(:board, :with_columns, user: user) }
-    let(:move_to_column) { board.columns.first }
-    before do
-      allow_any_instance_of(Octokit::Client).
-        to receive(:issue).and_return(issue)
-    end
-    before { allow(IssueStatService).to receive(:move!) }
-
-    after { subject }
-    it { expect(IssueStatService).to receive(:move!) }
-  end
-
   describe '#close' do
     subject { service.close(board, issue.number) }
     before do

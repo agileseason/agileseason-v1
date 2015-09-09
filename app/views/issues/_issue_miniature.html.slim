@@ -3,7 +3,7 @@
   id="issues_#{issue.number}"
   class="#{issue.state} issue-#{issue.number}"
   data-number="#{issue.number}"
-  data-column="#{column.id}"
+  data-column="#{issue.column_id}"
   data-url="#{un show_board_issues_url(@board, issue.number)}"
 ]
 
@@ -31,8 +31,8 @@
 
   .buttons
     = link_to 'ready',
-      ready_board_issues_url(@board, issue.number, issue_stat: {is_ready: k(:issue, issue).ready? ? false : true}),
-      class: k(:issue, issue).ready? ? 'is_ready active' : 'is_ready',
+      ready_board_issues_url(@board, issue.number, issue_stat: { is_ready: !issue.ready? }),
+      class: "is_ready #{:active if issue.ready?}",
       remote: true,
       method: :patch
 

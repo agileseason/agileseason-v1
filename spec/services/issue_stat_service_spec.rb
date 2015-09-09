@@ -23,64 +23,6 @@ describe IssueStatService do
     it { expect(subject.column.issues).to eq [issue.number.to_s] }
   end
 
-  describe '.move!' do
-    subject { service.move!(column_2, issue_stat, user) }
-    let!(:lifetime) do
-      create(:lifetime, issue_stat: issue_stat, column: column_1)
-    end
-    let(:issue_stat) { create(:issue_stat, column: column_1) }
-    let(:fake_token) { 'adsf' }
-    let(:encrypt_token) { '????' }
-    let(:fake_api) { OpenStruct.new(github_token: fake_token) }
-
-    before { allow(user).to receive(:github_api).and_return(fake_api) }
-    before { allow(Graphs::CumulativeWorker).to receive(:perform_async) }
-    before do
-      allow(Encryptor).
-        to receive(:encrypt).with(fake_token).and_return(encrypt_token)
-    end
-
-    context 'new column' do
-      let(:column_1) { board.columns.first }
-      let(:column_2) { board.columns.second }
-
-      it { expect { subject }.to change(Lifetime, :count).by(1) }
-      it { expect { subject }.to change(Activity, :count).by(1) }
-      it { expect(subject.column).to eq column_2 }
-
-      context 'check external commands' do
-        after { subject }
-        it 'create activity by issue_stat params' do
-          expect(Activities::ColumnChangedActivity).
-            to receive(:create_for).with(issue_stat, column_1, column_2, user)
-        end
-      end
-    end
-
-    context 'column not changed' do
-      subject { service.move!(column_2, issue_stat, user, force) }
-      let(:column_1) { board.columns.first }
-      let(:column_2) { board.columns.first }
-      before { column_1.update(issues: [issue_stat.number.to_s]) }
-
-      context 'not force' do
-        let(:force) { false }
-        it { expect { subject }.to change(Lifetime, :count).by(0) }
-        it { expect { subject }.to change(Activity, :count).by(0) }
-        it { expect(subject.column).to eq column_2 }
-        it { expect(subject.column.issues).to eq [issue_stat.number.to_s] }
-      end
-
-      context 'force' do
-        let(:force) { true }
-        it { expect { subject }.to change(Lifetime, :count).by(1) }
-        it { expect { subject }.to change(Activity, :count).by(0) }
-        it { expect(subject.column).to eq column_2 }
-        it { expect(subject.column.issues).to eq [issue_stat.number.to_s] }
-      end
-    end
-  end
-
   describe '.close!' do
     let(:issue) { stub_closed_issue }
     subject { service.close!(board, issue, user) }

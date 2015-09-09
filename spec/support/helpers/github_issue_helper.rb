@@ -28,6 +28,7 @@ module GithubIssueHelper
       assigne: nil,
       state: 'open',
       pull_request: nil,
+      comments: 0,
       closed_at: nil,
       created_at: Time.current.beginning_of_day,
       updated_at: Time.current.beginning_of_day
