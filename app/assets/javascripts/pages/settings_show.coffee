@@ -18,7 +18,6 @@ $(document).on 'page:change', ->
     $(@).closest('li').fadeOut()
 
   $('.iphone-button').on 'ajax:success', ->
-    console.log 123
     change_url $(@)
 
 change_url = ($button) ->
