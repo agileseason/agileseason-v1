@@ -16,3 +16,25 @@ $(document).on 'page:change', ->
 
   $('.delete').on 'ajax:before', ->
     $(@).closest('li').fadeOut()
+
+  $('.iphone-button').on 'ajax:success', ->
+    console.log 123
+    change_url $(@)
+
+change_url = ($button) ->
+  href = $button.attr('href')
+
+  if href.match /false/
+    updated_href = href.replace 'false', 'true'
+    $button.attr('href', updated_href)
+    $button
+      .removeClass 'true'
+      .text('Private board')
+
+  else if href.match /true/
+    updated_href = href.replace 'true', 'false'
+    $button.attr('href', updated_href)
+
+    $button
+      .addClass 'true'
+      .text('Public board')

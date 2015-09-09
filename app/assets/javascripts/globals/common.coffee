@@ -10,9 +10,6 @@ $(document).on 'page:change', ->
       $(@).closest('.issue').addClass 'current-issue'
       Turbolinks.visit $(@).data('url')
 
-  $('.iphone-button').click ->
-    $(@).toggleClass 'true'
-
   # закрыть попап по крестику или по клику мимо попапа
   $('.modal').on 'click', '.modal-close, .overlay, .close-settings', ->
     $modal = $(@).closest('.modal')
