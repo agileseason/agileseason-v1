@@ -41,9 +41,9 @@ class IssueStatService
     # FIX : Move archive! and archive? to state_machine.
     def archive!(board, github_issue, user)
       issue_stat = find_or_create_issue_stat(board, github_issue, user)
+      Activities::ArchiveActivity.create_for(issue_stat, user) if user.present?
       IssueStats::LifetimeFinisher.new(issue_stat).call
       issue_stat.update!(archived_at: Time.current)
-      Activities::ArchiveActivity.create_for(issue_stat, user) if user.present?
       issue_stat
     end
 
@@ -52,7 +52,7 @@ class IssueStatService
       return unless issue_stat.archive?
 
       Activities::UnarchiveActivity.create_for(issue_stat, user)
-      move!(issue_stat.column, issue_stat, user, true)
+      IssueStats::LifetimeStarter.new(issue_stat, issue_stat.column).call
       issue_stat.update!(archived_at: nil)
       issue_stat
     end

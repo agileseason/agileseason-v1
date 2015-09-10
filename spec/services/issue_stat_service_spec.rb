@@ -54,6 +54,7 @@ describe IssueStatService do
   describe '.unarchive!' do
     subject { service.unarchive!(board, issue_stat.number, user) }
     before { allow(Activities::UnarchiveActivity).to receive(:create_for) }
+    before { allow_any_instance_of( IssueStats::LifetimeStarter).to receive(:call) }
     let!(:issue_stat) do
       create(:issue_stat, board: board, number: 1, archived_at: archived_at)
     end
@@ -62,11 +63,14 @@ describe IssueStatService do
       let(:archived_at) { Time.current }
       it { is_expected.not_to be_archived }
 
-      describe 'activities' do
+      context 'activities' do
         before { subject }
-        it do
-          expect(Activities::UnarchiveActivity).to have_received(:create_for)
-        end
+        it { expect(Activities::UnarchiveActivity).to have_received(:create_for) }
+      end
+
+      context 'behavior' do
+        after { subject }
+        it { expect_any_instance_of(IssueStats::LifetimeStarter).to receive(:call) }
       end
     end
 
@@ -74,12 +78,14 @@ describe IssueStatService do
       let(:archived_at) { nil }
       it { is_expected.to be_nil }
 
-      describe 'activities' do
+      context 'activities' do
         before { subject }
-        it do
-          expect(Activities::UnarchiveActivity).
-            not_to have_received(:create_for)
-        end
+        it { expect(Activities::UnarchiveActivity).not_to have_received(:create_for) }
+      end
+
+      context 'behavior' do
+        after { subject }
+        it { expect_any_instance_of(IssueStats::LifetimeStarter).not_to receive(:call) }
       end
     end
   end
