@@ -54,7 +54,7 @@ describe IssueStatService do
   describe '.unarchive!' do
     subject { service.unarchive!(board, issue_stat.number, user) }
     before { allow(Activities::UnarchiveActivity).to receive(:create_for) }
-    before { allow_any_instance_of( IssueStats::LifetimeStarter).to receive(:call) }
+    before { allow_any_instance_of(IssueStats::LifetimeStarter).to receive(:call) }
     let!(:issue_stat) do
       create(:issue_stat, board: board, number: 1, archived_at: archived_at)
     end
