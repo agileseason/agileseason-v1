@@ -9,18 +9,22 @@ describe IssueStatService do
     subject { service.create!(board, issue, user) }
     let(:issue) { stub_issue }
     let(:first_column) { board.columns.first }
+    before { allow_any_instance_of(IssueStats::LifetimeStarter).to receive(:call) }
+    before { allow_any_instance_of(IssueStats::Sorter).to receive(:call) }
 
     it { is_expected.to be_persisted }
     its(:number) { is_expected.to eq issue.number }
     its(:created_at) { is_expected.to eq issue.created_at }
     its(:updated_at) { is_expected.to eq issue.updated_at }
     its(:closed_at) { is_expected.to eq issue.closed_at }
-    it { expect { subject }.to change(Lifetime, :count).by(1) }
-    it { expect(subject.lifetimes.first.column).to eq first_column }
-    it { expect(subject.lifetimes.first.in_at).to_not be_nil }
-    it { expect(subject.lifetimes.first.out_at).to be_nil }
-    it { expect(subject.column).to eq board.columns.first }
-    it { expect(subject.column.issues).to eq [issue.number.to_s] }
+    its(:column) { is_expected.to eq board.columns.first }
+
+    context 'behavior' do
+      after { subject }
+
+      it { expect_any_instance_of(IssueStats::LifetimeStarter).to receive(:call) }
+      it { expect_any_instance_of(IssueStats::Sorter).to receive(:call) }
+    end
   end
 
   describe '.close!' do
@@ -97,18 +101,9 @@ describe IssueStatService do
 
       it { expect { subject }.to change(IssueStat, :count).by(0) }
 
-      context 'lifetime update out_at' do
-        let!(:lifetime_1) do
-          create(
-            :lifetime,
-            issue_stat: issue_stat,
-            column: board.columns.first,
-            out_at: nil
-          )
-        end
-        before { subject }
-
-        it { expect(lifetime_1.reload.out_at).to_not be_nil }
+      context 'behavior' do
+        after { subject }
+        it { expect_any_instance_of(IssueStats::LifetimeFinisher).to receive(:call) }
       end
 
       context 'set archived_at' do

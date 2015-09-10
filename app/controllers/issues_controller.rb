@@ -51,15 +51,9 @@ class IssuesController < ApplicationController
 
   def move_to
     column_to = @board.columns.find(params[:column_id])
-    IssueStats::Mover.new(
-      current_user,
-      @board_bag,
-      column_to,
-      number,
-      force?
-    ).call
+    IssueStats::Mover.new(current_user, @board_bag, column_to, number).call
     IssueStats::AutoAssigner.new(current_user, @board_bag, column_to, number).call
-    IssueStats::Sorter.new(column_to, number, force?).call
+    IssueStats::Sorter.new(column_to, number, !!params[:force]).call
     IssueStats::Unready.new(current_user, @board_bag, number).call
 
     issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
@@ -68,15 +62,14 @@ class IssuesController < ApplicationController
 
     render json: {
       number: number,
+      # TODO Remove this element if issue miniature has't been updated - https://agileseason.com/boards/agileseason/agileseason/issues/676
       html_miniature: render_to_string(
         partial: 'issues/issue_miniature',
         locals: { issue: BoardIssue.new(github_issue, issue_stat) }
       ),
+      # NOTE Includes(columns: :issue_stats) to remove N+1 query in view 'columns/wip_badge'.
       badges: Board.includes(columns: :issue_stats).find(@board.id).columns.map do |column|
-        {
-          column_id: column.id,
-          html: render_to_string(partial: 'columns/wip_badge', locals: { column: column })
-        }
+        wip_badge_json(column)
       end
     }
   end
@@ -102,13 +95,7 @@ class IssuesController < ApplicationController
     @board_bag.update_cache(board_issue.issue)
     broadcast_column(board_issue.column)
 
-    render json: {
-      column_id: board_issue.column_id,
-      html: render_to_string(
-        partial: 'columns/wip_badge.html',
-        locals: { column: board_issue.column }
-      )
-    }
+    render json: wip_badge_json(board_issue.column)
   end
 
   def unarchive
@@ -162,6 +149,13 @@ class IssuesController < ApplicationController
     @board_bag.update_cache(issue)
   end
 
+  def wip_badge_json(column)
+    {
+      column_id: column.id,
+      html: render_to_string(partial: 'columns/wip_badge', locals: { column: column })
+    }
+  end
+
   def issue_create_params
     params.
       require(:issue).
@@ -202,9 +196,5 @@ class IssuesController < ApplicationController
 
   def fetch_lines_graph
     Graphs::LinesWorker.perform_async(@board.id, encrypted_github_token)
-  end
-
-  def force?
-    !!params[:force]
   end
 end
