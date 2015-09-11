@@ -48,6 +48,10 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def ui_action_event
+      ui_event("#{controller_name}_#{action_name}")
+    end
+
     private
 
     def guest_event_options

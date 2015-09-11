@@ -8,6 +8,7 @@ class IssuesController < ApplicationController
   ]
   after_action :fetch_lines_graph, only: [:move_to]
   after_action :fetch_control_chart, only: [:close, :reopen]
+  after_action :ui_action_event, only: [:create, :search]
 
   def show
     @direct_post = S3Api.direct_post
@@ -18,16 +19,15 @@ class IssuesController < ApplicationController
   def create
     @issue = Issue.new(issue_create_params)
     if @issue.valid?
-      ui_event(:issue_create)
       issue = github_api.create_issue(@board, @issue)
       @board_bag.update_cache(issue)
+      broadcast_column(@board_bag.default_column)
       render(
         partial: 'issues/issue_miniature',
         locals: {
           issue: BoardIssue.new(issue, @board.find_stat(issue))
         }
       )
-      broadcast_column(@board_bag.default_column)
     else
       render nothing: true
     end
@@ -39,7 +39,6 @@ class IssuesController < ApplicationController
   end
 
   def search
-    ui_event(:issue_search)
     issues = github_api.search_issues(@board, params[:query])
     render partial: 'search_result', locals: { issues: issues, board: @board }
   end

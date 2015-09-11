@@ -29,6 +29,7 @@ RSpec.describe IssuesController, type: :controller do
     end
     before { allow(github_api).to receive(:create_issue).and_return(issue) }
     before { allow(github_api).to receive(:issues).and_return([]) }
+    before { allow(controller).to receive(:ui_event) }
 
     context 'response' do
       let(:params) { { title: 'test edit title' } }
@@ -36,6 +37,7 @@ RSpec.describe IssuesController, type: :controller do
 
       it { expect(response).to have_http_status(:success) }
       it { expect(github_api).to have_received(:create_issue) }
+      it { expect(controller).to have_received(:ui_event).with('issues_create') }
     end
 
     context 'behavior' do
@@ -168,11 +170,15 @@ RSpec.describe IssuesController, type: :controller do
   end
 
   describe '#search' do
-    before { allow_any_instance_of(GithubApi).to receive(:search_issues).and_return([]) }
-    it 'return http success' do
+    let(:request) do
       get :search, board_github_full_name: board.github_full_name, query: 'test'
-      expect(response).to render_template(partial: '_search_result')
     end
+    before { allow_any_instance_of(GithubApi).to receive(:search_issues).and_return([]) }
+    before { allow(controller).to receive(:ui_event) }
+    before { request }
+
+    it { expect(response).to render_template(partial: '_search_result') }
+    it { expect(controller).to have_received(:ui_event).with('issues_search') }
   end
 
   describe '#close' do
