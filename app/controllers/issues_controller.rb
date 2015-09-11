@@ -4,7 +4,7 @@ class IssuesController < ApplicationController
   before_action :fetch_board_for_update, except: [:show, :search, :new]
 
   after_action :fetch_cumulative_graph, only: [
-    :move_to, :close, :archive, :unarchive
+    :create, :move_to, :close, :archive, :unarchive
   ]
   after_action :fetch_lines_graph, only: [:move_to]
   after_action :fetch_control_chart, only: [:close, :reopen]
