@@ -27,7 +27,8 @@ module Graphs
       issues_to_update.each do |issue|
         issue_stat = @board.issue_stats.find_by(number: issue.number)
         next if issue_stat.nil? || issue_stat.updated_at.to_i == issue.updated_at.to_i
-        IssueStatService.update!(issue_stat, issue)
+
+        sync_issue_stat(issue_stat, issue)
       end
     end
 
@@ -46,6 +47,14 @@ module Graphs
         visible.
         where(number: old_closed_numbers).
         update_all(archived_at: Time.current)
+    end
+
+    def sync_issue_stat(issue_stat, github_issue)
+      issue_stat.update!(
+        created_at: github_issue.created_at,
+        updated_at: github_issue.updated_at,
+        closed_at: github_issue.closed_at
+      )
     end
   end
 end

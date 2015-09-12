@@ -224,27 +224,45 @@ RSpec.describe IssuesController, type: :controller do
   end
 
   describe '#archive' do
+    subject { get :archive, board_github_full_name: board.github_full_name, number: 1 }
     let(:issue_stat) { build(:issue_stat, board: board, column: column_1) }
-    let(:request) { get :archive, board_github_full_name: board.github_full_name, number: 1 }
     before do
       allow_any_instance_of(IssueStats::Archiver).
         to receive(:call).and_return(issue_stat)
     end
-    before { request }
 
-    it { expect(response).to have_http_status(:success) }
-    it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+    context 'request' do
+      before { subject }
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+    end
+
+    context 'behavior' do
+      after { subject }
+      it { expect_any_instance_of(IssueStats::Archiver).to receive(:call) }
+    end
   end
 
   describe '#unarchive' do
+    subject { get :unarchive, board_github_full_name: board.github_full_name, number: 1 }
     let(:issue_stat) { create(:issue_stat, board: board, column: column_1) }
-    let(:request) { get :unarchive, board_github_full_name: board.github_full_name, number: 1 }
-    before { allow(IssueStatService).to receive(:unarchive!).and_return(issue_stat) }
-    before { request }
+    before do
+      allow_any_instance_of(IssueStats::Unarchiver).
+        to receive(:call).and_return(issue_stat)
+    end
 
-    it { expect(response).to have_http_status(:success) }
-    it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
-    it { expect(IssueStatService).to have_received(:unarchive!) }
+    context 'request' do
+      before { subject }
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+    end
+
+    context 'behavior' do
+      after { subject }
+      it { expect_any_instance_of(IssueStats::Unarchiver).to receive(:call) }
+    end
   end
 
   describe '#assignee' do

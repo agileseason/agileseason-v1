@@ -16,14 +16,6 @@ class IssueStatService
       issue_stat
     end
 
-    def update!(issue_stat, github_issue)
-      issue_stat.update(
-        created_at: github_issue.created_at,
-        updated_at: github_issue.updated_at,
-        closed_at: github_issue.closed_at
-      )
-    end
-
     # FIX : Move close! and add close? to state_machine.
     def close!(board, github_issue, user)
       issue_stat = find_or_create_issue_stat(board, github_issue, user)
@@ -35,16 +27,6 @@ class IssueStatService
     def reopen!(board, github_issue, user)
       issue_stat = find_or_create_issue_stat(board, github_issue, user)
       issue_stat.update(closed_at: nil)
-      issue_stat
-    end
-
-    def unarchive!(board, number, user)
-      issue_stat = find(board, number)
-      return unless issue_stat.archive?
-
-      Activities::UnarchiveActivity.create_for(issue_stat, user)
-      IssueStats::LifetimeStarter.new(issue_stat, issue_stat.column).call
-      issue_stat.update!(archived_at: nil)
       issue_stat
     end
 

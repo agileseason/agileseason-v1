@@ -100,7 +100,7 @@ class IssuesController < ApplicationController
   end
 
   def unarchive
-    issue_stat = IssueStatService.unarchive!(@board_bag, number, current_user)
+    issue_stat = IssueStats::Unarchiver.new(current_user, @board_bag, number).call
     broadcast_column(issue_stat.column)
 
     render nothing: true
