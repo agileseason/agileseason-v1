@@ -1,10 +1,10 @@
 class BoardBag
-  rattr_initialize :github_api, :board
+  rattr_initialize :user, :board
   delegate :github_id, :github_name, :github_full_name, :columns, :issue_stats,
-           :to_param, :subscribed_at, to: :board
+           :to_param, :subscribed_at, :default_column, to: :board
 
   def issue(number)
-    issue = issues_hash[number] || github_api.issue(board, number)
+    issue = issues_hash[number] || user.github_api.issue(board, number)
     BoardIssue.new(issue, issue_stat_mapper[issue])
   end
 
@@ -24,7 +24,7 @@ class BoardBag
   # All Issues in hash by number
   def issues_hash
     @issues_hash ||= cached(:issues_hash, 5.minutes) do
-      github_api.issues(board).each_with_object({}) do |issue, hash|
+      user.github_api.issues(board).each_with_object({}) do |issue, hash|
         hash[issue.number] = issue
       end
     end
@@ -57,12 +57,12 @@ class BoardBag
 
   def collaborators
     @collaborators ||= cached(:collaborators, 20.minutes) do
-      @github_api.collaborators(@board)
+      user.github_api.collaborators(@board)
     end
   end
 
   def labels
-    @labels ||= cached(:labels, 15.minutes) { @github_api.labels(@board) }
+    @labels ||= cached(:labels, 15.minutes) { user.github_api.labels(@board) }
   end
 
   def build_issue_new
@@ -83,12 +83,8 @@ class BoardBag
     end
   end
 
-  def default_column
-    columns.first
-  end
-
   def private_repo?
-    repo = @github_api.cached_repos.detect { |r| r.full_name == @board.github_full_name }
+    repo = user.github_api.cached_repos.detect { |r| r.full_name == @board.github_full_name }
     repo.present? && repo.private
   end
 
@@ -101,7 +97,7 @@ class BoardBag
   private
 
   def issue_stat_mapper
-    @issue_stat_mapper ||= IssueStatsMapper.new(board)
+    @issue_stat_mapper ||= IssueStatsMapper.new(self)
   end
 
   def ordered_issues(column, issue_numbers)

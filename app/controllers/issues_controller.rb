@@ -3,9 +3,7 @@ class IssuesController < ApplicationController
   before_action :fetch_board, only: [:show, :search, :new]
   before_action :fetch_board_for_update, except: [:show, :search, :new]
 
-  after_action :fetch_cumulative_graph, only: [
-    :create, :move_to, :close, :archive, :unarchive
-  ]
+  after_action :fetch_cumulative_graph, only: [:create, :move_to, :archive, :unarchive]
   after_action :fetch_lines_graph, only: [:move_to]
   after_action :fetch_control_chart, only: [:close, :reopen]
 
@@ -71,17 +69,15 @@ class IssuesController < ApplicationController
   end
 
   def close
-    board_issue = github_api.close(@board, number)
-    @board_bag.update_cache(board_issue.issue)
-    broadcast_column(board_issue.column)
+    issue_stat = IssueStats::Closer.new(current_user, @board_bag, number).call
+    broadcast_column(issue_stat.column)
 
     render nothing: true
   end
 
   def reopen
-    board_issue = github_api.reopen(@board, number)
-    @board_bag.update_cache(board_issue.issue)
-    broadcast_column(board_issue.column)
+    issue_stat = IssueStats::Reopener.new(current_user, @board_bag, number).call
+    broadcast_column(issue_stat.column)
 
     render nothing: true
   end

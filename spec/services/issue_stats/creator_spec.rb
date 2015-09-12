@@ -12,7 +12,7 @@ describe IssueStats::Creator do
     before { allow_any_instance_of(Lifetimes::Starter).to receive(:call) }
     before { allow_any_instance_of(IssueStats::Sorter).to receive(:call) }
 
-    it { is_expected.to be_persisted }
+    its(:issue_stat) { is_expected.to be_persisted }
     its(:number) { is_expected.to eq issue.number }
     its(:created_at) { is_expected.to eq issue.created_at }
     its(:updated_at) { is_expected.to eq issue.updated_at }
@@ -24,6 +24,7 @@ describe IssueStats::Creator do
 
       it { expect_any_instance_of(Lifetimes::Starter).to receive(:call) }
       it { expect_any_instance_of(IssueStats::Sorter).to receive(:call) }
+      it { expect(github_api).to receive(:create_issue).with(board_bag, issue) }
       it { expect(board_bag).to receive(:update_cache).with(issue) }
     end
   end

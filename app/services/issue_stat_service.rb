@@ -1,22 +1,14 @@
 # FIX : Move methods to instance and add user to initializer.
 class IssueStatService
   class << self
-    # FIX : Move close! and add close? to state_machine.
-    def close!(board, github_issue, user)
-      issue_stat = find_or_create_issue_stat(board, github_issue, user)
-      issue_stat.update(closed_at: github_issue.closed_at)
-      issue_stat
-    end
-
-    # FIX : Так же плохо, что код в close, reopen зависит от внешнего кода его вызывающего.
-    def reopen!(board, github_issue, user)
-      issue_stat = find_or_create_issue_stat(board, github_issue, user)
-      issue_stat.update(closed_at: nil)
-      issue_stat
-    end
-
-    def find_or_create_issue_stat(board, github_issue, user)
-      find(board, github_issue.number) || create!(board, github_issue, user)
+    def create(board, github_issue)
+      board.issue_stats.create!(
+        number: github_issue.number,
+        column: board.default_column,
+        created_at: github_issue.created_at,
+        updated_at: github_issue.updated_at,
+        closed_at: github_issue.closed_at,
+      )
     end
 
     def find_or_build_issue_stat(board, github_issue)

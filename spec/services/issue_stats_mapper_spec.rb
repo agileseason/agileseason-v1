@@ -1,23 +1,23 @@
 describe IssueStatsMapper do
-  let(:mapper) { IssueStatsMapper.new(board) }
+  let(:mapper) { IssueStatsMapper.new(BoardBag.new(user, board)) }
+  let(:user) { create(:user) }
 
   describe '#[issue]' do
     subject { mapper[issue] }
-    let(:board) { build_stubbed(:board) }
+    let(:board) { build_stubbed(:board, user: user) }
 
     context 'first import - only open issues' do
       let(:issue) { stub_issue(state: state) }
-      before { allow(IssueStatService).to receive(:find_or_create_issue_stat) }
       after { subject }
 
       context :open do
         let(:state) { 'open' }
-        it { expect(IssueStatService).to receive(:find_or_create_issue_stat) }
+        it { expect(IssueStatService).to receive(:create) }
       end
 
       context :closed do
         let(:state) { 'closed' }
-        it { expect(IssueStatService).to_not receive(:find_or_create_issue_stat) }
+        it { expect(IssueStatService).not_to receive(:create) }
       end
     end
 
@@ -30,12 +30,12 @@ describe IssueStatsMapper do
         let(:state) { 'open' }
         context ':old issue' do
           let(:number) { issue_stat.number - 1 }
-          it { expect(IssueStatService).to receive(:find_or_create_issue_stat) }
+          it { expect(IssueStatService).to receive(:create) }
         end
 
         context ':new issue' do
           let(:number) { issue_stat.number + 1 }
-          it { expect(IssueStatService).to receive(:find_or_create_issue_stat) }
+          it { expect(IssueStatService).to receive(:create) }
         end
       end
 
@@ -43,12 +43,12 @@ describe IssueStatsMapper do
         let(:state) { 'closed' }
         context :true do
           let(:number) { issue_stat.number + 1 }
-          it { expect(IssueStatService).to receive(:find_or_create_issue_stat) }
+          it { expect(IssueStatService).to receive(:create) }
         end
 
         context :false do
           let(:number) { issue_stat.number - 1 }
-          it { expect(IssueStatService).to_not receive(:find_or_create_issue_stat) }
+          it { expect(IssueStatService).not_to receive(:create) }
         end
       end
     end

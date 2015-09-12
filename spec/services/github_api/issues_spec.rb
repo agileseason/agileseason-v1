@@ -50,12 +50,12 @@ describe GithubApi::Issues do
     end
     after { subject }
 
+    it { is_expected.to eq issue }
     it do
       expect_any_instance_of(Octokit::Client).to(
         receive(:create_issue)
           .with(board.github_id, issue.title, issue.body, labels: expected_labels))
     end
-    it { is_expected.to eq issue }
   end
 
   describe '#close' do
@@ -64,18 +64,13 @@ describe GithubApi::Issues do
       allow_any_instance_of(Octokit::Client).
         to receive(:close_issue).and_return(issue)
     end
-    before do
-      allow_any_instance_of(Octokit::Client).
-        to receive(:issue).and_return(issue)
-    end
-    before { allow(IssueStatService).to receive(:close!) }
     after { subject }
 
+    it { is_expected.to eq issue }
     it do
       expect_any_instance_of(Octokit::Client).
         to receive(:close_issue).with(board.github_id, issue.number)
     end
-    it { expect(IssueStatService).to receive(:close!).with(board, issue, user) }
   end
 
   describe '#reopen' do
@@ -84,16 +79,12 @@ describe GithubApi::Issues do
       allow_any_instance_of(Octokit::Client).
         to receive(:reopen_issue).and_return(issue)
     end
-    before { allow(IssueStatService).to receive(:reopen!) }
     after { subject }
 
+    it { is_expected.to eq issue }
     it do
       expect_any_instance_of(Octokit::Client).
         to receive(:reopen_issue).with(board.github_id, issue.number)
-    end
-    it do
-      expect(IssueStatService).
-        to receive(:reopen!).with(board, issue, user)
     end
   end
 

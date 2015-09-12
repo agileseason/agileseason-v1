@@ -20,15 +20,11 @@ class GithubApi
     end
 
     def close(board, number)
-      github_issue = client.close_issue(board.github_id, number)
-      issue_stat = IssueStatService.close!(board, github_issue, @user)
-      BoardIssue.new(github_issue, issue_stat)
+      client.close_issue(board.github_id, number)
     end
 
     def reopen(board, number)
-      github_issue = client.reopen_issue(board.github_id, number)
-      issue_stat = IssueStatService.reopen!(board, github_issue, @user)
-      BoardIssue.new(github_issue, issue_stat)
+      client.reopen_issue(board.github_id, number)
     end
 
     def assign(board, number, assignee)

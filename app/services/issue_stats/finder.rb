@@ -6,7 +6,7 @@ module IssueStats
 
     def call
       IssueStatService.find(board_bag, number) ||
-        IssueStatService.create!(board_bag, github_issue, user)
+        IssueStatService.create(board_bag, github_issue)
     end
   end
 end

@@ -12,14 +12,15 @@ describe IssueStats::Finder do
       before { create(:issue_stat, number: number, board: board) }
       after { subject }
 
-      it { expect(IssueStatService).not_to receive(:create!) }
+      it { expect(IssueStatService).not_to receive(:create) }
     end
 
     context 'issue_stat does not exiests' do
-      before { allow(finder).to receive(:github_issue) }
+      let(:issue) { stub_issue(number: number) }
+      before { allow(finder).to receive(:github_issue).and_return(issue) }
       after { subject }
 
-      it { expect(IssueStatService).to receive(:create!) }
+      it { expect(IssueStatService).to receive(:create).with(board_bag, issue) }
     end
   end
 end

@@ -46,13 +46,22 @@ describe BoardsController, type: :controller do
     let(:issue) { stub_issue(labels: [label_1]) }
     let(:label_1) { OpenStruct.new(name: 'techdebt', color: '000') }
     let(:label_2) { OpenStruct.new(name: 'bug', color: '000') }
-    before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([issue]) }
-    before { allow_any_instance_of(GithubApi).to receive(:labels).and_return([label_1, label_2]) }
-    before { allow_any_instance_of(GithubApi).to receive(:collaborators).and_return([]) }
     before do
       allow_any_instance_of(BoardBag).
         to receive(:private_repo?).
         and_return(is_private)
+    end
+    before do
+      allow_any_instance_of(GithubApi).
+        to receive(:issues).and_return([issue])
+    end
+    before do
+      allow_any_instance_of(GithubApi).
+        to receive(:labels).and_return([label_1, label_2])
+    end
+    before do
+      allow_any_instance_of(GithubApi).
+        to receive(:collaborators).and_return([])
     end
     before { stub_sign_in(user) }
     before { request }

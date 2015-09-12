@@ -91,6 +91,6 @@ class BoardsController < ApplicationController
   end
 
   def first_init_issues
-    BoardBag.new(github_api, @board).board_issues
+    BoardBag.new(current_user, @board).board_issues
   end
 end

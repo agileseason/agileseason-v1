@@ -1,33 +1,9 @@
 describe IssueStatService do
   let(:user) { create(:user) }
-  let(:board) do
-    create(:board, :with_columns, number_of_columns: 2, user: user)
-  end
+  let(:board) { create(:board, :with_columns, user: user) }
   let(:service) { IssueStatService }
 
-  describe '.close!' do
-    let(:issue) { stub_closed_issue }
-    subject { service.close!(board, issue, user) }
-
-    context :with_issue_stat do
-      let!(:issue_stat) do
-        create(:issue_stat, :open, board: board, number: issue.number)
-      end
-
-      it { expect { subject }.to change(IssueStat, :count).by(0) }
-      it { is_expected.to_not be_nil }
-      it { expect(subject.closed_at).to_not be_nil }
-
-      context 'issue already closed' do
-        let(:issue) { stub_issue(closed_at: 1.day.ago) }
-        it { expect(subject.closed_at).to eq issue.closed_at }
-      end
-    end
-
-    context :without_issue_stat do
-      it { expect { subject }.to change(IssueStat, :count).by(1) }
-    end
-  end
+  pending '.create'
 
   describe '.set_due_date' do
     subject { service.set_due_date(user, board, number, new_due_date) }
