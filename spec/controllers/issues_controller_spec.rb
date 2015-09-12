@@ -268,14 +268,24 @@ RSpec.describe IssuesController, type: :controller do
 
   describe '#assignee' do
     let(:issue) { stub_issue(assigne: 'fake') }
-    before { allow_any_instance_of(GithubApi).to receive(:assign).and_return(issue) }
-    before { allow_any_instance_of(GithubApi).to receive(:issue).and_return(issue) }
-    before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
+    subject do
+      get(
+        :assignee,
+        board_github_full_name: board.github_full_name,
+        number: 1,
+        login: 'github_user'
+      )
+    end
 
-    it 'return http success' do
-      get :assignee, board_github_full_name: board.github_full_name,
-        number: 1, login: 'github_user'
-      expect(response).to have_http_status(:success)
+    context 'responce' do
+      before { allow_any_instance_of(IssueStats::Assigner).to receive(:call).and_return(issue) }
+      before { subject }
+      it { expect(response).to have_http_status(:success) }
+    end
+
+    context 'behavior' do
+      after { subject }
+      it { expect_any_instance_of(IssueStats::Assigner).to receive(:call) }
     end
   end
 

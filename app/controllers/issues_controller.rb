@@ -97,12 +97,14 @@ class IssuesController < ApplicationController
   end
 
   def assignee
-    issue = github_api.assign(@board, number, params[:login])
-    @board_bag.update_cache(issue)
+    board_issue = IssueStats::Assigner.new(
+      current_user,
+      @board_bag,
+      number,
+      params[:login]
+    ).call
 
-    render partial: 'assignee', locals: {
-      issue: BoardIssue.new(issue, @board.find_stat(issue))
-    }
+    render partial: 'assignee', locals: { issue: board_issue }
   end
 
   def due_date
