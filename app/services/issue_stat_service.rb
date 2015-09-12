@@ -12,7 +12,7 @@ class IssueStatService
       )
 
       IssueStats::Sorter.new(column, github_issue.number, true).call
-      IssueStats::LifetimeStarter.new(issue_stat, column).call
+      Lifetimes::Starter.new(issue_stat, column).call
       issue_stat
     end
 
@@ -28,10 +28,6 @@ class IssueStatService
       issue_stat = find_or_create_issue_stat(board, github_issue, user)
       issue_stat.update(closed_at: nil)
       issue_stat
-    end
-
-    def archived?(board, number)
-      board.issue_stats.find_by(number: number).try(:archived?)
     end
 
     def find_or_create_issue_stat(board, github_issue, user)

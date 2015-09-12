@@ -1,5 +1,5 @@
-module IssueStats
-  class LifetimeFinisher
+module Lifetimes
+  class Finisher
     pattr_initialize :issue_stat
 
     def call

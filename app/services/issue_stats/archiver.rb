@@ -8,7 +8,7 @@ module IssueStats
       return unless github_issue.state == 'closed'
 
       Activities::ArchiveActivity.create_for(issue_stat, user)
-      IssueStats::LifetimeFinisher.new(issue_stat).call
+      Lifetimes::Finisher.new(issue_stat).call
       issue_stat.update!(archived_at: Time.current)
       issue_stat
     end

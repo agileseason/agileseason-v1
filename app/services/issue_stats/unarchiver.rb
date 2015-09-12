@@ -8,7 +8,7 @@ module IssueStats
       return unless issue_stat.archive?
 
       Activities::UnarchiveActivity.create_for(issue_stat, user)
-      IssueStats::LifetimeStarter.new(issue_stat, issue_stat.column).call
+      Lifetimes::Starter.new(issue_stat, issue_stat.column).call
       issue_stat.update!(archived_at: nil)
       issue_stat
     end

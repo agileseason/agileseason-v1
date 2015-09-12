@@ -1,5 +1,5 @@
-describe IssueStats::LifetimeFinisher do
-  let(:finisher) { IssueStats::LifetimeFinisher.new(issue_stat) }
+describe Lifetimes::Finisher do
+  let(:finisher) { Lifetimes::Finisher.new(issue_stat) }
 
   describe '#call' do
     let(:issue_stat) { create(:issue_stat) }

@@ -9,7 +9,7 @@ describe IssueStatService do
     subject { service.create!(board, issue, user) }
     let(:issue) { stub_issue }
     let(:first_column) { board.columns.first }
-    before { allow_any_instance_of(IssueStats::LifetimeStarter).to receive(:call) }
+    before { allow_any_instance_of(Lifetimes::Starter).to receive(:call) }
     before { allow_any_instance_of(IssueStats::Sorter).to receive(:call) }
 
     it { is_expected.to be_persisted }
@@ -22,7 +22,7 @@ describe IssueStatService do
     context 'behavior' do
       after { subject }
 
-      it { expect_any_instance_of(IssueStats::LifetimeStarter).to receive(:call) }
+      it { expect_any_instance_of(Lifetimes::Starter).to receive(:call) }
       it { expect_any_instance_of(IssueStats::Sorter).to receive(:call) }
     end
   end
@@ -48,29 +48,6 @@ describe IssueStatService do
 
     context :without_issue_stat do
       it { expect { subject }.to change(IssueStat, :count).by(1) }
-    end
-  end
-
-  describe '.archived?' do
-    subject { service.archived?(board, number) }
-    let(:issue_stat) do
-      create(:issue_stat, board: board, number: 1, archived_at: archived_at)
-    end
-    let(:number) { issue_stat.number }
-    let(:archived_at) { nil }
-
-    context :unknown do
-      let(:number) { issue_stat.number + 1 }
-      it { is_expected.to be_nil }
-    end
-
-    context :true do
-      let(:archived_at) { Time.current }
-      it { is_expected.to eq true }
-    end
-
-    context :false do
-      it { is_expected.to eq false }
     end
   end
 

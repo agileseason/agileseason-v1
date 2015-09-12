@@ -1,5 +1,5 @@
-module IssueStats
-  class LifetimeStarter
+module Lifetimes
+  class Starter
     pattr_initialize :issue_stat, :column
 
     def call

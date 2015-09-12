@@ -1,5 +1,5 @@
-describe IssueStats::LifetimeStarter do
-  let(:starter) { IssueStats::LifetimeStarter.new(issue_stat, column) }
+describe Lifetimes::Starter do
+  let(:starter) { Lifetimes::Starter.new(issue_stat, column) }
 
   describe '#call' do
     subject { starter.call }

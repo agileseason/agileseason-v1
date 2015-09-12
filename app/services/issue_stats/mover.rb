@@ -7,8 +7,8 @@ module IssueStats
     def call
       if column_will_change?
         Activities::ColumnChangedActivity.create_for(issue_stat, column_from, column_to, user)
-        IssueStats::LifetimeFinisher.new(issue_stat).call
-        IssueStats::LifetimeStarter.new(issue_stat, column_to).call
+        Lifetimes::Finisher.new(issue_stat).call
+        Lifetimes::Starter.new(issue_stat, column_to).call
         issue_stat.update!(column: column_to)
       end
 
