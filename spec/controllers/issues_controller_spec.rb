@@ -18,8 +18,8 @@ RSpec.describe IssuesController, type: :controller do
     it { expect((assigns :issue).number).to eq issue.number }
   end
 
-  describe '#create' do
-    let(:request) do
+  describe '#create', :focus do
+    subject do
       post(
         :create,
         board_github_full_name: board.github_full_name,
@@ -27,34 +27,26 @@ RSpec.describe IssuesController, type: :controller do
         issue: params
       )
     end
-    before { allow(github_api).to receive(:create_issue).and_return(issue) }
-    before { allow(github_api).to receive(:issues).and_return([]) }
+    let(:params) { { title: 'test edit title' } }
+    let(:issue_stat) { create(:issue_stat, number: issue.number, board: board, column: column_1) }
     before { allow(controller).to receive(:ui_event) }
+    before do
+      allow_any_instance_of(IssueStats::Creator).
+        to receive(:call).
+        and_return(BoardIssue.new(issue, issue_stat))
+    end
 
     context 'response' do
-      let(:params) { { title: 'test edit title' } }
-      before { request }
+      before { subject }
 
       it { expect(response).to have_http_status(:success) }
-      it { expect(github_api).to have_received(:create_issue) }
+      it { expect(response).to render_template(partial: '_issue_miniature') }
       it { expect(controller).to have_received(:ui_event).with(:issue_create) }
     end
 
     context 'behavior' do
-      before { allow(Issue).to receive(:new).and_return(Issue.new) }
-      before { request }
-
-      context 'with labels' do
-        let(:params) do
-          { title: 'test edit title', labels: ['label-1', 'label-2'] }
-        end
-        it { expect(Issue).to have_received(:new).with(params) }
-      end
-
-      context 'without labels' do
-        let(:params) { { title: 'test edit title' } }
-        it { expect(Issue).to have_received(:new).with(params) }
-      end
+      after { subject }
+      it { expect_any_instance_of(IssueStats::Creator).to receive(:call) }
     end
   end
 

@@ -1,21 +1,6 @@
 # FIX : Move methods to instance and add user to initializer.
 class IssueStatService
   class << self
-    def create!(board, github_issue, user)
-      column = board.columns.first
-      issue_stat = board.issue_stats.create!(
-        number: github_issue.number,
-        column: column,
-        created_at: github_issue.created_at,
-        updated_at: github_issue.updated_at,
-        closed_at: github_issue.closed_at,
-      )
-
-      IssueStats::Sorter.new(column, github_issue.number, true).call
-      Lifetimes::Starter.new(issue_stat, column).call
-      issue_stat
-    end
-
     # FIX : Move close! and add close? to state_machine.
     def close!(board, github_issue, user)
       issue_stat = find_or_create_issue_stat(board, github_issue, user)

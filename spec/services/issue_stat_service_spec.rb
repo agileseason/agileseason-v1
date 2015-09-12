@@ -5,28 +5,6 @@ describe IssueStatService do
   end
   let(:service) { IssueStatService }
 
-  describe '.create!' do
-    subject { service.create!(board, issue, user) }
-    let(:issue) { stub_issue }
-    let(:first_column) { board.columns.first }
-    before { allow_any_instance_of(Lifetimes::Starter).to receive(:call) }
-    before { allow_any_instance_of(IssueStats::Sorter).to receive(:call) }
-
-    it { is_expected.to be_persisted }
-    its(:number) { is_expected.to eq issue.number }
-    its(:created_at) { is_expected.to eq issue.created_at }
-    its(:updated_at) { is_expected.to eq issue.updated_at }
-    its(:closed_at) { is_expected.to eq issue.closed_at }
-    its(:column) { is_expected.to eq board.columns.first }
-
-    context 'behavior' do
-      after { subject }
-
-      it { expect_any_instance_of(Lifetimes::Starter).to receive(:call) }
-      it { expect_any_instance_of(IssueStats::Sorter).to receive(:call) }
-    end
-  end
-
   describe '.close!' do
     let(:issue) { stub_closed_issue }
     subject { service.close!(board, issue, user) }

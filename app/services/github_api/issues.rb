@@ -7,14 +7,12 @@ class GithubApi
     end
 
     def create_issue(board, issue)
-      github_issue = client.create_issue(
+      client.create_issue(
         board.github_id,
         issue.title,
         issue.body,
         labels: issue.labels
       )
-      IssueStatService.create!(board, github_issue, @user)
-      github_issue
     end
 
     def issue(board, number)

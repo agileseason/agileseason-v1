@@ -56,7 +56,6 @@ describe GithubApi::Issues do
           .with(board.github_id, issue.title, issue.body, labels: expected_labels))
     end
     it { is_expected.to eq issue }
-    it { expect{subject}.to change(IssueStat, :count).by(1) }
   end
 
   describe '#close' do

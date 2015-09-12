@@ -18,16 +18,10 @@ class IssuesController < ApplicationController
   def create
     @issue = Issue.new(issue_create_params)
     if @issue.valid?
-      issue = github_api.create_issue(@board, @issue)
+      board_issue = IssueStats::Creator.new(current_user, @board_bag, @issue).call
       ui_event(:issue_create)
-      @board_bag.update_cache(issue)
-      broadcast_column(@board_bag.default_column)
-      render(
-        partial: 'issues/issue_miniature',
-        locals: {
-          issue: BoardIssue.new(issue, @board.find_stat(issue))
-        }
-      )
+      broadcast_column(board_issue.column)
+      render(partial: 'issue_miniature', locals: { issue: board_issue })
     else
       render nothing: true
     end
