@@ -1,5 +1,7 @@
 module IssueStats
   class AutoAssigner
+    include IdentityHelper
+
     pattr_initialize :user, :board_bag, :column, :number
 
     def call
@@ -9,16 +11,12 @@ module IssueStats
     private
 
     def need_assignee?
-      column.auto_assign? && current_assignee.nil?
+      column.auto_assign? && github_issue.assignee.nil?
     end
 
     def assign
       issue = user.github_api.assign(board_bag, number, user.github_username)
       board_bag.update_cache(issue)
-    end
-
-    def current_assignee
-      user.github_api.issue(board_bag, number).assignee
     end
   end
 end
