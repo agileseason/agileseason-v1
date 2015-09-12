@@ -90,56 +90,6 @@ describe IssueStatService do
     end
   end
 
-  describe '.archive!' do
-    let(:issue) { stub_issue }
-    subject { service.archive!(board, issue, user) }
-    before { allow(Activities::ArchiveActivity).to receive(:create_for) }
-
-    context :with_issue_stat do
-      let!(:issue_stat) do
-        create(
-          :issue_stat,
-          board: board,
-          number: issue.number,
-          archived_at: nil
-        )
-      end
-
-      it { expect { subject }.to change(IssueStat, :count).by(0) }
-
-      context 'behavior' do
-        after { subject }
-        it { expect_any_instance_of(IssueStats::LifetimeFinisher).to receive(:call) }
-      end
-
-      context 'set archived_at' do
-        before { subject }
-        it { expect(issue_stat.reload.archived_at).to_not be_nil }
-      end
-    end
-
-    context :without_issue_stat do
-      it { expect { subject }.to change(IssueStat, :count).by(1) }
-    end
-
-    context 'create activities' do
-      before { subject }
-
-      context 'not skip, user present' do
-        let(:user) { create(:user) }
-        it { expect(Activities::ArchiveActivity).to have_received(:create_for) }
-      end
-
-      context 'not skip, user present' do
-        let(:user) { nil }
-        it do
-          expect(Activities::ArchiveActivity).
-            not_to have_received(:create_for)
-        end
-      end
-    end
-  end
-
   describe '.archived?' do
     subject { service.archived?(board, number) }
     let(:issue_stat) do

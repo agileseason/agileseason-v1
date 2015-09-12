@@ -98,39 +98,6 @@ describe GithubApi::Issues do
     end
   end
 
-  describe '#archive' do
-    subject { service.archive(board, issue.number) }
-    let(:issue) { stub_issue(state: state) }
-    let(:issue_stat) { create(:issue_stat, board: board) }
-    let(:in_at) { Time.current }
-    before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
-    before { allow(IssueStatService).to receive(:archive!).and_return(issue_stat) }
-    before { allow(Activities::ArchiveActivity).to receive(:create_for) }
-
-
-    context 'closed issue' do
-      let(:state) { 'closed' }
-      let(:archived_at) { Time.current }
-      before { allow(Time).to receive(:current).and_return(archived_at) }
-      after { subject }
-
-      it do
-        expect(IssueStatService).
-          to receive(:archive!).with(board, issue, user)
-      end
-    end
-
-    context 'open issue' do
-      let(:state) { 'open' }
-      after { subject }
-
-      it do
-        expect(IssueStatService).
-          to_not receive(:archive!).with(board, issue, user)
-      end
-    end
-  end
-
   describe '#assign' do
     subject { service.assign(board, issue.number, user.github_username) }
     before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }

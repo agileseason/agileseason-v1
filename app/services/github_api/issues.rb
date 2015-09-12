@@ -33,14 +33,6 @@ class GithubApi
       BoardIssue.new(github_issue, issue_stat)
     end
 
-    def archive(board, number)
-      github_issue = issue(board, number)
-      return unless github_issue.state == 'closed'
-
-      issue_stat = IssueStatService.archive!(board, github_issue, @user)
-      BoardIssue.new(github_issue, issue_stat)
-    end
-
     def assign(board, number, assignee)
       issue = issue(board, number)
       current_assignee = issue.try(:assignee).try(:login)

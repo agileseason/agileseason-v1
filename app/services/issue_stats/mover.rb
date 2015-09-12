@@ -1,5 +1,7 @@
 module IssueStats
   class Mover
+    include IdentityHelper
+
     pattr_initialize :user, :board_bag, :column_to, :number
 
     def call
@@ -15,16 +17,8 @@ module IssueStats
 
     private
 
-    def issue_stat
-      @issue_stat ||= IssueStats::Finder.new(user, board_bag, number).call
-    end
-
     def column_from
       @column_from ||= issue_stat.column
-    end
-
-    def board
-      board_bag.board
     end
 
     def column_will_change?

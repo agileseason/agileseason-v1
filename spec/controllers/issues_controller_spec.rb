@@ -37,7 +37,7 @@ RSpec.describe IssuesController, type: :controller do
 
       it { expect(response).to have_http_status(:success) }
       it { expect(github_api).to have_received(:create_issue) }
-      it { expect(controller).to have_received(:ui_event).with('issues_create') }
+      it { expect(controller).to have_received(:ui_event).with(:issue_create) }
     end
 
     context 'behavior' do
@@ -129,12 +129,13 @@ RSpec.describe IssuesController, type: :controller do
   describe '#move_to' do
     let(:board) { create(:board, :with_columns, user: user) }
     let(:column_to) { board.columns.first }
-    let(:issue_stat) { build(:issue_stat, column: column_to) }
+    let(:issue_stat) { create(:issue_stat, number: number, board: board, column: column_to) }
+    let(:number) { 1 }
     let(:request) do
       get(
         :move_to,
         board_github_full_name: board.github_full_name,
-        number: 1,
+        number: number,
         column_id: column_to.id
       )
     end
@@ -178,7 +179,7 @@ RSpec.describe IssuesController, type: :controller do
     before { request }
 
     it { expect(response).to render_template(partial: '_search_result') }
-    it { expect(controller).to have_received(:ui_event).with('issues_search') }
+    it { expect(controller).to have_received(:ui_event).with(:issue_search) }
   end
 
   describe '#close' do
@@ -225,10 +226,9 @@ RSpec.describe IssuesController, type: :controller do
   describe '#archive' do
     let(:issue_stat) { build(:issue_stat, board: board, column: column_1) }
     let(:request) { get :archive, board_github_full_name: board.github_full_name, number: 1 }
-    before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
     before do
-      allow_any_instance_of(GithubApi).
-        to receive(:archive).and_return(BoardIssue.new(issue, issue_stat))
+      allow_any_instance_of(IssueStats::Archiver).
+        to receive(:call).and_return(issue_stat)
     end
     before { request }
 

@@ -8,7 +8,6 @@ class IssuesController < ApplicationController
   ]
   after_action :fetch_lines_graph, only: [:move_to]
   after_action :fetch_control_chart, only: [:close, :reopen]
-  after_action :ui_action_event, only: [:create, :search]
 
   def show
     @direct_post = S3Api.direct_post
@@ -20,6 +19,7 @@ class IssuesController < ApplicationController
     @issue = Issue.new(issue_create_params)
     if @issue.valid?
       issue = github_api.create_issue(@board, @issue)
+      ui_event(:issue_create)
       @board_bag.update_cache(issue)
       broadcast_column(@board_bag.default_column)
       render(
@@ -34,18 +34,21 @@ class IssuesController < ApplicationController
   end
 
   def update
-    update_issue(issue_update_params)
+    issue = github_api.update_issue(@board, number, issue_update_params)
+    @board_bag.update_cache(issue)
+    render nothing: true
+  end
+
+  def update_labels
+    issue = github_api.update_issue(@board, number, issue_labels_params)
+    @board_bag.update_cache(issue)
     render nothing: true
   end
 
   def search
     issues = github_api.search_issues(@board, params[:query])
+    ui_event(:issue_search)
     render partial: 'search_result', locals: { issues: issues, board: @board }
-  end
-
-  def update_labels
-    update_issue(issue_labels_params)
-    render nothing: true
   end
 
   def move_to
@@ -61,10 +64,10 @@ class IssuesController < ApplicationController
 
     render json: {
       number: number,
-      # TODO Remove this element if issue miniature has't been updated - https://agileseason.com/boards/agileseason/agileseason/issues/676
+      # TODO Remove this element if issue miniature has't been updated - #676
       html_miniature: render_to_string(
         partial: 'issues/issue_miniature',
-        locals: { issue: BoardIssue.new(github_issue, issue_stat) }
+        locals: { issue: @board_bag.issue(number) }
       ),
       # NOTE Includes(columns: :issue_stats) to remove N+1 query in view 'columns/wip_badge'.
       badges: Board.includes(columns: :issue_stats).find(@board.id).columns.map do |column|
@@ -90,11 +93,10 @@ class IssuesController < ApplicationController
   end
 
   def archive
-    board_issue = github_api.archive(@board, number)
-    @board_bag.update_cache(board_issue.issue)
-    broadcast_column(board_issue.column)
+    issue_stat = IssueStats::Archiver.new(current_user, @board_bag, number).call
+    broadcast_column(issue_stat.column)
 
-    render json: wip_badge_json(board_issue.column)
+    render json: wip_badge_json(issue_stat.column)
   end
 
   def unarchive
@@ -127,31 +129,24 @@ class IssuesController < ApplicationController
   end
 
   def ready
-    if issue_stat_params[:is_ready] == 'true'
+    if params[:issue_stat][:is_ready] == 'true'
       IssueStats::Ready.new(current_user, @board_bag, number).call
     else
       IssueStats::Unready.new(current_user, @board_bag, number).call
     end
+
     render nothing: true
   end
 
   private
 
-  # TODO Remove this method
-  def github_issue
-    @github_issue ||= @board_bag.issues_hash[number] || github_api.issue(@board, number)
-  end
-
-  # TODO Remove this method
-  def update_issue(issue_params)
-    issue = github_api.update_issue(@board, number, issue_params)
-    @board_bag.update_cache(issue)
-  end
-
   def wip_badge_json(column)
     {
       column_id: column.id,
-      html: render_to_string(partial: 'columns/wip_badge', locals: { column: column })
+      html: render_to_string(
+        partial: 'columns/wip_badge',
+        locals: { column: column }
+      )
     }
   end
 
@@ -159,10 +154,6 @@ class IssuesController < ApplicationController
     params.
       require(:issue).
       permit(:title, labels: [])
-  end
-
-  def issue_stat_params
-    params.require(:issue_stat).permit(:is_ready)
   end
 
   def issue_update_params
@@ -180,6 +171,7 @@ class IssuesController < ApplicationController
       permit(labels: [])
   end
 
+  # TODO Remove this method in #548
   def issue_comments(issue)
     return [] if issue.comments.zero?
     github_api.issue_comments(@board, issue.number)
