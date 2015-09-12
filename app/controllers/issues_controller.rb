@@ -60,7 +60,7 @@ class IssuesController < ApplicationController
       number: number,
       # TODO Remove this element if issue miniature has't been updated - #676
       html_miniature: render_to_string(
-        partial: 'issues/issue_miniature',
+        partial: 'issue_miniature',
         locals: { issue: @board_bag.issue(number) }
       ),
       # NOTE Includes(columns: :issue_stats) to remove N+1 query in view 'columns/wip_badge'.
@@ -104,7 +104,7 @@ class IssuesController < ApplicationController
     issue = github_api.assign(@board, number, params[:login])
     @board_bag.update_cache(issue)
 
-    render partial: 'issues/assignee', locals: {
+    render partial: 'assignee', locals: {
       issue: BoardIssue.new(issue, @board.find_stat(issue))
     }
   end
