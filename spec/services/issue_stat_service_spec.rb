@@ -3,7 +3,17 @@ describe IssueStatService do
   let(:board) { create(:board, :with_columns, user: user) }
   let(:service) { IssueStatService }
 
-  pending '.create'
+  describe '.create' do
+    subject { service.create(board, issue) }
+    let(:issue) { stub_issue }
+
+    it { is_expected.to be_persisted }
+    its(:number) { is_expected.to eq issue.number }
+    its(:column) { is_expected.to eq board.default_column }
+    its(:created_at) { is_expected.to eq issue.created_at }
+    its(:updated_at) { is_expected.to eq issue.updated_at }
+    its(:closed_at) { is_expected.to eq issue.closed_at }
+  end
 
   describe '.set_due_date' do
     subject { service.set_due_date(user, board, number, new_due_date) }
