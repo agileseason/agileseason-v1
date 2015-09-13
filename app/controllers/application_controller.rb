@@ -137,7 +137,7 @@ class ApplicationController < ActionController::Base
     @board ||= Board.includes(columns: :visible_issue_stats).find_by(github_full_name: params_github_full_name)
     authorize!(:read, @board)
     # FIX : Create attribute 'bag' for @board.
-    @board_bag = BoardBag.new(github_api, @board)
+    @board_bag = BoardBag.new(current_user, @board)
   end
 
   def fetch_board_for_update

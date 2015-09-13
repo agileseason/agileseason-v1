@@ -50,13 +50,12 @@ describe GithubApi::Issues do
     end
     after { subject }
 
+    it { is_expected.to eq issue }
     it do
       expect_any_instance_of(Octokit::Client).to(
         receive(:create_issue)
           .with(board.github_id, issue.title, issue.body, labels: expected_labels))
     end
-    it { is_expected.to eq issue }
-    it { expect{subject}.to change(IssueStat, :count).by(1) }
   end
 
   describe '#close' do
@@ -65,18 +64,13 @@ describe GithubApi::Issues do
       allow_any_instance_of(Octokit::Client).
         to receive(:close_issue).and_return(issue)
     end
-    before do
-      allow_any_instance_of(Octokit::Client).
-        to receive(:issue).and_return(issue)
-    end
-    before { allow(IssueStatService).to receive(:close!) }
     after { subject }
 
+    it { is_expected.to eq issue }
     it do
       expect_any_instance_of(Octokit::Client).
         to receive(:close_issue).with(board.github_id, issue.number)
     end
-    it { expect(IssueStatService).to receive(:close!).with(board, issue, user) }
   end
 
   describe '#reopen' do
@@ -85,49 +79,12 @@ describe GithubApi::Issues do
       allow_any_instance_of(Octokit::Client).
         to receive(:reopen_issue).and_return(issue)
     end
-    before { allow(IssueStatService).to receive(:reopen!) }
     after { subject }
 
+    it { is_expected.to eq issue }
     it do
       expect_any_instance_of(Octokit::Client).
         to receive(:reopen_issue).with(board.github_id, issue.number)
-    end
-    it do
-      expect(IssueStatService).
-        to receive(:reopen!).with(board, issue, user)
-    end
-  end
-
-  describe '#archive' do
-    subject { service.archive(board, issue.number) }
-    let(:issue) { stub_issue(state: state) }
-    let(:issue_stat) { create(:issue_stat, board: board) }
-    let(:in_at) { Time.current }
-    before { allow_any_instance_of(Octokit::Client).to receive(:issue).and_return(issue) }
-    before { allow(IssueStatService).to receive(:archive!).and_return(issue_stat) }
-    before { allow(Activities::ArchiveActivity).to receive(:create_for) }
-
-
-    context 'closed issue' do
-      let(:state) { 'closed' }
-      let(:archived_at) { Time.current }
-      before { allow(Time).to receive(:current).and_return(archived_at) }
-      after { subject }
-
-      it do
-        expect(IssueStatService).
-          to receive(:archive!).with(board, issue, user)
-      end
-    end
-
-    context 'open issue' do
-      let(:state) { 'open' }
-      after { subject }
-
-      it do
-        expect(IssueStatService).
-          to_not receive(:archive!).with(board, issue, user)
-      end
     end
   end
 

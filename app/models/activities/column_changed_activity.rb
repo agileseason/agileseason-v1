@@ -1,6 +1,8 @@
 module Activities
   class ColumnChangedActivity < Activity
     def self.create_for(issue_stat, column_from, column_to, user)
+      return if user.nil?
+
       Activities::ColumnChangedActivity.create!(
         board: issue_stat.board,
         user: user,

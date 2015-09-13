@@ -48,10 +48,6 @@ class IssuePresenter < Keynote::Presenter
     issue.due_date_at.try(:utc).try(:strftime, '%b %d')
   end
 
-  def archived?(board)
-    IssueStatService.archived?(board, number)
-  end
-
   def body_empty?
     issue.body.blank? || issue.body.strip.start_with?('<!---')
   end

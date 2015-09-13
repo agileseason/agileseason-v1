@@ -1,30 +1,28 @@
 module IssueStats
-  # TODO Remove is_force_sort
   class Mover
-    pattr_initialize :user, :board_bag, :column_to, :number, :is_force_sort
+    include IdentityHelper
+
+    pattr_initialize :user, :board_bag, :column_to, :number
 
     def call
-      if is_force_sort || column_will_change?
-        IssueStatService.move!(column_to, issue_stat, user, is_force_sort)
-      else
-        issue_stat
+      if column_will_change?
+        Activities::ColumnChangedActivity.create_for(issue_stat, column_from, column_to, user)
+        Lifetimes::Finisher.new(issue_stat).call
+        Lifetimes::Starter.new(issue_stat, column_to).call
+        issue_stat.update!(column: column_to)
       end
-    end
 
-    # NOTE Public until end refactoring
-
-    def issue_stat
-      @issue_stat ||= IssueStats::Finder.new(user, board_bag, number).call
+      issue_stat
     end
 
     private
 
-    def board
-      board_bag.board
+    def column_from
+      @column_from ||= issue_stat.column
     end
 
     def column_will_change?
-      column_to != issue_stat.column
+      column_to != column_from
     end
   end
 end

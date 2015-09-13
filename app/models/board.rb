@@ -32,6 +32,10 @@ class Board < ActiveRecord::Base
     type == 'Boards::ScrumBoard'
   end
 
+  def default_column
+    columns.first
+  end
+
   def settings
     if super.nil?
       self.settings = {}

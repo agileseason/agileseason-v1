@@ -1,6 +1,8 @@
 module Activities
   class ArchiveActivity < Activity
     def self.create_for(issue_stat, user)
+      return if user.nil?
+
       Activities::ArchiveActivity.create!(
         board: issue_stat.board,
         user: user,

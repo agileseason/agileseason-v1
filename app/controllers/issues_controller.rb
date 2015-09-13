@@ -3,9 +3,7 @@ class IssuesController < ApplicationController
   before_action :fetch_board, only: [:show, :search, :new]
   before_action :fetch_board_for_update, except: [:show, :search, :new]
 
-  after_action :fetch_cumulative_graph, only: [
-    :move_to, :close, :archive, :unarchive
-  ]
+  after_action :fetch_cumulative_graph, only: [:create, :move_to, :archive, :unarchive]
   after_action :fetch_lines_graph, only: [:move_to]
   after_action :fetch_control_chart, only: [:close, :reopen]
 
@@ -18,48 +16,38 @@ class IssuesController < ApplicationController
   def create
     @issue = Issue.new(issue_create_params)
     if @issue.valid?
+      board_issue = IssueStats::Creator.new(current_user, @board_bag, @issue).call
       ui_event(:issue_create)
-      issue = github_api.create_issue(@board, @issue)
-      @board_bag.update_cache(issue)
-      render(
-        partial: 'issues/issue_miniature',
-        locals: {
-          issue: BoardIssue.new(issue, @board.find_stat(issue))
-        }
-      )
-      broadcast_column(@board_bag.default_column)
+      broadcast_column(board_issue.column)
+      render(partial: 'issue_miniature', locals: { issue: board_issue })
     else
       render nothing: true
     end
   end
 
   def update
-    update_issue(issue_update_params)
+    issue = github_api.update_issue(@board, number, issue_update_params)
+    @board_bag.update_cache(issue)
+    render nothing: true
+  end
+
+  def update_labels
+    issue = github_api.update_issue(@board, number, issue_labels_params)
+    @board_bag.update_cache(issue)
     render nothing: true
   end
 
   def search
-    ui_event(:issue_search)
     issues = github_api.search_issues(@board, params[:query])
+    ui_event(:issue_search)
     render partial: 'search_result', locals: { issues: issues, board: @board }
-  end
-
-  def update_labels
-    update_issue(issue_labels_params)
-    render nothing: true
   end
 
   def move_to
     column_to = @board.columns.find(params[:column_id])
-    IssueStats::Mover.new(
-      current_user,
-      @board_bag,
-      column_to,
-      number,
-      force?
-    ).call
+    IssueStats::Mover.new(current_user, @board_bag, column_to, number).call
     IssueStats::AutoAssigner.new(current_user, @board_bag, column_to, number).call
-    IssueStats::Sorter.new(column_to, number, force?).call
+    IssueStats::Sorter.new(column_to, number, !!params[:force]).call
     IssueStats::Unready.new(current_user, @board_bag, number).call
 
     issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
@@ -68,63 +56,55 @@ class IssuesController < ApplicationController
 
     render json: {
       number: number,
+      # TODO Remove this element if issue miniature has't been updated - #676
       html_miniature: render_to_string(
-        partial: 'issues/issue_miniature',
-        locals: { issue: BoardIssue.new(github_issue, issue_stat) }
+        partial: 'issue_miniature',
+        locals: { issue: @board_bag.issue(number) }
       ),
+      # NOTE Includes(columns: :issue_stats) to remove N+1 query in view 'columns/wip_badge'.
       badges: Board.includes(columns: :issue_stats).find(@board.id).columns.map do |column|
-        {
-          column_id: column.id,
-          html: render_to_string(partial: 'columns/wip_badge', locals: { column: column })
-        }
+        wip_badge_json(column)
       end
     }
   end
 
   def close
-    board_issue = github_api.close(@board, number)
-    @board_bag.update_cache(board_issue.issue)
-    broadcast_column(board_issue.column)
+    issue_stat = IssueStats::Closer.new(current_user, @board_bag, number).call
+    broadcast_column(issue_stat.column)
 
     render nothing: true
   end
 
   def reopen
-    board_issue = github_api.reopen(@board, number)
-    @board_bag.update_cache(board_issue.issue)
-    broadcast_column(board_issue.column)
+    issue_stat = IssueStats::Reopener.new(current_user, @board_bag, number).call
+    broadcast_column(issue_stat.column)
 
     render nothing: true
   end
 
   def archive
-    board_issue = github_api.archive(@board, number)
-    @board_bag.update_cache(board_issue.issue)
-    broadcast_column(board_issue.column)
+    issue_stat = IssueStats::Archiver.new(current_user, @board_bag, number).call
+    broadcast_column(issue_stat.column)
 
-    render json: {
-      column_id: board_issue.column_id,
-      html: render_to_string(
-        partial: 'columns/wip_badge.html',
-        locals: { column: board_issue.column }
-      )
-    }
+    render json: wip_badge_json(issue_stat.column)
   end
 
   def unarchive
-    issue_stat = IssueStatService.unarchive!(@board_bag, number, current_user)
+    issue_stat = IssueStats::Unarchiver.new(current_user, @board_bag, number).call
     broadcast_column(issue_stat.column)
 
     render nothing: true
   end
 
   def assignee
-    issue = github_api.assign(@board, number, params[:login])
-    @board_bag.update_cache(issue)
+    board_issue = IssueStats::Assigner.new(
+      current_user,
+      @board_bag,
+      number,
+      params[:login]
+    ).call
 
-    render partial: 'issues/assignee', locals: {
-      issue: BoardIssue.new(issue, @board.find_stat(issue))
-    }
+    render partial: 'assignee', locals: { issue: board_issue }
   end
 
   def due_date
@@ -141,35 +121,31 @@ class IssuesController < ApplicationController
   end
 
   def ready
-    if issue_stat_params[:is_ready] == 'true'
+    if params[:issue_stat][:is_ready] == 'true'
       IssueStats::Ready.new(current_user, @board_bag, number).call
     else
       IssueStats::Unready.new(current_user, @board_bag, number).call
     end
+
     render nothing: true
   end
 
   private
 
-  # TODO Remove this method
-  def github_issue
-    @github_issue ||= @board_bag.issues_hash[number] || github_api.issue(@board, number)
-  end
-
-  # TODO Remove this method
-  def update_issue(issue_params)
-    issue = github_api.update_issue(@board, number, issue_params)
-    @board_bag.update_cache(issue)
+  def wip_badge_json(column)
+    {
+      column_id: column.id,
+      html: render_to_string(
+        partial: 'columns/wip_badge',
+        locals: { column: column }
+      )
+    }
   end
 
   def issue_create_params
     params.
       require(:issue).
       permit(:title, labels: [])
-  end
-
-  def issue_stat_params
-    params.require(:issue_stat).permit(:is_ready)
   end
 
   def issue_update_params
@@ -187,6 +163,7 @@ class IssuesController < ApplicationController
       permit(labels: [])
   end
 
+  # TODO Remove this method in #548
   def issue_comments(issue)
     return [] if issue.comments.zero?
     github_api.issue_comments(@board, issue.number)
@@ -202,9 +179,5 @@ class IssuesController < ApplicationController
 
   def fetch_lines_graph
     Graphs::LinesWorker.perform_async(@board.id, encrypted_github_token)
-  end
-
-  def force?
-    !!params[:force]
   end
 end

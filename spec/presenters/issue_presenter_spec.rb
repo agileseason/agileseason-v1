@@ -37,16 +37,6 @@ describe IssuePresenter do
     end
   end
 
-  describe '#archived?' do
-    let(:issue) { OpenStruct.new(number: 1) }
-    let(:board) { build(:board) }
-    subject { presenter.archived?(board) }
-    before { allow(IssueStatService).to receive(:archived?) }
-    after { subject }
-
-    it { expect(IssueStatService).to receive(:archived?).with(board, issue.number) }
-  end
-
   describe '#body_empty?' do
     let(:issue) { OpenStruct.new(body: body) }
     subject { presenter.body_empty? }

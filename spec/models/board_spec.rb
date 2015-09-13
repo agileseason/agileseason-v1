@@ -68,6 +68,14 @@ describe Board do
     end
   end
 
+  describe '#default_column' do
+    subject { board.default_column }
+    let(:board) { create(:board, :with_columns) }
+    let(:column_1) { board.columns.first }
+
+    it { is_expected.to eq column_1 }
+  end
+
   describe '#settings' do
     subject { board.settings }
     context :null do

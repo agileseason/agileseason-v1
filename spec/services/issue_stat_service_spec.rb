@@ -1,165 +1,18 @@
 describe IssueStatService do
   let(:user) { create(:user) }
-  let(:board) do
-    create(:board, :with_columns, number_of_columns: 2, user: user)
-  end
+  let(:board) { create(:board, :with_columns, user: user) }
   let(:service) { IssueStatService }
 
-  describe '.create!' do
-    subject { service.create!(board, issue, user) }
+  describe '.create' do
+    subject { service.create(board, issue) }
     let(:issue) { stub_issue }
-    let(:first_column) { board.columns.first }
 
     it { is_expected.to be_persisted }
     its(:number) { is_expected.to eq issue.number }
+    its(:column) { is_expected.to eq board.default_column }
     its(:created_at) { is_expected.to eq issue.created_at }
     its(:updated_at) { is_expected.to eq issue.updated_at }
     its(:closed_at) { is_expected.to eq issue.closed_at }
-    it { expect { subject }.to change(Lifetime, :count).by(1) }
-    it { expect(subject.lifetimes.first.column).to eq first_column }
-    it { expect(subject.lifetimes.first.in_at).to_not be_nil }
-    it { expect(subject.lifetimes.first.out_at).to be_nil }
-    it { expect(subject.column).to eq board.columns.first }
-    it { expect(subject.column.issues).to eq [issue.number.to_s] }
-  end
-
-  describe '.close!' do
-    let(:issue) { stub_closed_issue }
-    subject { service.close!(board, issue, user) }
-
-    context :with_issue_stat do
-      let!(:issue_stat) do
-        create(:issue_stat, :open, board: board, number: issue.number)
-      end
-
-      it { expect { subject }.to change(IssueStat, :count).by(0) }
-      it { is_expected.to_not be_nil }
-      it { expect(subject.closed_at).to_not be_nil }
-
-      context 'issue already closed' do
-        let(:issue) { stub_issue(closed_at: 1.day.ago) }
-        it { expect(subject.closed_at).to eq issue.closed_at }
-      end
-    end
-
-    context :without_issue_stat do
-      it { expect { subject }.to change(IssueStat, :count).by(1) }
-    end
-  end
-
-  describe '.unarchive!' do
-    subject { service.unarchive!(board, issue_stat.number, user) }
-    before { allow(Activities::UnarchiveActivity).to receive(:create_for) }
-    let!(:issue_stat) do
-      create(:issue_stat, board: board, number: 1, archived_at: archived_at)
-    end
-
-    context 'valid' do
-      let(:archived_at) { Time.current }
-      it { is_expected.not_to be_archived }
-
-      describe 'activities' do
-        before { subject }
-        it do
-          expect(Activities::UnarchiveActivity).to have_received(:create_for)
-        end
-      end
-    end
-
-    context 'not valid' do
-      let(:archived_at) { nil }
-      it { is_expected.to be_nil }
-
-      describe 'activities' do
-        before { subject }
-        it do
-          expect(Activities::UnarchiveActivity).
-            not_to have_received(:create_for)
-        end
-      end
-    end
-  end
-
-  describe '.archive!' do
-    let(:issue) { stub_issue }
-    subject { service.archive!(board, issue, user) }
-    before { allow(Activities::ArchiveActivity).to receive(:create_for) }
-
-    context :with_issue_stat do
-      let!(:issue_stat) do
-        create(
-          :issue_stat,
-          board: board,
-          number: issue.number,
-          archived_at: nil
-        )
-      end
-
-      it { expect { subject }.to change(IssueStat, :count).by(0) }
-
-      context 'lifetime update out_at' do
-        let!(:lifetime_1) do
-          create(
-            :lifetime,
-            issue_stat: issue_stat,
-            column: board.columns.first,
-            out_at: nil
-          )
-        end
-        before { subject }
-
-        it { expect(lifetime_1.reload.out_at).to_not be_nil }
-      end
-
-      context 'set archived_at' do
-        before { subject }
-        it { expect(issue_stat.reload.archived_at).to_not be_nil }
-      end
-    end
-
-    context :without_issue_stat do
-      it { expect { subject }.to change(IssueStat, :count).by(1) }
-    end
-
-    context 'create activities' do
-      before { subject }
-
-      context 'not skip, user present' do
-        let(:user) { create(:user) }
-        it { expect(Activities::ArchiveActivity).to have_received(:create_for) }
-      end
-
-      context 'not skip, user present' do
-        let(:user) { nil }
-        it do
-          expect(Activities::ArchiveActivity).
-            not_to have_received(:create_for)
-        end
-      end
-    end
-  end
-
-  describe '.archived?' do
-    subject { service.archived?(board, number) }
-    let(:issue_stat) do
-      create(:issue_stat, board: board, number: 1, archived_at: archived_at)
-    end
-    let(:number) { issue_stat.number }
-    let(:archived_at) { nil }
-
-    context :unknown do
-      let(:number) { issue_stat.number + 1 }
-      it { is_expected.to be_nil }
-    end
-
-    context :true do
-      let(:archived_at) { Time.current }
-      it { is_expected.to eq true }
-    end
-
-    context :false do
-      it { is_expected.to eq false }
-    end
   end
 
   describe '.set_due_date' do

@@ -19,7 +19,7 @@ RSpec.describe IssuesController, type: :controller do
   end
 
   describe '#create' do
-    let(:request) do
+    subject do
       post(
         :create,
         board_github_full_name: board.github_full_name,
@@ -27,32 +27,26 @@ RSpec.describe IssuesController, type: :controller do
         issue: params
       )
     end
-    before { allow(github_api).to receive(:create_issue).and_return(issue) }
-    before { allow(github_api).to receive(:issues).and_return([]) }
+    let(:params) { { title: 'test edit title' } }
+    let(:issue_stat) { create(:issue_stat, number: issue.number, board: board, column: column_1) }
+    before { allow(controller).to receive(:ui_event) }
+    before do
+      allow_any_instance_of(IssueStats::Creator).
+        to receive(:call).
+        and_return(BoardIssue.new(issue, issue_stat))
+    end
 
     context 'response' do
-      let(:params) { { title: 'test edit title' } }
-      before { request }
+      before { subject }
 
       it { expect(response).to have_http_status(:success) }
-      it { expect(github_api).to have_received(:create_issue) }
+      it { expect(response).to render_template(partial: '_issue_miniature') }
+      it { expect(controller).to have_received(:ui_event).with(:issue_create) }
     end
 
     context 'behavior' do
-      before { allow(Issue).to receive(:new).and_return(Issue.new) }
-      before { request }
-
-      context 'with labels' do
-        let(:params) do
-          { title: 'test edit title', labels: ['label-1', 'label-2'] }
-        end
-        it { expect(Issue).to have_received(:new).with(params) }
-      end
-
-      context 'without labels' do
-        let(:params) { { title: 'test edit title' } }
-        it { expect(Issue).to have_received(:new).with(params) }
-      end
+      after { subject }
+      it { expect_any_instance_of(IssueStats::Creator).to receive(:call) }
     end
   end
 
@@ -127,12 +121,13 @@ RSpec.describe IssuesController, type: :controller do
   describe '#move_to' do
     let(:board) { create(:board, :with_columns, user: user) }
     let(:column_to) { board.columns.first }
-    let(:issue_stat) { build(:issue_stat, column: column_to) }
+    let(:issue_stat) { create(:issue_stat, number: number, board: board, column: column_to) }
+    let(:number) { 1 }
     let(:request) do
       get(
         :move_to,
         board_github_full_name: board.github_full_name,
-        number: 1,
+        number: number,
         column_id: column_to.id
       )
     end
@@ -168,89 +163,129 @@ RSpec.describe IssuesController, type: :controller do
   end
 
   describe '#search' do
-    before { allow_any_instance_of(GithubApi).to receive(:search_issues).and_return([]) }
-    it 'return http success' do
+    let(:request) do
       get :search, board_github_full_name: board.github_full_name, query: 'test'
-      expect(response).to render_template(partial: '_search_result')
     end
+    before { allow_any_instance_of(GithubApi).to receive(:search_issues).and_return([]) }
+    before { allow(controller).to receive(:ui_event) }
+    before { request }
+
+    it { expect(response).to render_template(partial: '_search_result') }
+    it { expect(controller).to have_received(:ui_event).with(:issue_search) }
   end
 
   describe '#close' do
-    let(:request) { get :close, board_github_full_name: board.github_full_name, number: 1 }
+    subject { get :close, board_github_full_name: board.github_full_name, number: 1 }
     let(:issue_stat) { build(:issue_stat, board: board, column: column_1) }
 
-    before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
     before do
-      allow_any_instance_of(GithubApi).
-        to receive(:close).and_return(BoardIssue.new(issue, issue_stat))
+      allow_any_instance_of(IssueStats::Closer).
+        to receive(:call).
+        and_return(issue_stat)
     end
     before { allow(Graphs::IssueStatsWorker).to receive(:perform_async) }
-    before { allow(Graphs::CumulativeWorker).to receive(:perform_async) }
-    before { request }
 
-    it { expect(response).to have_http_status(:success) }
-    it { expect(Graphs::IssueStatsWorker).to have_received(:perform_async) }
-    it { expect(Graphs::CumulativeWorker).to have_received(:perform_async) }
-    it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+    context 'request' do
+      before { subject }
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(Graphs::IssueStatsWorker).to have_received(:perform_async) }
+      it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+    end
+
+    context 'behavior' do
+      after { subject }
+      it { expect_any_instance_of(IssueStats::Closer).to receive(:call) }
+    end
   end
 
   describe '#reopen' do
-    let(:request) do
-      get :reopen, board_github_full_name: board.github_full_name, number: 1
-    end
-    let(:board_issue) { BoardIssue.new(stub_issue(number: 1), issue_stat) }
-    let(:issue_stat) do
-      create(:issue_stat, :closed, board: board, column: column_1, number: 1)
-    end
+    subject { get :reopen, board_github_full_name: board.github_full_name, number: 1 }
+    let(:issue_stat) { build(:issue_stat, board: board, column: column_1) }
 
-    before { allow(Graphs::IssueStatsWorker).to receive(:perform_async) }
     before do
-      allow_any_instance_of(GithubApi).
-        to receive(:reopen).and_return(board_issue)
+      allow_any_instance_of(IssueStats::Reopener).
+        to receive(:call).
+        and_return(issue_stat)
     end
-    before { allow_any_instance_of(BoardBag).to receive(:update_cache) }
-    before { request }
+    before { allow(Graphs::IssueStatsWorker).to receive(:perform_async) }
 
-    it { expect(response).to have_http_status(:success) }
-    it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
-    it { expect(Graphs::IssueStatsWorker).to have_received(:perform_async) }
+    context 'request' do
+      before { subject }
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(Graphs::IssueStatsWorker).to have_received(:perform_async) }
+      it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+    end
+
+    context 'behavior' do
+      after { subject }
+      it { expect_any_instance_of(IssueStats::Reopener).to receive(:call) }
+    end
   end
 
   describe '#archive' do
+    subject { get :archive, board_github_full_name: board.github_full_name, number: 1 }
     let(:issue_stat) { build(:issue_stat, board: board, column: column_1) }
-    let(:request) { get :archive, board_github_full_name: board.github_full_name, number: 1 }
-    before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
     before do
-      allow_any_instance_of(GithubApi).
-        to receive(:archive).and_return(BoardIssue.new(issue, issue_stat))
+      allow_any_instance_of(IssueStats::Archiver).
+        to receive(:call).and_return(issue_stat)
     end
-    before { request }
 
-    it { expect(response).to have_http_status(:success) }
-    it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+    context 'request' do
+      before { subject }
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+    end
+
+    context 'behavior' do
+      after { subject }
+      it { expect_any_instance_of(IssueStats::Archiver).to receive(:call) }
+    end
   end
 
   describe '#unarchive' do
+    subject { get :unarchive, board_github_full_name: board.github_full_name, number: 1 }
     let(:issue_stat) { create(:issue_stat, board: board, column: column_1) }
-    let(:request) { get :unarchive, board_github_full_name: board.github_full_name, number: 1 }
-    before { allow(IssueStatService).to receive(:unarchive!).and_return(issue_stat) }
-    before { request }
+    before do
+      allow_any_instance_of(IssueStats::Unarchiver).
+        to receive(:call).and_return(issue_stat)
+    end
 
-    it { expect(response).to have_http_status(:success) }
-    it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
-    it { expect(IssueStatService).to have_received(:unarchive!) }
+    context 'request' do
+      before { subject }
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+    end
+
+    context 'behavior' do
+      after { subject }
+      it { expect_any_instance_of(IssueStats::Unarchiver).to receive(:call) }
+    end
   end
 
   describe '#assignee' do
     let(:issue) { stub_issue(assigne: 'fake') }
-    before { allow_any_instance_of(GithubApi).to receive(:assign).and_return(issue) }
-    before { allow_any_instance_of(GithubApi).to receive(:issue).and_return(issue) }
-    before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
+    subject do
+      get(
+        :assignee,
+        board_github_full_name: board.github_full_name,
+        number: 1,
+        login: 'github_user'
+      )
+    end
 
-    it 'return http success' do
-      get :assignee, board_github_full_name: board.github_full_name,
-        number: 1, login: 'github_user'
-      expect(response).to have_http_status(:success)
+    context 'responce' do
+      before { allow_any_instance_of(IssueStats::Assigner).to receive(:call).and_return(issue) }
+      before { subject }
+      it { expect(response).to have_http_status(:success) }
+    end
+
+    context 'behavior' do
+      after { subject }
+      it { expect_any_instance_of(IssueStats::Assigner).to receive(:call) }
     end
   end
 

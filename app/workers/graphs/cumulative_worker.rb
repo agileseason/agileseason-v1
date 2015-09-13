@@ -4,7 +4,10 @@ module Graphs
       board = Board.find(board_id)
       fill_missing_days(board.board_histories)
 
-      board_bag = BoardBag.new(github_api(encrypted_github_token), board)
+      user = board.user
+      user.github_api = github_api(encrypted_github_token)
+      board_bag = BoardBag.new(user, board)
+
       save_current_history(
         board,
         board_bag.issues_by_columns

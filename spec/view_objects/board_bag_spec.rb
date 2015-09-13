@@ -1,8 +1,9 @@
 describe BoardBag do
   let(:user) { build(:user) }
-  let(:board) { build(:board, user: user) }
-  let(:github_api) { GithubApi.new('fake_token', user) }
-  let(:bag) { BoardBag.new(github_api, board) }
+  let(:board) { create(:board, :with_columns, user: user) }
+  let(:github_api) { double }
+  let(:bag) { BoardBag.new(user, board) }
+  before { allow(user).to receive(:github_api).and_return(github_api) }
 
   describe '#issue' do
     subject { bag.issue(issue.number) }
@@ -37,15 +38,12 @@ describe BoardBag do
 
   describe '#issues_by_columns' do
     subject { bag.issues_by_columns }
-    let(:board) { create(:board, :with_columns, number_of_columns: 2) }
     let(:column_1) { board.columns.first }
     let(:column_2) { board.columns.second }
+    let(:github_api) { double(issues: issues) }
 
     context :empty_columns do
-      before do
-        allow_any_instance_of(Octokit::Client).
-          to receive(:issues).and_return([])
-      end
+      let(:issues) { [] }
 
       it { is_expected.to have(2).items }
       it { expect(subject.first.first).to eq column_1.id }
@@ -59,23 +57,7 @@ describe BoardBag do
       let!(:issue_stat) do
         create(:issue_stat, number: issue_1.number, board: board, column: column_2)
       end
-      before do
-        allow_any_instance_of(Octokit::Client).
-          to receive(:issues).with(board.github_id).
-          and_return([issue_1, issue_2])
-      end
-      before { Timecop.freeze(Time.current) }
-      before do
-        allow_any_instance_of(Octokit::Client).
-          to receive(:issues).
-          with(board.github_id, state: :closed, since: 2.month.ago.iso8601).
-          and_return([])
-      end
-      before do
-        allow_any_instance_of(Octokit::Client).
-          to receive(:update_issue)
-      end
-      after { Timecop.return }
+      let(:issues) { [issue_1, issue_2] }
 
       context 'known issues dont move to first column' do
         it { expect(subject[column_2.id]).to have(1).items }
@@ -92,11 +74,8 @@ describe BoardBag do
   describe '#update_cache' do
     subject { bag.issues_hash[101] }
     let(:issue) { stub_issue(number: 101) }
+    let(:github_api) { double(issues: []) }
 
-    before do
-      allow_any_instance_of(Octokit::Client).
-        to receive(:issues).and_return([])
-    end
     before { Rails.cache.clear }
     before { data_in_cache }
     before { bag.update_cache(issue) }
@@ -121,26 +100,22 @@ describe BoardBag do
   end
 
   describe '#collaborators' do
-    before { allow_any_instance_of(GithubApi).to receive(:collaborators) }
+    let(:github_api) { double(collaborators: []) }
     after { bag.collaborators }
 
-    it { expect_any_instance_of(GithubApi).to receive(:collaborators) }
+    it { expect(github_api).to receive(:collaborators).with(board) }
   end
 
   describe '#labels' do
-    before { allow_any_instance_of(GithubApi).to receive(:labels) }
+    let(:github_api) { double(labels: []) }
     after { bag.labels }
 
-    it { expect_any_instance_of(GithubApi).to receive(:labels) }
+    it { expect(github_api).to receive(:labels).with(board) }
   end
 
   describe '#build_issue_new' do
     subject { bag.build_issue_new }
-    let(:labels) { [OpenStruct.new(name: 'label_1')] }
-    before do
-      allow_any_instance_of(GithubApi).
-        to receive(:labels).and_return(labels)
-    end
+    let(:github_api) { double(labels: [OpenStruct.new(name: 'label_1')]) }
 
     it { is_expected.to_not be_nil }
     it { is_expected.to be_a(Issue) }
@@ -203,14 +178,6 @@ describe BoardBag do
       it { expect(subject.first).to eq github_issue_2 }
       it { expect(subject.last).to eq github_issue_1 }
     end
-  end
-
-  describe '#default_column' do
-    subject { bag.default_column }
-    let(:board) { create(:board, :with_columns, number_of_columns: 2) }
-    let(:column_1) { board.columns.first }
-
-    it { is_expected.to eq column_1 }
   end
 
   describe '#private_repo?' do

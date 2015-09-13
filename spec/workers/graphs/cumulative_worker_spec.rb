@@ -1,9 +1,10 @@
-RSpec.describe Graphs::CumulativeWorker do
+describe Graphs::CumulativeWorker do
   let(:worker) { Graphs::CumulativeWorker.new }
 
   describe '.perform' do
     subject { board.board_histories }
-    let(:board) { create(:board, :with_columns) }
+    let(:user) { create(:user) }
+    let(:board) { create(:board, :with_columns, user: user) }
     let(:column_1) { board.columns.first }
     let(:column_2) { board.columns.second }
     let(:perform) { worker.perform(board.id, Encryptor.encrypt('fake_token')) }

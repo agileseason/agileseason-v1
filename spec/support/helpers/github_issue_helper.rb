@@ -22,7 +22,7 @@ module GithubIssueHelper
   def default_issue_options
     {
       number: FactoryGirl.generate(:github_numbers),
-      name: 'test name',
+      title: 'test name',
       body: 'test body',
       labels: [],
       assigne: nil,
