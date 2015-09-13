@@ -16,7 +16,7 @@ describe Activities::ColumnChangedActivity, type: :model do
     end
 
     context 'without user' do
-      let(:user) { }
+      let(:user) {}
       it { expect { subject }.not_to change(Activities::ColumnChangedActivity, :count) }
     end
   end
