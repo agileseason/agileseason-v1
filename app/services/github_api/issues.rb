@@ -60,6 +60,7 @@ class GithubApi
     end
 
     # FIX : Think about this - since: ... (added after cache problem)
+    # NOTE : Reason missed issues and broken CFD.
     # UPDATE 1 : Add dalli compress: true and change 1.month to 2.month.ago.
     def closed_issues(board)
       client.issues(board.github_id, state: :closed, since: 2.month.ago.iso8601)
