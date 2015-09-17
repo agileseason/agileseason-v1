@@ -1,8 +1,15 @@
 .sidebar
+  .logo : span Agile season - Help
   ul.list
+    li Board
+    li : a href="#{board_features_docs_url}" Board features
     li Kanban metrics
     li : a href="#{cumulative_docs_url}" Cumulative Flow Diagram
     li : a href="#{control_docs_url}" Control Chart
     li : hr
+    - if current_user.present?
+      li : a href="#{boards_url}" Return to boards
+    - else
+      li : a href="#{root_url}" Home page
+      li : a href='/auth/github' data-no-turbolink='true' Sign in
     li : a href="mailto:#{Agileseason::SUPPORT_EMAIL}" Support contact
-    li : a href="#{boards_url}" Return to boards

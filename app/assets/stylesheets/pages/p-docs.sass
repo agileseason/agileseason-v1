@@ -1,5 +1,7 @@
 @import compass/css3
 
+$image-path: 'blocks/b-dashboard'
+
 .docs
   .sidebar
     float: left
@@ -11,6 +13,21 @@
 
     hr
       margin: 20px 0
+
+    .logo
+      display: inline-block
+      width: 100%
+      text-align: center
+      vertical-align: top
+      background: image-url("#{$image-path}/logo.png") 50% 0 no-repeat
+      background-size: 80px
+      padding: 90px 0 40px 0
+
+      span
+        font-family: 'SignPainter'
+        font-size: 30px
+        line-height: 25px
+        color: #7f756c
 
   .content
     margin-left: 220px

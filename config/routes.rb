@@ -3,8 +3,12 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   resources :repos, only: [:index]
   resource :docs, only: [] do
-    get :cumulative, on: :member
-    get :control, on: :member
+    member do
+      get :main
+      get :board_features
+      get :cumulative
+      get :control
+    end
   end
 
   resource :preferences, only: [:update]
