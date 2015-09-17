@@ -13,7 +13,7 @@ require 'xproc/global'
 
 module Agileseason
   DOMAIN = Rails.env.production? ? 'https://agileseason.com' : 'http://agileseason.dev'
-  SUPPORT_EMAIL = 'support@agileseason.com'
+  SUPPORT_EMAIL = 'support@agileseason.com'.freeze
 
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

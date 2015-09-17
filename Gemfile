@@ -64,6 +64,7 @@ group :development do
   gem 'meta_request'
   gem 'quiet_assets'
   gem 'rack-mini-profiler'
+  gem 'sitemap_generator'
   gem 'spring'
   gem 'table_print'
 end
