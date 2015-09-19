@@ -71,12 +71,11 @@ column_menu = ->
   $('.column-menu .title a').on 'ajax:success', (e, data) ->
     $menu = $(@).closest('.column-menu')
     $menu.addClass('active').prepend('<div class="overlay"></div>')
-    $menu.find('.b-popup').html(data.content).show()
+    $menu.find('.column-settings-popup').html(data.content).show()
     new ColumnsSettings $menu
 
   $('.board-column .column-menu').on 'click', '.overlay', ->
-    console.log 'close column menu'
-    $(@).parent().find('.b-popup').hide()
+    $(@).parent().find('.column-settings-popup').hide()
     $(@).parent().removeClass 'active'
     $(@).remove()
 

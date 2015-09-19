@@ -9,11 +9,11 @@ class @ColumnsSettings extends View
     @$('input[name="wip_min"], input[name="wip_max"]').on 'blur', @_update_wip
 
   _update_name: (e) =>
-    return if document.body.id == 'settings_show'
+    return if @$root.is 'ul.columns li'
     @$('.title>a').text $(e.target).val()
 
   _update_wip: (e) =>
-    return if document.body.id == 'settings_show'
+    return if @$root.is 'ul.columns li'
     $issues = @$root.next()
     issues_number = $('.issue', $issues).length
 

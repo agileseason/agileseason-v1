@@ -10,7 +10,7 @@ $(document).on 'page:change', ->
   $('.iphone-button').on 'ajax:success', -> change_url $(@)
 
 toggle_column_settings = ($target) ->
-  if $target.is('.octicon-gear') ||
+  if $target.is('.toggle-settings') ||
       $target.is('.columns li') ||
       $target.is('.active-settings .autoassign')
     $('.other-settings', $target.closest('li')).toggle()

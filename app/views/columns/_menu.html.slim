@@ -1,17 +1,17 @@
 .column-menu
   .title
     a [
-      class="#{can?(:update, @board) ? 'js-show-popup' : ''}"
+      class="#{'js-show-popup' if can?(:update, @board)}"
       href="#{settings_board_column_url @board, column.id}"
       data-remote='true'
     ]
       = column.name
 
-    = render partial: 'columns/wip_badge', locals: { column: column }
+    = render 'columns/wip_badge', column: column
 
-    .b-popup
+    .column-settings-popup
 
   - if can?(:update, @board) && k(column).first?
     .new-issue.ajax-link Add an issue
     .create-issue
-      = render partial: 'issues/new', locals: { board_bag: @board_bag, issue: @board_bag.build_issue_new }
+      = render 'issues/new', board_bag: @board_bag, issue: @board_bag.build_issue_new

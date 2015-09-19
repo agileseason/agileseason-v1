@@ -83,12 +83,12 @@ $image-path: "pages/p-boards-show"
 
   .column-menu
     .title
-      padding: 10px 0 0 0
+      color: $text-light
+      font-size: 16px
       margin-left: 10px
+      padding: 10px 0 0 0
       position: absolute
       top: 0
-      font-size: 16px
-      color: $text-light
 
       a
         +ajax_link
@@ -107,14 +107,15 @@ $image-path: "pages/p-boards-show"
       right: 2px
       top: 2px
 
-    .b-popup
+    .column-settings-popup
+      +popup
       font-size: 14px
       height: auto
       left: 100%
+      margin-left: 15px
       top: 0
       width: 240px
       z-index: 3
-      margin-left: 15px
 
       .delete
         +light_button

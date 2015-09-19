@@ -12,25 +12,13 @@ ul
 
   li.autoassign
     label
-      - if column.auto_assign?
-        input.js-patch [
-          name='is_auto_assign'
-          type='checkbox'
-          data-url="#{update_attribute_board_column_url(board, column)}"
-          value="#{column.auto_assign?}"
-          checked='checked'
-        ] Auto-assign&nbsp;yourself
-      - else
-        input.js-patch [
-          name='is_auto_assign'
-          type='checkbox'
-          data-url="#{update_attribute_board_column_url(board, column)}"
-          value="#{column.auto_assign?}"
-        ] Auto-assign&nbsp;yourself
+      = check_box_tag 'is_auto_assign', "#{column.auto_assign?}", column.auto_assign? ? true : false,
+        class: 'js-patch', 'data-url' => update_attribute_board_column_url(board, column)
+      | Auto-assign&nbsp;yourself
+
   li.delimiter
 
   li
-    /label WIP from
     span <abbr>WIP</abbr> from&nbsp;
     input.js-patch [
       name='wip_min'
@@ -39,8 +27,6 @@ ul
       placeholder='∞'
       value="#{column.wip_min}"
     ]
-    /li
-    /label WIP Max
     span &nbsp;to&nbsp;
     input.js-patch [
       name='wip_max'
