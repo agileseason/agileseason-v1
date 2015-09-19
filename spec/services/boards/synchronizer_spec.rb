@@ -6,7 +6,12 @@ describe Boards::Synchronizer do
     let(:github_api) { double(issues: issues, issue: issue_1) }
     let(:archiver) { double(call: issue_stat_1) }
     let(:number) { 1 }
-    before { allow(IssueStats::Archiver).to receive(:new).with(user, board, number).and_return(archiver) }
+    before do
+      allow(IssueStats::Archiver).
+        to receive(:new).
+          with(user, board, number).
+          and_return(archiver)
+    end
     before { user.github_api = github_api }
 
     context 'nothing to archive' do
