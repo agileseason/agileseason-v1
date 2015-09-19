@@ -1,13 +1,10 @@
 module Graphs
   class IssueStatsWorker < BaseWorker
-    AUTO_ARCHIVE_BOUND = 3.month.ago
-
     def perform(board_id, encrypted_github_token)
       @board = Board.find(board_id)
       issues = fetch_issues_to_sync(encrypted_github_token)
       create_issue_stats(issues)
       update_issue_stats(issues)
-      auto_archive_issue_stats(issues)
     end
 
     private
@@ -34,19 +31,6 @@ module Graphs
 
     def last_number
       @last_number ||= @board.issue_stats.maximum(:number).to_i
-    end
-
-    def auto_archive_issue_stats(issues)
-      old_closed_numbers = issues.
-        select { |issue| issue.state == 'closed' && issue.closed_at < AUTO_ARCHIVE_BOUND }.
-        map(&:number)
-
-      # TODO Create activities for auto-archived issues.
-      # NOTE Try create Agile Season user with id = 0 and create activity from him.
-      @board.issue_stats.
-        visible.
-        where(number: old_closed_numbers).
-        update_all(archived_at: Time.current)
     end
 
     def sync_issue_stat(issue_stat, github_issue)

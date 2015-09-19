@@ -8,17 +8,18 @@ describe Graphs::CumulativeWorker do
     let(:column_1) { board.columns.first }
     let(:column_2) { board.columns.second }
     let(:perform) { worker.perform(board.id, Encryptor.encrypt('fake_token')) }
-    let(:issue) { BoardIssue.new(nil, issue_stat) }
-    let(:issue_stat) { build(:issue_stat) }
-    before do
-      allow_any_instance_of(BoardBag).
-        to receive(:issues_by_columns).and_return(issues_by_columns)
-    end
+    let(:issue_stats) {}
+    before { allow(Boards::Synchronizer).to receive(:call) }
+    before { issue_stats }
     before { perform }
 
-    context :create_board_history do
-      context :one_issue do
-        let(:issues_by_columns) { { column_1.id => [issue] } }
+    it { expect(Boards::Synchronizer).to have_received(:call) }
+
+    context 'create_board_history' do
+      context 'one_issue' do
+        let(:issue_stats) do
+          create(:issue_stat, board: board, column: column_1)
+        end
         let(:expected_data) do
           [
             { column_id: column_1.id, issues: 1, issues_cumulative: 1 },
@@ -28,8 +29,11 @@ describe Graphs::CumulativeWorker do
         it { expect(subject.first.data).to eq expected_data }
       end
 
-      context :two_issues do
-        let(:issues_by_columns) { { column_1.id => [issue, issue] } }
+      context 'two_issues' do
+        let(:issue_stats) do
+          create(:issue_stat, board: board, column: column_1)
+          create(:issue_stat, board: board, column: column_1)
+        end
         let(:expected_data) do
           [
             { column_id: column_1.id, issues: 2, issues_cumulative: 2 },
@@ -40,28 +44,16 @@ describe Graphs::CumulativeWorker do
       end
     end
 
-    context 'ignore archive issues' do
-      let(:issues_by_columns) { { column_2.id => [issue] } }
-      let(:issue) { BoardIssue.new(nil, issue_stat) }
-      let(:issue_stat) { build(:issue_stat, :archived) }
-      let(:expected_data) do
-        [
-          { column_id: column_1.id, issues: 0, issues_cumulative: 0 },
-          { column_id: column_2.id, issues: 0, issues_cumulative: 0 },
-        ]
-      end
-
-      it { expect(subject.first.data).to eq expected_data }
-    end
-
     context 'sum previous archive issues from board' do
-      let(:issues_by_columns) { { column_2.id => [issue] } }
+      let(:issue_stats) do
+        create(:issue_stat, board: board, column: column_1)
+        create(:issue_stat, :archived, board: board, column: column_2)
+      end
       let(:issue) { BoardIssue.new(nil, issue_stat) }
-      let(:issue_stat) { create(:issue_stat, :archived, board: board) }
       let(:expected_data) do
         [
-          { column_id: column_1.id, issues: 0, issues_cumulative: 1 },
-          { column_id: column_2.id, issues: 0, issues_cumulative: 1 },
+          { column_id: column_1.id, issues: 1, issues_cumulative: 2 },
+          { column_id: column_2.id, issues: 1, issues_cumulative: 1 },
         ]
       end
 
