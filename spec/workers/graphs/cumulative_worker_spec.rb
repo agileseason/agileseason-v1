@@ -8,9 +8,12 @@ describe Graphs::CumulativeWorker do
     let(:column_1) { board.columns.first }
     let(:column_2) { board.columns.second }
     let(:perform) { worker.perform(board.id, Encryptor.encrypt('fake_token')) }
+    let(:issue_stats) {}
     before { allow(Boards::Synchronizer).to receive(:call) }
     before { issue_stats }
     before { perform }
+
+    it { expect(Boards::Synchronizer).to have_received(:call) }
 
     context 'create_board_history' do
       context 'one_issue' do
