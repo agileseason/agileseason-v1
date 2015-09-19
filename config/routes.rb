@@ -23,6 +23,7 @@ Rails.application.routes.draw do
         get :move_left
         get :move_right
         patch :update_attribute
+        get :settings
       end
     end
 

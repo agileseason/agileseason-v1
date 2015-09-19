@@ -1,24 +1,19 @@
 $(document).on 'page:change', ->
   return unless document.body.id == 'settings_show'
-  $.initJsPathForInputs()
+  $('ul.columns li').each ->
+    new ColumnsSettings $(@)
 
-  $('.columns li').click (e) ->
-    if $(e.target).is('.octicon-gear') ||
-        $(e.target).is('.columns li') ||
-        $(e.target).is('.active-settings .autoassign')
-      $('.other-settings', $(@).closest('li')).toggle()
+  $('.columns li').on 'click', (e) => toggle_column_settings $(e.target)
 
-  $('#board_name').blur ->
-    $('input:submit', $(@).closest('form')).trigger 'click'
+  $('#board_name').on 'blur', -> $($(@).closest('form')).submit()
 
-  $('.autoassign input').on 'change', ->
-    $('.active-settings .autoassign', $(@).closest('li')).toggleClass 'active'
+  $('.iphone-button').on 'ajax:success', -> change_url $(@)
 
-  $('.delete').on 'ajax:before', ->
-    $(@).closest('li').fadeOut()
-
-  $('.iphone-button').on 'ajax:success', ->
-    change_url $(@)
+toggle_column_settings = ($target) ->
+  if $target.is('.octicon-gear') ||
+      $target.is('.columns li') ||
+      $target.is('.active-settings .autoassign')
+    $('.other-settings', $target.closest('li')).toggle()
 
 change_url = ($button) ->
   href = $button.attr('href')

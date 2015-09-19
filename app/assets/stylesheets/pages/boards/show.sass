@@ -83,12 +83,17 @@ $image-path: "pages/p-boards-show"
 
   .column-menu
     .title
-      color: $text-light
-      font-size: 16px
-      font-weight: bold
-      padding: 10px 0 0 10px
+      padding: 10px 0 0 0
+      margin-left: 10px
       position: absolute
       top: 0
+      font-size: 16px
+      color: $text-light
+
+      a
+        +ajax_link
+        color: $text-light
+        font-weight: bold
 
       span
         margin-left: 6px
@@ -102,14 +107,14 @@ $image-path: "pages/p-boards-show"
       right: 2px
       top: 2px
 
-    .popup
-      +popup
+    .b-popup
       font-size: 14px
       height: auto
       left: 100%
       top: 0
       width: 240px
       z-index: 3
+      margin-left: 15px
 
       .delete
         +light_button
@@ -123,12 +128,32 @@ $image-path: "pages/p-boards-show"
           padding: 6px 0
           margin: 0
 
+          .text
+            display: none
+            font-size: 11px
+            margin-top: 10px
+
           &.move
             a
               +light_button
 
-              &:last-child
-                margin-left: 10px
+            label + a
+              margin-right: 10px
+
+          &.disabled
+            position: relative
+
+            .text
+              display: block
+
+            &:after
+              background: rgba(255,255,255,0.7)
+              content: ''
+              height: 100%
+              left: 0
+              position: absolute
+              top: 0
+              width: 100%
 
           &.delimiter
             border-bottom: 1px solid $form-border
@@ -141,6 +166,7 @@ $image-path: "pages/p-boards-show"
             padding: 0
             white-space: nowrap
             width: 61px
+            color: $text-usual
 
           input
             width: 20px
@@ -174,7 +200,7 @@ $image-path: "pages/p-boards-show"
     display: inline-block
     float: right
     font-size: 14px
-    margin: -32px 35px 0 0
+    margin: -32px 10px 0 0
     padding: 3px 5px
     vertical-align: top
 

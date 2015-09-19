@@ -1,0 +1,67 @@
+ul
+  li
+    label Name
+    input.js-patch.name [
+      name='name'
+      type='input'
+      data-url="#{update_attribute_board_column_url(board, column)}"
+      placeholder='none'
+      value="#{column.name}"
+    ]
+  li.delimiter
+
+  li.autoassign
+    label
+      - if column.auto_assign?
+        input.js-patch [
+          name='is_auto_assign'
+          type='checkbox'
+          data-url="#{update_attribute_board_column_url(board, column)}"
+          value="#{column.auto_assign?}"
+          checked='checked'
+        ] Auto-assign&nbsp;yourself
+      - else
+        input.js-patch [
+          name='is_auto_assign'
+          type='checkbox'
+          data-url="#{update_attribute_board_column_url(board, column)}"
+          value="#{column.auto_assign?}"
+        ] Auto-assign&nbsp;yourself
+  li.delimiter
+
+  li
+    /label WIP from
+    span <abbr>WIP</abbr> from&nbsp;
+    input.js-patch [
+      name='wip_min'
+      type='input'
+      data-url="#{update_attribute_board_column_url(board, column)}"
+      placeholder='∞'
+      value="#{column.wip_min}"
+    ]
+    /li
+    /label WIP Max
+    span &nbsp;to&nbsp;
+    input.js-patch [
+      name='wip_max'
+      type='input'
+      data-url="#{update_attribute_board_column_url(board, column)}"
+      placeholder='∞'
+      value="#{column.wip_max}"
+    ]
+  li.delimiter
+
+  li.move class="#{'disabled' if @board_bag.column_issues(column).count > 0}"
+    label Move to&nbsp;
+    a href="#{move_left_board_column_url(board, column)}" &larr;&nbsp;Left
+    a href="#{move_right_board_column_url(board, column)}" Right&nbsp;&rarr;
+    .text For safety of your metrics only empty column can be moved and removed.
+  li.delimiter
+
+  li class="#{'disabled' if @board_bag.column_issues(column).count > 0}"
+    a.delete [
+      href="#{board_column_url(board, column)}"
+      data-confirm='Are you sure?'
+      data-method='delete'
+      data-remote='true'
+    ] Remove column
