@@ -9,8 +9,8 @@ describe Boards::Synchronizer do
     before do
       allow(IssueStats::Archiver).
         to receive(:new).
-          with(user, board, number).
-          and_return(archiver)
+        with(user, board, number).
+        and_return(archiver)
     end
     before { user.github_api = github_api }
 
