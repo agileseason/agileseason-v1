@@ -14,6 +14,7 @@ describe Graphs::CumulativeWorker do
       allow_any_instance_of(BoardBag).
         to receive(:issues_by_columns).and_return(issues_by_columns)
     end
+    before { allow(Boards::Synchronizer).to receive(:call) }
     before { perform }
 
     context :create_board_history do

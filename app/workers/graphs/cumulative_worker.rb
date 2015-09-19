@@ -6,8 +6,9 @@ module Graphs
 
       user = board.user
       user.github_api = github_api(encrypted_github_token)
-      board_bag = BoardBag.new(user, board)
+      Boards::Synchronizer.call(user: user, board: board)
 
+      board_bag = BoardBag.new(user, board)
       save_current_history(
         board,
         board_bag.issues_by_columns
@@ -34,6 +35,7 @@ module Graphs
       board.board_histories.build(collected_on: Date.today)
     end
 
+    # TODO Переписать на группировку по колонкам issue_stat!
     # FIX : Require refactoring! It's c# style!
     def fetch_data(board, board_issues)
       issues_group = board_issues.each_with_object({}) do |pair, hash|

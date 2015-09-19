@@ -36,6 +36,7 @@ module Graphs
       @last_number ||= @board.issue_stats.maximum(:number).to_i
     end
 
+    # TODO Нужно делать не так, а архивировать закрытые, которых нет уже на доске.
     def auto_archive_issue_stats(issues)
       old_closed_numbers = issues.
         select { |issue| issue.state == 'closed' && issue.closed_at < AUTO_ARCHIVE_BOUND }.
