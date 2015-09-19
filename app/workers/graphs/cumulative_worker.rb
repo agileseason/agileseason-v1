@@ -8,18 +8,14 @@ module Graphs
       user.github_api = github_api(encrypted_github_token)
       Boards::Synchronizer.call(user: user, board: board)
 
-      board_bag = BoardBag.new(user, board)
-      save_current_history(
-        board,
-        board_bag.issues_by_columns
-      )
+      save_current_history(board)
     end
 
     private
 
-    def save_current_history(board, issues_by_columns)
+    def save_current_history(board)
       board_history = fetch_board_history(board)
-      board_history.update(data: fetch_data(board, issues_by_columns))
+      board_history.update(data: fetch_data(board))
       board_history
     end
 
@@ -35,18 +31,11 @@ module Graphs
       board.board_histories.build(collected_on: Date.today)
     end
 
-    # TODO Переписать на группировку по колонкам issue_stat!
-    # FIX : Require refactoring! It's c# style!
-    def fetch_data(board, board_issues)
-      issues_group = board_issues.each_with_object({}) do |pair, hash|
-        column_id = pair[0]
-        issues = pair[1]
-        hash[column_id] = calc_issues(issues)
-      end
-
-      total_issues = total_issues_count(board, issues_group)
+    # TODO Extract service
+    def fetch_data(board)
+      total_issues = board.issue_stats.count
       board.columns.each_with_object([]) do |column, arr|
-        count = issues_group[column.id] || 0
+        count = issues_count(board, column)
         arr << {
           column_id: column.id,
           issues: count,
@@ -56,14 +45,17 @@ module Graphs
       end
     end
 
-    def calc_issues(issues)
-      return 0 if issues.blank?
-      issues.select { |issue| !issue.archive? }.size
+    def issues_count(board, column)
+      group = issues_group(board).detect { |g| g.column_id == column.id }
+      return 0 if group.nil?
+      group.issues
     end
 
-    def total_issues_count(board, issues_group)
-      board_total = issues_group.sum { |e| e[1] }
-      board.issue_stats.archived.count + board_total
+    def issues_group(board)
+      @issues_group ||= board.
+        issue_stats.
+        select('column_id, count(*) as issues').
+        group(:column_id)
     end
   end
 end

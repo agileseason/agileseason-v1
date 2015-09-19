@@ -40,5 +40,20 @@ describe Boards::Synchronizer do
 
       it { expect(archiver).to have_received(:call) }
     end
+
+    context 'move archived issues to last column' do
+      let(:column_1) { board.columns.first }
+      let(:column_2) { board.columns.last }
+      let(:issues) { [] }
+      let(:issue_1) { stub_closed_issue(number: number) }
+      let!(:issue_stat_1) do
+        create(:issue_stat, :archived, board: board, column: column_1, number: number)
+      end
+
+      before { subject }
+
+      it { expect(archiver).not_to have_received(:call) }
+      it { expect(issue_stat_1.reload.column).to eq column_2 }
+    end
   end
 end
