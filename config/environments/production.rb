@@ -78,5 +78,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Allow iframe for Yandex metrika (webvisor).
-  config.action_dispatch.default_headers['X-Frame-Options'] = 'ALLOW-FROM http://metrika.yandex.ru'
+  config.action_dispatch.default_headers['X-Frame-Options'] = 'ALLOW-FROM http://old.metrika.yandex.ru'
 end
