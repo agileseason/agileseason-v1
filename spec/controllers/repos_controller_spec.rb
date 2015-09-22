@@ -14,7 +14,7 @@ describe ReposController do
     it do
       expect(controller).
         to have_received(:ui_event).
-        with(:board_new, { step: 'choose repository' })
+        with(:board_new, step: 'choose repository')
     end
   end
 end

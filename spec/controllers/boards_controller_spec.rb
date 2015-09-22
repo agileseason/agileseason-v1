@@ -92,7 +92,7 @@ describe BoardsController, type: :controller do
 
     it { expect(response).to have_http_status(:success) }
     it { expect(response).to render_template('_new') }
-    it { expect(controller).to have_received(:ui_event).with(:board_new, { step: 'setup board' }) }
+    it { expect(controller).to have_received(:ui_event).with(:board_new, step: 'setup board') }
   end
 
 
