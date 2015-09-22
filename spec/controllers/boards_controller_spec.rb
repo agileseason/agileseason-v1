@@ -26,20 +26,6 @@ describe BoardsController, type: :controller do
     end
   end
 
-  describe '#new' do
-    let(:repo) { OpenStruct.new(id: 1, name: 'foo', full_name: 'bar/foo') }
-    before do
-      allow_any_instance_of(GithubApi).
-        to receive(:cached_repos).and_return([repo])
-    end
-    before { stub_sign_in }
-
-    it 'returns http success' do
-      get :new, github_id: repo.id
-      expect(response).to have_http_status(:success)
-    end
-  end
-
   describe '#show' do
     let(:request) { get(:show, github_full_name: board.github_full_name) }
     let(:user) { create(:user) }
@@ -93,6 +79,23 @@ describe BoardsController, type: :controller do
     end
   end
 
+  describe '#new' do
+    subject { get :new, github_id: repo.id }
+    let(:repo) { OpenStruct.new(id: 1, name: 'foo', full_name: 'bar/foo') }
+    before do
+      allow_any_instance_of(GithubApi).
+        to receive(:cached_repos).and_return([repo])
+    end
+    before { allow(controller).to receive(:ui_event) }
+    before { stub_sign_in }
+    before { subject }
+
+    it { expect(response).to have_http_status(:success) }
+    it { expect(response).to render_template('_new') }
+    it { expect(controller).to have_received(:ui_event).with(:board_new, step: 'setup board') }
+  end
+
+
   describe '#create' do
     subject { Board.where(user_id: user.id).first }
     let(:user) { create(:user) }
@@ -104,9 +107,9 @@ describe BoardsController, type: :controller do
 
       allow_any_instance_of(GithubApi).
         to receive(:issues).and_return([])
-
-      allow(WebhookWorker).to receive(:perform_async)
     end
+    before { allow(WebhookWorker).to receive(:perform_async) }
+    before { allow(controller).to receive(:ui_event) }
     before { stub_sign_in(user) }
     before do
       post(
@@ -126,18 +129,21 @@ describe BoardsController, type: :controller do
       its(:name) { is_expected.to eq 'test-1' }
       it { expect(subject.columns.map(&:name)).to eq ['c1', 'c2'] }
       it { expect(WebhookWorker).to have_received(:perform_async) }
+      it { expect(controller).to have_received(:ui_event).with(:board_create) }
     end
 
     context 'blank name' do
       let(:board_name) { '' }
       it { is_expected.to be_nil }
       it { expect(WebhookWorker).not_to have_received(:perform_async) }
+      it { expect(controller).not_to have_received(:ui_event).with(:board_create) }
     end
 
     context 'to few columns' do
       let(:column_names) { ['c1'] }
       it { is_expected.to be_nil }
       it { expect(WebhookWorker).not_to have_received(:perform_async) }
+      it { expect(controller).not_to have_received(:ui_event).with(:board_create) }
     end
   end
 

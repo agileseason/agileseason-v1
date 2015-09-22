@@ -28,6 +28,7 @@ class BoardsController < ApplicationController
       github_name: repo.name,
       github_full_name: repo.full_name
     )
+    ui_event(:board_new, step: 'setup board')
 
     render partial: 'new', locals: { board: @board }
   end

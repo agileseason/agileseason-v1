@@ -6,9 +6,15 @@ describe ReposController do
         to receive(:github_api).
         and_return(github_api)
     end
+    before { allow(controller).to receive(:ui_event) }
     before { stub_sign_in }
     before { get :index }
 
     it { expect(response).to have_http_status(:success) }
+    it do
+      expect(controller).
+        to have_received(:ui_event).
+        with(:board_new, step: 'choose repository')
+    end
   end
 end
