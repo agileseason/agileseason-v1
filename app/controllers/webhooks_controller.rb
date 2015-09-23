@@ -7,7 +7,10 @@ class WebhooksController < ApplicationController
   def github
     if trusted_request? && board.present?
       board_bag.update_cache(issue)
+      issue_stat = IssueStatService.find(board_bag, issue.number)
+      broadcast_column(issue_stat.column) if issue_stat.present?
     end
+
     render nothing: true
   end
 

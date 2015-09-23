@@ -48,7 +48,7 @@ class IssuesController < ApplicationController
     IssueStats::Mover.new(current_user, @board_bag, column_to, number).call
     IssueStats::AutoAssigner.new(current_user, @board_bag, column_to, number).call
     IssueStats::Sorter.new(column_to, number, !!params[:force]).call
-    IssueStats::Unready.new(current_user, @board_bag, number).call
+    IssueStats::Unready.call(user: current_user, board_bag: @board_bag, number: number)
 
     issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
     broadcast_column(issue_stat.column)
@@ -121,11 +121,12 @@ class IssuesController < ApplicationController
   end
 
   def ready
-    if params[:issue_stat][:is_ready] == 'true'
-      IssueStats::Ready.new(current_user, @board_bag, number).call
+    issue_stat = if params[:issue_stat][:is_ready] == 'true'
+      IssueStats::Ready.call(user: current_user, board_bag: @board_bag, number: number)
     else
-      IssueStats::Unready.new(current_user, @board_bag, number).call
+      IssueStats::Unready.call(user: current_user, board_bag: @board_bag, number: number)
     end
+    broadcast_column(issue_stat.column)
 
     render nothing: true
   end

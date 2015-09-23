@@ -325,6 +325,7 @@ RSpec.describe IssuesController, type: :controller do
 
       it { expect(response).to have_http_status(:success) }
       it { expect(issue_stat.reload.is_ready).to eq false }
+      it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
     end
   end
 end
