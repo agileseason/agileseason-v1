@@ -1,6 +1,11 @@
 module IssueStats
   class Ready
-    pattr_initialize :user, :board_bag, :number
+    include Service
+    include Virtus.model
+
+    attribute :user, User
+    attribute :board_bag, BoardBag
+    attribute :number, Integer
 
     def call
       issue_stat = IssueStats::Finder.new(user, board_bag, number).call

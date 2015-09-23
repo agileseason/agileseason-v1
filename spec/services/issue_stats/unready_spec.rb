@@ -1,6 +1,6 @@
 describe IssueStats::Unready do
   describe '#call' do
-    subject { IssueStats::Unready.new(user, board_bag, number).call }
+    subject { IssueStats::Unready.call(user: user, board_bag: board_bag, number: number) }
     let(:user) { create(:user) }
     let(:board_bag) { BoardBag.new(nil, board) }
     let(:number) { issue.number }
