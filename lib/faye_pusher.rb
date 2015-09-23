@@ -5,6 +5,7 @@ class FayePusher
     @client ||= Faye::Client.new(URL)
   end
 
+  # FIX : Inline parameter user (user.remember_token => client_id)
   def self.broadcast(channel, user, data)
     return unless on?
 
