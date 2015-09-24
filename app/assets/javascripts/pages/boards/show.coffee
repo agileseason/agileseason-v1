@@ -68,11 +68,13 @@ resize_height = ->
   $('.board').height(height)
 
 column_menu = ->
-  $('.column-menu .title a').on 'ajax:success', (e, data) ->
+  $('.column-menu').each ->
+    new ColumnsSettings $(@)
+
+  $('.column-menu .title a').on 'click', ->
     $menu = $(@).closest('.column-menu')
+    $('.column-settings-popup', $menu).show()
     $menu.addClass('active').prepend('<div class="overlay"></div>')
-    $menu.find('.column-settings-popup').html(data.content).show()
-    new ColumnsSettings $menu
 
   $('.board-column .column-menu').on 'click', '.overlay', ->
     $(@).parent().find('.column-settings-popup').hide()

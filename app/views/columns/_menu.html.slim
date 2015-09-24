@@ -1,15 +1,12 @@
 .column-menu
   .title
-    a [
-      class="#{'js-show-popup' if can?(:update, @board)}"
-      href="#{settings_board_column_url @board, column.id}"
-      data-remote='true'
-    ]
+    a class="#{'js-show-popup' if can?(:update, @board)}"
       = column.name
 
     = render 'columns/wip_badge', column: column
 
     .column-settings-popup
+      = render 'columns/columns_settings', board: @board, column: column
 
   - if can?(:update, @board) && k(column).first?
     .new-issue.ajax-link Add an issue

@@ -23,3 +23,4 @@
         .val $input.prop 'checked'
         .blur()
 ) jQuery
+
