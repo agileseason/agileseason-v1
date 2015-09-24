@@ -30,7 +30,8 @@ class ApplicationController < ActionController::Base
         ActionController::RoutingError,
         ActiveRecord::RecordNotFound,
         AbstractController::ActionNotFound,
-        ActiveSupport::MessageVerifier::InvalidSignature
+        ActiveSupport::MessageVerifier::InvalidSignature,
+        CanCan::AccessDenied
       ].include?(e.class)
       render file: 'public/404.html', status: 404, layout: false
     else
