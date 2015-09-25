@@ -22,11 +22,3 @@
 # ---  Fileupload loaded after all  ---
 #= require jquery.fileupload
 #= require jquery.scrollTo
-
-# Turbolinks and mentrika.yandex.ru
-$(document).on 'page:before-change', =>
-  @turbolinks_referer = location.href
-$(document).on 'page:load', =>
-  if @turbolinks_referer
-    if @yaCounter27976815
-      @yaCounter27976815.hit location.href, $('title').html(), @turbolinks_referer
