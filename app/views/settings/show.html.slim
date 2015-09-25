@@ -1,6 +1,5 @@
 .p-settings-show
   .setting
-    /.subtitle Board settings
     .board-name
       = simple_form_for(board, url: rename_board_settings_url(board), html: {class: 'board-name'}) do |f|
         = f.input :name, label: 'Board name'
@@ -67,7 +66,6 @@
                       ]
                     span Autoassign&nbsp;yourself
 
-
                 /.autoclose
                   /input type='checkbox' disabled='disabled'
                   /label.coming-soon Autoclosign issues
@@ -92,8 +90,7 @@
                     value="#{column.wip_max}"
                   ]
 
-          li
-            = render partial: 'columns/new', locals: { board: board }
+          li = render partial: 'columns/new', locals: { board: board }
 
       .notes
         p Be responsible for your <a href="#{un board_graphs_cumulative_index_url(@board)}">metrics</a>.
@@ -103,12 +100,8 @@
 
 
     - if @board.kanban?
-      /.box
-        .subtitle Features Kanban
-        = simple_form_for(@board.kanban_settings, url: board_settings_url(board), method: :patch) do |f|
-          = f.input :rolling_average_window
-          = f.button :submit, value: 'Update'
-    - elsif @board.scrum?
+      // NOTE No fields yet.
+    - if @board.scrum?
       .box
         .subtitle Features Scrum
         = simple_form_for(@board.scrum_settings, url: board_settings_url(board), method: :patch) do |f|
@@ -117,26 +110,26 @@
           = f.button :submit, value: 'Update'
 
 
-  - if can? :destroy, @board
-    br
+  - if can? :manage, @board
+    - unless @board_bag.private_repo?
+      .setting
+        .action
+          = link_to @board.is_public? ? 'Public board' : 'Private board',
+            board_settings_url(@board, @board.danger_settings, danger_settings: { is_public: @board.is_public? ? 'false' : 'true' }),
+            class: "#{@board.is_public? ? 'true' : 'false'} iphone-button is_public",
+            remote: true,
+            method: :patch
+        .setting-label = @board.is_public? ? 'Visible to anyone.' : 'Not visible to anyone.'
+
     .setting
       .action
-        = link_to @board.is_public? ? 'Public board' : 'Private board',
-          board_settings_url(@board, @board.danger_settings, danger_settings: { is_public: @board.is_public? ? 'false' : 'true' }),
-          class: "#{@board.is_public? ? 'true' : 'false'} iphone-button is_public",
-          remote: true,
-          method: :patch
-
-      .setting-label = @board.is_public? ? 'Visible to anyone.' : 'Not visible to anyone.'
-
-    .setting
-      .action
-        /.subtitle Delete this board
-        a.button.danger href="#{board_url(@board)}" data-confirm='Are you sure?' data-method='delete'
-          | Delete this board
+        a.button.danger [
+          href="#{board_url(@board)}"
+          data-confirm='Are you sure?'
+          data-method='delete'
+        ] Delete this board
       .setting-label.danger Once you delete a board, there is no going back. Please be certain.
 
-    br
     .setting
       .action
         - if @board.github_hook_id.nil?
@@ -148,4 +141,3 @@
             data-method='delete'
           ] Delete hook
       .setting-label Webhook for fast sync issues which created via GitHub directly.
-
