@@ -31,5 +31,6 @@ html
     = render partial: 'modal'
 
     - if Rails.env.production?
-      = render partial: 'layouts/yandex_metrika'
+      = render partial: 'application/counters/yandex_metrika'
+      = render partial: 'application/counters/google_analytics'
       = render partial: 'layouts/intercom/observe'
