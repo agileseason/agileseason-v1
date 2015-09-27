@@ -45,12 +45,12 @@ class IssuesController < ApplicationController
 
   def move_to
     column_to = @board.columns.find(params[:column_id])
-    IssueStats::Mover.new(current_user, @board_bag, column_to, number).call
+    IssueStats::Mover.call(user: current_user, board_bag: @board_bag, column_to: column_to, number: number)
     IssueStats::AutoAssigner.new(current_user, @board_bag, column_to, number).call
     IssueStats::Sorter.new(column_to, number, !!params[:force]).call
-    IssueStats::Unready.call(user: current_user, board_bag: @board_bag, number: number)
 
     issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
+
     broadcast_column(issue_stat.column)
     broadcast_column(column_to)
 
