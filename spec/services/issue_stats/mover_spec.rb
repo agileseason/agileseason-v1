@@ -1,14 +1,21 @@
 describe IssueStats::Mover do
-  let(:mover) { IssueStats::Mover.new(user, board_bag, column_to, number) }
   let(:user) { create(:user) }
   let(:board) { create(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(nil, board) }
   let(:issue) { stub_issue }
   let(:github_api) { double(issue: issue) }
   before { allow(user).to receive(:github_api).and_return(github_api) }
+  before { allow(IssueStats::Unready).to receive(:call) }
 
   describe '#call' do
-    subject { mover.call }
+    subject do
+      IssueStats::Mover.call(
+        user: user,
+        board_bag: board_bag,
+        column_to: column_to,
+        number: number
+      )
+    end
     let(:number) { issue_stat.number }
     let(:issue_stat) { create(:issue_stat, number: stub_issue.number, board: board, column: column_from) }
 
@@ -16,9 +23,14 @@ describe IssueStats::Mover do
       let(:column_from) { board.columns.first }
       let(:column_to) { board.columns.first }
 
+      its(:column) { is_expected.to eq column_from }
       it { expect { subject }.to change(Lifetime, :count).by(0) }
       it { expect { subject }.to change(Activity, :count).by(0) }
-      its(:column) { is_expected.to eq column_from }
+
+      context 'behavior' do
+        before { subject }
+        it { expect(IssueStats::Unready).not_to have_received(:call) }
+      end
     end
 
     context 'column changed' do
@@ -30,6 +42,11 @@ describe IssueStats::Mover do
       it { expect { subject }.to change(Lifetime, :count).by(1) }
       it { expect { subject }.to change(Activity, :count).by(1) }
       its(:column) { is_expected.to eq column_to }
+
+      context 'behavior' do
+        before { subject }
+        it { expect(IssueStats::Unready).to have_received(:call) }
+      end
     end
   end
 end

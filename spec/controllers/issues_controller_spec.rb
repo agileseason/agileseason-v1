@@ -1,4 +1,4 @@
-RSpec.describe IssuesController, type: :controller do
+describe IssuesController do
   let(:user) { create(:user) }
   let(:board) { create(:kanban_board, :with_columns, user: user) }
   let(:column_1) { board.columns.first }
@@ -135,10 +135,6 @@ RSpec.describe IssuesController, type: :controller do
     before { allow(github_api).to receive(:issues).and_return([issue]) }
     before { allow(github_api).to receive(:issue).and_return(issue) }
     before do
-      allow_any_instance_of(IssueStats::Mover).
-        to receive(:call)
-    end
-    before do
       allow_any_instance_of(IssueStats::Finder).
         to receive(:call).
         and_return(issue_stat)
@@ -147,18 +143,18 @@ RSpec.describe IssuesController, type: :controller do
       allow_any_instance_of(IssueStats::AutoAssigner).
         to receive(:call)
     end
+    before { allow(IssueStats::Mover).to receive(:call) }
 
     context 'responce' do
       before { request }
       it { expect(response).to have_http_status(:success) }
+      it { expect(IssueStats::Mover).to have_received(:call) }
     end
 
     context 'behavior' do
       after { request }
-      it { expect_any_instance_of(IssueStats::Mover).to receive(:call) }
       it { expect_any_instance_of(IssueStats::AutoAssigner).to receive(:call) }
       it { expect_any_instance_of(IssueStats::Sorter).to receive(:call) }
-      it { expect_any_instance_of(IssueStats::Unready).to receive(:call) }
     end
   end
 
