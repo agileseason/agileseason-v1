@@ -31,10 +31,10 @@
 
   .buttons
     = link_to 'ready',
-      ready_board_issues_url(@board, issue.number, issue_stat: { is_ready: !issue.ready? }),
+      toggle_ready_board_issues_url(@board, issue.number),
       class: "is_ready #{:active if issue.ready?}",
       remote: true,
-      method: :patch
+      method: :post
 
     - if can?(:update, @board)
       - if issue.open?
