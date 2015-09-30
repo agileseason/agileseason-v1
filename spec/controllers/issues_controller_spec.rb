@@ -298,29 +298,29 @@ describe IssuesController do
     it { expect(issue.reload.due_date_at).to eq date }
   end
 
-  describe '#ready' do
-    context 'true' do
-      let!(:issue_stat) { create :issue_stat, board: board, number: 1 }
-
-      before do
-        patch :ready, board_github_full_name: board.github_full_name,
-          number: 1, issue_stat: { is_ready: 'true' }
-      end
-
-      it { expect(response).to have_http_status(:success) }
-      it { expect(issue_stat.reload.is_ready).to eq true }
+  describe '#toggle_ready' do
+    let(:issue_stat) { create :issue_stat, board: board, is_ready: is_ready }
+    before do
+      post(
+        :toggle_ready,
+        board_github_full_name: board.github_full_name,
+        number: issue_stat.number
+      )
     end
 
-    context 'flase' do
-      let!(:issue_stat) { create :issue_stat, board: board, number: 1, is_ready: true }
-
-      before do
-        patch :ready, board_github_full_name: board.github_full_name,
-          number: 1, issue_stat: { is_ready: 'false' }
-      end
+    context 'true' do
+      let(:is_ready) { true }
 
       it { expect(response).to have_http_status(:success) }
       it { expect(issue_stat.reload.is_ready).to eq false }
+      it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+    end
+
+    context 'flase' do
+      let(:is_ready) { false }
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(issue_stat.reload.is_ready).to eq true }
       it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
     end
   end

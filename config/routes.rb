@@ -36,7 +36,7 @@ Rails.application.routes.draw do
       get ':number/unarchive', to: 'issues#unarchive', as: :unarchive
       get ':number/assignee/:login', to: 'issues#assignee', as: :assignee
       post ':number/due_date', to: 'issues#due_date', as: :due_date
-      patch ':number/ready', to: 'issues#ready', as: :ready
+      post ':number/toggle_ready', to: 'issues#toggle_ready', as: :toggle_ready
       patch ':number/update', to: 'issues#update', as: :update
       patch ':number/update_labels', to: 'issues#update_labels', as: :update_labels
 
