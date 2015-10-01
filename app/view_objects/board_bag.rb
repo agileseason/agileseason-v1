@@ -137,6 +137,6 @@ class BoardBag
   end
 
   def github_repo
-    @cached_repo ||= user.github_api.cached_repos.detect { |r| r.full_name == @board.github_full_name }
+    @cached_repo ||= Boards::DetectRepo.call(user: user, board: board)
   end
 end

@@ -185,7 +185,7 @@ describe BoardBag do
     subject { bag.private_repo? }
 
     context 'known repo' do
-      let(:repo) { OpenStruct.new(full_name: board.github_full_name, private: is_private) }
+      let(:repo) { OpenStruct.new(id: board.github_id, private: is_private) }
       before do
         allow(github_api).
           to receive(:cached_repos).
@@ -216,18 +216,18 @@ describe BoardBag do
 
   describe '#has_write_permission?' do
     subject { bag.has_write_permission? }
+    before do
+      allow(github_api).
+        to receive(:cached_repos).
+        and_return([repo])
+    end
 
     context 'known repo' do
       let(:repo) do
         OpenStruct.new(
-          full_name: board.github_full_name,
+          id: board.github_id,
           permissions: double(push: is_can_push)
         )
-      end
-      before do
-        allow(github_api).
-          to receive(:cached_repos).
-          and_return([repo])
       end
 
       context 'only read permissions' do
@@ -242,10 +242,11 @@ describe BoardBag do
     end
 
     context 'unknown repo' do
-      before do
-        allow(github_api).
-          to receive(:cached_repos).
-          and_return([])
+      let(:repo) do
+        OpenStruct.new(
+          id: board.github_id + 1,
+          permissions: double(push: true)
+        )
       end
 
       it { is_expected.to eq false }

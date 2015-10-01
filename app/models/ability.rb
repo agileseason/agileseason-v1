@@ -41,7 +41,7 @@ class Ability
     end
 
     can [:read, :update], Board do |board|
-      owner?(board) || @user.github_api.cached_repos.any? { |repo| repo.id == board.github_id }
+      owner?(board) || Boards::DetectRepo.call(user: @user, board: board)
     end
 
     can :read, Board do |board|
