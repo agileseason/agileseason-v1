@@ -56,6 +56,7 @@ class BoardBag
   end
 
   def collaborators
+    return [] unless has_write_permission?
     @collaborators ||= cached(:collaborators, 20.minutes) do
       user.github_api.collaborators(@board)
     end
@@ -84,8 +85,11 @@ class BoardBag
   end
 
   def private_repo?
-    repo = user.github_api.cached_repos.detect { |r| r.full_name == @board.github_full_name }
-    repo.present? && repo.private
+    github_repo.present? && github_repo.private
+  end
+
+  def has_write_permission?
+    github_repo.present? && github_repo.permissions.push
   end
 
   def subscribed?
@@ -130,5 +134,9 @@ class BoardBag
 
   def missing_issue_numbers(column)
     issues_by_columns[column.id].map(&:number) - column.issues.map(&:to_i)
+  end
+
+  def github_repo
+    @cached_repo ||= user.github_api.cached_repos.detect { |r| r.full_name == @board.github_full_name }
   end
 end

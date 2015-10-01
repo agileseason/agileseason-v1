@@ -50,23 +50,25 @@
     - if can?(:update, @board)
       .issue-actions
         .overlay
-        = render partial: 'issues/actions/edit_labels',   locals: { board: @board_bag, issue: @issue }
-        = render partial: 'issues/actions/assign',        locals: { issue: @issue }
+        - if can?(:update_issue, @board_bag)
+          = render partial: 'issues/actions/edit_labels',   locals: { board: @board_bag, issue: @issue }
+          = render partial: 'issues/actions/assign',        locals: { issue: @issue }
         = render partial: 'issues/actions/edit_due_date', locals: { board: @board, issue: @issue }
 
-        a.button.issue-close [
-          href="#{close_board_issues_url(@board, @issue.number)}"
-          data-remote='true'
-        ]
-          span.octicon.octicon-issue-closed
-          | Close issue
+        - if can?(:update_issue, @board_bag)
+          a.button.issue-close [
+            href="#{close_board_issues_url(@board, @issue.number)}"
+            data-remote='true'
+          ]
+            span.octicon.octicon-issue-closed
+            | Close issue
 
-        a.button.issue-reopen [
-          href="#{reopen_board_issues_url(@board, @issue.number)}"
-          data-remote='true'
-        ]
-          span.octicon.octicon-issue-reopened
-          | Reopen issue
+          a.button.issue-reopen [
+            href="#{reopen_board_issues_url(@board, @issue.number)}"
+            data-remote='true'
+          ]
+            span.octicon.octicon-issue-reopened
+            | Reopen issue
 
         a.button.issue-archive [
           href="#{archive_board_issues_url(@board, @issue.number)}"

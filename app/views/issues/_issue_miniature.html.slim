@@ -37,7 +37,7 @@
       method: :post
 
     - if can?(:update, @board)
-      - if issue.open?
+      - if issue.open? && can?(:update_issue, @board_bag)
         a.button.close [
           href="#{close_board_issues_url(@board, issue.number)}"
           data-type='json'

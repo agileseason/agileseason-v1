@@ -47,6 +47,10 @@ class Ability
     can :read, Board do |board|
       board.public?
     end
+
+    can :update_issue, BoardBag do |board_bag|
+      board_bag.has_write_permission?
+    end
   end
 
   def owner?(board)

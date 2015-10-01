@@ -101,9 +101,10 @@ describe BoardBag do
 
   describe '#collaborators' do
     let(:github_api) { double(collaborators: []) }
-    after { bag.collaborators }
+    before { allow(bag).to receive(:has_write_permission?).and_return(true) }
+    before { bag.collaborators }
 
-    it { expect(github_api).to receive(:collaborators).with(board) }
+    it { expect(github_api).to have_received(:collaborators).with(board) }
   end
 
   describe '#labels' do
@@ -199,6 +200,44 @@ describe BoardBag do
       context 'public repo' do
         let(:is_private) { false }
         it { is_expected.to eq false }
+      end
+    end
+
+    context 'unknown repo' do
+      before do
+        allow(github_api).
+          to receive(:cached_repos).
+          and_return([])
+      end
+
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe '#has_write_permission?' do
+    subject { bag.has_write_permission? }
+
+    context 'known repo' do
+      let(:repo) do
+        OpenStruct.new(
+          full_name: board.github_full_name,
+          permissions: double(push: is_can_push)
+        )
+      end
+      before do
+        allow(github_api).
+          to receive(:cached_repos).
+          and_return([repo])
+      end
+
+      context 'only read permissions' do
+        let(:is_can_push) { false }
+        it { is_expected.to eq false }
+      end
+
+      context 'write permissions' do
+        let(:is_can_push) { true }
+        it { is_expected.to eq true }
       end
     end
 
