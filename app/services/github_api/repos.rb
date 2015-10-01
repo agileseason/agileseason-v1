@@ -1,13 +1,15 @@
 class GithubApi
   module Repos
+    EXPIRES_IN_REPOS = 1.day
+
     def repos
       fetch_repos = user_repos
-      Rails.cache.write(cache_key, fetch_repos, expires_in: 1.month)
+      Rails.cache.write(cache_key, fetch_repos, expires_in: EXPIRES_IN_REPOS)
       fetch_repos
     end
 
     def cached_repos
-      Rails.cache.fetch(cache_key, expires_in: 1.month) { repos }
+      Rails.cache.fetch(cache_key, expires_in: EXPIRES_IN_REPOS) { repos }
     end
 
     def repo(repo_name)
