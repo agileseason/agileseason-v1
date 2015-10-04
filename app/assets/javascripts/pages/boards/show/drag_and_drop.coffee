@@ -34,5 +34,10 @@ $(document).on 'page:change', ->
       $.ajax
         url: move_to_path
         success: (data) ->
-          $("#issues_#{data.number}").replaceWith(data.html_miniature)
+          $issue = $("#issues_#{data.number}")
+          $issue.find('.b-assignee').replaceWith(data.assignee)
+          if data.is_ready
+            $issue.find('.is_ready').addClass('active')
+          else
+            $issue.find('.is_ready').removeClass('active')
           window.update_wip_column(badge) for badge in data.badges
