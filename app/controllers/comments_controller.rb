@@ -4,6 +4,16 @@ class CommentsController < ApplicationController
   before_action :fetch_board_for_update, except: [:index]
   after_action :fetch_issue, only: [:create, :delete]
 
+  def index
+    comments = github_api.issue_comments(@board, number)
+    render(
+      partial: 'comments/show',
+      collection: comments,
+      as: :comment,
+      locals: { board: @board, number: number }
+    )
+  end
+
   def create
     comment = github_api.add_comment(@board, number, params[:comment][:body])
     ui_event(:issue_comment)

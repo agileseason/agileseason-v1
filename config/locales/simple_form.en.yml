@@ -4,8 +4,10 @@ en:
     "no": 'No'
     magic_submit:
       default:
-        show:
+        show: &form
           disable_with: "Saving…"
+        index:
+          <<: *form
 
     required:
       text: 'required'

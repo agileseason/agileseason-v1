@@ -1,6 +1,7 @@
 $(document).on 'ready page:load', ->
   return unless document.body.id == 'issues_show'
 
+  fetch_comments()
   subscribe_issue_update()
 
   $('.b-menu').click (e) ->
@@ -264,6 +265,15 @@ update_by_checkbox = ($checkbox) ->
 
   $('form.edit-comment', $comment_text.parent())
     .trigger 'submit'
+
+fetch_comments = ->
+  $container = $('.issue-comments')
+  return if $container.data('comments') == 0
+
+  $.ajax
+    url: $container.data('url')
+    success: (html) ->
+      $container.html(html)
 
 subscribe_issue_update = ->
   $issue = $('.b-issue-modal')

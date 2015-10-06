@@ -18,7 +18,6 @@
           | &nbsp;or&nbsp;
         a.delete data-url="#{delete_comment_board_issues_url(board, number, comment.id)}" delete
 
-    / FIX : Why data-initial not in .editable same as description?
     .comment-form.b-editable-form
       .comment-text data-url="#{update_comment_board_issues_url(board, number, comment.id)}"
         = markdown(comment.body, board)
