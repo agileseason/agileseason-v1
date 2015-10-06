@@ -1,8 +1,15 @@
-RSpec.describe CommentsController, type: :controller do
+describe CommentsController do
   let(:user) { create(:user) }
   let(:board) { create(:board, :with_columns, user: user) }
   before { stub_sign_in(user) }
   before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
+  before { allow_any_instance_of(GithubApi).to receive(:issue_comments).and_return([]) }
+
+  describe '#index' do
+    before { get :index, board_github_full_name: board.github_full_name, number: 1 }
+
+    it { expect(response).to have_http_status(:success) }
+  end
 
   describe '#create' do
     subject { post :create, board_github_full_name: board.github_full_name, number: 1, id: 101, comment: { body: 'sdfsd' } }

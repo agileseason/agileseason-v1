@@ -6,7 +6,12 @@ class CommentsController < ApplicationController
 
   def index
     comments = github_api.issue_comments(@board, number)
-    render partial: 'comments/show', collection: comments, as: :comment, locals: { board: @board, number: number }
+    render(
+      partial: 'comments/show',
+      collection: comments,
+      as: :comment,
+      locals: { board: @board, number: number }
+    )
   end
 
   def create
