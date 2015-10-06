@@ -10,7 +10,6 @@ class IssuesController < ApplicationController
   def show
     @direct_post = S3Api.direct_post
     @issue = @board_bag.issue(number)
-    @comments = issue_comments(@issue)
   end
 
   def create
@@ -163,12 +162,6 @@ class IssuesController < ApplicationController
     params.
       require(:issue).
       permit(labels: [])
-  end
-
-  # TODO Remove this method in #548
-  def issue_comments(issue)
-    return [] if issue.comments.zero?
-    github_api.issue_comments(@board, issue.number)
   end
 
   def fetch_cumulative_graph

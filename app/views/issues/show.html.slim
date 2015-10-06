@@ -40,9 +40,11 @@
       - unless k(:issue, @issue).body_empty?
         .issue-description = markdown(@issue.body.html_safe, @board)
 
-      .issue-comments data-url="#{comments_board_issues_url @board, @issue.number}"
-        - @comments.each do |comment|
-          = render partial: 'comments/show', locals: { comment: comment, board: @board, number: @issue.number }
+      .issue-comments [
+        data-url="#{comments_board_issues_url(@board, @issue.number)}"
+        data-comments="#{@issue.comments}"
+      ]
+        = render partial: 'comments/stub_index', locals: { comments: @issue.comments }
 
       - if can?(:update, @board)
         = render partial: 'comments/new', locals: { board: @board, issue: @issue }
@@ -51,8 +53,8 @@
       .issue-actions
         .overlay
         - if can?(:update_issue, @board_bag)
-          = render partial: 'issues/actions/edit_labels',   locals: { board: @board_bag, issue: @issue }
-          = render partial: 'issues/actions/assign',        locals: { issue: @issue }
+          = render partial: 'issues/actions/edit_labels', locals: { board: @board_bag, issue: @issue }
+          = render partial: 'issues/actions/assign', locals: { issue: @issue }
         = render partial: 'issues/actions/edit_due_date', locals: { board: @board, issue: @issue }
 
         - if can?(:update_issue, @board_bag)
