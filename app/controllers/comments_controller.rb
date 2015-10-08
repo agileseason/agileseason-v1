@@ -15,26 +15,29 @@ class CommentsController < ApplicationController
   end
 
   def create
-    comment = github_api.add_comment(@board, number, params[:comment][:body])
+    comment = github_api.add_comment(@board, number, comment_body)
+    sync_checklist
     ui_event(:issue_comment)
     broadcast(comment)
     render partial: 'show', locals: { comment: comment, board: @board, number: number }
   end
 
   def update
-    comment = github_api.update_comment(@board, id, params[:comment][:body])
+    comment = github_api.update_comment(@board, id, comment_body)
+    sync_checklist
     render partial: 'show', locals: { comment: comment, board: @board, number: number }
   end
 
   def delete
     github_api.delete_comment(@board, id)
+    sync_checklist
     render nothing: true
   end
 
   private
 
-  def number
-    params[:number].to_i
+  def comment_body
+    params[:comment][:body]
   end
 
   def id
@@ -64,5 +67,13 @@ class CommentsController < ApplicationController
       issue.comments -= 1
     end
     @board_bag.update_cache(issue)
+  end
+
+  def sync_checklist
+    IssueStats::SyncChecklist.call(
+      user: current_user,
+      board_bag: @board_bag,
+      number: number
+    )
   end
 end

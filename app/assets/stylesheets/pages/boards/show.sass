@@ -436,6 +436,25 @@ $image-path: "pages/p-boards-show"
         vertical-align: middle
         display: inline-block
 
+      .b-assignee
+        display: inline-block
+        margin: 5px 5px 5px 0
+        width: 28px
+        height: 28px
+
+        &.hidden
+          display: none
+        .user
+          margin: 0
+
+      .octicon-book
+        margin-right: 5px
+
+      .checklist
+        color: $text-light
+        font-size: 12px
+        margin: 2px 1px 0 0
+
       .due-date
         color: $orange
         display: inline-block
@@ -446,21 +465,6 @@ $image-path: "pages/p-boards-show"
 
         &.none
           display: none
-
-      .b-assignee
-        display: inline-block
-        margin: 5px 5px 5px 0
-        width: 28px
-        height: 28px
-
-        &.hidden
-          display: none
-
-        .user
-          margin: 0
-
-      .octicon-book
-        margin-right: 5px
 
     .issue-title
       color: $text-usual
