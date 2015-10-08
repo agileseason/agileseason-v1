@@ -9,13 +9,27 @@ describe CommentsController do
   before { allow(IssueStats::SyncChecklist).to receive(:call) }
 
   describe '#index' do
-    before { get :index, board_github_full_name: board.github_full_name, number: number }
+    before do
+      get(
+        :index,
+        board_github_full_name: board.github_full_name,
+        number: number
+      )
+    end
 
     it { expect(response).to have_http_status(:success) }
   end
 
   describe '#create' do
-    subject { post :create, board_github_full_name: board.github_full_name, number: number, id: 101, comment: { body: body } }
+    subject do
+      post(
+        :create,
+        board_github_full_name: board.github_full_name,
+        number: number,
+        id: 101,
+        comment: { body: body }
+      )
+    end
 
     context 'check response' do
       before { allow_any_instance_of(GithubApi).to receive(:add_comment) }
@@ -33,7 +47,15 @@ describe CommentsController do
   end
 
   describe '#update' do
-    subject { post :update, board_github_full_name: board.github_full_name, number: number, id: 101, comment: { body: body } }
+    subject do
+      post(
+        :update,
+        board_github_full_name: board.github_full_name,
+        number: number,
+        id: 101,
+        comment: { body: body }
+      )
+    end
 
     context 'check response' do
       before { allow_any_instance_of(GithubApi).to receive(:update_comment) }
@@ -51,7 +73,14 @@ describe CommentsController do
   end
 
   describe '#delete' do
-    subject { delete :delete, board_github_full_name: board.github_full_name, number: number, id: 101 }
+    subject do
+      delete(
+        :delete,
+        board_github_full_name: board.github_full_name,
+        number: number,
+        id: 101
+      )
+    end
 
     context 'check response' do
       before { allow_any_instance_of(GithubApi).to receive(:delete_comment) }

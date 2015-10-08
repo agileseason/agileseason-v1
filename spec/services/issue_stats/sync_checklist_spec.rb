@@ -16,7 +16,13 @@ describe IssueStats::SyncChecklist do
   before { allow(user).to receive(:github_api).and_return(api) }
 
   describe '.call' do
-    subject { IssueStats::SyncChecklist.call(user: user, board_bag: board_bag, number: number) }
+    subject do
+      IssueStats::SyncChecklist.call(
+        user: user,
+        board_bag: board_bag,
+        number: number
+      )
+    end
 
     context 'no comment' do
       let(:comments) { [] }
@@ -58,7 +64,14 @@ MARKDOWN
   end
 
   describe '.call with fresh comments' do
-    subject { IssueStats::SyncChecklist.call(user: user, board_bag: board_bag, number: number, comments: comments) }
+    subject do
+      IssueStats::SyncChecklist.call(
+        user: user,
+        board_bag: board_bag,
+        number: number,
+        comments: comments
+      )
+    end
 
     context 'with comment without checkboxes' do
       let(:comments) { [comment_1] }
