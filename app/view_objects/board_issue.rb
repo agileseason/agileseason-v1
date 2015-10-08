@@ -3,7 +3,8 @@ class BoardIssue
   delegate :number, :title, :body, :state, :labels, :html_url,
            :assignee, :comments, :all_comments,
            :created_at, :updated_at, :closed_at, to: :issue
-  delegate :board, :due_date_at, :column, :column_id, :ready?, to: :issue_stat
+  delegate :board, :due_date_at, :column, :column_id, :ready?,
+           :checklist, :checklist_progress, to: :issue_stat
 
   attr_initialize :issue, :issue_stat
 

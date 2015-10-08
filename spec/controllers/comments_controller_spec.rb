@@ -1,18 +1,35 @@
 describe CommentsController do
   let(:user) { create(:user) }
-  let(:board) { create(:board, :with_columns, user: user) }
+  let(:board) { create(:kanban_board, :with_columns, user: user) }
+  let(:body) { 'asdf' }
+  let(:number) { 1 }
   before { stub_sign_in(user) }
   before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
   before { allow_any_instance_of(GithubApi).to receive(:issue_comments).and_return([]) }
+  before { allow(IssueStats::SyncChecklist).to receive(:call) }
 
   describe '#index' do
-    before { get :index, board_github_full_name: board.github_full_name, number: 1 }
+    before do
+      get(
+        :index,
+        board_github_full_name: board.github_full_name,
+        number: number
+      )
+    end
 
     it { expect(response).to have_http_status(:success) }
   end
 
   describe '#create' do
-    subject { post :create, board_github_full_name: board.github_full_name, number: 1, id: 101, comment: { body: 'sdfsd' } }
+    subject do
+      post(
+        :create,
+        board_github_full_name: board.github_full_name,
+        number: number,
+        id: 101,
+        comment: { body: body }
+      )
+    end
 
     context 'check response' do
       before { allow_any_instance_of(GithubApi).to receive(:add_comment) }
@@ -20,6 +37,7 @@ describe CommentsController do
 
       it { expect(response).to have_http_status(:success) }
       it { expect(response.body).to be_empty }
+      it { expect(IssueStats::SyncChecklist).to have_received(:call) }
     end
 
     context 'call add_comment in github_api' do
@@ -29,13 +47,23 @@ describe CommentsController do
   end
 
   describe '#update' do
-    subject { post :update, board_github_full_name: board.github_full_name, number: 1, id: 101, comment: { body: 'sdfsd' } }
+    subject do
+      post(
+        :update,
+        board_github_full_name: board.github_full_name,
+        number: number,
+        id: 101,
+        comment: { body: body }
+      )
+    end
 
     context 'check response' do
       before { allow_any_instance_of(GithubApi).to receive(:update_comment) }
+      before { subject }
 
       it { expect(response).to have_http_status(:success) }
       it { expect(response.body).to be_empty }
+      it { expect(IssueStats::SyncChecklist).to have_received(:call) }
     end
 
     context 'call update_comment in github_api' do
@@ -45,7 +73,14 @@ describe CommentsController do
   end
 
   describe '#delete' do
-    subject { delete :delete, board_github_full_name: board.github_full_name, number: 1, id: 101 }
+    subject do
+      delete(
+        :delete,
+        board_github_full_name: board.github_full_name,
+        number: number,
+        id: 101
+      )
+    end
 
     context 'check response' do
       before { allow_any_instance_of(GithubApi).to receive(:delete_comment) }
