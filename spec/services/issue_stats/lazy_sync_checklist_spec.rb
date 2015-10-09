@@ -55,4 +55,3 @@ describe IssueStats::LazySyncChecklist do
     end
   end
 end
-

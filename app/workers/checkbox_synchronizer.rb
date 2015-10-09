@@ -3,7 +3,6 @@ class CheckboxSynchronizer
   include GithubApiAccess
   sidekiq_options retry: 1
 
-
   def perform(board_id, number, encrypted_github_token)
     board = Board.find(board_id)
     issue_stat = IssueStatService.find(board, number)
