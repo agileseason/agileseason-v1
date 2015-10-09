@@ -5,6 +5,7 @@ class CommentsController < ApplicationController
 
   def index
     comments = github_api.issue_comments(@board, number)
+    sync_checklist(comments)
     render(
       partial: 'comments/show',
       collection: comments,
@@ -66,11 +67,12 @@ class CommentsController < ApplicationController
     @board_bag.update_cache(issue)
   end
 
-  def sync_checklist
+  def sync_checklist(comments = nil)
     IssueStats::SyncChecklist.call(
       user: current_user,
       board_bag: @board_bag,
-      number: number
+      number: number,
+      comments: comments
     )
   end
 end
