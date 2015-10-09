@@ -6,7 +6,8 @@ describe CommentsController do
   before { stub_sign_in(user) }
   before { allow_any_instance_of(GithubApi).to receive(:issues).and_return([]) }
   before { allow_any_instance_of(GithubApi).to receive(:issue_comments).and_return([]) }
-  before { allow(IssueStats::SyncChecklist).to receive(:call) }
+  before { allow(IssueStats::LazySyncChecklist).to receive(:call) }
+  before { allow(CheckboxSynchronizer).to receive(:perform_async) }
 
   describe '#index' do
     before do
@@ -18,6 +19,8 @@ describe CommentsController do
     end
 
     it { expect(response).to have_http_status(:success) }
+    it { expect(IssueStats::LazySyncChecklist).to have_received(:call) }
+    it { expect(CheckboxSynchronizer).not_to have_received(:perform_async) }
   end
 
   describe '#create' do
@@ -37,7 +40,8 @@ describe CommentsController do
 
       it { expect(response).to have_http_status(:success) }
       it { expect(response.body).to be_empty }
-      it { expect(IssueStats::SyncChecklist).to have_received(:call) }
+      it { expect(IssueStats::LazySyncChecklist).not_to have_received(:call) }
+      it { expect(CheckboxSynchronizer).to have_received(:perform_async) }
     end
 
     context 'call add_comment in github_api' do
@@ -63,7 +67,8 @@ describe CommentsController do
 
       it { expect(response).to have_http_status(:success) }
       it { expect(response.body).to be_empty }
-      it { expect(IssueStats::SyncChecklist).to have_received(:call) }
+      it { expect(IssueStats::LazySyncChecklist).not_to have_received(:call) }
+      it { expect(CheckboxSynchronizer).to have_received(:perform_async) }
     end
 
     context 'call update_comment in github_api' do
@@ -87,6 +92,8 @@ describe CommentsController do
       before { subject }
       it { expect(response).to have_http_status(:success) }
       it { expect(response.body).to be_empty }
+      it { expect(IssueStats::LazySyncChecklist).not_to have_received(:call) }
+      it { expect(CheckboxSynchronizer).to have_received(:perform_async) }
     end
 
     context 'call delete_comment' do

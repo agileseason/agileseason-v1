@@ -68,11 +68,15 @@ class CommentsController < ApplicationController
   end
 
   def sync_checklist(comments = nil)
-    IssueStats::SyncChecklist.call(
-      user: current_user,
-      board_bag: @board_bag,
-      number: number,
-      comments: comments
-    )
+    if comments.nil?
+      CheckboxSynchronizer.perform_async(@board.id, number, encrypted_github_token)
+    else
+      IssueStats::LazySyncChecklist.call(
+        user: current_user,
+        board_bag: @board_bag,
+        number: number,
+        comments: comments
+      )
+    end
   end
 end
