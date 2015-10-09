@@ -3,13 +3,10 @@ module IssueStats
     include Service
     include Virtus.model
 
-    attribute :user, User
-    attribute :board_bag, BoardBag
-    attribute :number, Integer
-    attribute :comments, Object, default: nil
+    attribute :issue_stat, IssueStat
+    attribute :comments, Array
 
     def call
-      issue_stat = IssueStats::Finder.new(user, board_bag, number).call
       checklist, checklist_progress = fetch_checklist_and_progress
       issue_stat.update(checklist: checklist, checklist_progress: checklist_progress)
       issue_stat
@@ -17,16 +14,8 @@ module IssueStats
 
     private
 
-    def fetch_comments
-      if comments.nil?
-        @fetch_comments ||= user.github_api.issue_comments(board_bag, number)
-      else
-        comments
-      end
-    end
-
     def fetch_checklist_and_progress
-      text = fetch_comments.map(&:body).join('')
+      text = comments.map(&:body).join('')
       checked = text.scan(/- \[x\] .+/).size
       unchecked = text.scan(/- \[ \] .+/).size
       total = checked + unchecked

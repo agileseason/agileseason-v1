@@ -2,10 +2,10 @@ class CommentsController < ApplicationController
   # FIX : Need specs.
   before_action :fetch_board, only: [:index]
   before_action :fetch_board_for_update, except: [:index]
-  after_action :fetch_issue, only: [:create, :delete]
 
   def index
     comments = github_api.issue_comments(@board, number)
+    sync_checklist(comments)
     render(
       partial: 'comments/show',
       collection: comments,
@@ -16,6 +16,7 @@ class CommentsController < ApplicationController
 
   def create
     comment = github_api.add_comment(@board, number, comment_body)
+    inc_comments_count(1)
     sync_checklist
     ui_event(:issue_comment)
     broadcast(comment)
@@ -30,6 +31,7 @@ class CommentsController < ApplicationController
 
   def delete
     github_api.delete_comment(@board, id)
+    inc_comments_count(-1)
     sync_checklist
     render nothing: true
   end
@@ -57,23 +59,24 @@ class CommentsController < ApplicationController
     )
   end
 
-  def fetch_issue
+  def inc_comments_count(delta)
     issue = @board_bag.issues_hash[number]
     return unless issue
 
-    if action_name == 'create'
-      issue.comments += 1
-    else
-      issue.comments -= 1
-    end
+    issue.comments += delta
     @board_bag.update_cache(issue)
   end
 
-  def sync_checklist
-    IssueStats::SyncChecklist.call(
-      user: current_user,
-      board_bag: @board_bag,
-      number: number
-    )
+  def sync_checklist(comments = nil)
+    if comments.nil?
+      CheckboxSynchronizer.perform_async(@board.id, number, encrypted_github_token)
+    else
+      IssueStats::LazySyncChecklist.call(
+        user: current_user,
+        board_bag: @board_bag,
+        number: number,
+        comments: comments
+      )
+    end
   end
 end
