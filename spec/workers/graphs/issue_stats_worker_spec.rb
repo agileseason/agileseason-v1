@@ -76,7 +76,7 @@ describe Graphs::IssueStatsWorker do
 
         Graphs::IssueStatsWorker::SYNCED_FIELDS.each do |field|
           it do
-            expect(subject.first.send(field)).to eq issue_1.send(field)
+            expect(subject.first.send(field).to_i).to eq issue_1.send(field).to_i
           end
         end
       end
@@ -86,7 +86,7 @@ describe Graphs::IssueStatsWorker do
 
         Graphs::IssueStatsWorker::SYNCED_FIELDS.each do |field|
           it do
-            expect(subject.first.send(field)).to eq issue_stat.send(field)
+            expect(subject.first.send(field).to_i).to eq issue_stat.send(field).to_i
           end
         end
       end
