@@ -12,7 +12,7 @@ Look at the our development board for example - [agileseason.com](http://agilese
 ## Features List
 
 - [x] Agile board with custom columns
-- [x] Drag and drop issues between columns
+- [x] [Drag and drop issues between columns](https://github.com/agileseason/agileseason/wiki/Board-features)
 - [x] Search and sort issues
 - [x] Attach images by drag & drop
 - [ ] Roadmap
@@ -25,8 +25,8 @@ Look at the our development board for example - [agileseason.com](http://agilese
 
 #### Graphs
 
-- [x] Cumulative Flow Diagram
-- [x] Control Chart
+- [x] [Cumulative Flow Diagram](https://github.com/agileseason/agileseason/wiki/Kanban-metrics#cumulative-flow-diagram)
+- [x] [Control Chart](https://github.com/agileseason/agileseason/wiki/Kanban-metrics#control-chart)
 - [x] Cycle Time Diagram
 
 ### Scrum [MVP 2]
