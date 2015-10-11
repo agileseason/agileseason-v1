@@ -2,8 +2,7 @@ class GithubApi
   module Issues
     def issues(board)
       (open_issues(board) + closed_issues(board))
-        .select { |issue| !issue.pull_request }
-        .sort { |a, b| b.updated_at <=> a.updated_at }
+        .reject { |issue| issue.pull_request }
     end
 
     def create_issue(board, issue)

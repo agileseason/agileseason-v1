@@ -25,12 +25,6 @@ describe GithubApi::Issues do
       it { is_expected.to eq open_issues + closed_issues }
     end
 
-    context 'default sort by updated_at' do
-      let(:open_issues) { [stub_issue(updated_at: 1.day.ago)] }
-      let(:closed_issues) { [stub_closed_issue(updated_at: 0.day.ago)] }
-      it { is_expected.to eq closed_issues + open_issues }
-    end
-
     context 'without pull request' do
       let(:open_issues) { [stub_pull_request_issue] }
       let(:closed_issues) { [stub_pull_request_issue] }
