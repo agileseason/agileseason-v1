@@ -55,17 +55,40 @@ describe Graphs::IssueStatsWorker do
     end
 
     context 'update only if need' do
-      let(:updated_at) { Time.current - 2.days }
-      let(:arrange) { board.issue_stats.create!(number: 1, created_at: Time.current - 2.days, updated_at: updated_at, closed_at: nil) }
+      let(:arrange) { issue_stat }
+      let(:issue_stat) do
+        board.issue_stats.create!(
+          number: 1,
+          created_at: 2.days.ago,
+          closed_at: nil
+        )
+      end
       let(:issues) { [issue_1] }
+
       context '- need' do
-        let(:issue_1) { stub_issue(number: 1, created_at: Time.current - 2.day, updated_at: updated_at + 1.second, closed_at: Time.current) }
-        it { expect(subject.first.closed_at.to_s).to eq issue_1.closed_at.to_s }
+        let(:issue_1) do
+          stub_issue(
+            number: 1,
+            created_at: 3.days.ago,
+            closed_at: Time.current
+          )
+        end
+
+        Graphs::IssueStatsWorker::SYNCED_FIELDS.each do |field|
+          it do
+            expect(subject.first.send(field)).to eq issue_1.send(field)
+          end
+        end
       end
 
       context '- not need' do
-        let(:issue_1) { stub_issue(number: 1, created_at: Time.current - 2.day, updated_at: updated_at, closed_at: Time.current) }
-        it { expect(subject.first.closed_at).to be_nil }
+        let(:issue_1) { stub_issue(number: 1, closed_at: nil) }
+
+        Graphs::IssueStatsWorker::SYNCED_FIELDS.each do |field|
+          it do
+            expect(subject.first.send(field)).to eq issue_stat.send(field)
+          end
+        end
       end
     end
   end
