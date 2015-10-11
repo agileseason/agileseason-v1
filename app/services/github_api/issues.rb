@@ -2,7 +2,7 @@ class GithubApi
   module Issues
     def issues(board)
       (open_issues(board) + closed_issues(board))
-        .reject { |issue| issue.pull_request }
+        .reject(&:pull_request)
     end
 
     def create_issue(board, issue)
