@@ -9,6 +9,8 @@ Agile board for github issues with metrics
 
 Look at the our development board for example - [agileseason.com](http://agileseason.com/boards/agileseason/agileseason)
 
+![Board example](https://github.com/agileseason/agileseason/blob/master/doc/help/board_features/board_example.png)
+
 ## Features List
 
 - [x] Agile board with custom columns
