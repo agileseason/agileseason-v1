@@ -9,7 +9,7 @@ class Graphs::CumulativeController < ApplicationController
   private
 
   def interval
-    params[:interval] && params[:interval] == 'month' ? :month : :all
+    params[:interval] && params[:interval] == 'all' ? :all : :month
   end
 
   def fetch_cumulative_graph
