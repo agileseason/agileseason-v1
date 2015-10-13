@@ -326,14 +326,6 @@ $image-path: "pages/p-boards-show"
     padding: 0 10px 5px
     position: relative
 
-    .octicon
-      display: none
-      margin-right: 3px
-      color: $text-light
-
-      &.show
-        display: inline
-
     &:hover
       cursor: -webkit-grab
 
@@ -373,10 +365,10 @@ $image-path: "pages/p-boards-show"
       display: inline
 
     .buttons
-      margin-top: 5px
+      margin-top: 4px
       display: inline-block
       vertical-align: middle
-      width: 70px
+      width: 50px
 
       a.button
         +button
@@ -401,7 +393,7 @@ $image-path: "pages/p-boards-show"
         height: 20px
         letter-spacing: 0.1em
         line-height: 15px
-        margin: 0 -5px 0 0
+        margin: -4px -5px 0 0
         opacity: 0.2
         padding: 2px 0 0 5px
         text-transform: uppercase
@@ -429,12 +421,16 @@ $image-path: "pages/p-boards-show"
     .icons
       display: inline-block
       vertical-align: middle
-      width: 149px
+      width: 170px
       min-height: 28px
+      color: $text-light
 
       &>div, &>span
         vertical-align: middle
         display: inline-block
+
+      .octicon
+        margin-right: 0px
 
       .b-assignee
         display: inline-block
@@ -448,12 +444,12 @@ $image-path: "pages/p-boards-show"
           margin: 0
 
       .octicon-book
-        margin-right: 5px
+        margin-right: 6px
 
-      .checklist
-        color: $text-light
-        font-size: 12px
-        margin: 2px 1px 0 0
+      .checklist,
+      .comments-count
+        font-size: 11px
+        margin-right: 6px
 
       .due-date
         color: $orange
