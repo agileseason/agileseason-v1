@@ -23,12 +23,13 @@
     - unless k(:issue, issue).body_empty?
       span.octicon.octicon-book
 
-    - unless issue.comments == 0
+    - if issue.comments > 0
       span.octicon.octicon-comment-discussion
+      span.comments-count #{issue.comments}
 
     - if issue.checklist.present?
-      span.checklist #{issue.checklist_progress}/#{issue.checklist}
       span.octicon.octicon-check
+      span.checklist #{issue.checklist_progress}/#{issue.checklist}
 
     .due-date class="#{:none unless issue.due_date_at}" = k(:issue, issue).due_date_on
 
