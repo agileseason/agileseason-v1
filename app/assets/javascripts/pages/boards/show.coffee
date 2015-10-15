@@ -5,7 +5,6 @@ $(document).on 'page:change', ->
   column_menu()
   new_issue_forms()
   subscribe_board_update()
-  $.initJsPathForInputs()
 
   # пересчитать высоту борда в зависимости от высоты окна браузера
   resize_height()
@@ -69,21 +68,18 @@ resize_height = ->
   $('.board').height(height)
 
 column_menu = ->
-  $('.board-column').on 'click', '.column-menu .octicon', ->
+  $('.column-menu').each ->
+    new ColumnsSettings $(@)
+
+  $('.column-menu .title a').on 'click', ->
     $menu = $(@).closest('.column-menu')
+    $('.column-settings-popup', $menu).show()
     $menu.addClass('active').prepend('<div class="overlay"></div>')
-    $menu.find('.popup').show()
 
   $('.board-column .column-menu').on 'click', '.overlay', ->
-    $(@).parent().find('.popup').hide()
+    $(@).parent().find('.column-settings-popup').hide()
     $(@).parent().removeClass 'active'
     $(@).remove()
-
-  $('.column-menu .delete').bind 'ajax:success', (e, data) ->
-    if data.result
-      $(".board-column[data-column='#{data.id}']").hide()
-    else
-      alert(data.message)
 
 new_issue_forms = ->
   $('textarea', '.new_issue').elastic()
