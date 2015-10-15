@@ -279,43 +279,6 @@ $image-path: 'pages/p-boards-show'
     .close-popup
       +close
 
-  .new-column
-    text-align: center
-
-    span
-      +light_button
-      display: inline-block
-      padding: 5px 15px
-
-  .create-column
-    +border-radius(2px)
-    background: #e9eae8
-    display: none
-    margin-top: -31px
-    padding: 10px
-
-    input[type='text']
-      +border-radius(0)
-      background: none
-      border: none
-      border-bottom: 1px solid $form-border
-      display: block
-      font-size: inherit
-      line-height: 1.6
-      outline: none
-      width: 100%
-
-    .submit-area
-      background: none
-      padding: 8px 0 0
-
-      .cancel
-        +ajax_link
-        font-size: 13px
-
-      input[type='submit']
-        padding: 5px 10px
-
   .empty-issue
     +border-radius(4px)
     background: #ccc
@@ -350,15 +313,11 @@ $image-path: 'pages/p-boards-show'
     &:hover
       background: #EAF4FC
 
-    &.bug
-      background: $card-bug
-
     &.closed
       opacity: 0.8
       background: $card-closed
 
-      .issue-title,
-      p
+      .issue-title
         color: #999
 
       a,
@@ -366,10 +325,23 @@ $image-path: 'pages/p-boards-show'
       .octicon
         +opacity(0.7)
 
-    .url
-      margin-left: 4px
-      margin-right: 4px
-      display: inline
+    .issue-title
+      color: $text-usual
+      font-size: 14px
+      font-weight: normal
+      line-height: 1.3em
+      padding: 8px 0 0
+      word-wrap: break-word
+
+      .issue-name
+        color: $text-usual
+        cursor: pointer
+        display: inline
+
+      .url
+        margin-left: 4px
+        margin-right: 4px
+        display: inline
 
     .buttons
       margin-top: 4px
@@ -466,19 +438,7 @@ $image-path: 'pages/p-boards-show'
         &.none
           display: none
 
-    .issue-title
-      color: $text-usual
-      font-size: 14px
-      font-weight: normal
-      line-height: 1.3em
-      padding: 8px 0 0
-      word-wrap: break-word
-
-    .issue-name
-      color: $text-usual
-      cursor: pointer
-      display: inline
-
+  // NOTE Old styles need to remove.
   .issue-modal
     color: $text-usual
     display: none
