@@ -13,8 +13,8 @@
 #= require baron.js
 #= require widget.js
 #= require replace_nth_match.js
-#= require js_patch.coffee
-#= require view.coffee
+#= require js_patch
+#= require view
 #= require faye-browser
 #= require d3
 #= require turbolinks
