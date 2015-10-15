@@ -12,9 +12,6 @@ $image-path: 'pages/p-boards-show'
   .container
     padding: 0
 
-  .actions
-    margin-bottom: 10px
-
   .board
     position: relative
 
@@ -69,7 +66,6 @@ $image-path: 'pages/p-boards-show'
 
         &:last-child
           margin-right: 0
-
           &:after
             content: ' '
             height: 1px
@@ -77,132 +73,120 @@ $image-path: 'pages/p-boards-show'
             position: relative
             width: 10px
 
-  .column-menu
-    .title
-      color: $text-light
-      font-size: 16px
-      margin-left: 10px
-      padding: 10px 0 0 0
-      position: absolute
-      top: 0
+        .column-menu
+          .title
+            color: $text-light
+            font-size: 16px
+            margin-left: 10px
+            padding: 10px 0 0 0
+            position: absolute
+            top: 0
 
-      a
-        +ajax_link
-        color: $text-light
-        font-weight: bold
-
-      span
-        margin-left: 6px
-
-    span.octicon.octicon-gear
-      +border-radius(50px)
-      color: $text-light
-      cursor: pointer
-      padding: 10px
-      position: absolute
-      right: 2px
-      top: 2px
-
-    .column-settings-popup
-      +popup
-      font-size: 14px
-      height: auto
-      left: 100%
-      margin-left: 15px
-      top: 0
-      width: 240px
-      z-index: 3
-
-      .delete
-        +light_button
-
-      ul
-        list-style-type: none
-        margin: 6px 0
-        padding: 0 10px
-
-        li
-          padding: 6px 0
-          margin: 0
-
-          .text
-            display: none
-            font-size: 11px
-            margin-top: 10px
-
-          &.move
             a
-              +light_button
+              +ajax_link
+              color: $text-light
+              font-weight: bold
 
-            label + a
-              margin-right: 10px
+            span
+              margin-left: 6px
 
-          &.disabled
-            position: relative
+            .badge
+              display: inline-block
+              &.warning
+                color: #ff8930
+              &.alert
+                color: #ff5252
 
-            .text
-              display: block
-
-            &:after
-              background: rgba(255,255,255,0.7)
-              content: ''
-              height: 100%
-              left: 0
-              position: absolute
+            .column-settings-popup
+              +popup
+              font-size: 14px
+              height: auto
+              left: 100%
+              margin-left: 15px
               top: 0
-              width: 100%
+              width: 240px
+              z-index: 3
 
-          &.delimiter
-            border-bottom: 1px solid $form-border
-            margin: 6px 0
-            padding: 0
+              .delete
+                +light_button
 
-          label
+              ul
+                list-style-type: none
+                margin: 6px 0
+                padding: 0 10px
+
+                li
+                  padding: 6px 0
+                  margin: 0
+
+                  .text
+                    display: none
+                    font-size: 11px
+                    margin-top: 10px
+
+                  &.move
+                    a
+                      +light_button
+                    label + a
+                      margin-right: 10px
+
+                  &.disabled
+                    position: relative
+
+                    .text
+                      display: block
+
+                    &:after
+                      background: rgba(255,255,255,0.7)
+                      content: ''
+                      height: 100%
+                      left: 0
+                      position: absolute
+                      top: 0
+                      width: 100%
+
+                  &.delimiter
+                    border-bottom: 1px solid $form-border
+                    margin: 6px 0
+                    padding: 0
+
+                  label
+                    display: inline-block
+                    margin-right: 10px
+                    padding: 0
+                    white-space: nowrap
+                    width: 61px
+                    color: $text-usual
+
+                  input
+                    width: 20px
+                    padding: 5px
+                    &.name
+                      width: 137px
+
+          .new-issue
+            +ajax_link
+            +border-radius(6px)
+            border: 1px solid $button-light
+            color: $button-light
             display: inline-block
-            margin-right: 10px
-            padding: 0
-            white-space: nowrap
-            width: 61px
-            color: $text-usual
+            float: right
+            font-size: 14px
+            margin: -32px 10px 0 0
+            padding: 3px 5px
+            vertical-align: top
 
-          input
-            width: 20px
-            padding: 5px
+            &:hover
+              border-color: $orange
 
-            &.name
-              width: 137px
+        .issues
+          height: 100%
+          overflow-y: auto
+          padding: 0 10px
 
-  .badge
-    display: inline-block
+          .add-user
+            display: none
 
-    &.warning
-      color: #ff8930
-
-    &.alert
-      color: #ff5252
-
-  .issues
-    height: 100%
-    overflow-y: auto
-    padding: 0 10px
-
-    .add-user
-      display: none
-
-  .new-issue
-    +ajax_link
-    +border-radius(6px)
-    border: 1px solid $button-light
-    color: $button-light
-    display: inline-block
-    float: right
-    font-size: 14px
-    margin: -32px 10px 0 0
-    padding: 3px 5px
-    vertical-align: top
-
-    &:hover
-      border-color: $orange
 
   .create-issue
     background: rgba(90,90,90,0.3)
