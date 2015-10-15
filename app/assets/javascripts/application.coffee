@@ -8,13 +8,13 @@
 #= require jstz
 #= require browser_timezone_rails/set_time_zone
 
-#= require ./lib/view.coffee
 #= require jquery.elastic.source
 #= require highcharts.js
 #= require baron.js
 #= require widget.js
 #= require replace_nth_match.js
 #= require js_patch.coffee
+#= require view.coffee
 #= require faye-browser
 #= require d3
 #= require turbolinks
