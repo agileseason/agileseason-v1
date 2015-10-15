@@ -31,5 +31,4 @@ class @ColumnsSettings extends View
     @$('.autoassign').toggleClass 'active'
 
   _fade_out_column: =>
-    Turbolinks.visit(document.location.href) unless document.body.id == 'settings_show'
     @$root.fadeOut()
