@@ -18,66 +18,64 @@ $image-path: 'pages/p-boards-show'
   .board
     position: relative
 
-  .board-columns
-    -moz-box-orient: horizontal
-    -ms-flex-direction: row
-    -webkit-box-orient: horizontal
-    -webkit-flex-direction: row
-    bottom: 0
-    display: -moz-box
-    display: -ms-flexbox
-    display: -webkit-box
-    display: -webkit-flex
-    display: flex
-    flex-direction: row
-    left: 0
-    overflow-x: auto
-    overflow-y: hidden
-    padding: 0px 20px 10px 10px
-    position: absolute
-    right: 0
-    top: 0
+    .board-columns
+      -moz-box-orient: horizontal
+      -ms-flex-direction: row
+      -webkit-box-orient: horizontal
+      -webkit-flex-direction: row
+      bottom: 0
+      display: -moz-box
+      display: -ms-flexbox
+      display: -webkit-box
+      display: -webkit-flex
+      display: flex
+      flex-direction: row
+      left: 0
+      overflow-x: auto
+      overflow-y: hidden
+      padding: 0px 20px 10px 10px
+      position: absolute
+      right: 0
+      top: 0
 
-  .board-column
-    +border-radius(4px)
-    -ms-flex: 0 0 260px
-    -webkit-flex: 0 0 260px
-    align-items: stretch
-    flex: 0 0 260px
-    height: calc(100% - 50px)
-    margin-right: 0
-    max-height: 100%
-    padding: 40px 0 0 0
-    position: relative
-    vertical-align: top
-    width: 260px
-
-    &.last
-      .issue
-        &:hover
-          a.button.close,
-          a.button.archive
-            display: block
-
-          a.button.archive.hidden
-            display: none
-
-        .buttons
-          .is_ready
-            display: none
-
-            &:hover
-              display: none
-
-    &:last-child
-      margin-right: 0
-
-      &:after
-        content: ' '
-        height: 1px
-        margin-left: 260px
+      .board-column
+        +border-radius(4px)
+        -ms-flex: 0 0 260px
+        -webkit-flex: 0 0 260px
+        align-items: stretch
+        flex: 0 0 260px
+        height: calc(100% - 50px)
+        margin-right: 0
+        max-height: 100%
+        padding: 40px 0 0 0
         position: relative
-        width: 10px
+        vertical-align: top
+        width: 260px
+
+        &.last
+          .issue
+            &:hover
+              a.button.close,
+              a.button.archive
+                display: block
+              a.button.archive.hidden
+                display: none
+
+            .buttons
+              .is_ready
+                display: none
+                &:hover
+                  display: none
+
+        &:last-child
+          margin-right: 0
+
+          &:after
+            content: ' '
+            height: 1px
+            margin-left: 260px
+            position: relative
+            width: 10px
 
   .column-menu
     .title
