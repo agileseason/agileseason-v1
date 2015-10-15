@@ -4,7 +4,7 @@ class @ColumnsSettings extends View
     @$('.js-patch').js_patch()
 
     @$('.autoassign input').on 'change', @_toggle_autoassign
-    @$('.delete').on 'ajax:before', @_fade_out_column
+    @$('.delete').on 'ajax:success', @_fade_out_column
     @$('input[name="name"]').on 'blur', @_update_name
     @$('input[name="wip_min"], input[name="wip_max"]').on 'blur', @_update_wip
 
@@ -32,3 +32,4 @@ class @ColumnsSettings extends View
 
   _fade_out_column: =>
     @$root.fadeOut()
+    Turbolinks.visit(document.location.href) unless document.body.id == 'settings_show'
