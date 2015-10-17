@@ -16,6 +16,7 @@
 #= require js_patch
 #= require view
 #= require faye-browser
+#= require highlight.min
 #= require d3
 #= require turbolinks
 

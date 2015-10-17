@@ -9,7 +9,7 @@
       a.sign-out href="#{sign_out_url}" sign out
 
 .board-lists
-  - if params[:controller] == 'boards' && params[:action] == 'index'
+  - if controller_name == 'boards' && action_name == 'index'
     = render partial: 'board_list'
 
   - else
