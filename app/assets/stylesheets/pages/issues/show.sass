@@ -1,8 +1,4 @@
-@import compass/css3/border-radius
-@import compass/css3/box-shadow
-@import compass/css3/box-sizing
-@import compass/css3/text-shadow
-@import compass/css3/transition
+@import compass/css3
 @import globals/variables
 @import mixins/avatar
 @import mixins/button
@@ -53,6 +49,18 @@
     margin: 0 auto
     padding: 30px 70px
     position: relative
+
+  .b-issue-labels
+    margin-left: 70px
+
+    .label
+      +border-radius(0 0 4px 4px)
+      +box-sizing(border-box)
+      font-size: 14px
+      line-height: 18px
+      margin-right: 5px
+      padding: 2px 15px
+      position: relative
 
   .issue-content
     padding-right: 280px
@@ -121,6 +129,49 @@
         left: 11px
         color: $button
 
+    .edit-labels
+      position: relative
+
+      .issue-popup
+        +issue_popup
+        width: auto
+
+        .octicon.octicon-triangle-up
+          display: block
+
+        .close-popup
+          +close
+
+        form
+          padding: 10px 0 0 10px
+          width: 356px
+
+        .labels-block
+          label.check_boxes
+            display: none
+
+          label
+            +border-radius(4px)
+            +transition(width ease-out 0.2s)
+            background: #aaa
+            color: #fff
+            cursor: pointer
+            display: inline-block
+            margin: 0 10px 10px 0
+            padding: 3px
+            position: relative
+            width: 160px
+
+            input
+              display: inline-block
+              position: absolute
+
+            .label-name
+              display: block
+              overflow: hidden
+              padding-left: 20px
+              white-space: nowrap
+
   .title
     +issue_form
     font-size: 36px
@@ -154,6 +205,19 @@
       .url, .due-date, .issue-title
         display: none
 
+  .due-date
+    +border-radius(2px)
+    background: $orange
+    color: #fff
+    display: inline-block
+    font-size: 12px
+    margin-left: 5px
+    padding: 2px 6px 2px 6px
+    vertical-align: top
+
+    &.none
+      display: none
+
   .progress
     font-size: 13px
     color: #999
@@ -167,24 +231,6 @@
     background-image: linear-gradient(top,#f7f0ea,#fcf8f5)
     margin: 40px 0 0 60px
     padding: 20px
-
-  .b-issue-labels
-    margin-left: 70px
-
-    .label
-      +border-radius(0 0 4px 4px)
-      +box-sizing(border-box)
-      font-size: 14px
-      line-height: 18px
-      margin-right: 5px
-      padding: 2px 15px
-      position: relative
-
-      .remove-label
-        +close
-        position: absolute
-        right: 5px
-        top: 3px
 
   .issue-description
     margin: 10px 0 40px
@@ -263,6 +309,12 @@
       background: inline-image('pages/p-issues-show/stub_body.png') 0 0 no-repeat transparent
       height: 60px
 
+    .user-login
+      color: $lightgrey
+      display: inline
+      font-size: 14px
+      font-weight: bold
+
     pre,
     code
       background: #e8eff1 !important
@@ -288,7 +340,7 @@
         +ajax_link
         color: inherit
 
-  .user-ava
+  .user-avatar
     display: inline-block
     width: 33px
     position: absolute
@@ -532,71 +584,3 @@
       border: none
       padding: 0
       width: auto
-
-  .due-date
-    +border-radius(2px)
-    background: $orange
-    color: #fff
-    display: inline-block
-    font-size: 12px
-    margin-left: 5px
-    padding: 2px 6px 2px 6px
-    vertical-align: top
-
-    &.none
-      display: none
-
-  .action-title
-    margin: 20px 0 10px 0
-
-    &:first-child
-      margin-top: 0
-
-  .user-login
-    color: $lightgrey
-    display: inline
-    font-size: 14px
-    font-weight: bold
-
-  .edit-labels
-    position: relative
-
-    .issue-popup
-      +issue_popup
-      width: auto
-
-      .octicon.octicon-triangle-up
-        display: block
-
-      .close-popup
-        +close
-
-      form
-        padding: 10px 0 0 10px
-        width: 356px
-
-      .labels-block
-        label.check_boxes
-          display: none
-
-        label
-          +border-radius(4px)
-          +transition(width ease-out 0.2s)
-          background: #aaa
-          color: #fff
-          cursor: pointer
-          display: inline-block
-          margin: 0 10px 10px 0
-          padding: 3px
-          position: relative
-          width: 160px
-
-          input
-            display: inline-block
-            position: absolute
-
-          .label-name
-            display: block
-            overflow: hidden
-            padding-left: 20px
-            white-space: nowrap
