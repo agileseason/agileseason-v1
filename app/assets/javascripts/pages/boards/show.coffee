@@ -9,6 +9,12 @@ $(document).on 'page:change', ->
   # пересчитать высоту борда в зависимости от высоты окна браузера
   resize_height()
 
+  # перейти на страницу тикета
+  $('.issues').on 'click', '.issue.draggable', (e) ->
+    unless $(e.target).is('a, .button, button')
+      $(@).closest('.issue').addClass 'current-issue'
+      Turbolinks.visit $(@).data('url')
+
   # открыть форму добавления тикета или колонки
   $('.new-issue, .new-column').click ->
     $(@).next().show()

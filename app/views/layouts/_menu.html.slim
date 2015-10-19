@@ -1,59 +1,61 @@
 .b-menu
-  ul
+  ul.menu
     - if signed_in?
-      li.left-menu-link data-url="#{boards_url}"
-        a.octicon.octicon-three-bars
+      li.list-item.left-menu-link data-url="#{boards_url}"
+        a.menu-link.octicon.octicon-three-bars
 
     - if @board.present? && @board.persisted?
       - unless controller_name == 'boards' && action_name == 'index'
-        li.boards
+        li.list-item.boards
           - if controller_name == 'boards'
-            a.active
+            a.menu-link.active
               span #{k(:board, @board).name} board
           - else
-            a.current-board-link href="#{un board_url(@board)}"
+            a.menu-link.current-board-link href="#{un board_url(@board)}"
               span #{k(:board, @board).name} board
 
       - if ['cumulative', 'control', 'forecast', 'frequency', 'lines'].include?(controller_name)
-        li.active
+        li.list-item.active
           span
             span.a-child.octicon.octicon-graph &nbsp;
             span.a-child Metrics
 
       - else
-        li
-          a href="#{un board_graphs_cumulative_index_url(@board)}"
+        li.list-item
+          a.menu-link href="#{un board_graphs_cumulative_index_url(@board)}"
             span.a-child.octicon.octicon-graph &nbsp;
             span.a-child Metrics
 
       - if current_user.admin?
         - if controller_name == 'roadmaps'
-          li.roadmap.active
+          li.list-item.roadmap.active
             span.octicon.octicon-list-ordered &nbsp;
             span Roadmap
 
         - else
-          li.roadmap
-            a href="#{un board_roadmap_url(@board)}" title='Roadmap'
+          li.list-item.roadmap
+            a.menu-link href="#{un board_roadmap_url(@board)}" title='Roadmap'
               span.a-child.octicon.octicon-list-ordered &nbsp;
               span.a-child Roadmap
 
       - if can? :update, @board
         - if controller_name == 'settings' && action_name == 'show'
-          li.board-settings.active
+          li.list-item.board-settings.active
             span.octicon.octicon-gear &nbsp;
             span Settings
 
         - else
-          li
-            a href="#{un board_settings_url(@board)}" title='Board Settings'
+          li.list-item
+            a.menu-link href="#{un board_settings_url(@board)}" title='Board Settings'
               span.a-child.octicon.octicon-gear &nbsp;
               span.a-child Settings
 
-      li.icon-button.activities-link data-url="#{board_activities_url @board}"
-        a: span.octicon.octicon-bell
+      li.list-item.icon-button.activities data-url="#{board_activities_url @board}"
+        a.menu-link.activities-link : span.octicon.octicon-bell
+        - if @board
+          .b-activities data-paginate="true" data-page="2" data-url="#{board_activities_url @board}"
 
-      li.search data-url="#{search_board_issues_url(@board)}"
+      li.list-item.search data-url="#{search_board_issues_url(@board)}"
         .overlay
         .field.search-input
           input type='text'
@@ -65,6 +67,6 @@
             ' label:name, text in:title, and text in:body, comment.
             a href="https://help.github.com/articles/searching-issues/" target='_blank' Learn more…
 
-      li.icon-button.alert-timeout
-        a href="#{un board_url(@board)}" : span.octicon.octicon-sync
+      li.list-item.icon-button.alert-timeout
+        a.menu-link href="#{un board_url(@board)}" : span.octicon.octicon-sync
         .hint Click to reload the page for synchronization

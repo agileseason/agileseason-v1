@@ -19,9 +19,6 @@ html
     .container
       = yield
 
-    - if @board
-      .b-activities data-paginate="true" data-page="2" data-url="#{board_activities_url @board}"
-
     - if signed_in? && @board.present? && @board.persisted?
       = render partial: 'dashboard_modal'
 

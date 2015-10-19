@@ -5,18 +5,18 @@
 @import globals/variables
 
 .b-menu
-  ul
+  .menu
     margin: 0
     padding: 0
 
-  li
+  .list-item
     display: inline-block
     font-size: 18px
 
     &.active
       padding: 15px
 
-    a
+    .menu-link
       +border-radius(35px)
       cursor: pointer
       display: inline-block
@@ -51,7 +51,7 @@
   .left-menu-link
     margin: 0
 
-    a
+    .menu-link
       background: $orange
       color: #fff
       display: inline-block
@@ -69,7 +69,7 @@
     float: right
     margin: 20px 20px 20px 0
 
-    a
+    .menu-link
       border: 1px solid $orange
       color: $orange
       height: 48px

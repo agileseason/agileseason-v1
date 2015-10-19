@@ -1,6 +1,7 @@
 # Turbolinks and mentrika.yandex.ru, google.analytics
 $(document).on 'page:before-change', =>
   @turbolinks_referer = location.href
+
 $(document).on 'page:load', =>
   if @turbolinks_referer
     if @yaCounter27976815

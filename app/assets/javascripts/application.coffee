@@ -25,3 +25,6 @@
 # ---  Fileupload loaded after all  ---
 #= require jquery.fileupload
 #= require jquery.scrollTo
+
+$ ->
+  Turbolinks.enableProgressBar true
