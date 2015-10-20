@@ -2,12 +2,10 @@ resize_lock = false
 
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
-  column_menu()
   new NewIssueForm $('.board-column:first')
+  column_menu()
   subscribe_board_update()
-
-  # пересчитать высоту борда в зависимости от высоты окна браузера
-  resize_height()
+  resize_height() # высота борда подгоняется под высоту браузера
 
   # перейти на страницу тикета
   $('.issues').on 'click', '.issue.draggable', (e) ->
