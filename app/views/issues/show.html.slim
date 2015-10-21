@@ -43,14 +43,15 @@
       - unless k(:issue, @issue).body_empty?
         .issue-description = markdown(@issue.body.html_safe, @board)
 
-      .issue-comments [
-        data-url="#{comments_board_issues_url(@board, @issue.number)}"
-        data-comments="#{@issue.comments}"
-      ]
-        = render partial: 'comments/stub_index', locals: { comments: @issue.comments }
+      .comments-container
+        .issue-comments [
+          data-url="#{comments_board_issues_url(@board, @issue.number)}"
+          data-comments="#{@issue.comments}"
+        ]
+          = render partial: 'comments/stub_index', locals: { comments: @issue.comments }
 
-      - if can?(:update, @board)
-        = render partial: 'comments/new', locals: { board: @board, issue: @issue }
+        - if can?(:update, @board)
+          = render partial: 'comments/new', locals: { board: @board, issue: @issue }
 
     - if can?(:update, @board)
       .issue-actions

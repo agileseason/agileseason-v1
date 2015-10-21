@@ -1,17 +1,18 @@
 $(document).on 'ready page:load', ->
   return unless document.body.id == 'issues_show'
-  comments()
+  $issue_modal = $('.b-issue-modal.js-can-update')
+
+  new Comments $('.comments-container')
   subscribe_issue_update()
   due_date()
   assignee()
   labels()
+  file_drag_over()
 
   $('.b-menu').click (e) ->
     # клик вне тикета делает переход к борду
     if $(e.target).is('.b-menu, .b-menu > ul')
       Turbolinks.visit($('.b-menu .boards a').attr('href'))
-
-  $issue_modal = $('.b-issue-modal.js-can-update')
 
   $issue_modal.on 'keydown', 'textarea', (e) ->
     if e.keyCode == 13 && (e.metaKey || e.ctrlKey)
@@ -76,3 +77,23 @@ $(document).on 'ready page:load', ->
     $('.b-issue-modal').
       removeClass('archived').
       addClass('closed')
+
+file_drag_over = ->
+  # перетаскивать картинку можно в любое место окна,
+  # она загрузится в активное поле,
+  # если нет формы с классом active, то загрузится в поле
+  # добавления нового комментария
+  $('.b-issue-modal').on 'dragenter', ->
+    show_dragging()
+
+  $(document).on 'mouseout', ->
+    hide_dragging()
+
+  $(document).on 'drop', ->
+    hide_dragging()
+
+show_dragging = ->
+  $('.drag-n-drop-overlay').addClass 'active'
+
+hide_dragging = ->
+  $('.drag-n-drop-overlay').removeClass 'active'
