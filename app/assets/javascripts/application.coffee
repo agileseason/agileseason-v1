@@ -19,7 +19,7 @@
 #= require highlight.min
 #= require d3
 #= require turbolinks
-#= require toggle_display.coffee
+#= require toggling.coffee
 
 #= require_tree .
 
