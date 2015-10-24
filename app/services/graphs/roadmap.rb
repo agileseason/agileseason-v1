@@ -17,15 +17,21 @@ class Roadmap
     @min_forecast_closed_at = Time.current
     issues = issue_stats.map do |i|
       github_issue = board_bag.issues_hash[i.number]
-      closed_at = calculate_closed_at(i)
+      roadmap_issue = RoadmapIssue.call(
+        issue_stat: i,
+        free_time_at: @min_forecast_closed_at,
+        cycle_time_days: avg_days_per_issue
+      )
+      @min_forecast_closed_at = roadmap_issue.free_time_at
+
       {
         number: i.number,
         title: github_issue.present? ? github_issue.title : '<unknown>',
-        from: (i.created_at.to_i - normalization_from) * NORM_COEFF,
-        cycletime: (closed_at.to_i - i.created_at.to_i) * NORM_COEFF,
+        from: (roadmap_issue.from.to_i - min_from) * NORM_COEFF,
+        cycletime: roadmap_issue.cycletime.to_i * NORM_COEFF,
         state: i.state,
         created_at: i.created_at.strftime('%d %b'),
-        closed_at: "#{closed_at.strftime('%d %b')} #{'(?)' unless i.closed?}",
+        closed_at: "#{roadmap_issue.to.strftime('%d %b')} #{'(?)' unless i.closed?}",
         column: i.column.name,
         is_archive: i.archived?
       }
@@ -39,7 +45,7 @@ class Roadmap
       uniq { |i| i.created_at.to_date }.
       map do |i|
         {
-          from: (i.created_at.to_i - normalization_from) * Roadmap::NORM_COEFF,
+          from: (i.created_at.to_i - min_from) * Roadmap::NORM_COEFF,
           text: i.created_at.strftime('%d %b')
         }
       end.
@@ -48,7 +54,7 @@ class Roadmap
   end
 
   def current_date
-    (Time.current.to_i - normalization_from) * Roadmap::NORM_COEFF
+    (Time.current.to_i - min_from) * Roadmap::NORM_COEFF
   end
 
   def issue_stats
@@ -71,18 +77,6 @@ class Roadmap
     issues
   end
 
-  def calculate_closed_at(issue)
-    return issue.closed_at if issue.closed_at.present?
-
-    closed_at = @min_forecast_closed_at
-    @min_forecast_closed_at += avg_cycle_time
-    closed_at
-  end
-
-  def avg_cycle_time
-    @avg_cycle_time ||= avg_days_per_issue.days
-  end
-
   def avg_days_per_issue
     throughput = frequency_info.throughput
     return 1 if throughput.nil?
@@ -93,7 +87,7 @@ class Roadmap
     @frequency_info ||= Graphs::FrequencyService.new(board_bag, 1.month.ago)
   end
 
-  def normalization_from
-    @normalization_from ||= issue_stats.map(&:created_at).min.try(:to_i) || 1
+  def min_from
+    @min_from ||= issue_stats.map(&:created_at).min.try(:to_i) || 1
   end
 end
