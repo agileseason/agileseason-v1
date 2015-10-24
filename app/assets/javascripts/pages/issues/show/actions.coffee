@@ -25,7 +25,6 @@ labels = ->
 
 assignee = ->
   $('.b-assign .user').on 'click', (e) ->
-    #debugger
     if $('.check', @).hasClass 'octicon octicon-check'
       $('.check', @).removeClass 'octicon octicon-check'
       $('.b-assignee', '.user-list').addClass 'hidden'

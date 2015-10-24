@@ -91,10 +91,12 @@ class @Comments extends View
 
   _update_comment: ($checkbox, $textarea) =>
     initial_comment = $textarea.val()
-    checkbox_index = $checkbox.parents('.comment-text').find('input').index($checkbox)
+    index = $checkbox.parents('.comment-text').find('input').index $checkbox
     checkbox_value = if $checkbox.is(':checked') then '[x]' else '[ ]'
     update_comment =
-      replaceNthMatch(initial_comment, /(\[(?:x|\s)\])/, checkbox_index + 1, checkbox_value)
+      replaceNthMatch(
+        initial_comment, /(\[(?:x|\s)\])/, index + 1, checkbox_value
+      )
 
     $textarea.val update_comment
 
