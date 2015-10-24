@@ -89,7 +89,7 @@ class @Comments extends View
     @_update_comment($checkbox, $('textarea', $comment_text.parent()))
     $('form.edit-comment', $comment_text.parent()).trigger 'submit'
 
-  _update_comment: ($checkbox, $textarea) =>
+  _update_comment: ($checkbox, $textarea) ->
     initial_comment = $textarea.val()
     index = $checkbox.parents('.comment-text').find('input').index $checkbox
     checkbox_value = if $checkbox.is(':checked') then '[x]' else '[ ]'
