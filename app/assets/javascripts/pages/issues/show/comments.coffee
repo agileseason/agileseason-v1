@@ -8,7 +8,8 @@ class @Comments extends View
     @$textarea.elastic()
     init_uploading $('input:file')
 
-    @$add_comment_form.on 'ajax:success', (e, data) => @_append_new_comment(e, data)
+    @$add_comment_form.on 'ajax:success', (e, data) =>
+      @_append_new_comment(e, data)
 
     @$('.issue-comments, .add-comment-form')
       .on 'click', '.upload a', @_current_upload
@@ -18,7 +19,8 @@ class @Comments extends View
       .on 'click', '.delete', @_delete_comment
       .on 'click', '.edit', @_open_edit_form
       .on 'click', '.close-without-saving', @_close_without_saving
-      .on 'ajax:success', 'form.edit-comment', (e, data) => @_submit_edit_form(e, data)
+      .on 'ajax:success', 'form.edit-comment', (e, data) =>
+        @_submit_edit_form(e, data)
       .on 'click', '.task', @_update_by_checkbox
 
   _append_new_comment: (e, data) =>
@@ -28,7 +30,7 @@ class @Comments extends View
       .removeAttr 'style'
     @_highlight_code()
 
-  _validate_textarea: (e) =>
+  _validate_textarea: (e) ->
     e.preventDefault()
     $textarea = $(e.target).closest('form').find('textarea')
     if $textarea.val().trim() == ''
@@ -47,7 +49,7 @@ class @Comments extends View
     $current_comment.remove()
     @_highlight_code()
 
-  _close_without_saving: (e) =>
+  _close_without_saving: (e) ->
     $parent = $(e.target).closest('.comment-body ')
     initial_value = $('textarea', $parent).data 'initial-value'
 
@@ -68,7 +70,7 @@ class @Comments extends View
 
     @$('textarea').elastic()
 
-  _delete_comment: (e) =>
+  _delete_comment: (e) ->
     if window.confirm('Delete comment?')
       $.ajax
         url: $(e.target).data 'url'
