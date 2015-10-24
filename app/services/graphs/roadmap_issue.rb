@@ -6,8 +6,11 @@ class RoadmapIssue
   attribute :free_time_at, Time
   attribute :cycle_time_days, Integer
   #TODO Add column params
+  attribute :column_ids, Array, default: []
 
   def call
+    return if via_lifetime? && lifetimes.blank?
+
     OpenStruct.new(
       from: from,
       to: to,
@@ -19,15 +22,36 @@ class RoadmapIssue
   private
 
   def from
-    issue_stat.created_at
+    if via_lifetime?
+      lifetimes.min_by(&:in_at).in_at
+    else
+      issue_stat.created_at
+    end
   end
 
   def to
     @to ||= begin
-      return issue_stat.closed_at if issue_stat.closed_at.present?
+      return to_fact if to_fact.present?
 
       self.free_time_at += cycle_time_days.days
       self.free_time_at
+    end
+  end
+
+  def via_lifetime?
+    column_ids.present?
+  end
+
+  def lifetimes
+    @lifetimes ||= issue_stat.lifetimes.where(column_id: column_ids)
+  end
+
+  def to_fact
+    @to_fact ||= if via_lifetime?
+      # TODO Fix with nil!
+      lifetimes.max_by(&:out_at).out_at
+    else
+      issue_stat.closed_at
     end
   end
 end
