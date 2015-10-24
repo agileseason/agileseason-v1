@@ -1,4 +1,4 @@
-.edit-due-date data-url="#{due_date_board_issues_url(board, issue.number)}"
+.edit-due-date.toggling data-url="#{due_date_board_issues_url(board, issue.number)}"
   .issue-popup
     .datepicker
     input.date type='hidden' value="#{(issue.due_date_at || DateTime.now).utc.strftime('%d/%m/%Y')}"

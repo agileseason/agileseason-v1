@@ -3,9 +3,10 @@ resize_lock = false
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
   new NewIssueForm $('.board-column:first')
-  column_menu()
   subscribe_board_update()
   resize_height() # высота борда подгоняется под высоту браузера
+
+  $('.column-menu').each -> new ColumnsSettings($(@))
 
   # перейти на страницу тикета
   $('.issues').on 'click', '.issue.draggable', (e) ->
@@ -44,20 +45,6 @@ resize_height = ->
 
   height = $(window).height() - $('.b-menu').outerHeight(true)
   $('.board').height height
-
-column_menu = ->
-  $('.column-menu').each ->
-    new ColumnsSettings $(@)
-
-  $('.column-menu .title a').on 'click', ->
-    $menu = $(@).closest '.column-menu'
-    $('.column-settings-popup', $menu).show()
-    $menu.addClass('active').prepend '<div class="overlay"></div>'
-
-  $('.board-column .column-menu').on 'click', '.overlay', ->
-    $(@).parent().find('.column-settings-popup').hide()
-    $(@).parent().removeClass 'active'
-    $(@).remove()
 
 window.update_wip_column = (badge) ->
   $("#column_#{badge.column_id}")

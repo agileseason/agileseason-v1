@@ -1,12 +1,12 @@
 .column-menu
-  .title
+  .title.toggling
+    .column-settings-popup
+      = render 'columns/columns_settings', board: @board, column: column
+
     a class="#{'js-show-popup' if can?(:update, @board)}"
       = column.name
 
     = render 'columns/wip_badge', column: column
-
-    .column-settings-popup
-      = render 'columns/columns_settings', board: @board, column: column
 
   - if can?(:update, @board) && k(column).first?
     .new-issue.ajax-link Add an issue

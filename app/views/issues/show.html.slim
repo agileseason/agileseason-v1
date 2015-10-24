@@ -55,7 +55,6 @@
 
     - if can?(:update, @board)
       .issue-actions
-        .overlay
         - if can?(:update_issue, @board_bag)
           = render partial: 'issues/actions/edit_labels', locals: { board: @board_bag, issue: @issue }
           = render partial: 'issues/actions/assign', locals: { issue: @issue }

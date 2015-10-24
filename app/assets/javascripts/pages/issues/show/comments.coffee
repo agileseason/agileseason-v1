@@ -8,7 +8,7 @@ class @Comments extends View
     @$textarea.elastic()
     init_uploading $('input:file')
 
-    @$add_comment_form.on 'ajax:success', (e, data) => @_append_new_comment
+    @$add_comment_form.on 'ajax:success', (e, data) => @_append_new_comment(e, data)
 
     @$('.issue-comments, .add-comment-form')
       .on 'click', '.upload a', @_current_upload

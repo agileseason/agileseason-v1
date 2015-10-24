@@ -14,11 +14,12 @@
 #= require widget.js
 #= require replace_nth_match.js
 #= require js_patch
-#= require view
+#= require application/view
 #= require faye-browser
 #= require highlight.min
 #= require d3
 #= require turbolinks
+#= require toggle_display.coffee
 
 #= require_tree .
 
