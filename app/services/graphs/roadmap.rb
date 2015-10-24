@@ -8,6 +8,12 @@ class Roadmap
   NORM_COEFF = 1.0 / 86400 * ISSUE_WIDTH
 
   def call
+    OpenStruct.new(issues: issues, dates: dates, current_date: current_date)
+  end
+
+  private
+
+  def issues
     @min_forecast_closed_at = Time.current
     issues = issue_stats.map do |i|
       github_issue = board_bag.issues_hash[i.number]
@@ -28,7 +34,22 @@ class Roadmap
     rows_optimizer(issues)
   end
 
-  private
+  def dates
+    issue_stats.
+      uniq { |i| i.created_at.to_date }.
+      map do |i|
+        {
+          from: (i.created_at.to_i - normalization_from) * Roadmap::NORM_COEFF,
+          text: i.created_at.strftime('%d %b')
+        }
+      end.
+      uniq { |date| date[:from] }. # TODO Fix normalization error if dates are close.
+      to_json
+  end
+
+  def current_date
+    (Time.current.to_i - normalization_from) * Roadmap::NORM_COEFF
+  end
 
   def issue_stats
     @issue_stats ||= board_bag.issue_stats.includes(:column).order(:created_at)

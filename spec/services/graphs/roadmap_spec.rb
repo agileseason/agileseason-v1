@@ -6,7 +6,8 @@ describe Roadmap do
     let(:user) { create(:user) }
 
     context 'empty' do
-      it { is_expected.to be_empty }
+      its(:issues) { is_expected.to be_empty }
+      its(:dates) { is_expected.not_to be_empty }
     end
 
     context 'with issues' do
@@ -16,7 +17,8 @@ describe Roadmap do
       let(:issue_1) { stub_issue }
       before { allow(user).to receive(:github_api).and_return(github_api) }
 
-      it { is_expected.not_to be_empty }
+      its(:issues) { is_expected.not_to be_empty }
+      its(:dates) { is_expected.not_to be_empty }
     end
   end
 end
