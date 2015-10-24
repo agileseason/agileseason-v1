@@ -34,6 +34,5 @@ $(document).on 'ready page:load', ->
           $(@).addClass 'toggling-active'
 
         $overlay.on 'click', ->
-          console.log 'overlay'
           $toggling.removeClass 'toggling-active'
 ) jQuery
