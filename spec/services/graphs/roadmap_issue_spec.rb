@@ -67,7 +67,7 @@ describe RoadmapIssue do
         end
 
         context 'in but not out' do
-          let(:in_at) { Time.parse('2015-10-01') }
+          let(:in_at) { created_at + 1.day }
           let(:out_at) { nil }
 
           it { is_expected.not_to be_nil }
@@ -76,7 +76,7 @@ describe RoadmapIssue do
         end
       end
 
-      context 'with lifetimes', :focus do
+      context 'with lifetimes' do
         let!(:lifetime_1) { create(:lifetime, issue_stat: issue_stat, column: column, in_at: in_at_1, out_at: out_at_1) }
         let!(:lifetime_2) { create(:lifetime, issue_stat: issue_stat, column: column, in_at: out_at_1, out_at: nil) }
         let(:other_column) { board.columns.first }

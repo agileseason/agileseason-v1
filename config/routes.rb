@@ -71,7 +71,9 @@ Rails.application.routes.draw do
       get :early_access
     end
 
-    resource :roadmap, only: [:show]
+    resource :roadmap, only: [:show] do
+      post :build
+    end
 
     post 'preview', to: 'markdown#preview', as: :preview
   end

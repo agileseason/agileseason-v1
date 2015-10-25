@@ -46,12 +46,8 @@ class RoadmapIssue
   end
 
   def to_fact
-    @to_fact ||= if via_lifetime?
-      unless lifetimes.any? { |lf| lf.out_at.nil? }
-        lifetimes.max_by(&:out_at).out_at
-      end
-    else
-      issue_stat.closed_at
-    end
+    return issue_stat.closed_at unless via_lifetime?
+    return nil if lifetimes.any? { |lf| lf.out_at.nil? }
+    lifetimes.max_by(&:out_at).out_at
   end
 end
