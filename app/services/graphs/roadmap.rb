@@ -54,8 +54,7 @@ class Roadmap
           text: i.created_at.strftime('%d %b')
         }
       end.
-      uniq { |date| date[:from] }. # TODO Fix normalization error if dates are close.
-      to_json
+      uniq { |date| date[:from] } # TODO Fix normalization error if dates are close.
   end
 
   def current_date

@@ -7,7 +7,7 @@ describe Roadmap do
 
     context 'empty' do
       its(:issues) { is_expected.to be_empty }
-      its(:dates) { is_expected.not_to be_empty }
+      its(:dates) { is_expected.to be_empty }
     end
 
     context 'with issues' do
