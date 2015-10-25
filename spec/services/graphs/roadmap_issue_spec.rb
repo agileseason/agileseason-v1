@@ -75,6 +75,22 @@ describe RoadmapIssue do
           its(:cycletime) { is_expected.to eq free_time_at + cycle_time_days.days - in_at }
         end
       end
+
+      context 'with lifetimes', :focus do
+        let!(:lifetime_1) { create(:lifetime, issue_stat: issue_stat, column: column, in_at: in_at_1, out_at: out_at_1) }
+        let!(:lifetime_2) { create(:lifetime, issue_stat: issue_stat, column: column, in_at: out_at_1, out_at: nil) }
+        let(:other_column) { board.columns.first }
+
+        context 'in but not out' do
+          let(:in_at_1) { Time.parse('2015-10-01') }
+          let(:out_at_1) { in_at_1 + 1.day }
+          let(:out_at) { nil }
+
+          it { is_expected.not_to be_nil }
+          its(:free_time_at) { is_expected.to eq free_time_at + cycle_time_days.days }
+          its(:cycletime) { is_expected.to eq free_time_at + cycle_time_days.days - in_at_1 }
+        end
+      end
     end
   end
 end

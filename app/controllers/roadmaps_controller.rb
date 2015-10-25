@@ -23,6 +23,10 @@ class RoadmapsController < ApplicationController
   private
 
   def roadmap
-    @roadmap ||= Roadmap.call(board_bag: @board_bag)
+    @roadmap ||= Roadmap.call(board_bag: @board_bag, column_ids: column_ids)
+  end
+
+  def column_ids
+    []
   end
 end

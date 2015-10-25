@@ -5,7 +5,6 @@ class RoadmapIssue
   attribute :issue_stat, IssueStat
   attribute :free_time_at, Time
   attribute :cycle_time_days, Integer
-  #TODO Add column params
   attribute :column_ids, Array, default: []
 
   def call
@@ -48,8 +47,9 @@ class RoadmapIssue
 
   def to_fact
     @to_fact ||= if via_lifetime?
-      # TODO Fix with nil!
-      lifetimes.max_by(&:out_at).out_at
+      unless lifetimes.any? { |lf| lf.out_at.nil? }
+        lifetimes.max_by(&:out_at).out_at
+      end
     else
       issue_stat.closed_at
     end

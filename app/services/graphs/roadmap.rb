@@ -3,10 +3,12 @@ class Roadmap
   include Virtus.model
 
   attribute :board_bag, BoardBag
+  attribute :column_ids, Array, default: []
 
   ISSUE_WIDTH = 40 # Pixels
   NORM_COEFF = 1.0 / 86400 * ISSUE_WIDTH
 
+  # TODO Filtering dates by lifetimes
   def call
     OpenStruct.new(issues: issues, dates: dates, current_date: current_date)
   end
@@ -20,10 +22,13 @@ class Roadmap
       roadmap_issue = RoadmapIssue.call(
         issue_stat: i,
         free_time_at: @min_forecast_closed_at,
-        cycle_time_days: avg_days_per_issue
+        cycle_time_days: avg_days_per_issue,
+        column_ids: column_ids
       )
-      @min_forecast_closed_at = roadmap_issue.free_time_at
 
+      next if roadmap_issue.nil?
+
+      @min_forecast_closed_at = roadmap_issue.free_time_at
       {
         number: i.number,
         title: github_issue.present? ? github_issue.title : '<unknown>',
@@ -35,7 +40,7 @@ class Roadmap
         column: i.column.name,
         is_archive: i.archived?
       }
-    end
+    end.compact
 
     rows_optimizer(issues)
   end
