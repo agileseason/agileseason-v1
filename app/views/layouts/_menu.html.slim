@@ -29,13 +29,13 @@
       - if current_user.admin?
         - if controller_name == 'roadmaps'
           li.list-item.roadmap.active
-            span.octicon.octicon-list-ordered &nbsp;
+            span.octicon.octicon-list-unordered &nbsp;
             span Roadmap
 
         - else
           li.list-item.roadmap
             a.menu-link href="#{un board_roadmap_url(@board)}" title='Roadmap'
-              span.a-child.octicon.octicon-list-ordered &nbsp;
+              span.a-child.octicon.octicon-list-unordered &nbsp;
               span.a-child Roadmap
 
       - if can? :update, @board

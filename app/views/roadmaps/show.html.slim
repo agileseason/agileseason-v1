@@ -13,8 +13,15 @@ h1 Roadmap
     li : a href="#{un board_roadmap_url(@board, '', mode: '1:1')}" 1:1
     li : a href="#{un board_roadmap_url(@board, '')}" Scale
 
-  ul.columns-filter.list
-    - @board.columns.each do |column|
+  = simple_form_for(@board, url: build_board_roadmap_url(@board), method: :post) do |f|
+    ul.columns-filter.list
+      - @board.columns.each do |column|
+        li
+          - if @column_ids.include? column.id
+            input name='column_ids[]' type='checkbox' value="#{column.id}" checked='checked'
+          - else
+            input name='column_ids[]' type='checkbox' value="#{column.id}"
+
+          label = column.name
       li
-        input type='checkbox'
-        label = column.name
+        = f.button :magic_submit, value: 'Build', data: { disable_with: 'Building...' }

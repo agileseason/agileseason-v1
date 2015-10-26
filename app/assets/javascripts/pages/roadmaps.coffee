@@ -7,6 +7,7 @@ $(document).on 'page:change', ->
   # Issues
   issues = $canvas.data('chart-issues')
   issueHeigth = 30
+  issueTooltipWidth = 240
   rowOffset = 2
   max_issue_row = d3.max(issues, (e) -> e.row) + 2 # Plus 2 for xAxis
   max_issue_x = d3.max(issues, (e) -> e.from + e.cycletime)
@@ -27,7 +28,7 @@ $(document).on 'page:change', ->
     xScale = d3.scale.
       linear().
       domain([0, max_issue_x]). # Data minimum and maximum
-      range([0, chart_width])  # pixels to map
+      range([0, chart_width - issueTooltipWidth])  # pixels to map
 
   # Issue Cycletime Rectangle
   svg.selectAll('rect')
@@ -70,10 +71,10 @@ $(document).on 'page:change', ->
       x1: xScale(xNow)
       y1: 0
       x2: xScale(xNow)
-      y2: chart_height
+      y2: chart_height - 10
   svg
     .selectAll('text.now')
-    .data([14, chart_height])
+    .data([14])
     .enter()
       .append('text')
       .attr
