@@ -1,6 +1,5 @@
-.b-assign
+.b-assign.toggling
   .issue-popup
-    .close-popup
     .users
       - @board_bag.collaborators.each do |user|
         - unless user.login == 'houndci'
