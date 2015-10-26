@@ -54,7 +54,7 @@ class RoadmapIssue
       if issue_stat.closed_at.nil?
         nil
       else
-        lifetimes.max_by { |lf| lf.in_at }.in_at
+        lifetimes.max_by(&:in_at).in_at
       end
     else
       outs.max
