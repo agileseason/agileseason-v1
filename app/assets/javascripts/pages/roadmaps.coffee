@@ -71,10 +71,10 @@ $(document).on 'page:change', ->
       x1: xScale(xNow)
       y1: 0
       x2: xScale(xNow)
-      y2: chart_height
+      y2: chart_height - 10
   svg
     .selectAll('text.now')
-    .data([14, chart_height])
+    .data([14])
     .enter()
       .append('text')
       .attr
