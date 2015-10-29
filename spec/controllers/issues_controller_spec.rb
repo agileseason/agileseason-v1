@@ -144,11 +144,13 @@ describe IssuesController do
         to receive(:call)
     end
     before { allow(IssueStats::Mover).to receive(:call) }
+    before { allow(IssueStats::AutoCloser).to receive(:call) }
 
     context 'responce' do
       before { request }
       it { expect(response).to have_http_status(:success) }
       it { expect(IssueStats::Mover).to have_received(:call) }
+      it { expect(IssueStats::AutoCloser).to have_received(:call) }
     end
 
     context 'behavior' do
@@ -175,24 +177,17 @@ describe IssuesController do
     let(:issue_stat) { build(:issue_stat, board: board, column: column_1) }
 
     before do
-      allow_any_instance_of(IssueStats::Closer).
+      allow(IssueStats::Closer).
         to receive(:call).
         and_return(issue_stat)
     end
     before { allow(Graphs::IssueStatsWorker).to receive(:perform_async) }
+    before { subject }
 
-    context 'request' do
-      before { subject }
-
-      it { expect(response).to have_http_status(:success) }
-      it { expect(Graphs::IssueStatsWorker).to have_received(:perform_async) }
-      it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
-    end
-
-    context 'behavior' do
-      after { subject }
-      it { expect_any_instance_of(IssueStats::Closer).to receive(:call) }
-    end
+    it { expect(response).to have_http_status(:success) }
+    it { expect(Graphs::IssueStatsWorker).to have_received(:perform_async) }
+    it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+    it { expect(IssueStats::Closer).to have_received(:call) }
   end
 
   describe '#reopen' do

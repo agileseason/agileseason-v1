@@ -46,6 +46,7 @@ class IssuesController < ApplicationController
     column_to = @board.columns.find(params[:column_id])
     IssueStats::Mover.call(user: current_user, board_bag: @board_bag, column_to: column_to, number: number)
     IssueStats::AutoAssigner.new(current_user, @board_bag, column_to, number).call
+    IssueStats::AutoCloser.call(user: current_user, board_bag: @board_bag, column: column_to, number: number)
     IssueStats::Sorter.new(column_to, number, !!params[:force]).call
 
     issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
@@ -68,7 +69,7 @@ class IssuesController < ApplicationController
   end
 
   def close
-    issue_stat = IssueStats::Closer.new(current_user, @board_bag, number).call
+    issue_stat = IssueStats::Closer.call(user: current_user, board_bag: @board_bag, number: number)
     broadcast_column(issue_stat.column)
 
     render nothing: true

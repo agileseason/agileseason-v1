@@ -1,8 +1,12 @@
 module IssueStats
   class Closer
+    include Service
+    include Virtus.model
     include IdentityHelper
 
-    pattr_initialize :user, :board_bag, :number
+    attribute :user, User
+    attribute :board_bag, BoardBag
+    attribute :number, Integer
 
     def call
       github_issue = user.github_api.close(board_bag, number)
