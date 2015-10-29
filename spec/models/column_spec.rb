@@ -111,4 +111,44 @@ describe Column do
       it { is_expected.to eq ['1', '2', '3'] }
     end
   end
+
+  describe '#auto_assign?' do
+    subject { column.auto_assign? }
+    let(:column) { build :column, is_auto_assign: is_auto_assign }
+
+    context 'nil' do
+      let(:is_auto_assign) { nil }
+      it { is_expected.to eq false }
+    end
+
+    context 'false' do
+      let(:is_auto_assign) { false }
+      it { is_expected.to eq false }
+    end
+
+    context 'true' do
+      let(:is_auto_assign) { true }
+      it { is_expected.to eq true }
+    end
+  end
+
+  describe '#auto_close?' do
+    subject { column.auto_close? }
+    let(:column) { build :column, is_auto_close: is_auto_close }
+
+    context 'nil' do
+      let(:is_auto_close) { nil }
+      it { is_expected.to eq false }
+    end
+
+    context 'false' do
+      let(:is_auto_close) { false }
+      it { is_expected.to eq false }
+    end
+
+    context 'true' do
+      let(:is_auto_close) { true }
+      it { is_expected.to eq true }
+    end
+  end
 end
