@@ -44,12 +44,15 @@ class IssuesController < ApplicationController
 
   def move_to
     column_to = @board.columns.find(params[:column_id])
-    IssueStats::Mover.call(user: current_user, board_bag: @board_bag, column_to: column_to, number: number)
-    IssueStats::AutoAssigner.new(current_user, @board_bag, column_to, number).call
-    IssueStats::Sorter.new(column_to, number, !!params[:force]).call
+    IssueStats::Mover.call(
+      user: current_user,
+      board_bag: @board_bag,
+      column_to: column_to,
+      number: number,
+      is_force_sort: !!params[:force]
+    )
 
     issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
-
     broadcast_column(issue_stat.column)
     broadcast_column(column_to)
 
@@ -59,6 +62,7 @@ class IssuesController < ApplicationController
         partial: 'issues/assignee',
         locals: { issue: @board_bag.issue(number) }
       ),
+      is_open: issue_stat.open?,
       is_ready: issue_stat.ready?,
       # NOTE Includes(columns: :issue_stats) to remove N+1 query in view 'columns/wip_badge'.
       badges: Board.includes(columns: :issue_stats).find(@board.id).columns.map do |column|
@@ -68,7 +72,7 @@ class IssuesController < ApplicationController
   end
 
   def close
-    issue_stat = IssueStats::Closer.new(current_user, @board_bag, number).call
+    issue_stat = IssueStats::Closer.call(user: current_user, board_bag: @board_bag, number: number)
     broadcast_column(issue_stat.column)
 
     render nothing: true

@@ -20,6 +20,10 @@ class IssueStat < ActiveRecord::Base
     elapsed_time / 86400
   end
 
+  def open?
+    !closed?
+  end
+
   def closed?
     closed_at.present?
   end

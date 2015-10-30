@@ -10,7 +10,8 @@ describe IssueStats::Creator do
   describe '#call' do
     subject { creator.call }
     before { allow_any_instance_of(Lifetimes::Starter).to receive(:call) }
-    before { allow_any_instance_of(IssueStats::Sorter).to receive(:call) }
+    before { allow(IssueStats::Sorter).to receive(:call) }
+    before { allow(board_bag).to receive(:update_cache) }
 
     its(:issue_stat) { is_expected.to be_persisted }
     its(:number) { is_expected.to eq issue.number }
@@ -20,12 +21,18 @@ describe IssueStats::Creator do
     its(:column) { is_expected.to eq board.columns.first }
 
     context 'behavior' do
-      after { subject }
+      context 'before' do
+        before { subject }
 
-      it { expect_any_instance_of(Lifetimes::Starter).to receive(:call) }
-      it { expect_any_instance_of(IssueStats::Sorter).to receive(:call) }
-      it { expect(github_api).to receive(:create_issue).with(board_bag, issue) }
-      it { expect(board_bag).to receive(:update_cache).with(issue) }
+        it { expect(IssueStats::Sorter).to have_received(:call) }
+        it { expect(github_api).to have_received(:create_issue).with(board_bag, issue) }
+        it { expect(board_bag).to have_received(:update_cache).with(issue) }
+      end
+
+      context 'after' do
+        after { subject }
+        it { expect_any_instance_of(Lifetimes::Starter).to receive(:call) }
+      end
     end
   end
 end

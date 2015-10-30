@@ -32,4 +32,8 @@ class Column < ActiveRecord::Base
   def auto_assign?
     is_auto_assign.present?
   end
+
+  def auto_close?
+    is_auto_close.present?
+  end
 end

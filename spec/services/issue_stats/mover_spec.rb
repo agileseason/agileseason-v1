@@ -7,6 +7,10 @@ describe IssueStats::Mover do
   before { allow(user).to receive(:github_api).and_return(github_api) }
   before { allow(IssueStats::Unready).to receive(:call) }
 
+  before { allow(IssueStats::AutoAssigner).to receive(:call) }
+  before { allow(IssueStats::AutoCloser).to receive(:call) }
+  before { allow(IssueStats::Sorter).to receive(:call) }
+
   describe '#call' do
     subject do
       IssueStats::Mover.call(
@@ -30,6 +34,9 @@ describe IssueStats::Mover do
       context 'behavior' do
         before { subject }
         it { expect(IssueStats::Unready).not_to have_received(:call) }
+        it { expect(IssueStats::AutoAssigner).to have_received(:call) }
+        it { expect(IssueStats::AutoCloser).to have_received(:call) }
+        it { expect(IssueStats::Sorter).to have_received(:call) }
       end
     end
 
@@ -46,6 +53,9 @@ describe IssueStats::Mover do
       context 'behavior' do
         before { subject }
         it { expect(IssueStats::Unready).to have_received(:call) }
+        it { expect(IssueStats::AutoAssigner).to have_received(:call) }
+        it { expect(IssueStats::AutoCloser).to have_received(:call) }
+        it { expect(IssueStats::Sorter).to have_received(:call) }
       end
     end
   end

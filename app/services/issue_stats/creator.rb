@@ -6,7 +6,11 @@ module IssueStats
       github_issue = user.github_api.create_issue(board_bag, issue_info)
       issue_stat = IssueStatService.create(board_bag, github_issue)
 
-      IssueStats::Sorter.new(issue_stat.column, issue_stat.number, true).call
+      IssueStats::Sorter.call(
+        column_to: issue_stat.column,
+        number: issue_stat.number,
+        is_force_sort: true
+      )
       Lifetimes::Starter.new(issue_stat, issue_stat.column).call
       board_bag.update_cache(github_issue)
 

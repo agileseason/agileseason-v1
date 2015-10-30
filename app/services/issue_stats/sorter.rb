@@ -1,6 +1,12 @@
 module IssueStats
   class Sorter
-    pattr_initialize :column_to, :number, :is_force_sort
+    include Service
+    include Virtus.model
+    include IdentityHelper
+
+    attribute :column_to, Column
+    attribute :number, Integer
+    attribute :is_force_sort, Boolean
 
     def call
       return unless is_force_sort

@@ -1,5 +1,4 @@
 describe IssueStats::AutoAssigner do
-  let(:auto_assigner) { IssueStats::AutoAssigner.new(user, board_bag, column, issue.number) }
   let(:user) { create(:user) }
   let(:board) { create(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(nil, board) }
@@ -9,7 +8,14 @@ describe IssueStats::AutoAssigner do
   before { allow(user).to receive(:github_api).and_return(github_api) }
 
   describe '#call' do
-    subject { auto_assigner.call }
+    subject do
+      IssueStats::AutoAssigner.call(
+        user: user,
+        board_bag: board_bag,
+        column: column,
+        number: issue.number
+      )
+    end
     before { allow(board_bag).to receive(:update_cache) }
     before { column.update(is_auto_assign: is_auto_assign) }
     before { subject }

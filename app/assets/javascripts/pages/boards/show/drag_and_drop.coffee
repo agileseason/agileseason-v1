@@ -36,8 +36,15 @@ $(document).on 'page:change', ->
         success: (data) ->
           $issue = $("#issues_#{data.number}")
           $issue.find('.b-assignee').replaceWith(data.assignee)
+
           if data.is_ready
             $issue.find('.is_ready').addClass('active')
           else
             $issue.find('.is_ready').removeClass('active')
+
+          if data.is_open
+            $issue.removeClass('closed')
+          else
+            $issue.addClass('closed')
+
           window.update_wip_column(badge) for badge in data.badges

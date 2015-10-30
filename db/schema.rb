@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151007045143) do
+ActiveRecord::Schema.define(version: 20151029052113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20151007045143) do
     t.integer  "wip_min"
     t.integer  "wip_max"
     t.boolean  "is_auto_assign"
+    t.boolean  "is_auto_close"
   end
 
   add_index "columns", ["board_id"], name: "index_columns_on_board_id", using: :btree
