@@ -12,9 +12,15 @@ ul
 
   li.autoassign
     label
-      = check_box_tag 'is_auto_assign', "#{column.auto_assign?}", column.auto_assign? ? true : false,
+      = check_box_tag 'is_auto_assign', "#{column.auto_assign?}", column.auto_assign?,
         class: 'js-patch', 'data-url' => update_attribute_board_column_url(board, column)
       | Auto-assign&nbsp;yourself
+
+  li.autoclose
+    label
+      = check_box_tag 'is_auto_close', "#{column.auto_close?}", column.auto_close?,
+        class: 'js-patch', 'data-url' => update_attribute_board_column_url(board, column)
+      | Auto-close&nbsp;issue
 
   li.delimiter
 

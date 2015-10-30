@@ -60,6 +60,7 @@ class IssuesController < ApplicationController
         partial: 'issues/assignee',
         locals: { issue: @board_bag.issue(number) }
       ),
+      is_open: issue_stat.open?,
       is_ready: issue_stat.ready?,
       # NOTE Includes(columns: :issue_stats) to remove N+1 query in view 'columns/wip_badge'.
       badges: Board.includes(columns: :issue_stats).find(@board.id).columns.map do |column|
