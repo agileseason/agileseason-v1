@@ -1,8 +1,13 @@
 module IssueStats
   class AutoAssigner
+    include Service
+    include Virtus.model
     include IdentityHelper
 
-    pattr_initialize :user, :board_bag, :column, :number
+    attribute :user, User
+    attribute :board_bag, BoardBag
+    attribute :column, Column
+    attribute :number, Integer
 
     def call
       assign if need_assignee?

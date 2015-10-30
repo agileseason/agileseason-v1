@@ -139,24 +139,12 @@ describe IssuesController do
         to receive(:call).
         and_return(issue_stat)
     end
-    before do
-      allow_any_instance_of(IssueStats::AutoAssigner).
-        to receive(:call)
-    end
     before { allow(IssueStats::Mover).to receive(:call) }
-    before { allow(IssueStats::AutoCloser).to receive(:call) }
 
     context 'responce' do
       before { request }
       it { expect(response).to have_http_status(:success) }
       it { expect(IssueStats::Mover).to have_received(:call) }
-      it { expect(IssueStats::AutoCloser).to have_received(:call) }
-    end
-
-    context 'behavior' do
-      after { request }
-      it { expect_any_instance_of(IssueStats::AutoAssigner).to receive(:call) }
-      it { expect_any_instance_of(IssueStats::Sorter).to receive(:call) }
     end
   end
 

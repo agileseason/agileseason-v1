@@ -1,8 +1,13 @@
 describe IssueStats::Sorter do
-  let(:sorter) { IssueStats::Sorter.new(column_to, number, is_force_sort) }
 
   describe '#call' do
-    subject { sorter.call }
+    subject do
+      IssueStats::Sorter.call(
+        column_to: column_to,
+        number: number,
+        is_force_sort: is_force_sort
+      )
+    end
     let(:column_to) { create(:column, issues: [], board: board) }
     let(:board) { create(:board, :with_columns) }
     let(:number) { 1 }
