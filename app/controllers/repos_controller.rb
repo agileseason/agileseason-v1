@@ -1,7 +1,11 @@
 class ReposController < ApplicationController
   def index
     if repos.blank?
-      render text: 'You don\'t have repositories on github. Permission level must be the Write or Admin.'
+      render(
+        text: "
+          You don't have repositories on github.
+          Permission level must be the Write or Admin."
+      )
     else
       render(
         partial: 'repo',

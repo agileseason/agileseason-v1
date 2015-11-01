@@ -21,7 +21,11 @@ describe ReposController do
 
     context 'without repos' do
       let(:repos) { [] }
-      it { expect(response.body).to eq 'You don\'t have repositories on github. Permission level must be the Write or Admin.' }
+      it do
+        expect(response.body).to eq "
+          You don't have repositories on github.
+          Permission level must be the Write or Admin."
+      end
     end
   end
 end
