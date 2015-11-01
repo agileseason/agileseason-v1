@@ -1,6 +1,7 @@
 describe ReposController do
   describe '#index' do
-    let(:github_api) { double(repos: [stub_repo]) }
+    let(:github_api) { double(repos: repos) }
+    let(:repos) { [stub_repo] }
     before do
       allow_any_instance_of(User).
         to receive(:github_api).
@@ -11,10 +12,20 @@ describe ReposController do
     before { get :index }
 
     it { expect(response).to have_http_status(:success) }
+    it { expect(response).to render_template(partial: '_repo') }
     it do
       expect(controller).
         to have_received(:ui_event).
-        with(:board_new, step: 'choose repository')
+        with(:board_new, step: 'choose repository', repos: repos.size)
+    end
+
+    context 'without repos' do
+      let(:repos) { [] }
+      it do
+        expect(response.body).to eq "
+          You don't have repositories on github.
+          Permission level must be the Write or Admin."
+      end
     end
   end
 end
