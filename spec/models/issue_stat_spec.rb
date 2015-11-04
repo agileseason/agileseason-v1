@@ -9,9 +9,10 @@ RSpec.describe IssueStat, type: :model do
   end
 
   describe 'scopes' do
+    let(:board) { create(:board, :with_columns) }
+
     describe '.open' do
       subject { board.issue_stats.open }
-      let(:board) { create(:board, :with_columns) }
       let!(:closed_issues) { create(:issue_stat, board: board, closed_at: Time.current) }
       let!(:open_issue) { create(:issue_stat, board: board, closed_at: nil) }
 
@@ -21,7 +22,6 @@ RSpec.describe IssueStat, type: :model do
 
     describe '.closed' do
       subject { board.issue_stats.closed }
-      let(:board) { create(:board, :with_columns) }
       let!(:closed_issue) { create(:issue_stat, board: board, closed_at: Time.current) }
       let!(:open_issue) { create(:issue_stat, board: board, closed_at: nil) }
 
@@ -31,7 +31,6 @@ RSpec.describe IssueStat, type: :model do
 
     describe '.archived' do
       subject { board.issue_stats.archived }
-      let(:board) { create(:board, :with_columns) }
       let!(:open_issue) { create(:issue_stat, board: board, closed_at: nil) }
       let!(:closed_issue) { create(:issue_stat, board: board, closed_at: Time.current) }
       let!(:archived_issue) { create(:issue_stat, board: board, archived_at: Time.current) }
