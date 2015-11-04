@@ -5,7 +5,7 @@ describe Lifetimes::Starter do
     subject { starter.call }
     let(:issue_stat) { create(:issue_stat, column: column) }
     let(:column) { board.columns.first }
-    let(:board) { create(:board, :with_columns) }
+    let(:board) { build(:board, :with_columns) }
 
     it { is_expected.to be_persisted }
     its(:column) { is_expected.to eq column }

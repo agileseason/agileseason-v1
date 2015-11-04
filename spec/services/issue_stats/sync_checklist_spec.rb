@@ -1,6 +1,6 @@
 describe IssueStats::SyncChecklist do
   let(:issue_stat) do
-    create(
+    build(
       :issue_stat,
       number: 1,
       checklist: 2,

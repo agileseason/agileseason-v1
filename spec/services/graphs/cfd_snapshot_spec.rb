@@ -1,7 +1,7 @@
 describe Graphs::CfdSnapshot do
   describe 'call' do
     subject { Graphs::CfdSnapshot.call(board: board) }
-    let(:board) { create(:board, :with_columns) }
+    let(:board) { build(:board, :with_columns) }
     let(:column_1) { board.columns.first }
     let(:column_2) { board.columns.second }
 

@@ -2,8 +2,8 @@ describe Roadmap do
   describe '#call' do
     subject(:roadmap) { Roadmap.call(board_bag: board_bag) }
     let(:board_bag) { BoardBag.new(user, board) }
-    let(:board) { create(:board, :with_columns) }
-    let(:user) { create(:user) }
+    let(:board) { build(:board, :with_columns) }
+    let(:user) { build(:user) }
 
     context 'empty' do
       its(:issues) { is_expected.to be_empty }

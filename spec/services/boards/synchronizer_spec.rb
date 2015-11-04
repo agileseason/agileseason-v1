@@ -1,8 +1,8 @@
 describe Boards::Synchronizer do
   describe '.call' do
     subject { Boards::Synchronizer.call(user: user, board: board) }
-    let(:user) { create(:user) }
-    let(:board) { create(:board, :with_columns, user: user) }
+    let(:user) { build(:user) }
+    let(:board) { build(:board, :with_columns, user: user) }
     let(:github_api) { double(issues: issues, issue: issue_1) }
     let(:archiver) { double(call: issue_stat_1) }
     let(:number) { 1 }

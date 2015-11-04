@@ -1,7 +1,7 @@
 describe IssueStats::Archiver do
   let(:archiver) { IssueStats::Archiver.new(user, board_bag, issue.number) }
-  let(:user) { create(:user) }
-  let(:board) { create(:board, :with_columns, user: user) }
+  let(:user) { build(:user) }
+  let(:board) { build(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(nil, board) }
   let(:github_api) { double(issue: issue) }
   before { allow(user).to receive(:github_api).and_return(github_api) }

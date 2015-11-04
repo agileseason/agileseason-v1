@@ -1,6 +1,6 @@
 describe Graphs::ControlService do
   let(:service) { Graphs::ControlService.new(board, rolling_window) }
-  let(:board) { create(:kanban_board, :with_columns) }
+  let(:board) { build(:kanban_board, :with_columns) }
   let(:rolling_window) { 6 }
 
   describe '#issues_series_data' do

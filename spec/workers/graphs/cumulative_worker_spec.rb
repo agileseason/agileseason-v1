@@ -3,7 +3,7 @@ describe Graphs::CumulativeWorker do
 
   describe '.perform' do
     subject { board.board_histories }
-    let(:user) { create(:user) }
+    let(:user) { build(:user) }
     let(:board) { create(:board, :with_columns, user: user) }
     let(:column_1) { board.columns.first }
     let(:column_2) { board.columns.second }

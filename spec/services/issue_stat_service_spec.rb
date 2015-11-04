@@ -1,5 +1,5 @@
 describe IssueStatService do
-  let(:user) { create(:user) }
+  let(:user) { build(:user) }
   let(:board) { create(:board, :with_columns, user: user) }
   let(:service) { IssueStatService }
 

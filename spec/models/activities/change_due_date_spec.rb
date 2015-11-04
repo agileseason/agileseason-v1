@@ -1,15 +1,15 @@
 describe Activities::ChangeDueDate, type: :model do
   describe '.create_for' do
     subject { Activities::ChangeDueDate.create_for(issue_stat, user) }
-    let(:user) { create(:user) }
-    let(:board) { create(:board_with_columns, user: user) }
-    let(:issue_stat) { create(:issue_stat, board: board, due_date_at: due_date_at) }
+    let(:user) { build(:user) }
+    let(:board) { build(:board_with_columns, user: user) }
+    let(:issue_stat) { build(:issue_stat, board: board, due_date_at: due_date_at) }
     let(:due_date_at) { DateTime.now }
 
     it { expect { subject }.to change(Activities::ChangeDueDate, :count).by(1) }
-    it { expect(subject.board).to eq board }
-    it { expect(subject.issue_stat).to eq issue_stat }
-    it { expect(subject.data).to eq(due_date_at: due_date_at) }
+    its(:board) { is_expected.to eq board }
+    its(:issue_stat) { is_expected.to eq issue_stat }
+    its(:data) { is_expected.to eq(due_date_at: due_date_at) }
   end
 
   describe '#description' do

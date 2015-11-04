@@ -3,7 +3,8 @@ describe Graphs::IssueStatsWorker do
 
   describe '.perform' do
     subject(:issue_stats) { board.issue_stats }
-    let(:board) { create(:board, :with_columns, created_at: 10.days.ago) }
+    let(:board) { create(:board, :with_columns, created_at: created_at) }
+    let(:created_at) { 10.days.ago }
     let(:arrange) {}
 
     before { allow_any_instance_of(GithubApi).to receive(:issues).and_return(issues) }
@@ -16,7 +17,7 @@ describe Graphs::IssueStatsWorker do
     end
 
     context 'not add issues when it closed before board#created_at' do
-      let(:board) { create(:board, :with_columns, created_at: 1.day.ago) }
+      let(:created_at) { 1.day.ago }
       let(:issues) { [issue_1, issue_2] }
       let(:issue_1) { stub_issue(state: 'closed', created_at: 2.days.ago, updated_at: 2.days.ago, closed_at: 2.days.ago) }
       let(:issue_2) { stub_issue(state: 'open', created_at: 2.days.ago, updated_at: 2.days.ago, closed_at: nil) }

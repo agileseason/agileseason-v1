@@ -1,7 +1,7 @@
 describe IssueStats::Finder do
   let(:finder) { IssueStats::Finder.new(user, board_bag, number) }
-  let(:user) { create(:user) }
-  let(:board) { create(:board, :with_columns, user: user) }
+  let(:user) { build(:user) }
+  let(:board) { build(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(nil, board) }
   let(:number) { 101 }
 

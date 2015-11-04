@@ -1,7 +1,7 @@
 describe IssueStats::Unarchiver do
   let(:unarchiver) { IssueStats::Unarchiver.new(user, board_bag, issue_stat.number) }
-  let(:user) { create(:user) }
-  let(:board) { create(:board, :with_columns, user: user) }
+  let(:user) { build(:user) }
+  let(:board) { build(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(nil, board) }
 
   describe '#call' do

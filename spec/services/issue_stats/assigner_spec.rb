@@ -1,7 +1,7 @@
 describe IssueStats::Assigner do
   let(:assigner) { IssueStats::Assigner.new(user, board_bag, issue.number, login) }
-  let(:user) { create(:user) }
-  let(:board) { create(:board, :with_columns, user: user) }
+  let(:user) { build(:user) }
+  let(:board) { build(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(user, board) }
   let(:github_api) { double(assign: issue) }
   let(:issue) { stub_issue }

@@ -8,8 +8,8 @@ describe IssueStats::Sorter do
         is_force_sort: is_force_sort
       )
     end
-    let(:column_to) { create(:column, issues: [], board: board) }
-    let(:board) { create(:board, :with_columns) }
+    let(:column_to) { build(:column, issues: [], board: board) }
+    let(:board) { build(:board, :with_columns) }
     let(:number) { 1 }
 
     context 'is force' do
