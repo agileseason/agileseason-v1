@@ -79,6 +79,7 @@ group :development, :test do
   gem 'rspec-collection_matchers'
   gem 'rspec-its'
   gem 'rspec-rails'
+  gem 'rspec-set'
   gem 'shoulda'
   gem 'shoulda-matchers'
 end
