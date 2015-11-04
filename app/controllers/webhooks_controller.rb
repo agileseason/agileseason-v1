@@ -2,7 +2,7 @@ class WebhooksController < ApplicationController
   skip_before_filter :authenticate
   skip_before_filter :verify_authenticity_token
 
-  HMAC_DIGEST = OpenSSL::Digest::Digest.new('sha1')
+  HMAC_DIGEST = OpenSSL::Digest.new('sha1')
 
   def github
     if trusted_request? && board.present?
