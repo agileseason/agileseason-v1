@@ -1,4 +1,6 @@
 describe Column do
+  let(:board) { create(:board, :with_columns, number_of_columns: 3) }
+
   describe 'validations' do
     subject { Column.new }
     it { is_expected.to validate_presence_of :name }
@@ -6,7 +8,6 @@ describe Column do
   end
 
   describe '#next_columns' do
-    let(:board) { create(:board, :with_columns, number_of_columns: 3) }
     let(:column_1) { board.columns.first }
     let(:column_2) { board.columns.second }
     let(:column_3) { board.columns.third }
@@ -29,7 +30,6 @@ describe Column do
   end
 
   describe '#prev_columns' do
-    let(:board) { create(:board, :with_columns, number_of_columns: 3) }
     let(:column_1) { board.columns.first }
     let(:column_2) { board.columns.second }
     let(:column_3) { board.columns.third }
@@ -67,7 +67,6 @@ describe Column do
 
   describe '#issues_stat' do
     subject { board.issue_stats }
-    let(:board) { create(:board, :with_columns) }
     let(:column) { board.columns.first }
     let!(:issue_stat) { create(:issue_stat, board: board, column: column) }
 
@@ -76,7 +75,6 @@ describe Column do
 
   describe '#visible_issues_stat' do
     subject { board.visible_issue_stats }
-    let(:board) { create(:board, :with_columns) }
     let(:column) { board.columns.first }
     let!(:issue_stat_1) { create(:issue_stat, :open, board: board, column: column) }
     let!(:issue_stat_2) { create(:issue_stat, :closed, board: board, column: column) }
