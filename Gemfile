@@ -70,6 +70,7 @@ group :development do
   gem 'rack-mini-profiler'
   gem 'sitemap_generator'
   gem 'spring'
+  gem 'spring-commands-rspec'
   gem 'table_print'
 end
 
