@@ -5,7 +5,7 @@ describe MixpanelTracker do
   before { allow(service).to receive(:token).and_return(token) }
 
   describe '#track_user_event' do
-    let(:user) { create(:user, :with_utm) }
+    let(:user) { build(:user, :with_utm) }
     let(:board) { create(:board, :with_columns, user: user) }
     let(:event) { 'event' }
     let(:options) { {} }

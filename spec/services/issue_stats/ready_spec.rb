@@ -1,11 +1,11 @@
 describe IssueStats::Ready do
   describe '#call' do
     subject { IssueStats::Ready.call(user: user, board_bag: board_bag, number: number) }
-    let(:user) { create(:user) }
+    let(:user) { build(:user) }
     let(:board_bag) { BoardBag.new(nil, board) }
+    let(:board) { create(:board, :with_columns, user: user) }
     let(:number) { issue.number }
     let(:issue) { stub_issue }
-    let(:board) { create(:board, :with_columns, user: user) }
 
     context 'issue_stat is exists' do
       before { create(:issue_stat, board: board, number: number, is_ready: is_ready_prev) }

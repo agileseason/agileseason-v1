@@ -1,6 +1,6 @@
 describe IssueStats::AutoCloser do
-  let(:user) { create(:user) }
-  let(:board) { create(:board, :with_columns, user: user) }
+  let(:user) { build(:user) }
+  let(:board) { build(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(nil, board) }
   let(:issue) { stub_issue }
   let(:github_api) { double(issue: issue) }

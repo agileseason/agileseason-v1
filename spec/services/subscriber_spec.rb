@@ -1,7 +1,7 @@
 describe Subscriber do
   describe '.early_access' do
     subject(:early_access) { Subscriber.early_access(board, user) }
-    let(:user) { create(:user) }
+    let(:user) { build(:user) }
 
     context 'private board without subscription' do
       let(:board) { create(:kanban_board, :with_columns, user: user) }

@@ -1,7 +1,7 @@
 describe IssueStats::LazySyncChecklist do
-  let(:user) { create :user }
+  let(:user) { build :user }
   let(:number) { 1 }
-  let(:board) { create(:board, :with_columns, user: user) }
+  let(:board) { build(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(user, board) }
   let(:api) { double(issue_comments: comments) }
   let(:comments) { [] }

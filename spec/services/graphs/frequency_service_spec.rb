@@ -1,5 +1,5 @@
 describe Graphs::FrequencyService do
-  let(:board) { create(:board, :with_columns, created_at: now - 1.year) }
+  let(:board) { build(:board, :with_columns, created_at: now - 1.year) }
   let(:now) { Time.local(2015, 1, 1, 0, 0, 0) }
   let(:service) { Graphs::FrequencyService.new(board, board.created_at) }
   let(:zero_point) { { 0 => 0 } }

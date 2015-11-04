@@ -44,7 +44,7 @@ describe RoadmapIssue do
 
     context 'with specific columns' do
       let(:column_ids) { [column.id] }
-      let(:board) { create(:board, :with_columns) }
+      let(:board) { build(:board, :with_columns) }
       let(:column) { board.columns.last }
       let(:issue_stat) do
         create(

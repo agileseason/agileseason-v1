@@ -1,6 +1,6 @@
 describe IssueStatsMapper do
   let(:mapper) { IssueStatsMapper.new(BoardBag.new(user, board)) }
-  let(:user) { create(:user) }
+  let(:user) { build(:user) }
 
   describe '#[issue]' do
     subject { mapper[issue] }

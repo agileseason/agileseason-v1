@@ -1,6 +1,6 @@
 describe UserPresenter do
   let(:presenter) { present(:user, user) }
-  let(:user) { create(:user) }
+  let(:user) { build(:user) }
   let!(:board_1) { create(:board, :with_columns, name: 'second_board', user: user) }
   let!(:board_2) { create(:board, :with_columns, name: 'first_board', user: user) }
   let!(:board_3) { build(:board, name: 'third', user: user) }

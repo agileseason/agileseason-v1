@@ -1,6 +1,6 @@
 describe IssueStats::Creator do
   let(:creator) { IssueStats::Creator.new(user, board_bag, issue) }
-  let(:user) { create(:user) }
+  let(:user) { build(:user) }
   let(:board) { create(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(nil, board) }
   let(:github_api) { double(create_issue: issue) }
