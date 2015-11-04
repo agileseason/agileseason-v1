@@ -61,6 +61,10 @@ group :development do
   gem 'capistrano-rbenv'
   gem 'capistrano-sidekiq'
   gem 'guard'
+  gem 'guard-bundler', require: false
+  gem 'guard-pow', require: false
+  gem 'guard-rspec', require: false
+  gem 'guard-spring', require: false
   gem 'meta_request'
   gem 'quiet_assets'
   gem 'rack-mini-profiler'
@@ -74,7 +78,6 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
-  gem 'guard-rspec'
   gem 'rb-fsevent'
   gem 'rspec-collection_matchers'
   gem 'rspec-its'
