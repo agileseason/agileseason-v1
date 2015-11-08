@@ -10,7 +10,7 @@
     .user-login #{comment.user.login}&nbsp;
     .date = comment.created_at.in_time_zone(Time.zone.name).strftime('%h %d, %H:%M')
 
-    - if can? :update, board
+    - if can?(:manage_comments, board, comment)
       span.controls
         | &nbsp;&mdash;&nbsp;
         span.edit-link
