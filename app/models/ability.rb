@@ -41,7 +41,7 @@ class Ability
     end
 
     can [:read, :update], Board do |board|
-      owner?(board) || Boards::DetectRepo.call(user: @user, board: board)
+      owner?(board) || Boards::DetectRepo.call(user: @user, board: board).present?
     end
 
     can :read, Board do |board|
@@ -50,6 +50,15 @@ class Ability
 
     can :update_issue, BoardBag do |board_bag|
       board_bag.has_write_permission?
+    end
+
+    can :comments, Board do |board|
+      can?(:read, board)
+    end
+
+    can :manage_comments, Board, Object do |board, comment|
+      can?(:update, board) ||
+        (board.public? && comment.try(:user).try(:login) == @user.github_username)
     end
   end
 

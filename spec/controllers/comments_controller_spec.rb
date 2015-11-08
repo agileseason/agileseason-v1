@@ -101,4 +101,33 @@ describe CommentsController do
       it { expect_any_instance_of(GithubApi).to receive(:delete_comment).once }
     end
   end
+
+  describe 'permissions' do
+    subject { Ability.new user }
+    let(:user) { build_stubbed :user }
+    before { allow(Boards::DetectRepo).to receive(:call).and_return nil }
+
+    describe 'manage_comments', :focus do
+      let(:board) { build(:board, user: owner_board, is_public: is_public) }
+      let(:comment) { double(user: double(login: user.github_username)) }
+      let(:is_public) { false }
+
+      context 'owner' do
+        let(:owner_board) { user }
+        it { is_expected.to be_able_to(:manage_comments, board, comment) }
+      end
+
+      context 'author but board private' do
+        let(:owner_board) { build_stubbed :user }
+        it { is_expected.not_to be_able_to(:manage_comments, board, comment) }
+      end
+
+      context 'author and public board' do
+        let(:owner_board) { build_stubbed :user }
+        let(:is_public) { true }
+
+        it { is_expected.to be_able_to(:manage_comments, board, comment) }
+      end
+    end
+  end
 end

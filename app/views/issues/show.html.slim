@@ -50,7 +50,7 @@
         ]
           = render partial: 'comments/stub_index', locals: { comments: @issue.comments }
 
-        - if can?(:update, @board)
+        - if can?(:comments, @board)
           = render partial: 'comments/new', locals: { board: @board, issue: @issue }
 
     - if can?(:update, @board)
