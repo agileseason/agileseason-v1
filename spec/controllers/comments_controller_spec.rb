@@ -107,7 +107,7 @@ describe CommentsController do
     let(:user) { build_stubbed :user }
     before { allow(Boards::DetectRepo).to receive(:call).and_return nil }
 
-    describe 'manage_comments', :focus do
+    describe 'manage_comments' do
       let(:board) { build(:board, user: owner_board, is_public: is_public) }
       let(:comment) { double(user: double(login: user.github_username)) }
       let(:is_public) { false }
