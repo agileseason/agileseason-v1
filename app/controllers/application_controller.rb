@@ -115,9 +115,6 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate
-    # FIX : Find best place for this.
-    current_user.github_api = github_api if github_token
-
     unless signed_in?
       save_return_url
       # FIX : Add notice 'Sign In First'
@@ -130,7 +127,13 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= User.find_by(remember_token: session[:remember_token])
+    @current_user ||= init_current_user
+  end
+
+  def init_current_user
+    user = User.find_by(remember_token: session[:remember_token])
+    user.github_api = github_api(user) if github_token.present? && user.present?
+    user
   end
 
   # FIX : Nees specs.

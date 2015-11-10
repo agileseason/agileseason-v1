@@ -11,8 +11,9 @@ module ApplicationHelper
     Encryptor.encrypt(github_token)
   end
 
-  def github_api
-    @github_api ||= GithubApi.new(github_token, current_user)
+  # TODO Remove this method.
+  def github_api(user = current_user)
+    @github_api ||= GithubApi.new(github_token, user)
   end
 
   def github_avatar_url(user)
