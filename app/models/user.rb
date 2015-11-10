@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   end
 
   def repo_admin?(github_id)
-    repo = github_api.cached_repos.select { |r| r.id == github_id.to_i }.first
+    repo = github_api.cached_repos.detect { |r| r.id == github_id.to_i }
     repo && repo.permissions.admin # try don't work before directly call method
   end
 
