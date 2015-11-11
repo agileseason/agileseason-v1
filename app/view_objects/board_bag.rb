@@ -123,12 +123,8 @@ class BoardBag
   end
 
   def cached(postfix, expires_in, &block)
-    if Rails.env.test?
+    Rails.cache.fetch(cache_key(postfix), expires_in: expires_in) do
       block.call
-    else
-      Rails.cache.fetch(cache_key(postfix), expires_in: expires_in) do
-        block.call
-      end
     end
   end
 
