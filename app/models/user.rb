@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   BLACKCHESTNUT_ID = 1
   SFOLT_ID = 2
   ADMINS = [BLACKCHESTNUT_ID, SFOLT_ID].freeze
+  GUEST = User.new(github_username: 'Guest', github_api: GithubApiGuest.new).freeze
 
   def to_s
     github_username
@@ -23,6 +24,10 @@ class User < ActiveRecord::Base
 
   def admin?
     ADMINS.include?(id)
+  end
+
+  def guest?
+    id.nil?
   end
 
   private

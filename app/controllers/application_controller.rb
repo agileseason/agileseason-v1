@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :force_https
-  before_action :authenticate
+  #before_action :authenticate
   before_action :track_guest, unless: :signed_in?
 
   helper_method :current_user, :signed_in?
@@ -123,7 +123,7 @@ class ApplicationController < ActionController::Base
   end
 
   def signed_in?
-    current_user.present?
+    current_user.present? && !current_user.guest?
   end
 
   def current_user
@@ -133,7 +133,7 @@ class ApplicationController < ActionController::Base
   def init_current_user
     user = User.find_by(remember_token: session[:remember_token])
     user.github_api = github_api(user) if github_token.present? && user.present?
-    user
+    user || User::GUEST
   end
 
   # FIX : Nees specs.

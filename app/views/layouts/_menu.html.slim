@@ -1,8 +1,7 @@
 .b-menu
   ul.menu
-    - if signed_in?
-      li.list-item.left-menu-link data-url="#{boards_url}"
-        a.menu-link.octicon.octicon-three-bars
+    li.list-item.left-menu-link data-url="#{boards_url}"
+      a.menu-link.octicon.octicon-three-bars
 
     - if @board.present? && @board.persisted?
       - unless controller_name == 'boards' && action_name == 'index'
