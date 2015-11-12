@@ -7,5 +7,9 @@ FactoryGirl.define do
     trait :with_utm do
       utm { { source: 'test_source', campaign: 'test_campaign', medium: 'test_medium' } }
     end
+
+    trait :guest do
+      id nil
+    end
   end
 end

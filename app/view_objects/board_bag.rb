@@ -63,7 +63,7 @@ class BoardBag
   end
 
   def labels
-    @labels ||= cached(:labels, 15.minutes) { user.github_api.labels(@board) }
+    @labels ||= Cached::Labels.call(user: user, board: @board)
   end
 
   def build_issue_new
