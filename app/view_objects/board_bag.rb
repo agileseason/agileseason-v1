@@ -57,9 +57,7 @@ class BoardBag
 
   def collaborators
     return [] unless has_write_permission?
-    @collaborators ||= cached(:collaborators, 20.minutes) do
-      user.github_api.collaborators(@board)
-    end
+    @collaborators ||= Cached::Collaborators.call(user: user, board: @board)
   end
 
   def labels

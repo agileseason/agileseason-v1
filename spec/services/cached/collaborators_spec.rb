@@ -1,10 +1,10 @@
-describe Cached::Labels do
+describe Cached::Collaborators do
   describe '#call' do
-    subject { Cached::Labels.call(user: user, board: board) }
+    subject { Cached::Collaborators.call(user: user, board: board) }
     let(:board) { build_stubbed :board, is_public: is_public }
     let(:cache) { double(write: nil, read: nil) }
-    let(:github_api) { double(labels: labels) }
-    let(:labels) { [] }
+    let(:github_api) { double(collaborators: collaborators) }
+    let(:collaborators) { [] }
     before { allow(Rails).to receive(:cache).and_return(cache) }
     before { allow(user).to receive(:github_api).and_return(github_api) }
 
@@ -21,9 +21,9 @@ describe Cached::Labels do
           it do
             expect(cache).
               to have_received(:read).
-              with("board_bag_labels_#{board.id}")
+              with("board_bag_collaborators_#{board.id}")
           end
-          it { expect(github_api).not_to have_received(:labels) }
+          it { expect(github_api).not_to have_received(:collaborators) }
         end
       end
 
@@ -36,7 +36,7 @@ describe Cached::Labels do
           before { subject }
 
           it { expect(cache).not_to have_received(:read) }
-          it { expect(github_api).not_to have_received(:labels) }
+          it { expect(github_api).not_to have_received(:collaborators) }
         end
       end
     end
@@ -46,7 +46,7 @@ describe Cached::Labels do
 
       context 'public board' do
         let(:is_public) { true }
-        it { is_expected.to eq labels }
+        it { is_expected.to eq collaborators }
 
         context 'behavior' do
           before { subject }
@@ -54,9 +54,9 @@ describe Cached::Labels do
           it do
             expect(cache).
               to have_received(:read).
-              with("board_bag_labels_#{board.id}")
+              with("board_bag_collaborators_#{board.id}")
           end
-          it { expect(github_api).to have_received(:labels) }
+          it { expect(github_api).to have_received(:collaborators) }
         end
       end
 
@@ -66,7 +66,7 @@ describe Cached::Labels do
 
         context 'behavior' do
           let(:now) { Time.current }
-          let(:cached_object) { Cached::Base.new(labels, now) }
+          let(:cached_object) { Cached::Base.new(collaborators, now) }
           before { allow(Cached::Base).to receive(:new).and_return(cached_object) }
           before { Timecop.freeze(now) }
           before { subject }
@@ -75,20 +75,21 @@ describe Cached::Labels do
           it do
             expect(cache).
               to have_received(:read).
-              with("board_bag_labels_#{board.id}")
+              with("board_bag_collaborators_#{board.id}")
           end
           it do
             expect(cache).
               to have_received(:write).
               with(
-                "board_bag_labels_#{board.id}",
+                "board_bag_collaborators_#{board.id}",
                 cached_object,
                 expires_in: Cached::ItemsBase::READONLY_EXPIRES_IN
               )
           end
-          it { expect(github_api).to have_received(:labels) }
+          it { expect(github_api).to have_received(:collaborators) }
         end
       end
     end
   end
 end
+

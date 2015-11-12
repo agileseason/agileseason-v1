@@ -1,20 +1,20 @@
 module Cached
-  class Labels < Cached::ItemsBase
+  class Collaborators < Cached::ItemsBase
     attribute :user, User
     attribute :board, Board
 
     private
 
     def fetch
-      user.github_api.labels(board)
+      user.github_api.collaborators(board)
     end
 
     def expires_in
-      15.minutes
+      20.minutes
     end
 
     def key_identity
-      :labels
+      :collaborators
     end
   end
 end
