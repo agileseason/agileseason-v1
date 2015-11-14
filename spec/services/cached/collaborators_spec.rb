@@ -14,7 +14,7 @@ describe Cached::Collaborators do
 
       context 'public board' do
         let(:is_public) { true }
-        it { is_expected.to be_nil }
+        it { is_expected.to eq Cached::Collaborators::NO_DATA }
 
         context 'behavior' do
           before { subject }
