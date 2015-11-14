@@ -53,7 +53,7 @@ class Ability
     end
 
     can :comments, Board do |board|
-      can?(:read, board)
+      !@user.guest? && can?(:read, board)
     end
 
     can :manage_comments, Board, Object do |board, comment|
