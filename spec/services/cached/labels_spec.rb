@@ -14,7 +14,7 @@ describe Cached::Labels do
 
       context 'public board' do
         let(:is_public) { true }
-        it { is_expected.to be_nil }
+        it { is_expected.to eq Cached::Labels::NO_DATA }
 
         context 'behavior' do
           before { subject }
@@ -30,7 +30,6 @@ describe Cached::Labels do
 
       context 'private board' do
         let(:is_public) { false }
-
         it { is_expected.to be_nil }
 
         context 'behavior' do

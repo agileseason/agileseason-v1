@@ -3,12 +3,14 @@ module Cached
     include Service
     include Virtus.model
 
+    NO_DATA = [].freeze
+
     attribute :user, User
     attribute :board, Board
 
     def call
       return if user.guest? && !board.public?
-      return current.try(:value) if user.guest?
+      return readonly_value if user.guest?
       return current.value unless expired?(current)
 
       Cached::UpdateBase.call(objects: fetch, key: key)
@@ -38,6 +40,15 @@ module Cached
 
     def current
       @current ||= Cached::ReadBase.call(key: key)
+    end
+
+    def readonly_value
+      return no_data if current.nil?
+      current.value
+    end
+
+    def no_data
+      NO_DATA
     end
   end
 end

@@ -9,7 +9,7 @@ class BoardIssue
   attr_initialize :issue, :issue_stat
 
   def archive?
-    issue_stat.archived?
+    issue_stat.present? && issue_stat.archived?
   end
   alias :archived? :archive?
 

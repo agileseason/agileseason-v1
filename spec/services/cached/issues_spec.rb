@@ -14,7 +14,7 @@ describe Cached::Issues do
 
       context 'public board' do
         let(:is_public) { true }
-        it { is_expected.to be_nil }
+        it { is_expected.to eq Cached::Issues::NO_DATA }
 
         context 'behavior' do
           before { subject }

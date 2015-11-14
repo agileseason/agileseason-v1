@@ -1,5 +1,7 @@
 module Cached
   class Issues < Cached::Base
+    NO_DATA = {}.freeze
+
     attribute :user, User
     attribute :board, Board
 
@@ -17,6 +19,10 @@ module Cached
 
     def key_identity
       :issues_hash
+    end
+
+    def no_data
+      NO_DATA
     end
   end
 end
