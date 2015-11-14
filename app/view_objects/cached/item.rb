@@ -1,5 +1,5 @@
 module Cached
-  class Base
+  class Item
     rattr_initialize :value, :fetched_at
   end
 end

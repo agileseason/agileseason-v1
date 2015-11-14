@@ -1,5 +1,5 @@
 module Cached
-  class ItemsBase
+  class Base
     include Service
     include Virtus.model
 
@@ -17,7 +17,7 @@ module Cached
 
       Rails.cache.write(
         key,
-        Cached::Base.new(objects, Time.current),
+        Cached::Item.new(objects, Time.current),
         expires_in: READONLY_EXPIRES_IN
       )
       objects

@@ -1,5 +1,5 @@
 module Cached
-  class Labels < Cached::ItemsBase
+  class Labels < Cached::Base
     attribute :user, User
     attribute :board, Board
 

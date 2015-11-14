@@ -66,8 +66,8 @@ describe Cached::Collaborators do
 
         context 'behavior' do
           let(:now) { Time.current }
-          let(:cached_object) { Cached::Base.new(collaborators, now) }
-          before { allow(Cached::Base).to receive(:new).and_return(cached_object) }
+          let(:cached_object) { Cached::Item.new(collaborators, now) }
+          before { allow(Cached::Item).to receive(:new).and_return(cached_object) }
           before { Timecop.freeze(now) }
           before { subject }
           after { Timecop.return }
@@ -83,7 +83,7 @@ describe Cached::Collaborators do
               with(
                 "board_bag_collaborators_#{board.id}",
                 cached_object,
-                expires_in: Cached::ItemsBase::READONLY_EXPIRES_IN
+                expires_in: Cached::Base::READONLY_EXPIRES_IN
               )
           end
           it { expect(github_api).to have_received(:collaborators) }

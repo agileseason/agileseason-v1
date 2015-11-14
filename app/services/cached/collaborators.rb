@@ -1,5 +1,5 @@
 module Cached
-  class Collaborators < Cached::ItemsBase
+  class Collaborators < Cached::Base
     attribute :user, User
     attribute :board, Board
 
