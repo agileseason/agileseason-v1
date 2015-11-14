@@ -7,6 +7,7 @@ describe Cached::Labels do
     let(:labels) { [] }
     before { allow(Rails).to receive(:cache).and_return(cache) }
     before { allow(user).to receive(:github_api).and_return(github_api) }
+    before { allow(Cached::UpdateBase).to receive(:call).and_return(labels) }
 
     context 'guest' do
       let(:user) { build :user, :guest }
@@ -65,12 +66,7 @@ describe Cached::Labels do
         it { is_expected.to be_empty }
 
         context 'behavior' do
-          let(:now) { Time.current }
-          let(:cached_object) { Cached::Item.new(labels, now) }
-          before { allow(Cached::Item).to receive(:new).and_return(cached_object) }
-          before { Timecop.freeze(now) }
           before { subject }
-          after { Timecop.return }
 
           it do
             expect(cache).
@@ -78,12 +74,11 @@ describe Cached::Labels do
               with("board_bag_labels_#{board.id}")
           end
           it do
-            expect(cache).
-              to have_received(:write).
+            expect(Cached::UpdateBase).
+              to have_received(:call).
               with(
-                "board_bag_labels_#{board.id}",
-                cached_object,
-                expires_in: Cached::Base::READONLY_EXPIRES_IN
+                objects: labels,
+                key: "board_bag_labels_#{board.id}"
               )
           end
           it { expect(github_api).to have_received(:labels) }

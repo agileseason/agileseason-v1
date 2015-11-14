@@ -6,7 +6,7 @@ class WebhooksController < ApplicationController
 
   def github
     if trusted_request? && board.present?
-      board_bag.update_cache(issue)
+      update_cache_issues
       issue_stat = IssueStatService.find(board_bag, issue.number)
       broadcast_column(issue_stat.column) if issue_stat.present?
     end
@@ -19,11 +19,21 @@ class WebhooksController < ApplicationController
   def issue
     @issue ||= begin
       issue = OpenStruct.new(params[:issue])
+      issue.number = issue.number.to_i
+      issue.comments = issue.comments.to_i
       issue.labels = issue.labels.map { |label| OpenStruct.new(label) } if issue.labels.present?
       issue.assignee = OpenStruct.new(issue.assignee) if issue.assignee.present?
       issue.created_at = Time.parse(issue.created_at)
       issue.updated_at = Time.parse(issue.updated_at)
       issue
+    end
+  end
+
+  def update_cache_issues
+    issues_hash = Cached::ReadIssues.call(board: board)
+    unless issues_hash.nil?
+      issues_hash[issue.number.to_i] = issue
+      Cached::UpdateIssues.call(board: board, objects: issues_hash)
     end
   end
 

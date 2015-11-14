@@ -3,8 +3,6 @@ module Cached
     include Service
     include Virtus.model
 
-    READONLY_EXPIRES_IN = 1.month
-
     attribute :user, User
     attribute :board, Board
 
@@ -13,14 +11,7 @@ module Cached
       return current.try(:value) if user.guest?
       return current.value unless expired?(current)
 
-      objects = fetch
-
-      Rails.cache.write(
-        key,
-        Cached::Item.new(objects, Time.current),
-        expires_in: READONLY_EXPIRES_IN
-      )
-      objects
+      Cached::UpdateBase.call(objects: fetch, key: key)
     end
 
     private
@@ -38,7 +29,7 @@ module Cached
     end
 
     def key
-      cache_key(key_identity)
+      "board_bag_#{key_identity}_#{board.id}"
     end
 
     def expired?(obj)
@@ -46,16 +37,7 @@ module Cached
     end
 
     def current
-      @current ||= Rails.cache.read(key)
-    end
-
-    # TODO Specification for inheritors
-    def cache_key(postfix)
-      if postfix == :issues_hash
-        "board_bag_#{postfix}_#{board.id}_#{board.updated_at.to_i}"
-      else
-        "board_bag_#{postfix}_#{board.id}"
-      end
+      @current ||= Cached::ReadBase.call(key: key)
     end
   end
 end
