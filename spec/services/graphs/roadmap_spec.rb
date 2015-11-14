@@ -12,11 +12,10 @@ describe Roadmap do
 
     context 'with issues' do
       let!(:issue_stat_1) { create(:issue_stat, board: board, number: issue_1.number) }
-      let(:github_api) { double(issues: issues) }
-      let(:issues) { [issue_1] }
       let(:issue_1) { stub_issue }
+      let(:issues_hash) { { issue_1.number => issue_1 } }
+      before { allow(board_bag).to receive(:issues_hash).and_return(issues_hash) }
       before { Timecop.freeze(Time.current) }
-      before { allow(user).to receive(:github_api).and_return(github_api) }
       after { Timecop.return }
 
       its(:issues) { is_expected.not_to be_empty }
