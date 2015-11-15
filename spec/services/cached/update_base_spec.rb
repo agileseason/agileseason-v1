@@ -16,7 +16,7 @@ describe Cached::UpdateBase do
       expect(cache).
         to have_received(:write).
         with(
-          "foo",
+          'foo',
           cached_object,
           expires_in: Cached::UpdateBase::READONLY_EXPIRES_IN
         )

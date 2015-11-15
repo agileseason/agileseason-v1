@@ -12,4 +12,3 @@ describe Cached::ReadIssues do
     end
   end
 end
-

@@ -87,4 +87,3 @@ describe Cached::Collaborators do
     end
   end
 end
-

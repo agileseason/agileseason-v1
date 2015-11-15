@@ -13,7 +13,7 @@ class GithubApiGuest
     REPOS
   end
 
-  def issue(board, number)
+  def issue(_board, _number)
     raise NoGuestDataError
   end
 end

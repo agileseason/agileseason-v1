@@ -26,4 +26,3 @@ module Cached
     end
   end
 end
-
