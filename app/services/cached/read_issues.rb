@@ -3,7 +3,7 @@ module Cached
     attribute :board, Board
 
     def call
-      Cached::ReadBase.call(key: key)
+      Cached::ReadBase.call(key: key).try(:value)
     end
   end
 end
