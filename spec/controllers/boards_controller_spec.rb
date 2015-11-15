@@ -38,7 +38,7 @@ describe BoardsController, type: :controller do
         to receive(:private_repo?).
         and_return(is_private)
     end
-    before { allow(Cached::Issues).to receive(:call).and_return({ issue.number => issue }) }
+    before { allow(Cached::Issues).to receive(:call).and_return(issue.number => issue) }
     before { allow(Cached::Labels).to receive(:call).and_return(labels) }
     before { stub_sign_in(user) }
     before { request }
