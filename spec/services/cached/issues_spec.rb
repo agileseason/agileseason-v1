@@ -4,10 +4,12 @@ describe Cached::Issues do
     let(:board) { build_stubbed :board, is_public: is_public }
     let(:cache) { double(write: nil, read: nil) }
     let(:github_api) { double(issues: issues) }
-    let(:issues) { {} }
+    let(:issues) { [issue_1] }
+    let(:issue_1) { stub_issue }
+    let(:expected_issues) { { issue_1.number => issue_1 } }
     before { allow(Rails).to receive(:cache).and_return(cache) }
     before { allow(user).to receive(:github_api).and_return(github_api) }
-    before { allow(Cached::UpdateBase).to receive(:call).and_return(issues) }
+    before { allow(Cached::UpdateBase).to receive(:call).and_return(expected_issues) }
 
     context 'guest' do
       let(:user) { build :user, :guest }
@@ -30,7 +32,6 @@ describe Cached::Issues do
 
       context 'private board' do
         let(:is_public) { false }
-
         it { is_expected.to be_nil }
 
         context 'behavior' do
@@ -47,7 +48,7 @@ describe Cached::Issues do
 
       context 'public board' do
         let(:is_public) { true }
-        it { is_expected.to eq issues }
+        it { is_expected.to eq expected_issues }
 
         context 'behavior' do
           before { subject }
@@ -63,7 +64,7 @@ describe Cached::Issues do
 
       context 'private board' do
         let(:is_public) { false }
-        it { is_expected.to be_empty }
+        it { is_expected.to eq expected_issues }
 
         context 'behavior' do
           before { subject }
@@ -77,7 +78,7 @@ describe Cached::Issues do
             expect(Cached::UpdateBase).
               to have_received(:call).
               with(
-                objects: issues,
+                objects: { issue_1.number => issue_1 },
                 key: "board_bag_issues_hash_#{board.id}"
               )
           end
@@ -87,4 +88,3 @@ describe Cached::Issues do
     end
   end
 end
-
