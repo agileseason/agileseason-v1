@@ -4,7 +4,7 @@ class BoardPick
   DEFAULT = OpenStruct.new(
     id: nil,
     name: 'New Board...',
-    link: Rails.application.routes.url_helpers.repos_path,
+    link: UrlGenerator.repos_path,
     issues_count: '&nbsp;',
   ).freeze
 
