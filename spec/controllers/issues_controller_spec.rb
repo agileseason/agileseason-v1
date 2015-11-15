@@ -131,9 +131,8 @@ describe IssuesController do
         column_id: column_to.id
       )
     end
-    before { allow(controller).to receive(:github_api).and_return(github_api) }
-    before { allow(Cached::Issues).to receive(:call).and_return([issue]) }
-    before { allow(github_api).to receive(:issue).and_return(issue) }
+    before { allow(Cached::Issues).to receive(:call).and_return(issue.number => issue) }
+    before { allow(Boards::DetectRepo).to receive(:call).and_return(stub_repo) }
     before do
       allow_any_instance_of(IssueStats::Finder).
         to receive(:call).
