@@ -4,7 +4,7 @@ class BoardPick
   DEFAULT = OpenStruct.new(
     id: nil,
     name: 'New Board...',
-    link: UrlGenerator.repos_path,
+    link: '/repos',
     issues_count: '&nbsp;',
   ).freeze
 
