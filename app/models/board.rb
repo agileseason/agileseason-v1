@@ -51,6 +51,10 @@ class Board < ActiveRecord::Base
     is_public
   end
 
+  def private?
+    !public?
+  end
+
   def danger_settings
     DangerSettings.new(
       is_public: public?

@@ -9,9 +9,9 @@ module Cached
     attribute :board, Board
 
     def call
-      return if user.guest? && !board.public?
+      return if user.guest? && board.private?
       return readonly_value if user.guest?
-      return current.value unless expired?(current)
+      return current.value unless expired?
 
       Cached::UpdateBase.call(objects: fetch, key: key)
     end
@@ -34,8 +34,8 @@ module Cached
       "board_bag_#{key_identity}_#{board.id}"
     end
 
-    def expired?(obj)
-      obj.nil? || obj.fetched_at < Time.current - expires_in
+    def expired?
+      current.nil? || current.fetched_at < Time.current - expires_in
     end
 
     def current
@@ -48,6 +48,7 @@ module Cached
     end
 
     def no_data
+      # Can be changed in inheritors
       NO_DATA
     end
   end
