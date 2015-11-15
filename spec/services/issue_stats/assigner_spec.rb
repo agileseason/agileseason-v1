@@ -7,6 +7,7 @@ describe IssueStats::Assigner do
   let(:issue) { stub_issue }
   let(:login) { 'test_github_username' }
   before { allow(user).to receive(:github_api).and_return(github_api) }
+  before { allow(board_bag).to receive(:update_cache) }
   before { create(:issue_stat, number: issue.number, board: board) }
 
   describe '#call' do

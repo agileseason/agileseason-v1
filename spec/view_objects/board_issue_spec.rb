@@ -18,13 +18,18 @@ describe BoardIssue do
   describe '#archive?' do
     subject { board_issue.archive? }
 
-    context :true do
+    context 'true' do
       let(:issue_stat) { build(:issue_stat, archived_at: Time.current) }
       it { is_expected.to eq true }
     end
 
-    context :false do
+    context 'false' do
       let(:issue_stat) { build(:issue_stat, archived_at: nil) }
+      it { is_expected.to eq false }
+    end
+
+    context 'false if no issue_stat' do
+      let(:issue_stat) { nil }
       it { is_expected.to eq false }
     end
   end

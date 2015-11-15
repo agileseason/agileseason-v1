@@ -10,7 +10,7 @@ class BoardsController < ApplicationController
 
   def index
     @boards_lists = [
-      { title: 'My Boards', boards: BoardPick.list_by(k(:user, current_user).boards) },
+      { title: 'My Boards', boards: BoardPick.list_by(current_user, k(:user, current_user).boards) },
       { title: 'Explore Public Boards', boards: BoardPick.public_list },
     ]
 
@@ -54,10 +54,6 @@ class BoardsController < ApplicationController
   end
 
   private
-
-  def guest?
-    !can?(:update, @board)
-  end
 
   def board_params
     params.

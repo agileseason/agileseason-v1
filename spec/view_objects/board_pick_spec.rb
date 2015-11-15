@@ -1,7 +1,7 @@
 describe BoardPick do
   describe 'class methods' do
     describe '.default' do
-      subject { BoardPick.default }
+      subject { BoardPick::DEFAULT }
 
       its(:name) { is_expected.to eq 'New Board...' }
       its(:link) { is_expected.to eq Rails.application.routes.url_helpers.repos_path }
@@ -9,15 +9,28 @@ describe BoardPick do
     end
 
     describe '.list_by' do
-      subject { BoardPick.list_by(boards) }
+      subject { BoardPick.list_by(user, boards) }
+      let(:signed_user) { build_stubbed :user }
+      let(:guest_user) { build :user, :guest }
 
       context 'empty' do
         let(:boards) { [] }
-        it { is_expected.to have(1).items }
+
+        context 'guest' do
+          let(:user) { guest_user }
+          it { is_expected.to be_empty }
+        end
+
+        context 'not guest' do
+          let(:user) { signed_user }
+          it { is_expected.to have(1).items }
+        end
       end
 
-      context 'not empty' do
+      context 'not empty (user can`t be guest)' do
+        let(:user) { signed_user }
         let(:boards) { [build(:board, id: 1)] }
+
         it { is_expected.to have(2).items }
         its('last.id') { is_expected.to be_nil }
       end
@@ -34,17 +47,17 @@ describe BoardPick do
   end
 
   describe 'instance methods' do
-    let(:object) { BoardPick.new(board) }
+    let(:board_pick) { BoardPick.new(board) }
 
     describe '#name' do
       let(:board) { build(:board, name: 'test_123') }
-      subject { object.name }
+      subject { board_pick.name }
 
       it { is_expected.to eq board.name }
     end
 
     describe '#link' do
-      subject { object.link }
+      subject { board_pick.link }
       let(:board) { build(:board) }
 
       it do
@@ -54,8 +67,8 @@ describe BoardPick do
     end
 
     describe '#issues_count' do
-      subject { object.issues_count }
-      let(:object) { BoardPick.new(board) }
+      subject { board_pick.issues_count }
+      let(:board_pick) { BoardPick.new(board) }
 
       context 'empty' do
         let(:board) { build(:board) }

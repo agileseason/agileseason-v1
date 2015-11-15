@@ -53,4 +53,18 @@ describe User do
       it { is_expected.to eq false }
     end
   end
+
+  describe '#guest?' do
+    subject { user.guest? }
+
+    context 'true' do
+      let(:user) { build :user, id: nil }
+      it { is_expected.to eq true }
+    end
+
+    context 'false' do
+      let(:user) { build :user, id: 1 }
+      it { is_expected.to eq false }
+    end
+  end
 end

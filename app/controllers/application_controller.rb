@@ -6,7 +6,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :force_https
-  before_action :authenticate
   before_action :track_guest, unless: :signed_in?
 
   helper_method :current_user, :signed_in?
@@ -114,23 +113,18 @@ class ApplicationController < ActionController::Base
     Rails.env.production?
   end
 
-  def authenticate
-    # FIX : Find best place for this.
-    current_user.github_api = github_api if github_token
-
-    unless signed_in?
-      save_return_url
-      # FIX : Add notice 'Sign In First'
-      redirect_to root_url
-    end
-  end
-
   def signed_in?
-    current_user.present?
+    current_user.present? && !current_user.guest?
   end
 
   def current_user
-    @current_user ||= User.find_by(remember_token: session[:remember_token])
+    @current_user ||= init_current_user
+  end
+
+  def init_current_user
+    user = User.find_by(remember_token: session[:remember_token])
+    user.github_api = github_api(user) if github_token.present? && user.present?
+    user || User::GUEST
   end
 
   # FIX : Nees specs.
@@ -156,6 +150,7 @@ class ApplicationController < ActionController::Base
       request.headers['REMOTE_ADDR']
   end
 
+  # TODO Remove this method after check demo on production.
   def save_return_url
     session[:return_url] = request.url unless request.url == root_url
   end

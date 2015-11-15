@@ -3,7 +3,10 @@ describe BoardBag do
   let(:board) { create(:board, :with_columns, user: user) }
   let(:github_api) { double }
   let(:bag) { BoardBag.new(user, board) }
+  let(:issues) { {} }
   before { allow(user).to receive(:github_api).and_return(github_api) }
+  before { allow(Cached::Issues).to receive(:call).and_return(issues) }
+  before { allow(Boards::DetectRepo).to receive(:call).and_return(OpenStruct.new) }
 
   describe '#issue' do
     subject { bag.issue(issue.number) }
@@ -12,7 +15,7 @@ describe BoardBag do
     before { allow(github_api).to receive(:issue).and_return(issue) }
 
     context 'issue in cache' do
-      before { allow(github_api).to receive(:issues).and_return([issue]) }
+      let(:issues) { { issue.number => issue } }
 
       it { is_expected.to be_present }
       it { is_expected.to be_a(BoardIssue) }
@@ -24,7 +27,7 @@ describe BoardBag do
     end
 
     context 'issue not in cache' do
-      before { allow(github_api).to receive(:issues).and_return([]) }
+      let(:issues) { {} }
 
       it { is_expected.to be_present }
       it { is_expected.to be_a(BoardIssue) }
@@ -40,10 +43,9 @@ describe BoardBag do
     subject { bag.issues_by_columns }
     let(:column_1) { board.columns.first }
     let(:column_2) { board.columns.second }
-    let(:github_api) { double(issues: issues) }
 
     context :empty_columns do
-      let(:issues) { [] }
+      let(:issues) { {} }
 
       it { is_expected.to have(2).items }
       it { expect(subject.first.first).to eq column_1.id }
@@ -57,7 +59,7 @@ describe BoardBag do
       let!(:issue_stat) do
         create(:issue_stat, number: issue_1.number, board: board, column: column_2)
       end
-      let(:issues) { [issue_1, issue_2] }
+      let(:issues) { { issue_1.number => issue_1, issue_2.number => issue_2 } }
 
       context 'known issues dont move to first column' do
         it { expect(subject[column_2.id]).to have(1).items }
@@ -68,34 +70,6 @@ describe BoardBag do
         it { expect(subject[column_1.id]).to have(1).item }
         it { expect(subject[column_1.id].first.issue).to eq issue_2 }
       end
-    end
-  end
-
-  describe '#update_cache' do
-    subject { bag.issues_hash[101] }
-    let(:issue) { stub_issue(number: 101) }
-    let(:github_api) { double(issues: []) }
-
-    before { Rails.cache.clear }
-    before { data_in_cache }
-    before { bag.update_cache(issue) }
-
-    context 'has data in cache' do
-      let(:data_in_cache) do
-        Rails.cache.write(
-          bag.send(:cache_key, :issues_hash),
-          nil,
-          expires_in: 5.minutes
-        )
-      end
-
-      it { is_expected.to_not be_nil }
-      it { is_expected.to eq issue }
-    end
-
-    context 'no data in cache' do
-      let(:data_in_cache) {}
-      it { is_expected.to be_nil }
     end
   end
 
@@ -183,14 +157,10 @@ describe BoardBag do
 
   describe '#private_repo?' do
     subject { bag.private_repo? }
+    before { allow(Boards::DetectRepo).to receive(:call).and_return(repo) }
 
     context 'known repo' do
       let(:repo) { OpenStruct.new(id: board.github_id, private: is_private) }
-      before do
-        allow(github_api).
-          to receive(:cached_repos).
-          and_return([repo])
-      end
 
       context 'private repo' do
         let(:is_private) { true }
@@ -204,23 +174,14 @@ describe BoardBag do
     end
 
     context 'unknown repo' do
-      before do
-        allow(github_api).
-          to receive(:cached_repos).
-          and_return([])
-      end
-
+      let(:repo) { nil }
       it { is_expected.to eq false }
     end
   end
 
   describe '#has_write_permission?' do
     subject { bag.has_write_permission? }
-    before do
-      allow(github_api).
-        to receive(:cached_repos).
-        and_return([repo])
-    end
+    before { allow(Boards::DetectRepo).to receive(:call).and_return(repo) }
 
     context 'known repo' do
       let(:repo) do
@@ -242,13 +203,7 @@ describe BoardBag do
     end
 
     context 'unknown repo' do
-      let(:repo) do
-        OpenStruct.new(
-          id: board.github_id + 1,
-          permissions: double(push: true)
-        )
-      end
-
+      let(:repo) { nil }
       it { is_expected.to eq false }
     end
   end

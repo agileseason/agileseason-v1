@@ -11,18 +11,23 @@ class User < ActiveRecord::Base
   BLACKCHESTNUT_ID = 1
   SFOLT_ID = 2
   ADMINS = [BLACKCHESTNUT_ID, SFOLT_ID].freeze
+  GUEST = User.new(github_username: 'Guest', github_api: GithubApiGuest.new).freeze
 
   def to_s
     github_username
   end
 
   def repo_admin?(github_id)
-    repo = github_api.cached_repos.select { |r| r.id == github_id.to_i }.first
+    repo = github_api.cached_repos.detect { |r| r.id == github_id.to_i }
     repo && repo.permissions.admin # try don't work before directly call method
   end
 
   def admin?
     ADMINS.include?(id)
+  end
+
+  def guest?
+    id.nil?
   end
 
   private

@@ -4,8 +4,14 @@ class BoardBag
            :to_param, :subscribed_at, :default_column, to: :board
 
   def issue(number)
-    issue = issues_hash[number] || user.github_api.issue(board, number)
-    BoardIssue.new(issue, issue_stat_mapper[issue])
+    # FIX Need more specs.
+    if user.guest? || !has_read_permission?
+      issue = issues_hash[number] || GithubApiGuest::UNKNOWN_BOARD_ISSUE
+      GuestBoardIssue.new(issue, issue_stat_mapper[issue])
+    else
+      issue = issues_hash[number] || user.github_api.issue(board, number)
+      BoardIssue.new(issue, issue_stat_mapper[issue])
+    end
   end
 
   # All issues
@@ -23,11 +29,7 @@ class BoardBag
 
   # All Issues in hash by number
   def issues_hash
-    @issues_hash ||= cached(:issues_hash, 5.minutes) do
-      user.github_api.issues(board).each_with_object({}) do |issue, hash|
-        hash[issue.number] = issue
-      end
-    end
+    @issues_hash ||= Cached::Issues.call(user: user, board: @board)
   end
 
   # Issues visible on board and groupped by columns
@@ -45,25 +47,17 @@ class BoardBag
 
   # TODO not update cache if data old or eq
   def update_cache(github_issue)
-    return unless Rails.cache.exist?(cache_key(:issues_hash))
-
     issues_hash[github_issue.number] = github_issue
-    Rails.cache.write(
-      cache_key(:issues_hash),
-      issues_hash,
-      expires_in: 5.minutes
-    )
+    Cached::UpdateIssues.call(board: @board, objects: issues_hash)
   end
 
   def collaborators
     return [] unless has_write_permission?
-    @collaborators ||= cached(:collaborators, 20.minutes) do
-      user.github_api.collaborators(@board)
-    end
+    @collaborators ||= Cached::Collaborators.call(user: user, board: @board)
   end
 
   def labels
-    @labels ||= cached(:labels, 15.minutes) { user.github_api.labels(@board) }
+    @labels ||= Cached::Labels.call(user: user, board: @board)
   end
 
   def build_issue_new
@@ -89,7 +83,12 @@ class BoardBag
   end
 
   def has_write_permission?
-    github_repo.present? && github_repo.permissions.push
+    has_read_permission? && github_repo.permissions.push
+  end
+
+  # TODO Return true if repository public!
+  def has_read_permission?
+    github_repo.present?
   end
 
   def subscribed?
@@ -112,24 +111,6 @@ class BoardBag
     end.
       compact.
       uniq(&:number) # NOTE Need for remove magic duplication.
-  end
-
-  def cache_key(postfix)
-    if postfix == :issues_hash
-      "board_bag_#{postfix}_#{board.id}_#{board.updated_at.to_i}"
-    else
-      "board_bag_#{postfix}_#{board.id}"
-    end
-  end
-
-  def cached(postfix, expires_in, &block)
-    if Rails.env.test?
-      block.call
-    else
-      Rails.cache.fetch(cache_key(postfix), expires_in: expires_in) do
-        block.call
-      end
-    end
   end
 
   def missing_issue_numbers(column)

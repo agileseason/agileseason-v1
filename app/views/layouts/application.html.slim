@@ -13,13 +13,13 @@ html
 
     = render partial: 'layouts/notice'
     / FIX : Do something with this if-statement
-    - if (params[:controller] == 'boards' && params[:action] == 'show' && @board.present? && @board.persisted?) || (params[:controller] != 'boards' && params[:controller] != 'docs' && (params[:action] != 'show' || params[:action] != 'index'))
+    - if (controller_name == 'boards' && action_name == 'show' && @board.present? && @board.persisted?) || (controller_name != 'boards' && controller_name != 'docs' && (action_name != 'show' || action_name != 'index'))
       = render partial: 'layouts/menu'
 
     .container
       = yield
 
-    - if signed_in? && @board.present? && @board.persisted?
+    - if @board.present? && @board.persisted?
       = render partial: 'dashboard_modal'
 
     = render partial: 'modal'

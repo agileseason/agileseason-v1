@@ -18,6 +18,7 @@ class IssueStatsMapper
   end
 
   def fix_missing(issue)
+    return if board_bag.user.guest? || !board_bag.has_read_permission?
     return unless actual?(issue)
     issue_stats_map[issue.number] = IssueStatService.create(board_bag, issue)
   end

@@ -7,6 +7,7 @@ describe IssueStats::Reopener do
   let(:issue) { stub_closed_issue }
   let!(:issue_stat) { create(:issue_stat, closed_at: issue.closed_at, board: board, number: issue.number) }
   before { allow(user).to receive(:github_api).and_return(github_api) }
+  before { allow(board_bag).to receive(:update_cache) }
 
   describe '#call' do
     subject { reopener.call }
