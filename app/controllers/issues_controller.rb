@@ -10,8 +10,6 @@ class IssuesController < ApplicationController
   def show
     @direct_post = S3Api.direct_post
     @issue = @board_bag.issue(number)
-  rescue NoGuestDataError
-    @issue = GithubApiGuest::UNKNOWN_BOARD_ISSUE
   end
 
   def create

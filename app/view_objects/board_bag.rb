@@ -4,8 +4,13 @@ class BoardBag
            :to_param, :subscribed_at, :default_column, to: :board
 
   def issue(number)
-    issue = issues_hash[number] || user.github_api.issue(board, number)
-    BoardIssue.new(issue, issue_stat_mapper[issue])
+    if user.guest?
+      issue = issues_hash[number] || GithubApiGuest::UNKNOWN_BOARD_ISSUE
+      GuestBoardIssue.new(issue, issue_stat_mapper[issue])
+    else
+      issue = issues_hash[number] || user.github_api.issue(board, number)
+      BoardIssue.new(issue, issue_stat_mapper[issue])
+    end
   end
 
   # All issues

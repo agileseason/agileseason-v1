@@ -1,10 +1,17 @@
 describe IssueStatsMapper do
   let(:mapper) { IssueStatsMapper.new(BoardBag.new(user, board)) }
-  let(:user) { build(:user) }
+  let(:user) { build_stubbed(:user) }
 
   describe '#[issue]' do
     subject { mapper[issue] }
     let(:board) { build_stubbed(:board, user: user) }
+
+    context 'not fix missings for guest' do
+      let(:user) { build :user, :guest }
+      let(:issue) { stub_issue }
+
+      it { is_expected.to be_nil }
+    end
 
     context 'first import - only open issues' do
       let(:issue) { stub_issue(state: state) }

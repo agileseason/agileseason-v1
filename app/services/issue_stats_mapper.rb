@@ -18,6 +18,7 @@ class IssueStatsMapper
   end
 
   def fix_missing(issue)
+    return if board_bag.user.guest?
     return unless actual?(issue)
     issue_stats_map[issue.number] = IssueStatService.create(board_bag, issue)
   end
