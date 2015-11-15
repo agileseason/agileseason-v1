@@ -82,7 +82,12 @@ class BoardBag
   end
 
   def has_write_permission?
-    github_repo.present? && github_repo.permissions.push
+    has_read_permission? && github_repo.permissions.push
+  end
+
+  # TODO Return true if repository public!
+  def has_read_permission?
+    github_repo.present?
   end
 
   def subscribed?

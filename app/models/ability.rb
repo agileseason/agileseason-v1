@@ -52,8 +52,8 @@ class Ability
       board_bag.has_write_permission?
     end
 
-    can :comments, Board do |board|
-      !@user.guest? && can?(:read, board)
+    can :comments, BoardBag do |board_bag|
+      !@user.guest? && board_bag.has_read_permission?
     end
 
     can :manage_comments, Board, Object do |board, comment|

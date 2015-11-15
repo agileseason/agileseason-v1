@@ -44,6 +44,7 @@ describe Cached::Collaborators do
 
     context 'signed in' do
       let(:user) { build_stubbed :user }
+      before { allow(Boards::DetectRepo).to receive(:call).and_return(OpenStruct.new) }
 
       context 'public board' do
         let(:is_public) { true }

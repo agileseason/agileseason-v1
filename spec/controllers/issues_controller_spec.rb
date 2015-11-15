@@ -60,7 +60,7 @@ describe IssuesController do
       )
     end
     let(:params) { { title: 'test edit title' } }
-    before { allow(github_api).to receive(:issues).and_return([]) }
+    before { allow(Cached::Issues).to receive(:call).and_return([]) }
     before { allow(github_api).to receive(:update_issue).and_return(issue) }
 
     context 'response' do
@@ -94,7 +94,7 @@ describe IssuesController do
       )
     end
     let(:params) { { labels: ['label-1', 'label-2'] } }
-    before { allow(github_api).to receive(:issues).and_return([]) }
+    before { allow(Cached::Issues).to receive(:call).and_return([]) }
     before { allow(github_api).to receive(:update_issue).and_return(issue) }
 
     context 'direct' do
@@ -132,7 +132,7 @@ describe IssuesController do
       )
     end
     before { allow(controller).to receive(:github_api).and_return(github_api) }
-    before { allow(github_api).to receive(:issues).and_return([issue]) }
+    before { allow(Cached::Issues).to receive(:call).and_return([issue]) }
     before { allow(github_api).to receive(:issue).and_return(issue) }
     before do
       allow_any_instance_of(IssueStats::Finder).

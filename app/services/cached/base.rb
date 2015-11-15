@@ -9,8 +9,8 @@ module Cached
     attribute :board, Board
 
     def call
-      return if user.guest? && board.private?
-      return readonly_value if user.guest?
+      return if readonly? && board.private?
+      return readonly_value if readonly?
       return current.value unless expired?
 
       Cached::UpdateBase.call(objects: fetch, key: key)
@@ -30,6 +30,11 @@ module Cached
       # See inheritors
     end
 
+    def no_data
+      # Can be changed in inheritors
+      NO_DATA
+    end
+
     def key
       "board_bag_#{key_identity}_#{board.id}"
     end
@@ -42,14 +47,17 @@ module Cached
       @current ||= Cached::ReadBase.call(key: key)
     end
 
+    def readonly?
+      user.guest? || github_repo.nil?
+    end
+
     def readonly_value
       return no_data if current.nil?
       current.value
     end
 
-    def no_data
-      # Can be changed in inheritors
-      NO_DATA
+    def github_repo
+      @github_repo ||= Boards::DetectRepo.call(user: user, board: board)
     end
   end
 end
