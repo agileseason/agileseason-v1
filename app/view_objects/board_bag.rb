@@ -4,7 +4,8 @@ class BoardBag
            :to_param, :subscribed_at, :default_column, to: :board
 
   def issue(number)
-    if user.guest?
+    # FIX Need more specs.
+    if user.guest? || !has_read_permission?
       issue = issues_hash[number] || GithubApiGuest::UNKNOWN_BOARD_ISSUE
       GuestBoardIssue.new(issue, issue_stat_mapper[issue])
     else

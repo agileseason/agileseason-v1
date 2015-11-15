@@ -1,16 +1,27 @@
 describe IssueStatsMapper do
   let(:mapper) { IssueStatsMapper.new(BoardBag.new(user, board)) }
   let(:user) { build_stubbed(:user) }
+  before { allow(Boards::DetectRepo).to receive(:call).and_return(OpenStruct.new) }
 
   describe '#[issue]' do
     subject { mapper[issue] }
     let(:board) { build_stubbed(:board, user: user) }
 
-    context 'not fix missings for guest' do
-      let(:user) { build :user, :guest }
+    context 'not fix missings for - ' do
       let(:issue) { stub_issue }
 
-      it { is_expected.to be_nil }
+      context 'guest' do
+        let(:user) { build :user, :guest }
+        it { is_expected.to be_nil }
+      end
+
+      context 'signed user without permissions' do
+        let(:user) { build_stubbed :user }
+        let(:board) { build_stubbed :board }
+        before { allow(Boards::DetectRepo).to receive(:call) }
+
+        it { is_expected.to be_nil }
+      end
     end
 
     context 'first import - only open issues' do
