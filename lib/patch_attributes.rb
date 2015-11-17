@@ -1,8 +1,9 @@
 module PatchAttributes
   def update_attribute
-    resource.send("#{params[:name]}=", params[:value])
-    # FIX : Think about save! with some message-alert for user.
-    resource.save
+    if resource.attributes.include?(params[:name])
+      # FIX : Think about send some message-alert for user if resource invalid.
+      resource.update_attribute(params[:name], params[:value])
+    end
     render_result
   end
 
