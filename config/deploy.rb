@@ -1,5 +1,4 @@
-# config valid only for Capistrano 3.1
-lock '3.2.1'
+lock '3.4.0'
 
 set :application, 'agileseason'
 set :repo_url, 'git@github.com:agileseason/agileseason.git'

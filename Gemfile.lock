@@ -69,7 +69,7 @@ GEM
     builder (3.2.2)
     callsite (0.0.11)
     cancancan (1.13.1)
-    capistrano (3.2.1)
+    capistrano (3.4.0)
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
@@ -466,7 +466,7 @@ DEPENDENCIES
   binding_of_caller
   browser-timezone-rails
   cancancan
-  capistrano (= 3.2.1)
+  capistrano (~> 3.4.0)
   capistrano-bundler
   capistrano-cookbook
   capistrano-rails

@@ -54,7 +54,7 @@ end
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'capistrano', '3.2.1'
+  gem 'capistrano', '~> 3.4.0'
   gem 'capistrano-bundler'
   gem 'capistrano-cookbook', require: false
   gem 'capistrano-rails'
