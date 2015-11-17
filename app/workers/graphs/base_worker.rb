@@ -3,7 +3,7 @@ module Graphs
     include Sidekiq::Worker
     include GithubApiAccess
     sidekiq_options retry: 2
-    sidekiq_options unique: true,
+    sidekiq_options unique: :until_executing,
                     unique_args: -> (args) { [args.first] }
 
     def fill_missing_days(entry_histories)

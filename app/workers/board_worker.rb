@@ -3,7 +3,7 @@ class BoardWorker
   include Sidekiq::Worker
   include GithubApiAccess
   sidekiq_options retry: 2
-  sidekiq_options unique: true,
+  sidekiq_options unique: :until_executing,
                   unique_args: -> (args) { [args.first] }
 
   def perform(board_id, encrypted_github_token)
