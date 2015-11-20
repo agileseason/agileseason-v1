@@ -116,14 +116,14 @@ class @Comments extends View
         @$comments.html html
         @_highlight_code()
 
-  _set_textarea_readonly: (e, is_readonly) =>
+  _set_textarea_readonly: (e, is_readonly) ->
     $textarea = $(e.target).find('textarea')
     if is_readonly
       $textarea.addClass('readonly')
     else
       $textarea.removeClass('readonly')
 
-  _focus_to_end: ($textarea) =>
+  _focus_to_end: ($textarea) ->
     text = $textarea.val()
     $textarea.focus().val('').val(text)
 
