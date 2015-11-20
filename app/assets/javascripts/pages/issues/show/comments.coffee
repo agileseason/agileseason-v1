@@ -71,10 +71,12 @@ class @Comments extends View
     $parent.addClass 'current-comment'
     $('.comment-form', $parent).addClass 'active'
 
-    $initial_value = $('textarea', $parent).val()
-    $('textarea', $parent).data('initial-value': $initial_value)
+    $textarea = $('textarea', $parent)
+    $initial_value = $textarea.val()
+    $textarea.data('initial-value': $initial_value)
 
-    @$('textarea').elastic()
+    $textarea.elastic()
+    @_focus_to_end($textarea)
 
   _delete_comment: (e) ->
     if window.confirm('Delete comment?')
@@ -120,3 +122,8 @@ class @Comments extends View
       $textarea.addClass('readonly')
     else
       $textarea.removeClass('readonly')
+
+  _focus_to_end: ($textarea) =>
+    text = $textarea.val()
+    $textarea.focus().val('').val(text)
+
