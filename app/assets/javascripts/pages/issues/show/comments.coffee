@@ -8,8 +8,11 @@ class @Comments extends View
     @$textarea.elastic()
     init_uploading $('input:file')
 
+    @$add_comment_form.on 'ajax:before', (e, data) =>
+      @_set_textarea_readonly(e, true)
     @$add_comment_form.on 'ajax:success', (e, data) =>
       @_append_new_comment(e, data)
+      @_set_textarea_readonly(e, false)
 
     @$('.issue-comments, .add-comment-form')
       .on 'click', '.upload a', @_current_upload
@@ -19,8 +22,11 @@ class @Comments extends View
       .on 'click', '.delete', @_delete_comment
       .on 'click', '.edit', @_open_edit_form
       .on 'click', '.close-without-saving', @_close_without_saving
+      .on 'ajax:before', 'form.edit-comment', (e, data) =>
+        @_set_textarea_readonly(e, true)
       .on 'ajax:success', 'form.edit-comment', (e, data) =>
         @_submit_edit_form(e, data)
+        @_set_textarea_readonly(e, false)
       .on 'click', '.task', @_update_by_checkbox
 
   _append_new_comment: (e, data) =>
@@ -65,10 +71,12 @@ class @Comments extends View
     $parent.addClass 'current-comment'
     $('.comment-form', $parent).addClass 'active'
 
-    $initial_value = $('textarea', $parent).val()
-    $('textarea', $parent).data('initial-value': $initial_value)
+    $textarea = $('textarea', $parent)
+    $initial_value = $textarea.val()
+    $textarea.data('initial-value': $initial_value)
 
-    @$('textarea').elastic()
+    $textarea.elastic()
+    @_focus_to_end($textarea)
 
   _delete_comment: (e) ->
     if window.confirm('Delete comment?')
@@ -107,3 +115,15 @@ class @Comments extends View
       success: (html) =>
         @$comments.html html
         @_highlight_code()
+
+  _set_textarea_readonly: (e, is_readonly) ->
+    $textarea = $(e.target).find('textarea')
+    if is_readonly
+      $textarea.addClass('readonly')
+    else
+      $textarea.removeClass('readonly')
+
+  _focus_to_end: ($textarea) ->
+    text = $textarea.val()
+    $textarea.focus().val('').val(text)
+
