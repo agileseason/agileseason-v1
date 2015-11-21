@@ -30,6 +30,7 @@ Look at the our development board for example - [agileseason.com](http://agilese
 - [x] [Cumulative Flow Diagram](https://github.com/agileseason/agileseason/wiki/Kanban-metrics#cumulative-flow-diagram)
 - [x] [Control Chart](https://github.com/agileseason/agileseason/wiki/Kanban-metrics#control-chart)
 - [x] Cycle Time Diagram
+- [ ] Forecast Duration
 
 ### Scrum [MVP 2]
 
