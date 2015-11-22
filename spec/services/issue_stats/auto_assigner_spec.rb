@@ -25,6 +25,7 @@ describe IssueStats::AutoAssigner do
 
       it { expect(github_api).not_to have_received(:assign) }
       it { expect(board_bag).not_to have_received(:update_cache) }
+      it { is_expected.to be_nil }
     end
 
     context 'column with auto_assign' do
@@ -35,11 +36,13 @@ describe IssueStats::AutoAssigner do
 
         it { expect(github_api).not_to have_received(:assign) }
         it { expect(board_bag).not_to have_received(:update_cache) }
+        it { is_expected.to be_nil }
       end
 
       context 'user has not been assigned yet' do
         it { expect(github_api).to have_received(:assign) }
         it { expect(board_bag).to have_received(:update_cache) }
+        it { is_expected.to eq issue }
       end
     end
   end
