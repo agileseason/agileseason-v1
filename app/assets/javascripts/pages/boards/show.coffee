@@ -9,7 +9,7 @@ $(document).on 'page:change', ->
   $('.column-menu').each -> new ColumnsSettings($(@))
 
   # перейти на страницу тикета
-  $('.issues').on 'click', '.issue.draggable', (e) ->
+  $('.issues').on 'click', '.issue', (e) ->
     unless $(e.target).is 'a, .button, button'
       $(@).closest('.issue').addClass 'current-issue'
       Turbolinks.visit $(@).data 'url'

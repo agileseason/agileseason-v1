@@ -1,5 +1,5 @@
 / NOTE Don't change id for issue - 'issues_N' used for upate sorting via patch request with params: issues[]...
-.issue.draggable [
+.issue [
   id="issues_#{issue.number}"
   class="#{issue.state} issue-#{issue.number}"
   data-number="#{issue.number}"
@@ -35,11 +35,14 @@
 
 
   .buttons
-    = link_to 'ready',
-      toggle_ready_board_issues_url(@board, issue.number),
-      class: "is_ready #{:active if issue.ready?}",
-      remote: true,
-      method: :post
+    - if can?(:update, @board)
+      = link_to 'ready',
+        toggle_ready_board_issues_url(@board, issue.number),
+        class: "is_ready #{:active if issue.ready?}",
+        remote: true,
+        method: :post
+    - else
+      a class="is_ready #{:active if issue.ready?}" ready
 
     - if can?(:update, @board)
       - if issue.open? && can?(:update_issue, @board_bag)

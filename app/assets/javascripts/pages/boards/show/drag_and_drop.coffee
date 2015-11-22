@@ -1,7 +1,7 @@
 $(document).on 'page:change', ->
   return unless document.body.id == 'boards_show'
 
-  $('.issues')
+  $('.issues.js-can-update')
     .sortable
       connectWith: '.issues',
       forcePlaceholderSize: true,
