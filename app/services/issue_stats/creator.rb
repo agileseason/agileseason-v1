@@ -4,7 +4,7 @@ module IssueStats
 
     def call
       create_issue
-      assigne_issue
+      assign_issue
       sort_issue
 
       BoardIssue.new(@github_issue, @issue_stat)
@@ -18,7 +18,7 @@ module IssueStats
       board_bag.update_cache(@github_issue)
     end
 
-    def assigne_issue
+    def assign_issue
       updated_github_issue = IssueStats::AutoAssigner.call(
         user: user,
         board_bag: board_bag,
