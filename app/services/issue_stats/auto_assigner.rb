@@ -22,6 +22,7 @@ module IssueStats
     def assign
       issue = user.github_api.assign(board_bag, number, user.github_username)
       board_bag.update_cache(issue)
+      issue
     end
   end
 end
