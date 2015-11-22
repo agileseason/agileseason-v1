@@ -6,7 +6,7 @@ module Graphs
 
     def index
       @frequency_all = FrequencyService.new(@board, @board.created_at)
-      @frequency_month = FrequencyService.new(@board, 1.month.ago)
+      @frequency_month = FrequencyService.new(@board, [1.month.ago, @board.created_at].max)
     end
 
     private
