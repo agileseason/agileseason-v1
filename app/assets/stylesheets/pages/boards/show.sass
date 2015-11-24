@@ -49,7 +49,19 @@ $image-path: 'pages/p-boards-show'
         vertical-align: top
         width: 260px
 
+        .export
+          color: $text-light
+          display: none
+          position: absolute
+          right: 10px
+          top: 12px
+          span
+            font-size: 18px
+
         &.last
+          .export
+            display: inline
+
           .issue
             &:hover
               a.button.close,

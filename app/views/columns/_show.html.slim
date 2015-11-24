@@ -6,6 +6,8 @@
   ]
 
   = render partial: 'columns/menu', locals: { column: column }
+  a.export href="#{board_exports_url(@board)}" target='blank' title='Export board to markdown'
+    span.octicon.octicon-markdown
 
   .issues.scroller class="#{'js-can-update' if can?(:update, @board)}"
     = render partial: 'issues/issue_miniature',
