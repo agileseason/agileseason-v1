@@ -17,6 +17,7 @@ Look at the our development board for example - [agileseason.com](http://agilese
 - [x] [Drag and drop issues between columns](https://github.com/agileseason/agileseason/wiki/Board-features)
 - [x] Search and sort issues
 - [x] Attach images by drag & drop
+- [x] [Board markdown export](https://github.com/agileseason/agileseason/wiki/Board-features#board-markdown-export)
 - [ ] Roadmap
 - [ ] Timeline
 - [ ] Bus factor
