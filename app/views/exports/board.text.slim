@@ -4,4 +4,4 @@
   = "\n### #{column.name}\n"
 
   - @board_bag.column_issues(column).each do |issue|
-    = "- [#{issue.closed? ? 'x' : ' '}] #{issue.title} ##{issue.number}\n"
+    = "- [#{issue.closed? ? 'x' : ' '}] #{issue.title} ##{issue.number}\n".html_safe
