@@ -47,8 +47,6 @@ Rails.application.routes.draw do
       delete ':number/delete_comment/:id', to: 'comments#delete', as: :delete_comment
     end
 
-    resources :issue_stats, only: :update
-
     resource :settings, only: [:show, :update] do
       member do
         patch :rename
@@ -65,8 +63,6 @@ Rails.application.routes.draw do
       resources :forecast, only: [:index]
     end
 
-    resources :activities, only: [:index]
-
     resource :subscriptions, only: [:new] do
       get :early_access
     end
@@ -74,6 +70,10 @@ Rails.application.routes.draw do
     resource :roadmap, only: [:show] do
       post :build
     end
+
+    resources :activities, only: [:index]
+    resources :issue_stats, only: :update
+    resource :exports, only: [:show]
 
     post 'preview', to: 'markdown#preview', as: :preview
   end
