@@ -5,7 +5,7 @@ describe CommentsController do
   let(:number) { 1 }
   before { stub_sign_in(user) }
   before { allow(Cached::Issues).to receive(:call).and_return([]) }
-  before { allow_any_instance_of(GithubApi).to receive(:issue_comments).and_return([]) }
+  before { allow(Cached::Comments).to receive(:call).and_return([]) }
   before { allow(IssueStats::LazySyncChecklist).to receive(:call) }
   before { allow(CheckboxSynchronizer).to receive(:perform_async) }
 

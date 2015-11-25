@@ -55,6 +55,11 @@ class Board < ActiveRecord::Base
     !public?
   end
 
+  # TODO Need specs
+  def owner?(user)
+    user_id == user.id
+  end
+
   def danger_settings
     DangerSettings.new(
       is_public: public?

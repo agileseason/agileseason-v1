@@ -2,8 +2,8 @@ class CommentsController < ApplicationController
   before_action :fetch_board
 
   def index
-    comments = github_api.issue_comments(@board, number)
-    sync_checklist(comments)
+    comments = Cached::Comments.call(user: current_user, board: @board, number: number)
+    sync_comments(comments)
     render(
       partial: 'comments/show',
       collection: comments,
@@ -59,9 +59,21 @@ class CommentsController < ApplicationController
 
   def inc_comments_count(delta)
     issue = @board_bag.issues_hash[number]
-    return unless issue
+    return if issue.nil?
 
     issue.comments += delta
+    @board_bag.update_cache(issue)
+  end
+
+  def sync_comments(comments)
+    return unless can?(:comments, @board_bag)
+
+    sync_checklist(comments)
+
+    issue = @board_bag.issues_hash[number]
+    return if issue.nil?
+
+    issue.comments = comments.size
     @board_bag.update_cache(issue)
   end
 

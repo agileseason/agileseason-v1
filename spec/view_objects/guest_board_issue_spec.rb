@@ -1,5 +1,5 @@
 describe GuestBoardIssue do
-  let(:board_issue) { GuestBoardIssue.new(nil, nil) }
+  let(:board_issue) { GuestBoardIssue.new(nil, nil, nil) }
 
   describe '#comments' do
     subject { board_issue.comments }
