@@ -32,6 +32,7 @@ class Ability
 
     @user = user || User.new
     board_ability
+    comments_ability
   end
 
   private
@@ -52,7 +53,9 @@ class Ability
     can :update_issue, BoardBag do |board_bag|
       board_bag.has_write_permission?
     end
+  end
 
+  def comments_ability
     can :comments, BoardBag do |board_bag|
       can?(:update, board_bag.board) || (!@user.guest? && board_bag.has_read_permission?)
     end

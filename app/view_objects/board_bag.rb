@@ -3,13 +3,14 @@ class BoardBag
   delegate :github_id, :github_name, :github_full_name, :columns, :issue_stats,
            :to_param, :subscribed_at, :default_column, :public?, :user_id, to: :board
 
+  # TODO Need more specs.
   def issue(number)
-    # FIX Need more specs.
-    if user.guest? || !has_read_permission?
-      issue = issues_hash[number] || GithubApiGuest::UNKNOWN_BOARD_ISSUE
+    issue = issues_hash[number]
+    if readonly?
+      issue ||= GithubApiGuest::UNKNOWN_BOARD_ISSUE
       GuestBoardIssue.new(user, issue, issue_stat_mapper[issue])
     else
-      issue = issues_hash[number] || user.github_api.issue(board, number)
+      issue ||= user.github_api.issue(board, number)
       BoardIssue.new(issue, issue_stat_mapper[issue])
     end
   end
@@ -89,6 +90,11 @@ class BoardBag
   # TODO Return true if repository public!
   def has_read_permission?
     github_repo.present?
+  end
+
+  # TODO Remove duplication with Cached::Base#readonly?
+  def readonly?
+    user.guest? || !has_read_permission?
   end
 
   def subscribed?
