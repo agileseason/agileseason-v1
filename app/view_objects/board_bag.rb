@@ -103,6 +103,7 @@ class BoardBag
     @issue_stat_mapper ||= IssueStatsMapper.new(self)
   end
 
+  # FIX : Refactoring this method.
   def ordered_issues(column, issue_numbers)
     issue_numbers.map do |number|
       issues_by_columns[column.id].detect do |issue|

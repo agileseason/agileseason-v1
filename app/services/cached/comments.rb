@@ -1,9 +1,13 @@
-# TODO Need specs
 module Cached
   class Comments < Cached::Base
     attribute :user, User
     attribute :board, Board
     attribute :number, Integer
+
+    def call
+      return super if board.public?
+      fetch
+    end
 
     private
 
