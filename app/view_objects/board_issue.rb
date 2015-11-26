@@ -29,4 +29,8 @@ class BoardIssue
     return 'archived' if archive?
     state
   end
+
+  def no_comments_available?
+    issue.comments > 0 && comments == 0
+  end
 end
