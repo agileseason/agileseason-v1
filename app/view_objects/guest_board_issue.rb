@@ -1,8 +1,10 @@
 class GuestBoardIssue < BoardIssue
-  attr_initialize :issue, :issue_stat
+  rattr_initialize :user, :issue, :issue_stat
 
   def comments
-    0
+    return 0 if issue == GithubApiGuest::UNKNOWN_BOARD_ISSUE || issue_stat.nil?
+    comments = Cached::Comments.call(user: user, board: issue_stat.board, number: issue_stat.number)
+    comments.size
   end
 
   def column_id

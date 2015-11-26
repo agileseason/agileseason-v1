@@ -104,4 +104,18 @@ describe BoardIssue do
       it { is_expected.to eq 'archived' }
     end
   end
+
+  describe '#no_comments_available?' do
+    subject { board_issue.no_comments_available? }
+    let(:issue) { stub_issue(comments: 1) }
+
+    context 'true' do
+      before { allow(board_issue).to receive(:comments).and_return 0 }
+      it { is_expected.to eq true }
+    end
+
+    context 'false' do
+      it { is_expected.to eq false }
+    end
+  end
 end

@@ -1,3 +1,4 @@
+# TODO Need specs
 class Ability
   include CanCan::Ability
 
@@ -31,38 +32,34 @@ class Ability
 
     @user = user || User.new
     board_ability
+    comments_ability
   end
 
   private
 
   def board_ability
     can :manage, Board do |board|
-      owner?(board)
+      board.owner?(@user)
     end
 
     can [:read, :update], Board do |board|
-      owner?(board) || Boards::DetectRepo.call(user: @user, board: board).present?
+      can?(:manage, board) || Boards::DetectRepo.call(user: @user, board: board).present?
     end
 
-    can :read, Board do |board|
-      board.public?
-    end
+    can :read, Board, &:public?
+    can :update_issue, BoardBag, &:has_write_permission?
+  end
 
-    can :update_issue, BoardBag do |board_bag|
-      board_bag.has_write_permission?
-    end
-
+  def comments_ability
     can :comments, BoardBag do |board_bag|
-      !@user.guest? && board_bag.has_read_permission?
+      can?(:update, board_bag.board) || (!@user.guest? && board_bag.has_read_permission?)
     end
+
+    can :read_comments, BoardBag, &:public?
 
     can :manage_comments, Board, Object do |board, comment|
       can?(:update, board) ||
         (board.public? && comment.try(:user).try(:login) == @user.github_username)
     end
-  end
-
-  def owner?(board)
-    @user.id == board.user_id
   end
 end
