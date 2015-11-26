@@ -46,13 +46,8 @@ class Ability
       can?(:manage, board) || Boards::DetectRepo.call(user: @user, board: board).present?
     end
 
-    can :read, Board do |board|
-      board.public?
-    end
-
-    can :update_issue, BoardBag do |board_bag|
-      board_bag.has_write_permission?
-    end
+    can :read, Board, &:public?
+    can :update_issue, BoardBag, &:has_write_permission?
   end
 
   def comments_ability
@@ -60,9 +55,7 @@ class Ability
       can?(:update, board_bag.board) || (!@user.guest? && board_bag.has_read_permission?)
     end
 
-    can :read_comments, BoardBag do |board_bag|
-      board_bag.public?
-    end
+    can :read_comments, BoardBag, &:public?
 
     can :manage_comments, Board, Object do |board, comment|
       can?(:update, board) ||

@@ -75,6 +75,5 @@ describe Cached::Comments do
         end
       end
     end
-
   end
 end
