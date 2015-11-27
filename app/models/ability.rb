@@ -51,15 +51,13 @@ class Ability
   end
 
   def comments_ability
-    can :comments, BoardBag do |board_bag|
-      can?(:update, board_bag.board) || (!@user.guest? && board_bag.has_read_permission?)
-    end
-
-    can :read_comments, BoardBag, &:public?
-
     can :manage_comments, Board, Object do |board, comment|
       can?(:update, board) ||
         (board.public? && comment.try(:user).try(:login) == @user.github_username)
+    end
+
+    can :comments, BoardBag do |board_bag|
+      can?(:manage_comments, board_bag) || (!@user.guest? && board_bag.has_read_permission?)
     end
   end
 end
