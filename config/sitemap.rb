@@ -25,7 +25,7 @@ SitemapGenerator::Sitemap.create do
   #     add article_path(article), :lastmod => article.updated_at
   #   end
 
-  add(board_features_docs_path, lastmod: Time.new(2015, 9, 17))
+  add(board_features_docs_path, lastmod: Time.new(2015, 11, 28))
   add(cumulative_docs_path, lastmod: Time.new(2015, 9, 17))
   add(control_docs_path, lastmod: Time.new(2015, 9, 17))
 end
