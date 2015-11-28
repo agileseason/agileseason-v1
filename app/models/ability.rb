@@ -57,7 +57,7 @@ class Ability
     end
 
     can :comments, BoardBag do |board_bag|
-      can?(:manage_comments, board_bag) || (!@user.guest? && board_bag.has_read_permission?)
+      can?(:update, board_bag.board) || (!@user.guest? && board_bag.has_read_permission?)
     end
   end
 end
