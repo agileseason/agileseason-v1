@@ -25,18 +25,6 @@
             span.a-child.octicon.octicon-graph &nbsp;
             span.a-child Metrics
 
-      - if current_user.admin?
-        - if controller_name == 'roadmaps'
-          li.list-item.roadmap.active
-            span.octicon.octicon-list-unordered &nbsp;
-            span Roadmap
-
-        - else
-          li.list-item.roadmap
-            a.menu-link href="#{un board_roadmap_url(@board)}" title='Roadmap'
-              span.a-child.octicon.octicon-list-unordered &nbsp;
-              span.a-child Roadmap
-
       - if can? :update, @board
         - if controller_name == 'settings' && action_name == 'show'
           li.list-item.board-settings.active

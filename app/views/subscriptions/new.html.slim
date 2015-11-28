@@ -3,10 +3,7 @@ h1 Subscription for #{@board.github_full_name}
 ul.list.subscriptions
   li
     .cost 6 month - $20
-    .safe
-      | 1 month free
-      br
-      | save 16%
+    .safe 1 month free (-16%)
   li
     .cost 3 month - $12
   li
@@ -15,8 +12,3 @@ ul.list.subscriptions
 .row
   a.button.promo href="#{early_access_board_subscriptions_url(@board)}"
     | Start 3-month free trial
-
-.row
-  .note
-    | Agile Season is 100% free for Open Source, forever
-    span.octicon.octicon-mark-github

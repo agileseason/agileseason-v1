@@ -7,7 +7,7 @@
     li : a href="#{cumulative_docs_url}" Cumulative Flow Diagram
     li : a href="#{control_docs_url}" Control Chart
     li : hr
-    - if current_user.present?
+    - if signed_in?
       li : a href="#{boards_url}" Return to boards
     - else
       li : a href="#{root_url}" Home page
