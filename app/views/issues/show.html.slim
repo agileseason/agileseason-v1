@@ -21,7 +21,7 @@
           url: update_board_issues_url(@board, @issue.number),
           remote: true,
           method: :patch do |f|
-          = f.input :title, label: false, as: :text
+          = f.input :title, label: false, as: :text, input_html: { class: 'js-submit-by-enter' }
           = f.button :magic_submit, value: 'Update'
 
       .user-list

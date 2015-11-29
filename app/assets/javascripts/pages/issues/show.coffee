@@ -13,7 +13,9 @@ $(document).on 'ready page:load', ->
       Turbolinks.visit($('.b-menu .boards a').attr('href'))
 
   $issue_container.on 'keydown', 'textarea', (e) ->
-    if e.keyCode == 13 && (e.metaKey || e.ctrlKey)
+    return unless e.keyCode == 13
+
+    if e.metaKey || e.ctrlKey || $(@).hasClass('js-submit-by-enter')
       $(@.form).find('input:submit').click()
       $(@).blur()
       false
