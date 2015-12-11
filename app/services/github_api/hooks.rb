@@ -37,6 +37,8 @@ class GithubApi
           events: ['issues']
         }
       )
+    rescue Octokit::UnprocessableEntity => error
+      raise unless error.message.include? 'Hook already exists'
     end
 
     def remove_issue_hook(board)
