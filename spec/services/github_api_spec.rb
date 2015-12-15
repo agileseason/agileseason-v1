@@ -17,7 +17,6 @@ describe GithubApi do
           with(access_token: token, auto_paginate: true)
       end
     end
-
   end
 
   describe '#github_token' do

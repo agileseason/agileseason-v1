@@ -5,7 +5,7 @@ describe WebhookWorker do
     let(:token) { 'fake-token' }
     let(:board) { create :board, :with_columns, github_hook_id: nil }
     let(:api) { double(apply_issues_hook: hook) }
-    let(:hook) { OpenStruct.new(id: "123") }
+    let(:hook) { OpenStruct.new(id: '123') }
     before { allow(worker).to receive(:github_api).and_return api }
     before { subject }
 

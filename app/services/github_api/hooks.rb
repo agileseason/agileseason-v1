@@ -25,11 +25,9 @@ class GithubApi
     end
 
     def remove_issue_hook(board)
-      begin
-        client.remove_hook(board.github_id, board.github_hook_id)
-      ensure
-        board.update(github_hook_id: nil)
-      end
+      client.remove_hook(board.github_id, board.github_hook_id)
+    ensure
+      board.update(github_hook_id: nil)
     end
 
     private
