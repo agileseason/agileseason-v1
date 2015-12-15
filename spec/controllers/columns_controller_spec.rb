@@ -18,7 +18,7 @@ describe ColumnsController, type: :controller do
     it { expect(response).to render_template(:new) }
   end
 
-  describe '#create', :focus do
+  describe '#create' do
     before do
       post(
         :create,
@@ -62,13 +62,45 @@ describe ColumnsController, type: :controller do
   end
 
   describe '#destroy' do
-    subject { get :destroy, id: column.id }
+    subject { get :destroy, id: column.id, board_github_full_name: board.github_full_name }
     let(:column) { board.columns.last }
+    let!(:issues) {}
     before { subject }
 
     context 'without issues' do
       it { expect(response).to have_http_status(:success) }
       it { expect(board.reload.columns).to have(1).item }
+    end
+
+    context 'without issues' do
+      let!(:issues) { create :issue_stat, column: column }
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(board.reload.columns).to have(2).item }
+    end
+  end
+
+  describe '#move_left' do
+    subject { get :move_left, id: column.id, board_github_full_name: board.github_full_name }
+    let(:column) { board.columns.last }
+
+    it { expect { subject }.to change { column.reload.order }.from(2).to(1) }
+
+    context 'response' do
+      before { subject }
+      it { expect(response).to redirect_to(un board_url(board)) }
+    end
+  end
+
+  describe '#move_right' do
+    subject { get :move_right, id: column.id, board_github_full_name: board.github_full_name }
+    let(:column) { board.columns.first }
+
+    it { expect { subject }.to change { column.reload.order }.from(1).to(2) }
+
+    context 'response' do
+      before { subject }
+      it { expect(response).to redirect_to(un board_url(board)) }
     end
   end
 end
