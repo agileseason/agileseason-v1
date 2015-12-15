@@ -25,7 +25,7 @@ class ColumnsController < ApplicationController
     if @column.save
       redirect_to un(board_settings_url(@board))
     else
-      render 'new'
+      render :new
     end
   end
 

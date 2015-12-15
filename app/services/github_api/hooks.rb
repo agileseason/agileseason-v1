@@ -1,5 +1,14 @@
 class GithubApi
   module Hooks
+    def hook(board, id)
+      client.hook(board.github_id, id) if id.present?
+    rescue
+    end
+
+    def hooks(board)
+      client.hooks(board.github_id)
+    end
+
     def apply_issues_hook(board)
       hook = hook(board, board.github_hook_id)
 
@@ -15,14 +24,13 @@ class GithubApi
       hook
     end
 
-    def hook(board, id)
-      client.hook(board.github_id, id) if id.present?
-      rescue
+    def remove_issue_hook(board)
+      client.remove_hook(board.github_id, board.github_hook_id)
+    ensure
+      board.update(github_hook_id: nil)
     end
 
-    def hooks(board)
-      client.hooks(board.github_id)
-    end
+    private
 
     def create_issues_hook(board)
       client.create_hook(
@@ -37,14 +45,13 @@ class GithubApi
           events: ['issues']
         }
       )
+    rescue Octokit::UnprocessableEntity => error
+      raise unless error.message.include? 'Hook already exists'
     end
 
-    def remove_issue_hook(board)
-      begin
-        client.remove_hook(board.github_id, board.github_hook_id) if board.github_hook_id.present?
-      rescue
-      end
-      board.update(github_hook_id: nil)
+    def secret
+      # TODO Remove this code duplication. See: webhook_controller.
+      @secret ||= Rails.application.secrets.secret_key_base.first(20)
     end
 
     def try_find_hook(board)
@@ -53,11 +60,6 @@ class GithubApi
 
     def callback_url
       'https://agileseason.com/webhooks/github'
-    end
-
-    def secret
-      # TODO Remove this code duplication. See: webhook_controller.
-      @secret ||= Rails.application.secrets.secret_key_base.first(20)
     end
   end
 end

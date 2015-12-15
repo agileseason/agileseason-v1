@@ -1,4 +1,4 @@
-RSpec.describe LandingController, type: :controller do
+describe LandingController do
   render_views
 
   describe '#index' do
@@ -16,5 +16,12 @@ RSpec.describe LandingController, type: :controller do
 
       it { expect(response).to have_http_status(:success) }
     end
+  end
+
+  describe '#demo' do
+    before { get :demo }
+
+    it { expect(response).to redirect_to(LandingController::AUTH_URL) }
+    it { expect(session[:return_url]).to eq LandingController::DEMO_URL }
   end
 end
