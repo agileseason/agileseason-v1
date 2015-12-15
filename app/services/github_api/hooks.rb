@@ -32,7 +32,7 @@ class GithubApi
       end
     end
 
-  private
+    private
 
     def create_issues_hook(board)
       client.create_hook(
