@@ -2,7 +2,7 @@ class GithubApi
   module Hooks
     def hook(board, id)
       client.hook(board.github_id, id) if id.present?
-      rescue
+    rescue
     end
 
     def hooks(board)
