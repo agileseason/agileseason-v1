@@ -37,7 +37,6 @@ class SessionsController < ApplicationController
     ui_event :registration
     MixpanelTracker.new.link_user(user, session[:guest_id])
 
-    flash[:signed_up] = true
     user
   end
 
@@ -50,8 +49,6 @@ class SessionsController < ApplicationController
     session[:remember_token] = nil
     session[:github_token] = nil
   end
-
-  private
 
   def github_username_auth
     request.env['omniauth.auth']['info']['nickname']
