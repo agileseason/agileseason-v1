@@ -6,7 +6,7 @@ class WebhookWorker
                   unique_args: -> (args) { [args.first] }
 
   def perform(board_id, encrypted_github_token)
-    return unless Rails.env.production?
+    return if Rails.env.develop?
 
     board = Board.find(board_id)
     hook = github_api(encrypted_github_token).apply_issues_hook(board)
