@@ -22,8 +22,9 @@ class SettingsController < ApplicationController
   end
 
   def apply_hook
-    # NOTE If need test webhook: 1) remove if statement; 2) use ngrok; 3) set callback domain like a 'http://37847032.ngrok.io' in github_api.
-    github_api.apply_issues_hook(@board) if Rails.env.production?
+    # NOTE If need test webhook:
+    # NOTE 1) remove if statement; 2) use ngrok with localhost; 3) set callback domain like a 'http://37847032.ngrok.io/webhook/github' in github_api.
+    github_api.apply_issues_hook(@board) unless Rails.env.develop?
     redirect_to un(board_settings_url(@board)), notice: 'Hook successfully created.'
   end
 
