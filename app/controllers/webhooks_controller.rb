@@ -5,7 +5,7 @@ class WebhooksController < ApplicationController
   HMAC_DIGEST = OpenSSL::Digest.new('sha1')
 
   def github
-    if trusted_request? && board.present?
+    if issue_present? && trusted_request? && board.present?
       update_cache_issues
       issue_stat = IssueStatService.find(board_bag, issue.number)
       broadcast_column(issue_stat.column) if issue_stat.present?
@@ -15,6 +15,10 @@ class WebhooksController < ApplicationController
   end
 
   private
+
+  def issue_present?
+    params[:issue].present?
+  end
 
   def issue
     @issue ||= begin

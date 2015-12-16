@@ -19,6 +19,13 @@ describe WebhooksController do
     it { expect(response).to have_http_status(:success) }
     it { expect(controller).to have_received(:broadcast_column).with(column) }
 
+    context 'invalid issue params' do
+      let(:issue_params) {}
+
+      it { expect(Cached::UpdateIssues).not_to have_received(:call) }
+      it { expect(response).to have_http_status(:success) }
+    end
+
     context 'cache empth' do
       it { expect(Cached::UpdateIssues).not_to have_received(:call) }
     end
