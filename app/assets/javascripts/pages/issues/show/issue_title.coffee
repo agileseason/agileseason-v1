@@ -5,7 +5,7 @@ class @IssueTitle extends View
 
     @$textarea.elastic()
 
-    # редактировать название тикета
+    # EditMode:on.
     @$title.on 'click', =>
       val = @$textarea.val()
       @$title.data 'initial-text': @$title.text()
@@ -16,8 +16,14 @@ class @IssueTitle extends View
         .val ''
         .val val
 
-    # сохранить по блюру название тикета
+    # EditMode:off and save title by blur.
     @$textarea.on 'blur', =>
       @$title.text @$textarea.val()
       @$root.removeClass 'active'
       @$('.button').trigger 'click'
+
+    # EditMode:off and save title (via blur) by enter.
+    @$textarea.on 'keydown', (e) =>
+      return unless e.keyCode == 13
+      @$textarea.blur()
+      false

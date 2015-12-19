@@ -7,22 +7,32 @@ $(document).on 'ready page:load', ->
   subscribe_issue_update()
   file_drag_over()
   actions()
+  comments()
 
   $('.b-menu').click (e) -> # клик вне тикета делает переход к борду
     if $(e.target).is('.b-menu, .b-menu > ul')
       Turbolinks.visit($('.b-menu .boards a').attr('href'))
 
-  $issue_container.on 'keydown', 'textarea', (e) ->
-    return unless e.keyCode == 13
-
-    if e.metaKey || e.ctrlKey || $(@).hasClass('js-submit-by-enter')
-      $(@.form).find('input:submit').click()
-      $(@).blur()
-      false
-
   $('.move-to-column li', $issue_container).click ->
     $('.move-to-column li').removeClass 'active'
     $(@).addClass 'active'
+
+subscribe_issue_update = ->
+  $issue = $('.b-issue-modal')
+  return unless $issue.data('faye-on')
+  return unless window.faye
+
+  try
+    window.faye.apply $issue.data('faye-channel'), $issue
+
+    $issue.on 'faye:comment_create', (e, data) ->
+      window.faye.updateProcessTime()
+      $fetch_issue = $('.b-issue-modal')
+      return unless $fetch_issue.data('number') == parseInt(data.number)
+      $('.issue-comments').append(data.html)
+
+  catch err
+    console.log err
 
 file_drag_over = ->
   # перетаскивать картинку можно в любое место окна,
@@ -139,3 +149,12 @@ ready_to_next_stage = ->
   # кнопака «ready»
   $('.issue-actions').on 'ajax:before', '.is_ready', ->
     $(@).toggleClass 'active'
+
+comments = ->
+  $('.comments-container').on 'keydown', 'textarea', (e) ->
+    return unless e.keyCode == 13
+
+    if e.metaKey || e.ctrlKey
+      $(@form).find('input:submit').click()
+      $(@).blur()
+      false
