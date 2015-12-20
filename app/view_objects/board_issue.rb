@@ -3,7 +3,7 @@ class BoardIssue
   delegate :number, :title, :body, :state, :labels, :html_url,
            :assignee, :comments, :all_comments,
            :created_at, :updated_at, :closed_at, to: :issue
-  delegate :board, :due_date_at, :column, :column_id, :ready?,
+  delegate :board, :column_id, :ready?,
            :checklist, :checklist_progress, to: :issue_stat
 
   attr_initialize :issue, :issue_stat
@@ -32,5 +32,18 @@ class BoardIssue
 
   def no_comments_available?
     issue.comments > 0 && comments == 0
+  end
+
+  def due_date_at
+    issue_stat.due_date_at unless issue_stat.nil?
+  end
+
+  def column
+    issue_stat.column unless issue_stat.nil?
+  end
+
+  def column_id
+    return nil if issue_stat.nil?
+    issue_stat.column_id
   end
 end

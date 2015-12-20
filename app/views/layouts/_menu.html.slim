@@ -1,6 +1,6 @@
 .b-menu
   ul.menu
-    li.list-item.left-menu-link data-url="#{boards_url}"
+    li.list-item.left-menu-link data-url=boards_url
       a.menu-link.octicon.octicon-three-bars
 
     - if @board.present? && @board.persisted?
@@ -37,22 +37,23 @@
               span.a-child.octicon.octicon-gear &nbsp;
               span.a-child Settings
 
-      li.list-item.icon-button.activities data-url="#{board_activities_url @board}"
+      li.list-item.icon-button.activities data-url=board_activities_url(@board)
         a.menu-link.activities-link : span.octicon.octicon-bell
-        - if @board
-          .b-activities data-paginate="true" data-page="2" data-url="#{board_activities_url @board}"
+        - if @board.present?
+          .b-activities data-paginate="true" data-page="2" data-url=board_activities_url(@board)
 
-      li.list-item.search data-url="#{search_board_issues_url(@board)}"
-        .overlay
-        .field.search-input
-          input type='text'
-          span.octicon.octicon-search
-        .search-popup
-          .search-content
-          .help
-            ' Refine your search with operators like @member or assignee:member,
-            ' label:name, text in:title, and text in:body, comment.
-            a href="https://help.github.com/articles/searching-issues/" target='_blank' Learn more…
+      - if !current_user.guest? && @board_bag.has_read_permission?
+        li.list-item.search data-url=search_board_issues_url(@board)
+          .overlay
+          .field.search-input
+            input type='text'
+            span.octicon.octicon-search
+          .search-popup
+            .search-content
+            .help
+              ' Refine your search with operators like @member or assignee:member,
+              ' label:name, text in:title, and text in:body, comment.
+              a href="https://help.github.com/articles/searching-issues/" target='_blank' Learn more…
 
       li.list-item.icon-button.alert-timeout
         a.menu-link href="#{un board_url(@board)}" : span.octicon.octicon-sync
