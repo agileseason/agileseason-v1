@@ -118,4 +118,45 @@ describe BoardIssue do
       it { is_expected.to eq false }
     end
   end
+
+  describe '#due_date_at' do
+    subject { board_issue.due_date_at }
+
+    context 'issue_stat is nil' do
+      it { is_expected.to be_nil }
+    end
+
+    context 'issue_stat is not nil' do
+      let(:issue_stat) { build(:issue_stat, due_date_at: Time.current) }
+      it { is_expected.to eq issue_stat.due_date_at }
+    end
+  end
+
+  describe '#column' do
+    subject { board_issue.column }
+
+    context 'issue_stat is nil' do
+      it { is_expected.to be_nil }
+    end
+
+    context 'issue_stat is not nil' do
+      let(:issue_stat) { build(:issue_stat, column: column) }
+      let(:column) { build(:column) }
+      it { is_expected.to eq column }
+    end
+  end
+
+  describe '#column_id' do
+    subject { board_issue.column_id }
+
+    context 'issue_stat is nil' do
+      it { is_expected.to be_nil }
+    end
+
+    context 'issue_stat is not nil' do
+      let(:issue_stat) { build(:issue_stat, column: column) }
+      let(:column) { build_stubbed(:column) }
+      it { is_expected.to eq column.id }
+    end
+  end
 end
