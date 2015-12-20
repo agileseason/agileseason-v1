@@ -39,10 +39,12 @@ describe BoardPick do
     describe '.public_list' do
       subject { BoardPick.public_list }
       let!(:board_1) { create(:board, :with_columns) }
-      let!(:board_public) { create(:board, :with_columns, :public) }
+      let!(:board_public_1) { create(:board, :with_columns, :public, name: 'bbb') }
+      let!(:board_public_2) { create(:board, :with_columns, :public, name: 'aaa') }
 
-      it { is_expected.to have(1).item }
-      its('first.id') { is_expected.to eq board_public.id }
+      it { is_expected.to have(2).item }
+      its('first.id') { is_expected.to eq board_public_2.id }
+      its('second.id') { is_expected.to eq board_public_1.id }
     end
   end
 

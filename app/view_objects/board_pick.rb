@@ -27,6 +27,7 @@ class BoardPick
   def self.public_list
     Board.
       where(is_public: true).
-      map { |board| BoardPick.new(board) }
+      map { |board| BoardPick.new(board) }.
+      sort_by(&:name)
   end
 end
