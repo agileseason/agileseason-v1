@@ -86,11 +86,12 @@ class BoardBag
   end
 
   def has_write_permission?
+    return false if github_repo.nil?
     has_read_permission? && github_repo.permissions.push
   end
 
   def has_read_permission?
-    !private_repo? || github_repo.present?
+    github_repo.present? || !private_repo?
   end
 
   # TODO Remove duplication with Cached::Base#readonly?
