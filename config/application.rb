@@ -9,7 +9,6 @@ Bundler.require(*Rails.groups)
 
 require File.expand_path('../../lib/core_extensions/string', __FILE__)
 require File.expand_path('../../lib/time_with_timezone', __FILE__)
-require 'xproc/global'
 
 module Agileseason
   DOMAIN = Rails.env.production? ? 'https://agileseason.com' : 'http://agileseason.dev'
