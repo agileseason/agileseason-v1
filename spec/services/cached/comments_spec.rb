@@ -1,7 +1,8 @@
 describe Cached::Comments do
   describe '#call' do
     subject { Cached::Comments.call(user: user, board: board, number: number) }
-    let(:board) { build_stubbed :board, is_public: is_public }
+    let(:board) { build_stubbed :board, is_public: is_public, is_private_repo: is_private_repo }
+    let(:is_private_repo) { true }
     let(:number) { 1 }
     let(:cache) { double(write: nil, read: nil) }
     let(:github_api) { double(issue_comments: comments) }
@@ -53,12 +54,21 @@ describe Cached::Comments do
         context 'behavior' do
           before { subject }
 
-          it do
-            expect(cache).
-              to have_received(:read).
-              with("board_bag_comments_#{number}_#{board.id}")
+          context 'private repo' do
+            it do
+              expect(cache).
+                to have_received(:read).
+                with("board_bag_comments_#{number}_#{board.id}")
+            end
+            it { expect(github_api).to have_received(:issue_comments) }
           end
-          it { expect(github_api).to have_received(:issue_comments) }
+
+          context 'public repo' do
+            let(:is_private_repo) { false }
+
+            it { expect(cache).not_to have_received(:read) }
+            it { expect(github_api).to have_received(:issue_comments) }
+          end
         end
       end
 

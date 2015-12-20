@@ -1,7 +1,8 @@
 class BoardBag
   rattr_initialize :user, :board
   delegate :github_id, :github_name, :github_full_name, :columns, :issue_stats,
-           :to_param, :subscribed_at, :default_column, :public?, :user_id, to: :board
+           :to_param, :subscribed_at, :default_column, :public?, :user_id,
+           to: :board
 
   # TODO Need more specs.
   def issue(number)
@@ -80,16 +81,16 @@ class BoardBag
   end
 
   def private_repo?
-    github_repo.present? && github_repo.private
+    return github_repo.private if github_repo.present?
+    board.private_repo?
   end
 
   def has_write_permission?
     has_read_permission? && github_repo.permissions.push
   end
 
-  # TODO Return true if repository public!
   def has_read_permission?
-    github_repo.present?
+    !private_repo? || github_repo.present?
   end
 
   # TODO Remove duplication with Cached::Base#readonly?
