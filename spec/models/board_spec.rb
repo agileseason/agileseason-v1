@@ -112,21 +112,6 @@ describe Board do
     it { is_expected.to eq issue_stat }
   end
 
-  describe '#public?' do
-    subject { board.public? }
-    let(:board) { build(:board, is_public: is_public) }
-
-    context 'false' do
-      let(:is_public) { false }
-      it { is_expected.to eq false }
-    end
-
-    context 'true' do
-      let(:is_public) { true }
-      it { is_expected.to eq true }
-    end
-  end
-
   describe '#private?' do
     subject { board.private? }
     let(:board) { build(:board, is_public: is_public) }

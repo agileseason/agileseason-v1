@@ -109,6 +109,7 @@ describe BoardsController, type: :controller do
           github_id: '123',
           github_name: 'test-1',
           github_full_name: 'test/test-1',
+          is_private_repo: false,
           column: { name: column_names }
         }
       )
@@ -116,6 +117,7 @@ describe BoardsController, type: :controller do
 
     context 'success' do
       its(:name) { is_expected.to eq 'test-1' }
+      its(:private_repo?) { is_expected.to eq false }
       it { expect(subject.columns.map(&:name)).to eq ['c1', 'c2'] }
       it { expect(WebhookWorker).to have_received(:perform_async) }
       it { expect(controller).to have_received(:ui_event).with(:board_create) }

@@ -21,12 +21,13 @@ class BoardsController < ApplicationController
   end
 
   def new
-    repo = github_api.cached_repos.select(&x.id == params[:github_id].to_i).first
+    repo = github_api.cached_repos.detect(&x.id == params[:github_id].to_i)
     @board = Board.new(
       name: repo.name,
       github_id: repo.id,
       github_name: repo.name,
-      github_full_name: repo.full_name
+      github_full_name: repo.full_name,
+      is_private_repo: repo.private
     )
     ui_event(:board_new, step: 'setup board')
 
@@ -58,7 +59,10 @@ class BoardsController < ApplicationController
   def board_params
     params.
       require(:board).
-      permit(:name, :type, :github_id, :github_name, :github_full_name)
+      permit(
+        :name, :type, :github_id, :github_name,
+        :github_full_name, :is_private_repo
+      )
   end
 
   def column_params

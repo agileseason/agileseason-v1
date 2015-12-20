@@ -1,6 +1,8 @@
 describe BoardBag do
   let(:user) { build(:user) }
   let(:board) { create(:board, :with_columns, user: user) }
+  let(:board) { create(:board, :with_columns, user: user, is_private_repo: is_private_repo) }
+  let(:is_private_repo) { true }
   let(:github_api) { double }
   let(:bag) { BoardBag.new(user, board) }
   let(:issues) { {} }
@@ -175,7 +177,15 @@ describe BoardBag do
 
     context 'unknown repo' do
       let(:repo) { nil }
-      it { is_expected.to eq false }
+
+      context 'is private in board' do
+        it { is_expected.to eq true }
+      end
+
+      context 'is public in board' do
+        let(:board) { create(:board, :with_columns, user: user, is_private_repo: false) }
+        it { is_expected.to eq false }
+      end
     end
   end
 
@@ -204,7 +214,33 @@ describe BoardBag do
 
     context 'unknown repo' do
       let(:repo) { nil }
-      it { is_expected.to eq false }
+
+      context 'board.private_repo is true' do
+        it { is_expected.to eq false }
+      end
+
+      context 'board.private_repo is false' do
+        let(:is_private_repo) { false }
+        it { is_expected.to eq false }
+      end
+    end
+  end
+
+  describe '#has_read_permission?' do
+    subject { bag.has_read_permission? }
+    before { allow(Boards::DetectRepo).to receive(:call).and_return(repo) }
+
+    context 'unknown repo' do
+      let(:repo) { nil }
+
+      context 'board.private_repo is true' do
+        it { is_expected.to eq false }
+      end
+
+      context 'board.private_repo is false' do
+        let(:is_private_repo) { false }
+        it { is_expected.to eq true }
+      end
     end
   end
 
