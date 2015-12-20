@@ -1,4 +1,6 @@
 class Board < ActiveRecord::Base
+  extend BooleanAttribute
+
   belongs_to :user
   has_many :columns, -> { order(:order) }, dependent: :destroy
   has_many :repo_histories, -> { order(:collected_on) }, dependent: :delete_all
@@ -15,6 +17,8 @@ class Board < ActiveRecord::Base
   validates :github_full_name, presence: true
 
   serialize :settings
+
+  boolean_attributes :public, :private_repo
 
   def to_param
     github_full_name
