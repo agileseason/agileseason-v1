@@ -38,7 +38,6 @@ gem 'unicode'
 gem 'virtus'
 gem 'whenever'
 gem 'will_paginate'
-gem 'xproc'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-jquery'

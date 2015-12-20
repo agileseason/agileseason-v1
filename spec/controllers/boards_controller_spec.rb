@@ -119,12 +119,15 @@ describe BoardsController, type: :controller do
       its(:name) { is_expected.to eq 'test-1' }
       its(:private_repo?) { is_expected.to eq false }
       it { expect(subject.columns.map(&:name)).to eq ['c1', 'c2'] }
+      it { expect(subject.columns.first.order).to eq 1 }
+      it { expect(subject.columns.second.order).to eq 2 }
       it { expect(WebhookWorker).to have_received(:perform_async) }
       it { expect(controller).to have_received(:ui_event).with(:board_create) }
     end
 
     context 'blank name' do
       let(:board_name) { '' }
+
       it { is_expected.to be_nil }
       it { expect(WebhookWorker).not_to have_received(:perform_async) }
       it { expect(controller).not_to have_received(:ui_event).with(:board_create) }
@@ -132,6 +135,7 @@ describe BoardsController, type: :controller do
 
     context 'to few columns' do
       let(:column_names) { ['c1'] }
+
       it { is_expected.to be_nil }
       it { expect(WebhookWorker).not_to have_received(:perform_async) }
       it { expect(controller).not_to have_received(:ui_event).with(:board_create) }
@@ -158,6 +162,7 @@ describe BoardsController, type: :controller do
 
       context 'response' do
         before { request }
+
         it { expect(response).to have_http_status(:redirect) }
         it { expect(response).to redirect_to(boards_url) }
         it { expect(Board.where(id: board.id).count).to be_zero }
