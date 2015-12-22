@@ -1,5 +1,6 @@
 *.rbc
 **.orig
+**/react/bundle.js
 capybara-*.html
 .rspec
 .env
