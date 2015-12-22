@@ -6,6 +6,8 @@
     data-faye-client-id="#{current_user.remember_token}"
   ]
 
+  = render partial: 'issues/modal'
+
   .board-columns
     - @board_bag.columns.each do |column|
       = render partial: 'columns/show', locals: { column: column }
