@@ -10,6 +10,11 @@ class IssuesController < ApplicationController
   def show
     @direct_post = S3Api.direct_post
     @issue = @board_bag.issue(number)
+
+    respond_to do |format|
+      format.html { render 'show' }
+      format.json { render json: @issue.to_json }
+    end
   end
 
   def create

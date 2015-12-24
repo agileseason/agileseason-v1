@@ -11,8 +11,14 @@ $(document).on 'page:change', ->
   # перейти на страницу тикета
   $('.issues').on 'click', '.issue', (e) ->
     unless $(e.target).is 'a, .button, button'
-      $(@).closest('.issue').addClass 'current-issue'
-      Turbolinks.visit $(@).data 'url'
+      $issue_modal = $('#issue-modal')
+      $issue_modal.empty()
+      window.IssueModalRender($(@).data('number'))
+      $issue_modal.show()
+
+      # TODO Remove this code after test issue#modal
+      #$(@).closest('.issue').addClass 'current-issue'
+      #Turbolinks.visit $(@).data 'url'
 
   # скрыть тикет после архивации
   $('.board').on 'click', '.issue .archive', ->

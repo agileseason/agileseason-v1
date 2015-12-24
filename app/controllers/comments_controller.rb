@@ -2,14 +2,20 @@ class CommentsController < ApplicationController
   before_action :fetch_board
 
   def index
-    comments = Cached::Comments.call(user: current_user, board: @board, number: number)
+    #comments = Cached::Comments.call(user: current_user, board: @board, number: number)
     sync_comments(comments)
-    render(
-      partial: 'comments/show',
-      collection: comments,
-      as: :comment,
-      locals: { board: @board, number: number }
-    )
+
+    respond_to do |format|
+      format.html do
+        render(
+          partial: 'comments/show',
+          collection: comments,
+          as: :comment,
+          locals: { board: @board, number: number }
+        )
+      end
+      format.json { render json: comments.map(&:to_h) }
+    end
   end
 
   def create
@@ -18,7 +24,11 @@ class CommentsController < ApplicationController
     sync_checklist
     ui_event(:issue_comment)
     broadcast(comment)
-    render partial: 'show', locals: { comment: comment, board: @board, number: number }
+
+    respond_to do |format|
+      format.html { render partial: 'show', locals: { comment: comment, board: @board, number: number } }
+      format.json { render json: comments.map(&:to_h) }
+    end
   end
 
   def update
@@ -88,5 +98,9 @@ class CommentsController < ApplicationController
         comments: comments
       )
     end
+  end
+
+  def comments
+    @comments ||= Cached::Comments.call(user: current_user, board: @board, number: number)
   end
 end

@@ -33,7 +33,6 @@
 
     .due-date class="#{:none unless issue.due_date_at}" = k(:issue, issue).due_date_on
 
-
   .buttons
     - if can?(:update, @board)
       = link_to 'ready',

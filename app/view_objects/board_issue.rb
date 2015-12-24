@@ -46,4 +46,11 @@ class BoardIssue
     return nil if issue_stat.nil?
     issue_stat.column_id
   end
+
+  def to_json
+    {
+      number: number,
+      title: title,
+    }
+  end
 end
