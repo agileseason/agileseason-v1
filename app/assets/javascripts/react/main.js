@@ -43,17 +43,19 @@ $(document).on('page:change', function () {
       });
       this.loadCommentFromServer();
     },
+    handleCloseButton: function() {
+      $('.issue-modal-container').hide();
+    },
     handleCommentSubmit: function(comment) {
-      // TODO: submit to the server and refresh the list
-      //alert(comment.body);
-
       $.ajax({
         url: this.issueUrl() + '/comment',
         dataType: 'json',
         type: 'POST',
         data: { 'comment': comment},
-        success: function(comments) {
-          this.setState({comments: comments});
+        success: function(comment) {
+          comments = this.state.comments
+          comments.push(comment)
+          this.setState({ comments: comments });
         }.bind(this),
         error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());
@@ -62,13 +64,25 @@ $(document).on('page:change', function () {
     },
     render: function() {
       return (
-        <div className="issueModal">
+        <div className='issueModal'>
           <h1>Issue #{this.state.issue.number}</h1>
+          <CloseButton onClick={this.handleCloseButton} />
           <h2>{this.state.issue.title}</h2>
+
           <CommentList data={this.state.comments} />
           <CommentForm onCommentSubmit={this.handleCommentSubmit} />
         </div>
       );
+    }
+  });
+
+  var CloseButton = React.createClass({
+    handleClick: function(e) {
+      e.preventDefault();
+      this.props.onClick();
+    },
+    render: function() {
+      return (<div className='close' onClick={this.handleClick}></div>)
     }
   });
 

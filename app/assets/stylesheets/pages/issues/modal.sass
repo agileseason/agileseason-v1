@@ -1,14 +1,32 @@
 @import globals/common
 
-.issue-modal-new
-  +issue_popup
-  +box-sizing(border-box)
+.issue-modal-container
+  background: rgba(90,90,90,0.3)
   display: none
-  left: 20px
-  width: calc(100% - 40px)
-  min-height: 200px
-  height: auto
-  padding: 10px 30px 30px
+  height: 100%
+  left: 0
+  overflow: auto
+  position: fixed
+  top: 0
+  width: 100%
+  z-index: 1
 
-  input[type='submit']
+  .issue-modal
+    +issue_popup
+    +box-sizing(border-box)
     display: block
+    height: auto
+    left: 20px
+    min-height: 200px
+    padding: 10px 30px 30px
+    top: 90px
+    width: calc(100% - 40px)
+    z-index: 2
+
+    input[type='submit']
+      display: block
+
+    .close
+      +close
+      right: 0
+      top: 0

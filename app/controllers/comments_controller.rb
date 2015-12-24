@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_action :fetch_board
 
   def index
-    #comments = Cached::Comments.call(user: current_user, board: @board, number: number)
+    comments = Cached::Comments.call(user: current_user, board: @board, number: number)
     sync_comments(comments)
 
     respond_to do |format|
@@ -27,7 +27,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       format.html { render partial: 'show', locals: { comment: comment, board: @board, number: number } }
-      format.json { render json: comments.map(&:to_h) }
+      format.json { render json: comment.to_h }
     end
   end
 
@@ -98,9 +98,5 @@ class CommentsController < ApplicationController
         comments: comments
       )
     end
-  end
-
-  def comments
-    @comments ||= Cached::Comments.call(user: current_user, board: @board, number: number)
   end
 end
