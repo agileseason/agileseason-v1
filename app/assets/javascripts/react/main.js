@@ -10,15 +10,13 @@ $(document).on('page:change', function () {
     issueUrl: function() {
       return '/boards/agileseason/test_dev/issues/' + this.props.number;
     },
-    issueCommentsUrl: function() {
-      return this.issueUrl() + '/comments';
-    },
     getInitialState: function() {
       return { issue: { number: this.props.number, title: '...' }, comments: [] };
     },
     loadCommentFromServer: function() {
+      var url = this.issueUrl() + '/comments';
       $.ajax({
-        url: this.issueCommentsUrl(),
+        url: url,
         dataType: 'json',
         cache: false,
         success: function(comments) {
@@ -63,11 +61,12 @@ $(document).on('page:change', function () {
       });
     },
     render: function() {
+      var githubIssueUrl = 'https://github.com/' + this.props.github_full_name + '/issues/' + this.props.number;
       return (
         <div className='issueModal'>
-          <h1>Issue #{this.state.issue.number}</h1>
-          <CloseButton onClick={this.handleCloseButton} />
-          <h2>{this.state.issue.title}</h2>
+          <h1>{this.state.issue.title} <a href={githubIssueUrl}>#{this.state.issue.number}</a></h1>
+          <CloseButton onButtonClick={this.handleCloseButton} />
+          <LabelList data={this.props.labels} />
 
           <CommentList data={this.state.comments} />
           <CommentForm onCommentSubmit={this.handleCommentSubmit} />
@@ -79,18 +78,76 @@ $(document).on('page:change', function () {
   var CloseButton = React.createClass({
     handleClick: function(e) {
       e.preventDefault();
-      this.props.onClick();
+      this.props.onButtonClick();
     },
     render: function() {
       return (<div className='close' onClick={this.handleClick}></div>)
     }
   });
 
+  var LabelList = React.createClass({
+    getInitialState: function() {
+      return { data: this.props.data, labelOverlay: 'none' };
+    },
+    handleEditButtonClick: function() {
+      $('.label-list').toggleClass('hidden');
+      if ($('.label-list').hasClass('hidden')) {
+        this.setState({labelOverlay: 'none'});
+      } else {
+        this.setState({labelOverlay: 'block'});
+      }
+    },
+    render: function() {
+      var labelNodes = this.props.data.map(function(label) {
+        return (<Label key={label.id} color={label.color}>{label.name}</Label>);
+      });
+      return (
+        <div>
+          <EditButton name='Labels' onButtonClick={this.handleEditButtonClick} />
+          <PopoverOverlay display={this.state.labelOverlay} onOverlayClick={this.handleEditButtonClick} />
+          <div className='label-list hidden'>
+            {labelNodes}
+          </div>
+        </div>
+      );
+    }
+  });
+
+  var EditButton = React.createClass({
+    handleClick: function() {
+      return this.props.onButtonClick();
+    },
+    render: function() {
+      return (
+        <div onClick={this.handleClick}>{this.props.name}</div>
+      );
+    }
+  });
+
+  var PopoverOverlay = React.createClass({
+    handleClick: function() {
+      return this.props.onOverlayClick();
+    },
+    render: function() {
+      return (
+        <div className='popup-overlay' style={{display: this.props.display}} onClick={this.handleClick}></div>
+      );
+    }
+  });
+
+  var Label = React.createClass({
+    render: function() {
+      return (
+        <div className="label" style={{color: this.props.color}}>
+          {this.props.children}
+        </div>
+      );
+    }
+  });
+
   var CommentList = React.createClass({
     getInitialState: function() {
       return { data: this.props.data };
-    },
-    componentDidMount: function() {
     },
     render: function() {
       var commentNodes = this.props.data.map(function(comment) {
@@ -153,10 +210,14 @@ $(document).on('page:change', function () {
     }
   });
 
+  var labels = [
+    { id: 1, name: 'feature', color: 'blue' },
+    { id: 2, name: 'bug', color: 'red' }
+  ];
 
-  window.IssueModalRender = function(number) {
+  window.IssueModalRender = function(number, github_full_name) {
     ReactDOM.render(
-      <IssueModal number={number} />,
+      <IssueModal number={number} github_full_name={github_full_name} labels={labels} />,
       document.getElementById('issue-modal')
     );
   }
