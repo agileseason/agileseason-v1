@@ -35,6 +35,13 @@ class IssuePresenter < Keynote::Presenter
     end
   end
 
+  def labels_to_json(board)
+    board.labels.sort_by(&:name).map do |label|
+      { id: label.name, name: label.name, color: "##{label.color}", checked: label_include?(label) }
+    end.
+      to_json
+  end
+
   def label_include?(label)
     return false if labels.blank?
     labels.any? { |issue_label| issue_label.name == label.name }

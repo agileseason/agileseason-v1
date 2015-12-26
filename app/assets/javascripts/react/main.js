@@ -44,6 +44,29 @@ $(document).on('page:change', function () {
     handleCloseButton: function() {
       $('.issue-modal-container').hide();
     },
+    handleLabelChange: function(labelName, checked) {
+      var labelsToSave = []
+      this.props.labels.forEach(function(label) {
+        if (label.name == labelName) {
+          label.checked = checked;
+        }
+        if (label.checked) {
+          labelsToSave.push(label.name);
+        }
+      });
+
+      var url = this.issueUrl() + '/update_labels';
+      $.ajax({
+        url: url,
+        dataType: 'json',
+        type: 'PATCH',
+        data: { 'issue': { 'labels' : labelsToSave } },
+        //success: function() {}.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+    },
     handleCommentSubmit: function(comment) {
       $.ajax({
         url: this.issueUrl() + '/comment',
@@ -66,7 +89,9 @@ $(document).on('page:change', function () {
         <div className='issueModal'>
           <h1>{this.state.issue.title} <a href={githubIssueUrl}>#{this.state.issue.number}</a></h1>
           <CloseButton onButtonClick={this.handleCloseButton} />
-          <LabelList data={this.props.labels} />
+          <div className='actions'>
+            <LabelList data={this.props.labels} onLabelChange={this.handleLabelChange} />
+          </div>
 
           <CommentList data={this.state.comments} />
           <CommentForm onCommentSubmit={this.handleCommentSubmit} />
@@ -99,15 +124,42 @@ $(document).on('page:change', function () {
     },
     render: function() {
       var labelNodes = this.props.data.map(function(label) {
-        return (<Label key={label.id} color={label.color}>{label.name}</Label>);
-      });
+        return (
+          <Label key={label.id} color={label.color} checked={label.checked} onLabelChange={this.props.onLabelChange}>
+            {label.name}
+          </Label>
+        );
+      }.bind(this));
       return (
         <div>
-          <EditButton name='Labels' onButtonClick={this.handleEditButtonClick} />
+          <EditButton name='Labels' onButtonClick={this.handleEditButtonClick} icon='octicon octicon-tag' />
           <PopoverOverlay display={this.state.labelOverlay} onOverlayClick={this.handleEditButtonClick} />
           <div className='label-list hidden'>
             {labelNodes}
           </div>
+        </div>
+      );
+    }
+  });
+
+  var Label = React.createClass({
+    getInitialState: function() {
+      return { checked: this.props.checked }
+    },
+    handleChange: function() {
+      this.setState({ checked: this.refs.labelCheckbox.checked });
+      this.props.onLabelChange(this.props.children, this.refs.labelCheckbox.checked);
+    },
+    render: function() {
+      return (
+        <div className="label" style={{backgroundColor: this.props.color}}>
+          <input
+            type="checkbox"
+            checked={this.state.checked}
+            ref='labelCheckbox'
+            onChange={this.handleChange}
+          />
+          <span>{this.props.children}</span>
         </div>
       );
     }
@@ -119,7 +171,10 @@ $(document).on('page:change', function () {
     },
     render: function() {
       return (
-        <div onClick={this.handleClick}>{this.props.name}</div>
+        <div className={this.props.name.toLowerCase()} onClick={this.handleClick}>
+          <span className={this.props.icon}></span>
+          <span>{this.props.name}</span>
+        </div>
       );
     }
   });
@@ -131,16 +186,6 @@ $(document).on('page:change', function () {
     render: function() {
       return (
         <div className='popup-overlay' style={{display: this.props.display}} onClick={this.handleClick}></div>
-      );
-    }
-  });
-
-  var Label = React.createClass({
-    render: function() {
-      return (
-        <div className="label" style={{color: this.props.color}}>
-          {this.props.children}
-        </div>
       );
     }
   });
@@ -210,14 +255,13 @@ $(document).on('page:change', function () {
     }
   });
 
-  var labels = [
-    { id: 1, name: 'feature', color: 'blue' },
-    { id: 2, name: 'bug', color: 'red' }
-  ];
-
-  window.IssueModalRender = function(number, github_full_name) {
+  window.IssueModalRender = function(number, labels, github_full_name) {
     ReactDOM.render(
-      <IssueModal number={number} github_full_name={github_full_name} labels={labels} />,
+      <IssueModal
+        number={number}
+        labels={labels}
+        github_full_name={github_full_name}
+      />,
       document.getElementById('issue-modal')
     );
   }

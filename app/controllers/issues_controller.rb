@@ -38,7 +38,10 @@ class IssuesController < ApplicationController
   def update_labels
     issue = github_api.update_issue(@board, number, issue_labels_params)
     @board_bag.update_cache(issue)
-    render nothing: true
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.json { render json: { success: true } }
+    end
   end
 
   def search

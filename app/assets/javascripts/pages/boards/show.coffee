@@ -13,9 +13,11 @@ $(document).on 'page:change', ->
     unless $(e.target).is 'a, .button, button'
       $container = $('.issue-modal-container')
       $container.find('.issue-modal').empty()
+      $issue = $(@)
       window.IssueModalRender(
-        $(@).data('number'),
-        $('.board').data('github_full_name')
+        $issue.data('number'),
+        $issue.data('labels'),
+        $('.board').data('github_full_name'),
       )
       $container.show()
 
