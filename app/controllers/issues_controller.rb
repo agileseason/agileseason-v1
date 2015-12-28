@@ -40,7 +40,17 @@ class IssuesController < ApplicationController
     @board_bag.update_cache(issue)
     respond_to do |format|
       format.html { render nothing: true }
-      format.json { render json: { success: true } }
+      format.json do
+        board_issue = @board_bag.issue(number)
+        render json: {
+          number: number,
+          issue: render_to_string(
+            partial: 'issue_miniature',
+            locals: { issue: board_issue },
+            formats: [:html]
+          )
+        }
+      end
     end
   end
 

@@ -7,11 +7,19 @@ $(document).on('page:change', function () {
   var ReactDOM = require('react-dom');
 
   window.IssueModal = React.createClass({
+    getInitialState: function() {
+      return {
+        issue: {
+          number: this.props.number,
+          title: '...'
+        },
+        // TODO Move currentLabels to issue.
+        currentLabels: this.getCheckedLabels(),
+        comments: []
+      };
+    },
     issueUrl: function() {
       return '/boards/agileseason/test_dev/issues/' + this.props.number;
-    },
-    getInitialState: function() {
-      return { issue: { number: this.props.number, title: '...' }, comments: [] };
     },
     loadCommentFromServer: function() {
       var url = this.issueUrl() + '/comments';
@@ -26,6 +34,18 @@ $(document).on('page:change', function () {
           console.error(this.props.url, status, err.toString());
         }.bind(this)
       });
+    },
+    getCheckedLabels: function() {
+      var checkedLabels = []
+      this.props.labels.forEach(function(label) {
+        if (label.checked) {
+          checkedLabels.push(label);
+        }
+      });
+      return checkedLabels;
+    },
+    updateIssueMiniature: function(number, html) {
+      $('#issues_' + number).replaceWith(html);
     },
     componentDidMount: function() {
       $.ajax({
@@ -54,6 +74,7 @@ $(document).on('page:change', function () {
           labelsToSave.push(label.name);
         }
       });
+      this.setState({ currentLabels: this.getCheckedLabels() })
 
       var url = this.issueUrl() + '/update_labels';
       $.ajax({
@@ -61,7 +82,9 @@ $(document).on('page:change', function () {
         dataType: 'json',
         type: 'PATCH',
         data: { 'issue': { 'labels' : labelsToSave } },
-        //success: function() {}.bind(this),
+        success: function(data) {
+          this.updateIssueMiniature(data.number, data.issue);
+        }.bind(this),
         error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());
         }.bind(this)
@@ -88,6 +111,7 @@ $(document).on('page:change', function () {
       return (
         <div className='issueModal'>
           <h1>{this.state.issue.title} <a href={githubIssueUrl}>#{this.state.issue.number}</a></h1>
+          <CurrentLabelList data={this.state.currentLabels} />
           <CloseButton onButtonClick={this.handleCloseButton} />
           <div className='actions'>
             <LabelList data={this.props.labels} onLabelChange={this.handleLabelChange} />
@@ -96,6 +120,19 @@ $(document).on('page:change', function () {
           <CommentList data={this.state.comments} />
           <CommentForm onCommentSubmit={this.handleCommentSubmit} />
         </div>
+      );
+    }
+  });
+
+  var CurrentLabelList = React.createClass({
+    render: function() {
+      var labelNodes = this.props.data.map(function(label) {
+        return (
+          <li style={{ backgroundColor: label.color }} key={label.name}>{label.name}</li>
+        );
+      }.bind(this));
+      return (
+        <ul className='current-label-list'>{labelNodes}</ul>
       );
     }
   });
