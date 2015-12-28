@@ -40,17 +40,7 @@ class IssuesController < ApplicationController
     @board_bag.update_cache(issue)
     respond_to do |format|
       format.html { render nothing: true }
-      format.json do
-        board_issue = @board_bag.issue(number)
-        render json: {
-          number: number,
-          issue: render_to_string(
-            partial: 'issue_miniature',
-            locals: { issue: board_issue },
-            formats: [:html]
-          )
-        }
-      end
+      format.json { render_board_issue_json }
     end
   end
 
@@ -125,7 +115,10 @@ class IssuesController < ApplicationController
       params[:login]
     ).call
 
-    render partial: 'assignee', locals: { issue: board_issue }
+    respond_to do |format|
+      format.html { render partial: 'assignee', locals: { issue: board_issue } }
+      format.json { render_board_issue_json }
+    end
   end
 
   def due_date
@@ -196,5 +189,17 @@ class IssuesController < ApplicationController
 
   def fetch_lines_graph
     Graphs::LinesWorker.perform_async(@board.id, encrypted_github_token)
+  end
+
+  def render_board_issue_json
+    board_issue = @board_bag.issue(number)
+    render json: {
+      number: number,
+      issue: render_to_string(
+        partial: 'issue_miniature',
+        locals: { issue: board_issue },
+        formats: [:html]
+      )
+    }
   end
 end

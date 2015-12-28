@@ -42,6 +42,12 @@
         padding: 2px 14px 4px 14px
         margin: 0 6px 0 0
 
+    .current-assignee
+      +border-radius(30px)
+      display: inline-block
+      height: 50px
+      width: 50px
+
     .popup-overlay
       display: none
       height: 100%
@@ -58,11 +64,13 @@
       .octicon
         margin: 0 4px 0 -4px
 
-      .labels
+      .labels,
+      .assignee
         +light_button
         +border-radius(50px)
         font-size: 16px
         padding: 10px 20px
+        margin-bottom: 12px
 
       .label-list
         +issue_popup
@@ -80,3 +88,10 @@
           span
             margin-left: 6px
             vertical-align: middle
+
+      .assignee-list
+        +issue_popup
+        display: block
+        right: 240px
+        top: 150px
+        z-index: 4

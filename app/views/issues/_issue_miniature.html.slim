@@ -7,8 +7,8 @@
   data-url="#{un show_board_issues_url(@board, issue.number)}"
 
   data-labels="#{k(:issue, issue).labels_to_json(@board_bag)}"
+  data-collaborators="#{k(:issue, issue).collaborators_to_json(@board_bag)}"
 ]
-
   = k(:issue, issue).labels_html
 
   .issue-title

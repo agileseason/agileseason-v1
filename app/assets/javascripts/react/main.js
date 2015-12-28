@@ -9,17 +9,14 @@ $(document).on('page:change', function () {
   window.IssueModal = React.createClass({
     getInitialState: function() {
       return {
-        issue: {
-          number: this.props.number,
-          title: '...'
-        },
-        // TODO Move currentLabels to issue.
+        issue: this.props.issue,
         currentLabels: this.getCheckedLabels(),
+        currentAssignee: this.getAssignedUser(),
         comments: []
       };
     },
     issueUrl: function() {
-      return '/boards/agileseason/test_dev/issues/' + this.props.number;
+      return '/boards/agileseason/test_dev/issues/' + this.props.issue.number;
     },
     request: function(url, type, data, successFunc) {
       $.ajax({
@@ -30,7 +27,7 @@ $(document).on('page:change', function () {
         cache: false,
         success: successFunc.bind(this),
         error: function(xhr, status, err) {
-          console.error(this.props.url, status, err.toString());
+          console.error(url, status, err.toString());
         }.bind(this)
       });
     },
@@ -42,12 +39,21 @@ $(document).on('page:change', function () {
     },
     getCheckedLabels: function() {
       var checkedLabels = []
-      this.props.labels.forEach(function(label) {
+      this.props.issue.labels.forEach(function(label) {
         if (label.checked) {
           checkedLabels.push(label);
         }
       });
       return checkedLabels;
+    },
+    getAssignedUser: function() {
+      var assignee = null;
+      this.props.issue.collaborators.forEach(function(user) {
+        if (user.assigned) {
+          assignee = user;
+        }
+      });
+      return assignee;
     },
     updateIssueMiniature: function(number, html) {
       $('#issues_' + number).replaceWith(html);
@@ -63,7 +69,7 @@ $(document).on('page:change', function () {
     },
     handleLabelChange: function(labelName, checked) {
       var labelsToSave = []
-      this.props.labels.forEach(function(label) {
+      this.props.issue.labels.forEach(function(label) {
         if (label.name == labelName) {
           label.checked = checked;
         }
@@ -78,6 +84,21 @@ $(document).on('page:change', function () {
         this.updateIssueMiniature(data.number, data.issue);
       });
     },
+    handleAssigneeChange: function(login, assigned) {
+      this.props.issue.collaborators.forEach(function(user) {
+        if (user.login == login) {
+          user.assigned = assigned;
+        } else {
+          user.assigned = false;
+        }
+      });
+      this.setState({ currentAssignee: this.getAssignedUser() })
+
+      var url = this.issueUrl() + '/assignee/' + login;
+      this.request(url, 'GET', {}, function(data) {
+        this.updateIssueMiniature(data.number, data.issue);
+      });
+    },
     handleCommentSubmit: function(comment) {
       var url = this.issueUrl() + '/comment';
       this.request(url, 'POST', { comment: comment}, function(comment) {
@@ -87,20 +108,33 @@ $(document).on('page:change', function () {
       });
     },
     render: function() {
-      var githubIssueUrl = 'https://github.com/' + this.props.github_full_name + '/issues/' + this.props.number;
+      var githubIssueUrl = 'https://github.com/' + this.props.github_full_name + '/issues/' + this.props.issue.number;
       return (
         <div className='issueModal'>
           <h1>{this.state.issue.title} <a href={githubIssueUrl}>#{this.state.issue.number}</a></h1>
           <CurrentLabelList data={this.state.currentLabels} />
           <CloseButton onButtonClick={this.handleCloseButton} />
+          <CurrentAssignee user={this.state.currentAssignee} />
+
           <div className='actions'>
-            <LabelList data={this.props.labels} onLabelChange={this.handleLabelChange} />
+            <LabelList data={this.props.issue.labels} onLabelChange={this.handleLabelChange} />
+            <AssigneeList data={this.props.issue.collaborators} onAssigneeChange={this.handleAssigneeChange} />
           </div>
 
           <CommentList data={this.state.comments} />
           <CommentForm onCommentSubmit={this.handleCommentSubmit} />
         </div>
       );
+    }
+  });
+
+  var CurrentAssignee = React.createClass({
+    render: function() {
+      if (this.props.user) {
+        return (<img className='current-assignee' src={this.props.user.avatarUrl} />);
+      } else {
+        return (<div className='current-assignee' />);
+      }
     }
   });
 
@@ -124,6 +158,71 @@ $(document).on('page:change', function () {
     },
     render: function() {
       return (<div className='close' onClick={this.handleClick}></div>)
+    }
+  });
+
+  var AssigneeList = React.createClass({
+    getInitialState: function() {
+      return { data: this.props.data, overlay: 'none' };
+    },
+    // TODO Remove this function
+    getAssignedUser: function() {
+      var assignee = null;
+      this.props.data.forEach(function(user) {
+        if (user.assigned) {
+          assignee = user;
+        }
+      });
+      return assignee;
+    },
+    handleEditButtonClick: function() {
+      $('.assignee-list').toggleClass('hidden');
+      state = { overlay: 'block' };
+      if ($('.assignee-list').hasClass('hidden')) {
+        state = { overlay: 'none'};
+      }
+      this.setState(state);
+    },
+    render: function() {
+      var assigneeNodes = this.state.data.map(function(user) {
+        return (
+          <Assignee key={user.login} avatarUrl={user.avatarUrl} assigned={user.assigned} onAssigneeChange={this.props.onAssigneeChange}>
+            {user.login}
+          </Assignee>
+        );
+      }.bind(this));
+      return (
+        <div>
+          <EditButton name='Assignee' onButtonClick={this.handleEditButtonClick} icon='octicon octicon-person' />
+          <PopoverOverlay display={this.state.overlay} onOverlayClick={this.handleEditButtonClick} />
+          <div className='assignee-list hidden'>
+            {assigneeNodes}
+          </div>
+        </div>
+      );
+    }
+  });
+
+  var Assignee = React.createClass({
+    getInitialState: function() {
+      return { assigned: this.props.assigned }
+    },
+    handleChange: function() {
+      this.setState({ assigned: this.refs.assigneeCheckbox.checked });
+      this.props.onAssigneeChange(this.props.children, this.refs.assigneeCheckbox.checked);
+    },
+    render: function() {
+      return (
+        <div className='assign'>
+          <input
+            type='checkbox'
+            checked={this.props.assigned}
+            ref='assigneeCheckbox'
+            onChange={this.handleChange}
+          />
+          <span>{this.props.children}</span>
+        </div>
+      );
     }
   });
 
@@ -169,9 +268,9 @@ $(document).on('page:change', function () {
     },
     render: function() {
       return (
-        <div className="label" style={{backgroundColor: this.props.color}}>
+        <div className='label' style={{backgroundColor: this.props.color}}>
           <input
-            type="checkbox"
+            type='checkbox'
             checked={this.state.checked}
             ref='labelCheckbox'
             onChange={this.handleChange}
@@ -232,9 +331,7 @@ $(document).on('page:change', function () {
     render: function() {
       return (
         <div className="comment">
-          <h3 className="commentAuthor">
-            {this.props.author}
-          </h3>
+          <h3 className="commentAuthor">{this.props.author}</h3>
           {this.props.children}
         </div>
       );
@@ -272,11 +369,10 @@ $(document).on('page:change', function () {
     }
   });
 
-  window.IssueModalRender = function(number, labels, github_full_name) {
+  window.IssueModalRender = function(issue, github_full_name) {
     ReactDOM.render(
       <IssueModal
-        number={number}
-        labels={labels}
+        issue={issue}
         github_full_name={github_full_name}
       />,
       document.getElementById('issue-modal')
