@@ -21,18 +21,23 @@ $(document).on('page:change', function () {
     issueUrl: function() {
       return '/boards/agileseason/test_dev/issues/' + this.props.number;
     },
-    loadCommentFromServer: function() {
-      var url = this.issueUrl() + '/comments';
+    request: function(url, type, data, successFunc) {
       $.ajax({
         url: url,
         dataType: 'json',
+        type: type,
+        data: data,
         cache: false,
-        success: function(comments) {
-          this.setState({ comments: comments });
-        }.bind(this),
+        success: successFunc.bind(this),
         error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());
         }.bind(this)
+      });
+    },
+    loadCommentFromServer: function() {
+      var url = this.issueUrl() + '/comments';
+      this.request(url, 'GET', {}, function(comments) {
+        this.setState({ comments: comments });
       });
     },
     getCheckedLabels: function() {
@@ -48,16 +53,8 @@ $(document).on('page:change', function () {
       $('#issues_' + number).replaceWith(html);
     },
     componentDidMount: function() {
-      $.ajax({
-        url: this.issueUrl(),
-        dataType: 'json',
-        cache: false,
-        success: function(issue) {
-          this.setState({ issue: issue });
-        }.bind(this),
-        error: function(xhr, status, err) {
-          console.error(this.issueUrl(), status, err.toString());
-        }.bind(this)
+      this.request(this.issueUrl(), 'GET', {}, function(issue) {
+        this.setState({ issue: issue });
       });
       this.loadCommentFromServer();
     },
@@ -77,33 +74,16 @@ $(document).on('page:change', function () {
       this.setState({ currentLabels: this.getCheckedLabels() })
 
       var url = this.issueUrl() + '/update_labels';
-      $.ajax({
-        url: url,
-        dataType: 'json',
-        type: 'PATCH',
-        data: { 'issue': { 'labels' : labelsToSave } },
-        success: function(data) {
-          this.updateIssueMiniature(data.number, data.issue);
-        }.bind(this),
-        error: function(xhr, status, err) {
-          console.error(this.props.url, status, err.toString());
-        }.bind(this)
+      this.request(url, 'PATCH', { issue: { labels : labelsToSave } }, function(data) {
+        this.updateIssueMiniature(data.number, data.issue);
       });
     },
     handleCommentSubmit: function(comment) {
-      $.ajax({
-        url: this.issueUrl() + '/comment',
-        dataType: 'json',
-        type: 'POST',
-        data: { 'comment': comment},
-        success: function(comment) {
-          comments = this.state.comments
-          comments.push(comment)
-          this.setState({ comments: comments });
-        }.bind(this),
-        error: function(xhr, status, err) {
-          console.error(this.props.url, status, err.toString());
-        }.bind(this)
+      var url = this.issueUrl() + '/comment';
+      this.request(url, 'POST', { comment: comment}, function(comment) {
+        comments = this.state.comments
+        comments.push(comment)
+        this.setState({ comments: comments });
       });
     },
     render: function() {
