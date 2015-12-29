@@ -15,8 +15,6 @@ class CommentsController < ApplicationController
         )
       end
       format.json do
-        #render json: { success: true }
-        #render json: { comments: comments.map(&:id) }
         render json: {
           comments: comments.map do |c|
             {
@@ -58,7 +56,20 @@ class CommentsController < ApplicationController
     github_api.delete_comment(@board, id)
     inc_comments_count(-1)
     sync_checklist
-    render nothing: true
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.json do
+        board_issue = @board_bag.issue(number)
+        render json: {
+          number: number,
+          issue: render_to_string(
+            partial: 'issues/issue_miniature',
+            locals: { issue: board_issue },
+            formats: [:html]
+          )
+        }
+      end
+    end
   end
 
   private

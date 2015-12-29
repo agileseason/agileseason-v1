@@ -107,6 +107,19 @@ $(document).on('page:change', function () {
         this.setState({ comments: comments });
       });
     },
+    handleDeleteComment: function(id) {
+      var url = this.issueUrl() + '/delete_comment/' + id;
+      this.request(url, 'DELETE', {}, function(data) {
+        this.updateIssueMiniature(data.number, data.issue);
+      });
+      var comments = [];
+      this.state.comments.forEach(function(comment) {
+        if (comment.id != id) {
+          comments.push(comment);
+        }
+      });
+      this.setState({ comments: comments });
+    },
     render: function() {
       var githubIssueUrl = 'https://github.com/' + this.props.github_full_name + '/issues/' + this.props.issue.number;
       return (
@@ -121,7 +134,7 @@ $(document).on('page:change', function () {
             <AssigneeList data={this.props.issue.collaborators} onAssigneeChange={this.handleAssigneeChange} />
           </div>
 
-          <CommentList data={this.state.comments} />
+          <CommentList data={this.state.comments} onDeleteClick={this.handleDeleteComment} />
           <CommentForm onCommentSubmit={this.handleCommentSubmit} />
         </div>
       );
@@ -321,19 +334,29 @@ $(document).on('page:change', function () {
   });
 
   var CommentList = React.createClass({
-    getInitialState: function() {
-      return { data: this.props.data };
-    },
     render: function() {
       var commentNodes = this.props.data.map(function(comment) {
         return (
-          <Comment data={comment} key={comment.id} />
+          <Comment data={comment} key={comment.id} onDeleteClick={this.props.onDeleteClick} />
         );
-      });
+      }.bind(this));
       return (
         <div className="comment-list">
           {commentNodes}
         </div>
+      );
+    }
+  });
+
+  var DeleteComment = React.createClass({
+    handleClick: function() {
+      if (confirm('Are you sure?')) {
+        this.props.onDeleteClick(this.props.id);
+      }
+    },
+    render: function() {
+      return (
+        <a href='#delete' onClick={this.handleClick}>delete</a>
       );
     }
   });
@@ -349,7 +372,7 @@ $(document).on('page:change', function () {
             &nbsp;&mdash;&nbsp;
             <a href='#edit'>edit</a>
             &nbsp;or&nbsp;
-            <a href='#delete'>delete</a>
+            <DeleteComment id={this.props.data.id} onDeleteClick={this.props.onDeleteClick} />
           </div>
           <div className='body'>{this.props.data.body}</div>
         </div>
