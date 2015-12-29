@@ -33,8 +33,8 @@ $(document).on('page:change', function () {
     },
     loadCommentFromServer: function() {
       var url = this.issueUrl() + '/comments';
-      this.request(url, 'GET', {}, function(comments) {
-        this.setState({ comments: comments });
+      this.request(url, 'GET', {}, function(data) {
+        this.setState({ comments: data.comments });
       });
     },
     getCheckedLabels: function() {
@@ -131,7 +131,7 @@ $(document).on('page:change', function () {
   var CurrentAssignee = React.createClass({
     render: function() {
       if (this.props.user) {
-        return (<img className='current-assignee' src={this.props.user.avatarUrl} />);
+        return (<img className='current-assignee' src={this.props.user.avatarUrl} title={this.props.user.login} />);
       } else {
         return (<div className='current-assignee' />);
       }
@@ -306,6 +306,20 @@ $(document).on('page:change', function () {
     }
   });
 
+  var Avatar = React.createClass({
+    render: function() {
+      return (
+        <img
+          className='avatar'
+          src={this.props.data.avatar_url}
+          title={this.props.data.login}
+          height={this.props.height}
+          width={this.props.width}
+        />
+      );
+    }
+  });
+
   var CommentList = React.createClass({
     getInitialState: function() {
       return { data: this.props.data };
@@ -313,14 +327,11 @@ $(document).on('page:change', function () {
     render: function() {
       var commentNodes = this.props.data.map(function(comment) {
         return (
-          // TODO Remove user as array
-          <Comment author={comment.user[0][1]} key={comment.id}>
-            {comment.body}
-          </Comment>
+          <Comment data={comment} key={comment.id} />
         );
       });
       return (
-        <div className="commentList">
+        <div className="comment-list">
           {commentNodes}
         </div>
       );
@@ -330,9 +341,17 @@ $(document).on('page:change', function () {
   var Comment = React.createClass({
     render: function() {
       return (
-        <div className="comment">
-          <h3 className="commentAuthor">{this.props.author}</h3>
-          {this.props.children}
+        <div className='comment'>
+          <Avatar data={this.props.data.user} width={40} height={40} />
+          <div className='header'>
+            <div className='login'>{this.props.data.user.login}</div>
+            <div className='date'>{this.props.data.created_at}</div>
+            &nbsp;&mdash;&nbsp;
+            <a href='#edit'>edit</a>
+            &nbsp;or&nbsp;
+            <a href='#delete'>delete</a>
+          </div>
+          <div className='body'>{this.props.data.body}</div>
         </div>
       );
     }

@@ -14,7 +14,24 @@ class CommentsController < ApplicationController
           locals: { board: @board, number: number }
         )
       end
-      format.json { render json: comments.map(&:to_h) }
+      format.json do
+        #render json: { success: true }
+        #render json: { comments: comments.map(&:id) }
+        render json: {
+          comments: comments.map do |c|
+            {
+              id: c.id,
+              body: c.body,
+              created_at: c.created_at.strftime('%b %d, %H:%M'),
+              user: {
+                id: c.user.id,
+                login: c.user.login,
+                avatar_url: c.user.avatar_url
+              }
+            }
+          end
+        }
+      end
     end
   end
 

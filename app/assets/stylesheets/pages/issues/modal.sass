@@ -95,3 +95,43 @@
         right: 240px
         top: 150px
         z-index: 4
+
+    .comment-list
+      margin-right: 240px
+
+      .comment
+        +border-radius(2px)
+        background-color: #f2f9fc
+        margin: 0 0 40px 60px
+        padding: 20px
+
+        &:before
+          border-color: transparent #f2f9fc transparent transparent
+          border-style: solid
+          border-width: 8px 10px 8px 0
+          content: ' '
+          height: 0
+          margin: -5px 0 0 -30px
+          position: absolute
+          width: 0
+
+        .avatar
+          +border-radius(100px)
+          float: left
+          margin: -18px 0 0 -80px
+
+        .header
+          color: $lightgrey
+          margin-bottom: 10px
+
+          .login,
+          .date
+            display: inline-block
+          .login
+            font-weight: bold
+            margin-right: 6px
+          a
+            +ajax_link
+
+        .body
+
