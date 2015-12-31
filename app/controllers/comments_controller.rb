@@ -16,18 +16,7 @@ class CommentsController < ApplicationController
       end
       format.json do
         render json: {
-          comments: comments.map do |c|
-            {
-              id: c.id,
-              body: c.body,
-              created_at: c.created_at.strftime('%b %d, %H:%M'),
-              user: {
-                id: c.user.id,
-                login: c.user.login,
-                avatar_url: c.user.avatar_url
-              }
-            }
-          end
+          comments: comments.map { |comment| comment_to_json(comment) }
         }
       end
     end
@@ -42,7 +31,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       format.html { render partial: 'show', locals: { comment: comment, board: @board, number: number } }
-      format.json { render json: comment.to_h }
+      format.json { render json: comment_to_json(comment) }
     end
   end
 
@@ -126,5 +115,18 @@ class CommentsController < ApplicationController
         comments: comments
       )
     end
+  end
+
+  def comment_to_json(comment)
+    {
+      id: comment.id,
+      body: comment.body,
+      created_at: comment.created_at.strftime('%b %d, %H:%M'),
+      user: {
+        id: comment.user.id,
+        login: comment.user.login,
+        avatar_url: comment.user.avatar_url
+      }
+    }
   end
 end

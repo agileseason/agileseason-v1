@@ -389,15 +389,25 @@ $(document).on('page:change', function () {
     },
     handleSubmit: function(e) {
       e.preventDefault();
+      this.saveComment();
+    },
+    componentDidMount: function() {
+      var textarea = $('.comment-form textarea')
+      textarea.elastic();
+      textarea.on('keydown', function(e) {
+        if (e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
+          this.saveComment();
+          return false;
+        }
+      }.bind(this));
+    },
+    saveComment: function() {
       var body = this.state.body.trim();
       if (!body) {
         return;
       }
-      this.props.onCommentSubmit({body: body});
-      this.setState({body: ''});
-    },
-    componentDidMount: function() {
-      $('.comment-form textarea').elastic();
+      this.props.onCommentSubmit({ body: body });
+      this.setState({ body: '' });
     },
     render: function() {
       return (
