@@ -18,7 +18,7 @@
     height: auto
     left: 20px
     min-height: 200px
-    padding: 10px 30px 30px
+    padding: 10px 30px 50px
     top: 90px
     width: calc(100% - 40px)
     z-index: 2
@@ -57,7 +57,7 @@
       width: 100%
       z-index: 3
 
-    .actions
+    .issue-actions
       width: 200px
       float: right
 
@@ -135,3 +135,30 @@
 
         .body
 
+    .comment-form
+      +border-radius(2px)
+      +box-shadow(0 17px 35px -15px #E4D4CF)
+      +background-image(linear-gradient(to bottom,#f7f0ea,#fcf8f5))
+      margin: 40px 0 0 60px
+      margin-right: 240px
+      padding: 20px 20px 52px
+
+      // TODO Extract for edit to.
+      textarea, textarea:focus
+        line-height: 1.4
+        background: none
+        border: none
+        border-bottom: 1px solid #bbb
+        display: block
+        height: 38px
+        padding: 0
+        margin: 0
+        text-overflow: clip
+        outline: none
+        padding: 0
+        width: 100%
+
+      .actions
+        float: right
+        height: 26px
+        margin: 8px 5px 0 0

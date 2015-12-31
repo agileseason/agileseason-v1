@@ -129,7 +129,7 @@ $(document).on('page:change', function () {
           <CloseButton onButtonClick={this.handleCloseButton} />
           <CurrentAssignee user={this.state.currentAssignee} />
 
-          <div className='actions'>
+          <div className='issue-actions'>
             <LabelList data={this.props.issue.labels} onLabelChange={this.handleLabelChange} />
             <AssigneeList data={this.props.issue.collaborators} onAssigneeChange={this.handleAssigneeChange} />
           </div>
@@ -356,7 +356,7 @@ $(document).on('page:change', function () {
     },
     render: function() {
       return (
-        <a href='#delete' onClick={this.handleClick}>delete</a>
+        <a href='#' onClick={this.handleClick}>delete</a>
       );
     }
   });
@@ -396,16 +396,21 @@ $(document).on('page:change', function () {
       this.props.onCommentSubmit({body: body});
       this.setState({body: ''});
     },
+    componentDidMount: function() {
+      $('.comment-form textarea').elastic();
+    },
     render: function() {
       return (
-        <form className="commentForm" onSubmit={this.handleSubmit}>
-          <input
+        <form className='comment-form' onSubmit={this.handleSubmit}>
+          <textarea
             type='text'
             placeholder='Add new comment or upload an image...'
             value={this.state.body}
             onChange={this.handleTextChange}
           />
-          <input type='submit' value='Post' />
+          <div className='actions'>
+            <input type='submit' value='Comment' className='button' />
+          </div>
         </form>
       );
     }
