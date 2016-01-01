@@ -105,6 +105,11 @@
         margin: 0 0 40px 60px
         padding: 20px
 
+        &.editable
+          background-color: $active
+          &:before
+            border-color: transparent $active transparent transparent
+
         &:before
           border-color: transparent #f2f9fc transparent transparent
           border-style: solid
@@ -137,12 +142,17 @@
 
     .comment-form
       +border-radius(2px)
-      +box-shadow(0 17px 35px -15px #E4D4CF)
+      +box-shadow(0 17px 35px -15px #e4d4cf)
       +background-image(linear-gradient(to bottom,#f7f0ea,#fcf8f5))
-      margin: 40px 0 0 60px
-      margin-right: 240px
+      margin: 40px 240px 0 60px
       padding: 20px 20px 52px
 
+    .comment-edit-form
+      background: $active
+      margin-bottom: 40px
+
+    .comment-form,
+    .comment-edit-form
       // TODO Extract for edit to.
       textarea, textarea:focus
         line-height: 1.4
@@ -162,3 +172,10 @@
         float: right
         height: 26px
         margin: 8px 5px 0 0
+
+        a
+          +ajax_link
+        a,
+        input
+          display: inline-block
+          margin-left: 20px

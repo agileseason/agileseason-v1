@@ -31,14 +31,17 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       format.html { render partial: 'show', locals: { comment: comment, board: @board, number: number } }
-      format.json { render json: comment_to_json(comment) }
+      format.json { render json: { comment: comment_to_json(comment), board_issue: board_issue_json } }
     end
   end
 
   def update
     comment = github_api.update_comment(@board, id, comment_body)
     sync_checklist
-    render partial: 'show', locals: { comment: comment, board: @board, number: number }
+    respond_to do |format|
+      format.html { render partial: 'show', locals: { comment: comment, board: @board, number: number } }
+      format.json { render json: comment_to_json(comment) }
+    end
   end
 
   def delete
@@ -47,17 +50,7 @@ class CommentsController < ApplicationController
     sync_checklist
     respond_to do |format|
       format.html { render nothing: true }
-      format.json do
-        board_issue = @board_bag.issue(number)
-        render json: {
-          number: number,
-          issue: render_to_string(
-            partial: 'issues/issue_miniature',
-            locals: { issue: board_issue },
-            formats: [:html]
-          )
-        }
-      end
+      format.json { render json: board_issue_json }
     end
   end
 
@@ -127,6 +120,19 @@ class CommentsController < ApplicationController
         login: comment.user.login,
         avatar_url: comment.user.avatar_url
       }
+    }
+  end
+
+  # FIX Remove duplication with IssueController
+  def board_issue_json
+    board_issue = @board_bag.issue(number)
+    {
+      number: number,
+      issue: render_to_string(
+        partial: 'issues/issue_miniature',
+        locals: { issue: board_issue },
+        formats: [:html]
+      )
     }
   end
 end

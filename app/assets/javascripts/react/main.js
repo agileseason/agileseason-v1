@@ -101,10 +101,11 @@ $(document).on('page:change', function () {
     },
     handleCommentSubmit: function(comment) {
       var url = this.issueUrl() + '/comment';
-      this.request(url, 'POST', { comment: comment}, function(comment) {
+      this.request(url, 'POST', { comment: comment }, function(data) {
         comments = this.state.comments
-        comments.push(comment)
+        comments.push(data.comment)
         this.setState({ comments: comments });
+        this.updateIssueMiniature(data.board_issue.number, data.board_issue.issue);
       });
     },
     handleDeleteComment: function(id) {
@@ -120,6 +121,10 @@ $(document).on('page:change', function () {
       });
       this.setState({ comments: comments });
     },
+    handleUpdateComment: function(id, comment) {
+      var url = this.issueUrl() + '/update_comment/' + id;
+      this.request(url, 'POST', { comment: comment }, function(comment) {});
+    },
     render: function() {
       var githubIssueUrl = 'https://github.com/' + this.props.github_full_name + '/issues/' + this.props.issue.number;
       return (
@@ -134,7 +139,7 @@ $(document).on('page:change', function () {
             <AssigneeList data={this.props.issue.collaborators} onAssigneeChange={this.handleAssigneeChange} />
           </div>
 
-          <CommentList data={this.state.comments} onDeleteClick={this.handleDeleteComment} />
+          <CommentList data={this.state.comments} onDeleteClick={this.handleDeleteComment} onUpdateClick={this.handleUpdateComment} />
           <CommentForm onCommentSubmit={this.handleCommentSubmit} />
         </div>
       );
@@ -337,7 +342,12 @@ $(document).on('page:change', function () {
     render: function() {
       var commentNodes = this.props.data.map(function(comment) {
         return (
-          <Comment data={comment} key={comment.id} onDeleteClick={this.props.onDeleteClick} />
+          <Comment
+            data={comment}
+            key={comment.id}
+            onDeleteClick={this.props.onDeleteClick}
+            onUpdateClick={this.props.onUpdateClick}
+          />
         );
       }.bind(this));
       return (
@@ -348,34 +358,119 @@ $(document).on('page:change', function () {
     }
   });
 
-  var DeleteComment = React.createClass({
-    handleClick: function() {
+  var Comment = React.createClass({
+    getInitialState: function() {
+      return {
+        bodyDisplay: 'block',
+        formDisplay: 'none',
+        body: this.props.data.body,
+        currentClass: 'comment'
+      };
+    },
+    handleEditClick: function() {
+      this.setState({
+        bodyDisplay: 'none',
+        formDisplay: 'block',
+        currentClass: 'comment editable'
+      });
+    },
+    handleCloseWithoutSaveClick: function() {
+      this.setState({
+        bodyDisplay: 'block',
+        formDisplay: 'none',
+        body: this.state.body,
+        currentClass: 'comment'
+      });
+    },
+    handleCommentSubmit: function(comment) {
+      // TODO Send comment.body to server
+      this.props.onUpdateClick(this.props.data.id, comment);
+      this.setState({
+        bodyDisplay: 'block',
+        formDisplay: 'none',
+        body: comment.body,
+        currentClass: 'comment'
+      });
+    },
+    handleDeleteClick: function() {
       if (confirm('Are you sure?')) {
-        this.props.onDeleteClick(this.props.id);
+        this.props.onDeleteClick(this.props.data.id);
       }
     },
     render: function() {
       return (
-        <a href='#' onClick={this.handleClick}>delete</a>
-      );
-    }
-  });
-
-  var Comment = React.createClass({
-    render: function() {
-      return (
-        <div className='comment'>
+        <div className={this.state.currentClass} style={{backgroundColor: this.state.backgroundColor}}>
           <Avatar data={this.props.data.user} width={40} height={40} />
           <div className='header'>
             <div className='login'>{this.props.data.user.login}</div>
             <div className='date'>{this.props.data.created_at}</div>
             &nbsp;&mdash;&nbsp;
-            <a href='#edit'>edit</a>
+            <a href='#' onClick={this.handleEditClick}>edit</a>
             &nbsp;or&nbsp;
-            <DeleteComment id={this.props.data.id} onDeleteClick={this.props.onDeleteClick} />
+            <a href='#' onClick={this.handleDeleteClick}>delete</a>
           </div>
-          <div className='body'>{this.props.data.body}</div>
+          <div className='body' style={{display: this.state.bodyDisplay}}>{this.state.body}</div>
+          <CommentEditForm
+            display={this.state.formDisplay}
+            body={this.state.body}
+            onCloseWithoutSaveClick={this.handleCloseWithoutSaveClick}
+            onCommentSubmit={this.handleCommentSubmit}
+          />
         </div>
+      );
+    }
+  });
+
+  var CommentEditForm = React.createClass({
+    getInitialState: function() {
+      return {
+        body: this.props.body,
+        diaplay: this.props.display
+      };
+    },
+    handleTextChange: function(e) {
+      this.setState({ body: e.target.value });
+    },
+    handleSubmit: function(e) {
+      e.preventDefault();
+      this.saveComment();
+    },
+    componentDidMount: function() {
+      this.textarea().elastic();
+      this.textarea().on('keydown', function(e) {
+        if (e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
+          this.saveComment();
+          return false;
+        }
+      }.bind(this));
+    },
+    componentDidUpdate: function() {
+      this.textarea().focus().val('').val(this.state.body);
+    },
+    textarea: function() {
+      return $('.comment-edit-form textarea');
+    },
+    saveComment: function() {
+      var body = this.state.body.trim();
+      if (!body) {
+        return;
+      }
+      this.props.onCommentSubmit({body: body});
+    },
+    render: function() {
+      return (
+        <form className='comment-edit-form' onSubmit={this.handleSubmit} style={{display: this.props.display}}>
+          <textarea
+            type='text'
+            placeholder='Edit comment or upload an image...'
+            value={this.state.body}
+            onChange={this.handleTextChange}
+          />
+          <div className='actions'>
+            <a href='#' onClick={this.props.onCloseWithoutSaveClick}>Close without save</a>
+            <input type='submit' value='Update' className='button' />
+          </div>
+        </form>
       );
     }
   });
@@ -406,8 +501,8 @@ $(document).on('page:change', function () {
       if (!body) {
         return;
       }
-      this.props.onCommentSubmit({ body: body });
-      this.setState({ body: '' });
+      this.props.onCommentSubmit({body: body});
+      this.setState({body: ''});
     },
     render: function() {
       return (
