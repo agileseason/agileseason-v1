@@ -114,6 +114,7 @@ class CommentsController < ApplicationController
     {
       id: comment.id,
       body: comment.body,
+      bodyMarkdown: markdown(comment.body, @board),
       created_at: comment.created_at.strftime('%b %d, %H:%M'),
       user: {
         id: comment.user.id,

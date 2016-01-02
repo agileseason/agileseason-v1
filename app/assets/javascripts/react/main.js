@@ -122,9 +122,11 @@ $(document).on('page:change', function () {
       });
       this.setState({ comments: comments });
     },
-    handleUpdateComment: function(id, comment) {
+    handleUpdateComment: function(id, comment, successCallback) {
       var url = this.issueUrl() + '/update_comment/' + id;
-      this.request(url, 'POST', { comment: comment }, function(comment) {});
+      this.request(url, 'POST', { comment: comment }, function(comment) {
+        successCallback(comment);
+      });
     },
     render: function() {
       var githubIssueUrl = 'https://github.com/' + this.props.github_full_name + '/issues/' + this.props.issue.number;
@@ -418,7 +420,9 @@ $(document).on('page:change', function () {
         bodyDisplay: 'block',
         formDisplay: 'none',
         body: this.props.data.body,
-        currentClass: 'comment'
+        bodyMarkdown: this.props.data.bodyMarkdown,
+        currentClass: 'comment',
+        opacity: 1.0
       };
     },
     handleEditClick: function() {
@@ -437,18 +441,25 @@ $(document).on('page:change', function () {
       });
     },
     handleCommentSubmit: function(comment) {
-      this.props.onUpdateClick(this.props.data.id, comment);
-      this.setState({
-        bodyDisplay: 'block',
-        formDisplay: 'none',
-        body: comment.body,
-        currentClass: 'comment'
-      });
+      this.props.onUpdateClick(this.props.data.id, comment, this.updateCommentFinish);
+      this.setState({ body: comment.body, opacity: 0.5 });
     },
     handleDeleteClick: function() {
       if (confirm('Are you sure?')) {
         this.props.onDeleteClick(this.props.data.id);
       }
+    },
+    updateCommentFinish: function(comment) {
+      this.setState({
+        bodyDisplay: 'block',
+        formDisplay: 'none',
+        currentClass: 'comment',
+        bodyMarkdown: comment.bodyMarkdown,
+        opacity: 1.0
+      });
+    },
+    bodyMarkdown: function() {
+      return {__html: this.state.bodyMarkdown};
     },
     render: function() {
       return (
@@ -462,12 +473,16 @@ $(document).on('page:change', function () {
             &nbsp;or&nbsp;
             <a href='#' onClick={this.handleDeleteClick}>delete</a>
           </div>
-          <div className='body' style={{display: this.state.bodyDisplay}}>{this.state.body}</div>
+          <div className='body' style={{display: this.state.bodyDisplay}}>
+            <div dangerouslySetInnerHTML={this.bodyMarkdown()} />
+          </div>
           <CommentEditForm
+            data={this.props.data}
             display={this.state.formDisplay}
             body={this.state.body}
             onCloseWithoutSaveClick={this.handleCloseWithoutSaveClick}
             onCommentSubmit={this.handleCommentSubmit}
+            opacity={this.state.opacity}
           />
         </div>
       );
@@ -489,8 +504,9 @@ $(document).on('page:change', function () {
       this.saveComment();
     },
     componentDidMount: function() {
-      this.textarea().elastic();
-      this.textarea().on('keydown', function(e) {
+      // TODO Remove copy-past $textarea
+      var textarea = $('#' + this.props.data.id)
+      textarea.on('keydown', function(e) {
         if (e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
           this.saveComment();
           return false;
@@ -498,26 +514,32 @@ $(document).on('page:change', function () {
       }.bind(this));
     },
     componentDidUpdate: function() {
-      this.textarea().focus().val('').val(this.state.body);
-    },
-    textarea: function() {
-      return $('.comment-edit-form textarea');
+      var textarea = $('#' + this.props.data.id)
+      if (!textarea.hasClass('elasticable')) {
+        textarea.addClass('elasticable');
+        textarea.elastic();
+        textarea.focus().val('').val(this.state.body);
+      }
     },
     saveComment: function() {
       var body = this.state.body.trim();
       if (!body) {
         return;
       }
+      var textarea = $('#' + this.props.data.id)
+      textarea.blur();
       this.props.onCommentSubmit({body: body});
     },
     render: function() {
       return (
         <form className='comment-edit-form' onSubmit={this.handleSubmit} style={{display: this.props.display}}>
           <textarea
+            id={this.props.data.id}
             type='text'
             placeholder='Edit comment or upload an image...'
             value={this.state.body}
             onChange={this.handleTextChange}
+            style={{opacity: this.props.opacity}}
           />
           <div className='actions'>
             <a href='#' onClick={this.props.onCloseWithoutSaveClick}>Close without save</a>
