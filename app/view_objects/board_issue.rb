@@ -1,4 +1,6 @@
 class BoardIssue
+  include MarkdownHelper
+
   attr_accessor :issue, :issue_stat
   delegate :number, :title, :body, :state, :labels, :html_url,
            :assignee, :comments, :all_comments,
@@ -51,6 +53,8 @@ class BoardIssue
     {
       number: number,
       title: title,
+      body: body,
+      bodyMarkdown: markdown(body, board),
     }
   end
 end

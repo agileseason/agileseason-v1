@@ -128,22 +128,29 @@ $(document).on('page:change', function () {
         successCallback(comment);
       });
     },
+    bodyMarkdown: function() {
+      return {__html: this.state.issue.bodyMarkdown};
+    },
     render: function() {
       var githubIssueUrl = 'https://github.com/' + this.props.github_full_name + '/issues/' + this.props.issue.number;
       return (
         <div className='issueModal'>
-          <h1>{this.state.issue.title} <a href={githubIssueUrl}>#{this.state.issue.number}</a></h1>
-          <CurrentLabelList data={this.state.currentLabels} />
-          <CloseButton onButtonClick={this.handleCloseButton} />
-          <CurrentAssignee user={this.state.currentAssignee} />
+          <div className='issue-content'>
+            <h1>{this.state.issue.title} <a href={githubIssueUrl}>#{this.state.issue.number}</a></h1>
+            <CurrentLabelList data={this.state.currentLabels} />
+            <CloseButton onButtonClick={this.handleCloseButton} />
+            <div className='move-to'>
+              <CurrentAssignee user={this.state.currentAssignee} />
+            </div>
+            <div className='issue-body' dangerouslySetInnerHTML={this.bodyMarkdown()} />
 
+            <CommentList data={this.state.comments} onDeleteClick={this.handleDeleteComment} onUpdateClick={this.handleUpdateComment} />
+            <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+          </div>
           <div className='issue-actions'>
             <LabelList data={this.props.issue.labels} onLabelChange={this.handleLabelChange} />
             <AssigneeList data={this.props.issue.collaborators} onAssigneeChange={this.handleAssigneeChange} />
           </div>
-
-          <CommentList data={this.state.comments} onDeleteClick={this.handleDeleteComment} onUpdateClick={this.handleUpdateComment} />
-          <CommentForm onCommentSubmit={this.handleCommentSubmit} />
         </div>
       );
     }

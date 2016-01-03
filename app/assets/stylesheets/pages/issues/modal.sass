@@ -48,6 +48,13 @@
       height: 50px
       width: 50px
 
+    .move-to
+    .issue-body
+      margin-left: 60px
+      display: inline-block
+      p
+        margin-bottom: 30px
+
     .popup-overlay
       display: none
       height: 100%
@@ -57,9 +64,14 @@
       width: 100%
       z-index: 3
 
+    .issue-content
+      margin-right: 240px
+
     .issue-actions
       width: 200px
-      float: right
+      position: absolute
+      right: 30px
+      top: 60px
 
       .octicon
         margin: 0 4px 0 -4px
@@ -97,8 +109,6 @@
         z-index: 4
 
     .comment-list
-      margin-right: 240px
-
       .comment
         +border-radius(2px)
         background-color: #f2f9fc
@@ -144,7 +154,7 @@
       +border-radius(2px)
       +box-shadow(0 17px 35px -15px #e4d4cf)
       +background-image(linear-gradient(to bottom,#f7f0ea,#fcf8f5))
-      margin: 40px 240px 0 60px
+      margin: 40px 0 0 60px
       padding: 20px 20px 52px
 
     .comment-edit-form
