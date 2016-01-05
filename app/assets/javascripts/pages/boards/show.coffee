@@ -15,12 +15,7 @@ $(document).on 'page:change', ->
       $container.find('.issue-modal').empty()
       $issue = $(@)
       window.IssueModalRender(
-        {
-          number: $issue.data('number'),
-          title: '...',
-          labels: $issue.data('labels'),
-          collaborators: $issue.data('collaborators'),
-        },
+        $issue.data('issue'),
         $('.board').data('github_full_name'),
       )
       $container.show()

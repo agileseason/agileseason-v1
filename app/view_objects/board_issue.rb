@@ -49,12 +49,13 @@ class BoardIssue
     issue_stat.column_id
   end
 
-  def to_json
+  def to_hash
     {
       number: number,
       title: title,
       body: body,
       bodyMarkdown: markdown(body, board),
+      dueDate: issue_stat.due_date_at ? issue_stat.due_date_at.to_datetime.utc.to_i * 1000 : nil,
     }
   end
 end

@@ -13,7 +13,7 @@ class IssuesController < ApplicationController
 
     respond_to do |format|
       format.html { render 'show' }
-      format.json { render json: @issue.to_json }
+      format.json { render json: @issue.to_hash }
     end
   end
 
@@ -131,7 +131,10 @@ class IssuesController < ApplicationController
       due_date_at
     )
 
-    render text: k(:issue, issue_stat).due_date_at
+    respond_to do |format|
+      format.html { render text: k(:issue, issue_stat).due_date_at }
+      format.json { render_board_issue_json }
+    end
   end
 
   def toggle_ready

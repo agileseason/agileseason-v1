@@ -6,8 +6,7 @@
   data-column="#{issue.column_id}"
   data-url="#{un show_board_issues_url(@board, issue.number)}"
 
-  data-labels="#{k(:issue, issue).labels_to_json(@board_bag)}"
-  data-collaborators="#{k(:issue, issue).collaborators_to_json(@board_bag)}"
+  data-issue="#{k(:issue, issue).to_hash(@board_bag).to_json}"
 ]
   = k(:issue, issue).labels_html
 

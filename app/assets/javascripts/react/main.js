@@ -3,6 +3,13 @@ $(document).on('page:change', function () {
     return;
   }
 
+  // TODO Extract to other file.
+  Number.prototype.pad = function(size) {
+    var s = String(this);
+    while (s.length < (size || 2)) { s = "0" + s; }
+    return s;
+  }
+
   var React = require('react');
   var ReactDOM = require('react-dom');
 
@@ -12,6 +19,7 @@ $(document).on('page:change', function () {
         issue: this.props.issue,
         currentLabels: this.getCheckedLabels(),
         currentAssignee: this.getAssignedUser(),
+        currentDueDate: this.props.issue.dueDate,
         comments: []
       };
     },
@@ -128,6 +136,14 @@ $(document).on('page:change', function () {
         successCallback(comment);
       });
     },
+    handleDueDateChange: function(date, time) {
+      var url = this.issueUrl() + '/due_date';
+      var datetime = date + ' ' + time;
+      this.setState({currentDueDate: new Date(datetime + ' UTC')});
+      this.request(url, 'POST', { due_date: datetime }, function(data) {
+        this.updateIssueMiniature(data.number, data.issue);
+      });
+    },
     bodyMarkdown: function() {
       return {__html: this.state.issue.bodyMarkdown};
     },
@@ -136,9 +152,12 @@ $(document).on('page:change', function () {
       return (
         <div className='issueModal'>
           <div className='issue-content'>
-            <h1>{this.state.issue.title} <a href={githubIssueUrl}>#{this.state.issue.number}</a></h1>
-            <CurrentLabelList data={this.state.currentLabels} />
+            <h1>
+              {this.state.issue.title} <a href={githubIssueUrl}>#{this.state.issue.number}</a>
+              <CurrentDueDate data={this.state.currentDueDate} />
+            </h1>
             <CloseButton onButtonClick={this.handleCloseButton} />
+            <CurrentLabelList data={this.state.currentLabels} />
             <div className='move-to'>
               <CurrentAssignee user={this.state.currentAssignee} />
             </div>
@@ -150,6 +169,7 @@ $(document).on('page:change', function () {
           <div className='issue-actions'>
             <LabelList data={this.props.issue.labels} onLabelChange={this.handleLabelChange} />
             <AssigneeList data={this.props.issue.collaborators} onAssigneeChange={this.handleAssigneeChange} />
+            <DueDateAction date={this.props.issue.dueDate} onDueDateChange={this.handleDueDateChange} />
           </div>
         </div>
       );
@@ -209,6 +229,24 @@ $(document).on('page:change', function () {
     }
   });
 
+  var CurrentDueDate = React.createClass({
+    getDate: function() {
+      var res = '';
+      if (this.props.data) {
+        var date = new Date(this.props.data);
+        res = (date.getUTCHours()).pad() + ':' + (date.getUTCMinutes()).pad();
+      }
+      return res;
+    },
+    render: function() {
+      if (this.props.data) {
+        return <div className='current-due-date'>{this.getDate()}</div>;
+      } else {
+        return <span />
+      }
+    }
+  });
+
   var CurrentAssignee = React.createClass({
     render: function() {
       if (this.props.user) {
@@ -239,6 +277,56 @@ $(document).on('page:change', function () {
     },
     render: function() {
       return (<div className='close' onClick={this.handleClick}></div>)
+    }
+  });
+
+  var DueDateAction = React.createClass({
+    getInitialState: function() {
+      var date = new Date();
+      var time = '12:00'
+      if (this.props.date) {
+        date = new Date(this.props.date);
+        time = (date.getUTCHours()).pad() + ':' + (date.getUTCMinutes()).pad();
+      }
+      return {
+        date: this.props.date,
+        datepickerDate: date,
+        datepickerTime: time,
+        overlay: 'none'
+      };
+    },
+    componentDidMount: function() {
+      var $datepicker = $(this.refs.datepicker)
+      $datepicker.datepicker({dateFormat: 'yy/mm/dd'});
+      $datepicker.datepicker('setDate', this.state.datepickerDate)
+    },
+    handleTimeOnChange: function() {
+      this.setState({datepickerTime: this.refs.time.value});
+    },
+    handleEditButtonClick: function() {
+      $('.due-date-calendar').toggleClass('hidden');
+      state = { overlay: 'block' };
+      if ($('.due-date-calendar').hasClass('hidden')) {
+        state = { overlay: 'none'};
+      }
+      this.setState(state);
+    },
+    handleSaveClick: function() {
+      this.props.onDueDateChange(this.refs.datepicker.value, this.refs.time.value);
+      this.handleEditButtonClick();
+    },
+    render: function() {
+      return (
+        <div>
+          <EditButton name='Due Date' onButtonClick={this.handleEditButtonClick} icon='octicon octicon-clock' />
+          <PopoverOverlay display={this.state.overlay} onOverlayClick={this.handleEditButtonClick} />
+          <div className='due-date-calendar hidden'>
+            <div className='datepicker' ref='datepicker'/>
+            <input className='time' ref='time' value={this.state.datepickerTime} onChange={this.handleTimeOnChange} />
+            <a className='save' href='#' onClick={this.handleSaveClick}>Save Date & Time</a>
+          </div>
+        </div>
+      );
     }
   });
 
@@ -366,9 +454,12 @@ $(document).on('page:change', function () {
     handleClick: function() {
       return this.props.onButtonClick();
     },
+    buttonClass: function() {
+      return this.props.name.replace(/\s/g, '-').toLowerCase() + ' issue-button'
+    },
     render: function() {
       return (
-        <div className={this.props.name.toLowerCase()} onClick={this.handleClick}>
+        <div className={this.buttonClass()} onClick={this.handleClick}>
           <span className={this.props.icon}></span>
           <span>{this.props.name}</span>
         </div>

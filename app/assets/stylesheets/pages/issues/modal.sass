@@ -48,6 +48,17 @@
       height: 50px
       width: 50px
 
+    .current-due-date
+      +border-radius(2px)
+      background: $orange
+      color: #fff
+      display: inline-block
+      font-size: 12px
+      font-weight: normal
+      margin: 6px 0 0 16px
+      padding: 4px 6px
+      vertical-align: top
+
     .move-to
     .issue-body
       margin-left: 60px
@@ -58,9 +69,9 @@
     .popup-overlay
       display: none
       height: 100%
-      left: 0
-      position: absolute
-      top: 0
+      left: 0px
+      position: fixed
+      top: 90px
       width: 100%
       z-index: 3
 
@@ -73,23 +84,25 @@
       right: 30px
       top: 60px
 
-      .octicon
-        margin: 0 4px 0 -4px
-
-      .labels,
-      .assignee
+      .issue-button
         +light_button
         +border-radius(50px)
         font-size: 16px
         padding: 10px 20px
         margin-bottom: 12px
 
-      .label-list
+        .octicon
+          margin: 0 4px 0 -4px
+
+      .label-list,
+      .assignee-list,
+      .due-date-calendar
         +issue_popup
         display: block
-        right: 240px
-        top: 80px
         z-index: 4
+
+      .label-list
+        top: 0
 
         .label
           border-radius: 4px
@@ -102,11 +115,28 @@
             vertical-align: middle
 
       .assignee-list
-        +issue_popup
-        display: block
-        right: 240px
-        top: 150px
-        z-index: 4
+        top: 54px
+
+      .due-date-calendar
+        top: 108px
+        height: 280px
+        width: 210px
+        padding: 18px
+
+        .datepicker
+          margin-bottom: 4px
+
+        input.time
+          display: inline-block
+          margin: 0
+          outline: none
+          padding: 5px
+          width: 50px
+
+        a.save
+          +light_button
+          float: right
+          padding: 5px
 
     .comment-list
       .comment
@@ -189,3 +219,85 @@
         input
           display: inline-block
           margin-left: 20px
+
+    // [Begin] Date picker for issue
+    .ui-datepicker
+      .ui-datepicker-prev, .ui-datepicker-next,
+      .ui-datepicker-prev:hover, .ui-datepicker-next:hover
+        background: none
+        border: none
+        color: #333
+        font-size: 18px
+        margin: 0
+        padding: 3px 5px 5px 5px
+        top: 0
+
+        &:hover
+          color: $orange
+
+        span
+          display: none
+
+      .ui-datepicker-prev, .ui-datepicker-prev:hover
+        left: 0
+
+        &:after
+          content: '←'
+
+      .ui-datepicker-next, .ui-datepicker-next:hover
+        right: -15px
+
+        &:after
+          content: '→'
+
+      .ui-datepicker-header
+        +border-radius(0)
+        background: none
+        border-bottom: 1px solid #bbb
+        border: none
+        width: 210px
+
+      table
+        width: auto !important
+
+      .ui-datepicker-title,
+      th
+        font-weight: normal
+
+      td
+        border-collapse: collapse
+        padding: 0
+
+        a
+          border: 0 !important
+          height: 20px
+          line-height: 160%
+          padding: 5px
+          text-align: center
+          width: 20px
+
+      .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active
+        +border-radius(3px)
+        background: $orange !important
+        color: #fff !important
+
+      .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight
+        +border-radius(3px)
+        background: #333 !important
+        color: #fff !important
+
+      .ui-state-default
+        background: #f6f6f6
+        font-weight: normal
+        color: #454545
+
+      .ui-state-hover
+        background: #ededed
+        font-weight: normal
+        color: #2b2b2b
+
+    .ui-widget-content
+      border: none
+      padding: 0
+      width: auto
+    // [End] Date picker for issue
