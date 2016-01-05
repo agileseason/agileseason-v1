@@ -138,8 +138,15 @@ $(document).on('page:change', function () {
     },
     handleDueDateChange: function(date, time) {
       var url = this.issueUrl() + '/due_date';
-      var datetime = date + ' ' + time;
-      this.setState({currentDueDate: new Date(datetime + ' UTC')});
+      var datetime = null;
+      var currentDueDate = null;
+
+      if (date != null) {
+        datetime = date + ' ' + time;
+        currentDueDate = new Date(datetime + ' UTC');
+      }
+
+      this.setState({currentDueDate: currentDueDate});
       this.request(url, 'POST', { due_date: datetime }, function(data) {
         this.updateIssueMiniature(data.number, data.issue);
       });
@@ -234,7 +241,8 @@ $(document).on('page:change', function () {
       var res = '';
       if (this.props.data) {
         var date = new Date(this.props.data);
-        res = (date.getUTCHours()).pad() + ':' + (date.getUTCMinutes()).pad();
+        res = (date.getUTCDate()).pad() + '.' + (date.getUTCMonth() + 1).pad() + '.' + date.getUTCFullYear()
+          + ' ' + (date.getUTCHours()).pad() + ':' + (date.getUTCMinutes()).pad();
       }
       return res;
     },
@@ -315,6 +323,10 @@ $(document).on('page:change', function () {
       this.props.onDueDateChange(this.refs.datepicker.value, this.refs.time.value);
       this.handleEditButtonClick();
     },
+    handleRemoveClick: function() {
+      this.props.onDueDateChange(null, null);
+      this.handleEditButtonClick();
+    },
     render: function() {
       return (
         <div>
@@ -322,8 +334,9 @@ $(document).on('page:change', function () {
           <PopoverOverlay display={this.state.overlay} onOverlayClick={this.handleEditButtonClick} />
           <div className='due-date-calendar hidden'>
             <div className='datepicker' ref='datepicker'/>
-            <input className='time' ref='time' value={this.state.datepickerTime} onChange={this.handleTimeOnChange} />
+            <input className='time' ref='time' value={this.state.datepickerTime} onChange={this.handleTimeOnChange} placeholder='hh:mm' />
             <a className='save' href='#' onClick={this.handleSaveClick}>Save Date & Time</a>
+            <a className='remove' href='#' onClick={this.handleRemoveClick}>Remove</a>
           </div>
         </div>
       );
