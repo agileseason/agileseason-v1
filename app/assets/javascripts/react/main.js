@@ -75,6 +75,12 @@ $(document).on('page:change', function () {
     handleCloseButton: function() {
       $('.issue-modal-container').hide();
     },
+    handleUpdateTitle: function(title) {
+      var url = this.issueUrl() + '/update';
+      this.request(url, 'PATCH', { issue: { title : title } }, function(data) {
+        this.updateIssueMiniature(data.number, data.issue);
+      });
+    },
     handleLabelChange: function(labelName, checked) {
       var labelsToSave = []
       this.props.issue.labels.forEach(function(label) {
@@ -159,10 +165,13 @@ $(document).on('page:change', function () {
       return (
         <div className='issueModal'>
           <div className='issue-content'>
-            <h1>
-              {this.state.issue.title} <a href={githubIssueUrl}>#{this.state.issue.number}</a>
-              <CurrentDueDate data={this.state.currentDueDate} />
-            </h1>
+            <Title
+              number={this.props.issue.number}
+              title={this.props.issue.title}
+              url={githubIssueUrl}
+              dueDate={this.state.currentDueDate}
+              onUpdateTitle={this.handleUpdateTitle}
+            />
             <CloseButton onButtonClick={this.handleCloseButton} />
             <CurrentLabelList data={this.state.currentLabels} />
             <div className='move-to'>
@@ -178,6 +187,67 @@ $(document).on('page:change', function () {
             <AssigneeList data={this.props.issue.collaborators} onAssigneeChange={this.handleAssigneeChange} />
             <DueDateAction date={this.props.issue.dueDate} onDueDateChange={this.handleDueDateChange} />
           </div>
+        </div>
+      );
+    }
+  });
+
+  var Title = React.createClass({
+    getInitialState: function() {
+      return {
+        title: this.props.title,
+        h1: 'block',
+        textarea: 'none'
+      };
+    },
+    componentDidUpdate: function() {
+      var $textarea = $(this.refs.title)
+      if (!$textarea.hasClass('elasticable')) {
+        $textarea.addClass('elasticable');
+        $textarea.elastic();
+      }
+      if (this.state.textarea == 'block') {
+        $textarea.focus().val('').val(this.state.title);
+      }
+    },
+    handleEditTitleClick: function() {
+      var title = this.state.title.trim();
+      if (title == '') {
+        return;
+      }
+      if (this.state.h1 == 'block') {
+        this.setState({h1: 'none', textarea: 'block'});
+      } else {
+        this.setState({h1: 'block', textarea: 'none'});
+        this.props.onUpdateTitle(title);
+      }
+    },
+    handleTextChange: function(e) {
+      this.setState({title: e.target.value});
+    },
+    handleKeyDown: function(e) {
+      if (e.keyCode == 13) {
+        this.handleEditTitleClick();
+      }
+    },
+    render: function() {
+      return(
+        <div className='issue-title'>
+          <h1 style={{display: this.state.h1}}>
+            <span onClick={this.handleEditTitleClick}>{this.state.title}</span>
+            <a href={this.props.url}>#{this.props.number}</a>
+            <CurrentDueDate data={this.props.dueDate} />
+          </h1>
+          <textarea
+            ref='title'
+            type='text'
+            placeholder='Edit title'
+            value={this.state.title}
+            onChange={this.handleTextChange}
+            onBlur={this.handleEditTitleClick}
+            onKeyDown={this.handleKeyDown}
+            style={{display: this.state.textarea}}
+          />
         </div>
       );
     }

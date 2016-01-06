@@ -23,10 +23,19 @@
     width: calc(100% - 40px)
     z-index: 2
 
-    h1
-      font-size: 36px
-      font-weight: normal
-      line-height: 1.2
+    .issue-title
+      h1,
+      textarea
+        font-size: 36px
+        font-weight: normal
+        line-height: 1.2
+        a
+          margin-left: 8px
+
+      textarea
+        margin: 24px 0
+        width: 100%
+        z-index: 4
 
     input[type='submit']
       display: block
@@ -150,7 +159,7 @@
       .comment
         +border-radius(2px)
         background-color: #f2f9fc
-        margin: 0 0 40px 60px
+        margin: 0 0 30px 60px
         padding: 20px
 
         &.editable
@@ -192,7 +201,7 @@
       +border-radius(2px)
       +box-shadow(0 17px 35px -15px #e4d4cf)
       +background-image(linear-gradient(to bottom,#f7f0ea,#fcf8f5))
-      margin: 40px 0 0 60px
+      margin: 30px 0 0 60px
       padding: 20px 20px 52px
 
     .comment-edit-form
