@@ -241,14 +241,15 @@ $(document).on('page:change', function () {
       var res = '';
       if (this.props.data) {
         var date = new Date(this.props.data);
-        res = (date.getUTCDate()).pad() + '.' + (date.getUTCMonth() + 1).pad() + '.' + date.getUTCFullYear()
+        var yearStr = (new Date()).getUTCFullYear() == date.getUTCFullYear() ? '' : '.' + date.getUTCFullYear();
+        res = (date.getUTCDate()).pad() + '.' + (date.getUTCMonth() + 1).pad() + yearStr
           + ' ' + (date.getUTCHours()).pad() + ':' + (date.getUTCMinutes()).pad();
       }
       return res;
     },
     render: function() {
       if (this.props.data) {
-        return <div className='current-due-date'>{this.getDate()}</div>;
+        return <div className='current-due-date' title='Due Date'>{this.getDate()}</div>;
       } else {
         return <span />
       }
