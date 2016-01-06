@@ -183,59 +183,6 @@ $(document).on('page:change', function () {
     }
   });
 
-  var CommentForm = React.createClass({
-    getInitialState: function() {
-      return { body: '', opacity: 1.0 };
-    },
-    handleTextChange: function(e) {
-      this.setState({body: e.target.value});
-    },
-    handleSubmit: function(e) {
-      e.preventDefault();
-      this.saveCommentBegin();
-    },
-    componentDidMount: function() {
-      this.textarea().elastic();
-      this.textarea().on('keydown', function(e) {
-        if (e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
-          this.saveCommentBegin();
-          return false;
-        }
-      }.bind(this));
-    },
-    textarea: function() {
-      return $('.comment-form textarea');
-    },
-    saveCommentBegin: function() {
-      var body = this.state.body.trim();
-      if (!body) {
-        return;
-      }
-      this.setState({opacity: 0.5});
-      this.textarea().blur();
-      this.props.onCommentSubmit({body: body}, this.saveCommentFinish);
-    },
-    saveCommentFinish: function() {
-      this.setState({body: '', opacity: 1.0});
-    },
-    render: function() {
-      return (
-        <form className='comment-form' onSubmit={this.handleSubmit}>
-          <textarea
-            type='text'
-            placeholder='Add new comment or upload an image...'
-            value={this.state.body}
-            onChange={this.handleTextChange}
-            style={{opacity: this.state.opacity}}
-          />
-          <div className='actions'>
-            <input type='submit' value='Comment' className='button' />
-          </div>
-        </form>
-      );
-    }
-  });
-
   var CurrentDueDate = React.createClass({
     getDate: function() {
       var res = '';
@@ -656,6 +603,59 @@ $(document).on('page:change', function () {
           <div className='actions'>
             <a href='#' onClick={this.props.onCloseWithoutSaveClick}>Close without save</a>
             <input type='submit' value='Update' className='button' />
+          </div>
+        </form>
+      );
+    }
+  });
+
+  var CommentForm = React.createClass({
+    getInitialState: function() {
+      return { body: '', opacity: 1.0 };
+    },
+    handleTextChange: function(e) {
+      this.setState({body: e.target.value});
+    },
+    handleSubmit: function(e) {
+      e.preventDefault();
+      this.saveCommentBegin();
+    },
+    componentDidMount: function() {
+      this.textarea().elastic();
+      this.textarea().on('keydown', function(e) {
+        if (e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
+          this.saveCommentBegin();
+          return false;
+        }
+      }.bind(this));
+    },
+    textarea: function() {
+      return $('.comment-form textarea');
+    },
+    saveCommentBegin: function() {
+      var body = this.state.body.trim();
+      if (!body) {
+        return;
+      }
+      this.setState({opacity: 0.5});
+      this.textarea().blur();
+      this.props.onCommentSubmit({body: body}, this.saveCommentFinish);
+    },
+    saveCommentFinish: function() {
+      this.setState({body: '', opacity: 1.0});
+    },
+    render: function() {
+      return (
+        <form className='comment-form' onSubmit={this.handleSubmit}>
+          <textarea
+            type='text'
+            placeholder='Add new comment or upload an image...'
+            value={this.state.body}
+            onChange={this.handleTextChange}
+            style={{opacity: this.state.opacity}}
+          />
+          <div className='actions'>
+            <input type='submit' value='Comment' className='button' />
           </div>
         </form>
       );
