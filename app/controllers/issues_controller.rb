@@ -165,7 +165,10 @@ class IssuesController < ApplicationController
     end
     broadcast_column(issue_stat.column)
 
-    render nothing: true
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.json { render_board_issue_json }
+    end
   end
 
   private

@@ -175,6 +175,12 @@ $(document).on('page:change', function () {
         }
       });
     },
+    handleReadyButtonClick: function(state) {
+      var url = this.issueUrl() + '/toggle_ready';
+      this.request(url, 'POST', {}, function(data) {
+        this.updateIssueMiniature(data.number, data.issue);
+      });
+    },
     bodyMarkdown: function() {
       return {__html: this.state.issue.bodyMarkdown};
     },
@@ -210,8 +216,9 @@ $(document).on('page:change', function () {
             <DueDateAction date={this.props.issue.dueDate} onDueDateChange={this.handleDueDateChange} />
             <EditButton name='Close Issue' options='close' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-issue-closed' />
             <EditButton name='Reopen Issue' options='reopen' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-issue-reopened' />
-            <EditButton name='Archive Issue' options='archive' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-package' title='Remove issue from board' />
-            <EditButton name='Send to Board' options='unarchive' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-package' title='Send issue to board' />
+            <EditButton name='Archive Issue' options='archive' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-package' title='Remove the issue from board' />
+            <EditButton name='Send to Board' options='unarchive' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-package' title='Send the issue to board' />
+            <ToggleButton name='Ready' isChecked={this.props.issue.isReady} onButtonClick={this.handleReadyButtonClick} icon='octicon octicon-check' title='Mark the issue with the "ready to next stage" label' />
           </div>
         </div>
       );
@@ -545,6 +552,30 @@ $(document).on('page:change', function () {
     },
     buttonClass: function() {
       return this.props.name.replace(/\s/g, '-').toLowerCase() + ' issue-button'
+    },
+    render: function() {
+      return (
+        <div className={this.buttonClass()} onClick={this.handleClick} title={this.props.title}>
+          <span className={this.props.icon}></span>
+          <span>{this.props.name}</span>
+        </div>
+      );
+    }
+  });
+
+  var ToggleButton = React.createClass({
+    getInitialState: function() {
+      return {isChecked: this.props.isChecked};
+    },
+    handleClick: function() {
+      this.setState({isChecked: !this.props.isChecked});
+      return this.props.onButtonClick(this.state.isChecked);
+    },
+    buttonClass: function() {
+      var activeClass = this.state.isChecked ? 'active' : '';
+      return this.props.name.replace(/\s/g, '-').toLowerCase()
+        + ' issue-button '
+        + activeClass;
     },
     render: function() {
       return (

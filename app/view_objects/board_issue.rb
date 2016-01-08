@@ -59,6 +59,7 @@ class BoardIssue
       columns: board.columns.map { |c| { id: c.id, name: c.name } },
       columnId: column_id,
       state: full_state,
+      isReady: ready?,
     }
   end
 end
