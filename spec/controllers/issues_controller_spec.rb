@@ -138,7 +138,7 @@ describe IssuesController do
         to receive(:call).
         and_return(issue_stat)
     end
-    before { allow(IssueStats::Mover).to receive(:call) }
+    before { allow(IssueStats::Mover).to receive(:call).and_return(issue_stat) }
 
     context 'responce' do
       before { request }

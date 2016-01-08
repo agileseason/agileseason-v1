@@ -155,15 +155,16 @@ class ApplicationController < ActionController::Base
     session[:return_url] = request.url unless request.url == root_url
   end
 
-  def broadcast(options)
+  def broadcast(options, force = false)
+    user = force ? User.new(remember_token: 'system_message') : current_user
     FayePusher.broadcast_board(
-      current_user || User.new(remember_token: 'system_message'),
+      user,
       @board,
       { action: action_name }.merge(options)
     )
   end
 
-  def broadcast_column(column)
-    broadcast(action: 'update_column', column_id: column.id)
+  def broadcast_column(column, force = false)
+    broadcast({ action: 'update_column', column_id: column.id }, force)
   end
 end

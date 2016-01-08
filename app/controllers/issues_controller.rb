@@ -54,8 +54,12 @@ class IssuesController < ApplicationController
   end
 
   def move_to
+    issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
+
     column_to = @board.columns.find(params[:column_id])
-    IssueStats::Mover.call(
+    column_from = issue_stat.column
+
+    issue_stat = IssueStats::Mover.call(
       user: current_user,
       board_bag: @board_bag,
       column_to: column_to,
@@ -63,9 +67,8 @@ class IssuesController < ApplicationController
       is_force_sort: !!params[:force]
     )
 
-    issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
-    broadcast_column(issue_stat.column)
-    broadcast_column(column_to)
+    broadcast_column(column_from, params[:force])
+    broadcast_column(column_to, params[:force])
 
     render json: {
       number: number,

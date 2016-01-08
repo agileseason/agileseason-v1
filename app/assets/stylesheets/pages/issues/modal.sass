@@ -74,6 +74,80 @@
       vertical-align: top
 
     .move-to
+      ul.column-list
+        display: -moz-box
+        display: -webkit-box
+        //display: -webkit-flexbox
+        float: right
+        list-style: none
+        padding: 0
+        width: calc(100% - 70px)
+
+        li
+          -moz-box-flex: 1
+          -webkit-box-flex: 1
+          //-webkit-flex: 1
+
+          &:last-child
+            a
+              +border-radius(0 100px 100px 0)
+              border-right: 1px solid #eee
+              &:after,
+              &:before
+                display: none
+
+          &:first-child
+            a
+              +border-radius(100px 0 0 100px)
+          &:hover
+            a
+              background: #eee
+            a
+              &:after
+                border-color: transparent transparent transparent #eee
+
+          &.active
+            &:hover
+              a
+                color: #000
+                cursor: default
+            a
+              background: $active
+              color: #000
+              border: 1px solid $active
+              border-right: none
+
+              &:after
+                border-color: transparent transparent transparent $active
+          a
+            +ajax_link
+            display: block
+            position: relative
+            padding: 1px 5px 2px 10px
+            border: 1px solid #eee
+            border-right: none
+
+            &:after, &:before
+              content: " "
+              width: 0
+              height: 0
+              border-style: solid
+              position: absolute
+
+            &:after
+              border-width: 11px 0 11px 9px
+              border-color: transparent transparent transparent #fff
+              right: -8px
+              top: 0px
+              z-index: 2
+
+            &:before
+              border-width: 12px 0 12px 10px
+              border-color: transparent transparent transparent #eeeeee
+              right: -9px
+              top: -1px
+              z-index: 1
+
     .issue-body
       margin-left: 60px
       display: inline-block

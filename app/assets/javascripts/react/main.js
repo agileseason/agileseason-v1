@@ -157,6 +157,12 @@ $(document).on('page:change', function () {
         this.updateIssueMiniature(data.number, data.issue);
       });
     },
+    handleColumnChange: function(columnId) {
+      var url = this.issueUrl() + '/move_to/' + columnId + '/force';
+      this.request(url, 'GET', {}, function(data) {
+        // TODO Update column badges.
+      });
+    },
     bodyMarkdown: function() {
       return {__html: this.state.issue.bodyMarkdown};
     },
@@ -176,6 +182,7 @@ $(document).on('page:change', function () {
             <CurrentLabelList data={this.state.currentLabels} />
             <div className='move-to'>
               <CurrentAssignee user={this.state.currentAssignee} />
+              <ColumnList data={this.props.issue.columns} current={this.props.issue.columnId} onColumnChange={this.handleColumnChange} />
             </div>
             <div className='issue-body' dangerouslySetInnerHTML={this.bodyMarkdown()} />
 
@@ -188,6 +195,38 @@ $(document).on('page:change', function () {
             <DueDateAction date={this.props.issue.dueDate} onDueDateChange={this.handleDueDateChange} />
           </div>
         </div>
+      );
+    }
+  });
+
+  var ColumnList = React.createClass({
+    getInitialState: function() {
+      return {
+        data: this.props.data,
+        current: this.props.current
+      };
+    },
+    handleColumnClick: function(e) {
+      var columnId = $(e.target).data('column');
+      if (columnId == this.state.current) {
+        return;
+      }
+      this.setState({current: columnId});
+      this.props.onColumnChange(columnId);
+    },
+    render: function() {
+      var columnNodes = this.state.data.map(function(column) {
+        var className = column.id == this.state.current ? 'active' : '';
+        return (
+          <li className={className} key={column.id}>
+            <a href='#' onClick={this.handleColumnClick} data-column={column.id}>{column.name}</a>
+          </li>
+        );
+      }.bind(this));
+      return (
+        <ul className='column-list'>
+          {columnNodes}
+        </ul>
       );
     }
   });

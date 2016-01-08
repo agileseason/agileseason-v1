@@ -56,6 +56,8 @@ class BoardIssue
       body: body,
       bodyMarkdown: markdown(body, board),
       dueDate: issue_stat.due_date_at ? issue_stat.due_date_at.to_datetime.utc.to_i * 1000 : nil,
+      columns: board.columns.map { |c| { id: c.id, name: c.name } },
+      columnId: column_id,
     }
   end
 end

@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   BLACKCHESTNUT_ID = 1
   SFOLT_ID = 2
   ADMINS = [BLACKCHESTNUT_ID, SFOLT_ID].freeze
-  GUEST = User.new(github_username: 'Guest', github_api: GithubApiGuest.new).freeze
+  GUEST = User.new(github_username: 'Guest', github_api: GithubApiGuest.new, remember_token: 'guest_token').freeze
 
   def to_s
     github_username
