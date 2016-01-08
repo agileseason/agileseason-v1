@@ -58,6 +58,7 @@ class BoardIssue
       dueDate: issue_stat.due_date_at ? issue_stat.due_date_at.to_datetime.utc.to_i * 1000 : nil,
       columns: board.columns.map { |c| { id: c.id, name: c.name } },
       columnId: column_id,
+      state: full_state,
     }
   end
 end

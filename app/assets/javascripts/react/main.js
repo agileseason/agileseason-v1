@@ -20,6 +20,7 @@ $(document).on('page:change', function () {
         currentLabels: this.getCheckedLabels(),
         currentAssignee: this.getAssignedUser(),
         currentDueDate: this.props.issue.dueDate,
+        currentState: this.props.issue.state,
         comments: []
       };
     },
@@ -163,13 +164,27 @@ $(document).on('page:change', function () {
         // TODO Update column badges.
       });
     },
+    handleStateButtonClick: function(state) {
+      this.setState({currentState: state});
+      var url = this.issueUrl() + '/' + state;
+      this.request(url, 'GET', {}, function(data) {
+        if (state == 'archive') {
+          $('#issues_' + data.number).remove();
+        } else {
+          this.updateIssueMiniature(data.number, data.issue);
+        }
+      });
+    },
     bodyMarkdown: function() {
       return {__html: this.state.issue.bodyMarkdown};
+    },
+    modalClassName: function() {
+      return 'issueModal ' + this.state.currentState;
     },
     render: function() {
       var githubIssueUrl = 'https://github.com/' + this.props.github_full_name + '/issues/' + this.props.issue.number;
       return (
-        <div className='issueModal'>
+        <div className={this.modalClassName()}>
           <div className='issue-content'>
             <Title
               number={this.props.issue.number}
@@ -193,6 +208,10 @@ $(document).on('page:change', function () {
             <LabelList data={this.props.issue.labels} onLabelChange={this.handleLabelChange} />
             <AssigneeList data={this.props.issue.collaborators} onAssigneeChange={this.handleAssigneeChange} />
             <DueDateAction date={this.props.issue.dueDate} onDueDateChange={this.handleDueDateChange} />
+            <EditButton name='Close Issue' options='close' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-issue-closed' />
+            <EditButton name='Reopen Issue' options='reopen' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-issue-reopened' />
+            <EditButton name='Archive Issue' options='archive' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-package' title='Remove issue from board' />
+            <EditButton name='Send to Board' options='unarchive' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-package' title='Send issue to board' />
           </div>
         </div>
       );
@@ -341,7 +360,7 @@ $(document).on('page:change', function () {
       this.props.onButtonClick();
     },
     render: function() {
-      return (<div className='close' onClick={this.handleClick}></div>)
+      return (<div className='close-modal' onClick={this.handleClick}></div>)
     }
   });
 
@@ -522,14 +541,14 @@ $(document).on('page:change', function () {
 
   var EditButton = React.createClass({
     handleClick: function() {
-      return this.props.onButtonClick();
+      return this.props.onButtonClick(this.props.options);
     },
     buttonClass: function() {
       return this.props.name.replace(/\s/g, '-').toLowerCase() + ' issue-button'
     },
     render: function() {
       return (
-        <div className={this.buttonClass()} onClick={this.handleClick}>
+        <div className={this.buttonClass()} onClick={this.handleClick} title={this.props.title}>
           <span className={this.props.icon}></span>
           <span>{this.props.name}</span>
         </div>

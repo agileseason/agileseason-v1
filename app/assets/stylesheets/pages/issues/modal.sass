@@ -23,6 +23,37 @@
     width: calc(100% - 40px)
     z-index: 2
 
+    .issueModal
+      &.open,
+      &.reopen
+        .issue-actions
+          .close-issue,
+            display: block
+          .reopen-issue,
+          .archive-issue,
+          .send-to-board
+            display: none
+
+      &.close,
+      &.closed,
+      &.unarchive
+        .issue-actions
+          .reopen-issue,
+          .archive-issue,
+            display: block
+          .close-issue,
+          .send-to-board
+            display: none
+
+      &.archive,
+        .issue-actions
+          .reopen-issue,
+          .archive-issue,
+          .close-issue,
+            display: none
+          .send-to-board
+            display: block
+
     .issue-title
       h1,
       textarea
@@ -40,7 +71,7 @@
     input[type='submit']
       display: block
 
-    .close
+    .close-modal
       +close
       right: 0
       top: 0
@@ -180,7 +211,7 @@
         margin-bottom: 12px
 
         .octicon
-          margin: 0 4px 0 -4px
+          margin: 0 8px 1px -4px
 
       .label-list,
       .assignee-list,

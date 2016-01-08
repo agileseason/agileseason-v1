@@ -89,28 +89,41 @@ class IssuesController < ApplicationController
     issue_stat = IssueStats::Closer.call(user: current_user, board_bag: @board_bag, number: number)
     broadcast_column(issue_stat.column)
 
-    render nothing: true
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.json { render_board_issue_json }
+    end
   end
 
   def reopen
     issue_stat = IssueStats::Reopener.new(current_user, @board_bag, number).call
     broadcast_column(issue_stat.column)
 
-    render nothing: true
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.json { render_board_issue_json }
+    end
   end
 
   def archive
     issue_stat = IssueStats::Archiver.new(current_user, @board_bag, number).call
     broadcast_column(issue_stat.column)
 
-    render json: wip_badge_json(issue_stat.column)
+    respond_to do |format|
+      format.html { render json: wip_badge_json(issue_stat.column) }
+      format.json { render_board_issue_json }
+    end
   end
 
   def unarchive
     issue_stat = IssueStats::Unarchiver.new(current_user, @board_bag, number).call
-    broadcast_column(issue_stat.column)
+    # NOTE Use force because there is no div#issue-n to update.
+    broadcast_column(issue_stat.column, true)
 
-    render nothing: true
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.json { render_board_issue_json }
+    end
   end
 
   def assignee
