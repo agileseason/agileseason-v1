@@ -119,6 +119,49 @@ var Avatar = React.createClass({
   }
 });
 
+var UploadForm = React.createClass({
+  componentDidMount: function() {
+    var globalContainer = $('.issue-modal-container');
+    var url = globalContainer.data('direct_post_url')
+    var form_data = globalContainer.data('direct_post_form_data')
+
+    var $input = $(this.refs.uploadFile);
+    $input.fileupload({
+      fileInput: $input,
+      url: url,
+      type: 'POST',
+      autoUpload: true,
+      formData: form_data,
+      paramName: 'file',
+      dataType: 'XML',
+      replaceFileInput: false,
+
+      start: function(e) {
+        console.log('Start file upload...');
+      },
+      done: function(e, data) {
+        key = $(data.jqXHR.responseXML).find('Key').text();
+        imageUrl = window.build_s3_image_url(url, key);
+        this.uploadDone(imageUrl);
+      }.bind(this),
+      fail: function(e, data) {
+        console.error('Fail file upload!');
+      }
+    });
+  },
+  uploadDone: function(imageUrl) {
+    this.props.onUpload(imageUrl);
+  },
+  render: function() {
+    return (
+      <form className='directUpload' style={{display: this.props.display}}>
+        <a>Attach images</a>
+        <input ref='uploadFile' type='file' name='/[img]' id='_img' />
+      </form>
+    );
+  }
+});
+
 var CommentEditForm = React.createClass({
   getInitialState: function() {
     return {
@@ -129,14 +172,19 @@ var CommentEditForm = React.createClass({
   handleTextChange: function(e) {
     this.setState({ body: e.target.value });
   },
+  handleUpload: function(imageUrl) {
+    if (this.state.display == 'none') {
+      return;
+    }
+    this.setState({ body: this.state.body + imageUrl + "\n" });
+    this.focusToEnd();
+  },
   handleSubmit: function(e) {
     e.preventDefault();
     this.saveComment();
   },
   componentDidMount: function() {
-    // TODO Remove copy-past $textarea
-    var textarea = $('#' + this.props.data.id)
-    textarea.on('keydown', function(e) {
+    $(this.refs.textarea).on('keydown', function(e) {
       if (e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
         this.saveComment();
         return false;
@@ -144,38 +192,47 @@ var CommentEditForm = React.createClass({
     }.bind(this));
   },
   componentDidUpdate: function() {
-    var textarea = $('#' + this.props.data.id)
+    var textarea = $(this.refs.textarea)
     if (!textarea.hasClass('elasticable')) {
       textarea.addClass('elasticable');
       textarea.elastic();
-      textarea.focus().val('').val(this.state.body);
+      this.focusToEnd();
     }
+  },
+  focusToEnd: function() {
+    $(this.refs.textarea).focus().val('').val(this.state.body);
   },
   saveComment: function() {
     var body = this.state.body.trim();
     if (!body) {
       return;
     }
-    var textarea = $('#' + this.props.data.id)
-    textarea.blur();
+    $(this.refs.textarea).blur();
     this.props.onCommentSubmit({body: body});
   },
   render: function() {
     return (
-      <form className='comment-edit-form' onSubmit={this.handleSubmit} style={{display: this.props.display}}>
-        <textarea
-          id={this.props.data.id}
-          type='text'
-          placeholder='Edit comment or upload an image...'
-          value={this.state.body}
-          onChange={this.handleTextChange}
-          style={{opacity: this.props.opacity}}
-        />
-        <div className='actions'>
-          <a href='#' onClick={this.props.onCloseWithoutSaveClick}>Close without save</a>
-          <input type='submit' value='Update' className='button' />
-        </div>
-      </form>
+      <div>
+        <form
+          className='comment-edit-form'
+          onSubmit={this.handleSubmit}
+          style={{display: this.props.display}}
+        >
+          <textarea
+            ref='textarea'
+            type='text'
+            placeholder='Edit comment or upload an image...'
+            value={this.state.body}
+            onChange={this.handleTextChange}
+            style={{opacity: this.props.opacity}}
+          />
+          <div className='actions'>
+            <a href='#' onClick={this.props.onCloseWithoutSaveClick}>Close without save</a>
+            <input type='submit' value='Update' className='button' />
+          </div>
+        </form>
+        <UploadForm display={this.props.display} onUpload={this.handleUpload} />
+      </div>
     );
   }
 });

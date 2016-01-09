@@ -1,2 +1,5 @@
-.issue-modal-container
+.issue-modal-container [
+    data-direct_post_url="#{@direct_post.url}"
+    data-direct_post_form_data="#{@direct_post.fields.to_json}"
+  ]
   .issue-modal#issue-modal

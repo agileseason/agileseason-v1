@@ -44,5 +44,7 @@ window.init_uploading = ($input) ->
       $('.info', $(@).closest('form')).show()
 
 not_current_form = ($input) ->
-  (!$input.closest('.b-editable-form.active').length && !$input.closest('.add-comment-form').length) ||
-  ($input.closest('.add-comment-form').length && $('.b-editable-form.active').length)
+  (!$input.closest('.b-editable-form.active').length &&
+    !$input.closest('.add-comment-form').length) ||
+      ($input.closest('.add-comment-form').length &&
+        $('.b-editable-form.active').length)

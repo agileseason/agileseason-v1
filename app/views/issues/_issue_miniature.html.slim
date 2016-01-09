@@ -15,9 +15,6 @@
       = k(:issue, issue).title
     a.url href="#{issue.html_url}" ##{issue.number}
 
-  /.issue-data
-    /= render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @board_bag.labels }
-
   .icons
     = render partial: 'issues/assignee', locals: { issue: issue }
 
