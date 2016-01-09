@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var UploadForm = require('./upload-form.jsx');
 
 module.exports = React.createClass({
   render: function() {
@@ -115,49 +116,6 @@ var Avatar = React.createClass({
         height={this.props.height}
         width={this.props.width}
       />
-    );
-  }
-});
-
-var UploadForm = React.createClass({
-  componentDidMount: function() {
-    var globalContainer = $('.issue-modal-container');
-    var url = globalContainer.data('direct_post_url')
-    var form_data = globalContainer.data('direct_post_form_data')
-
-    var $input = $(this.refs.uploadFile);
-    $input.fileupload({
-      fileInput: $input,
-      url: url,
-      type: 'POST',
-      autoUpload: true,
-      formData: form_data,
-      paramName: 'file',
-      dataType: 'XML',
-      replaceFileInput: false,
-
-      start: function(e) {
-        console.log('Start file upload...');
-      },
-      done: function(e, data) {
-        key = $(data.jqXHR.responseXML).find('Key').text();
-        imageUrl = window.build_s3_image_url(url, key);
-        this.uploadDone(imageUrl);
-      }.bind(this),
-      fail: function(e, data) {
-        console.error('Fail file upload!');
-      }
-    });
-  },
-  uploadDone: function(imageUrl) {
-    this.props.onUpload(imageUrl);
-  },
-  render: function() {
-    return (
-      <form className='directUpload' style={{display: this.props.display}}>
-        <a>Attach images</a>
-        <input ref='uploadFile' type='file' name='/[img]' id='_img' />
-      </form>
     );
   }
 });

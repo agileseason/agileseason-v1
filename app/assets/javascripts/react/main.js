@@ -12,10 +12,10 @@ $(document).on('page:change', function () {
 
   var React = require('react');
   var ReactDOM = require('react-dom');
-
   var Title = require('./title.jsx');
   var ColumnList = require('./column-list.jsx');
   var CommentList = require('./comment-list.jsx');
+  var UploadForm = require('./upload-form.jsx');
 
   window.IssueModal = React.createClass({
     getInitialState: function() {
@@ -484,24 +484,29 @@ $(document).on('page:change', function () {
     getInitialState: function() {
       return { body: '', opacity: 1.0 };
     },
-    handleTextChange: function(e) {
-      this.setState({body: e.target.value});
-    },
-    handleSubmit: function(e) {
-      e.preventDefault();
-      this.saveCommentBegin();
-    },
     componentDidMount: function() {
-      this.textarea().elastic();
-      this.textarea().on('keydown', function(e) {
+      var $textarea = $(this.refs.textarea);
+      $textarea.elastic();
+      $textarea.on('keydown', function(e) {
         if (e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
           this.saveCommentBegin();
           return false;
         }
       }.bind(this));
     },
-    textarea: function() {
-      return $('.comment-form textarea');
+    handleTextChange: function(e) {
+      this.setState({body: e.target.value});
+    },
+    focusToEnd: function() {
+      $(this.refs.textarea).focus().val('').val(this.state.body);
+    },
+    handleUpload: function(imageUrl) {
+      this.setState({ body: this.state.body + imageUrl + "\n" });
+      this.focusToEnd();
+    },
+    handleSubmit: function(e) {
+      e.preventDefault();
+      this.saveCommentBegin();
     },
     saveCommentBegin: function() {
       var body = this.state.body.trim();
@@ -509,7 +514,7 @@ $(document).on('page:change', function () {
         return;
       }
       this.setState({opacity: 0.5});
-      this.textarea().blur();
+      $(this.refs.textarea).blur();
       this.props.onCommentSubmit({body: body}, this.saveCommentFinish);
     },
     saveCommentFinish: function() {
@@ -517,18 +522,22 @@ $(document).on('page:change', function () {
     },
     render: function() {
       return (
-        <form className='comment-form' onSubmit={this.handleSubmit}>
-          <textarea
-            type='text'
-            placeholder='Add new comment or upload an image...'
-            value={this.state.body}
-            onChange={this.handleTextChange}
-            style={{opacity: this.state.opacity}}
-          />
-          <div className='actions'>
-            <input type='submit' value='Comment' className='button' />
-          </div>
-        </form>
+        <div className='comment-form'>
+          <form onSubmit={this.handleSubmit}>
+            <textarea
+              ref='textarea'
+              type='text'
+              placeholder='Add new comment or upload an image...'
+              value={this.state.body}
+              onChange={this.handleTextChange}
+              style={{opacity: this.state.opacity}}
+            />
+            <div className='actions'>
+              <input type='submit' value='Comment' className='button' />
+            </div>
+          </form>
+          <UploadForm onUpload={this.handleUpload} />
+        </div>
       );
     }
   });
