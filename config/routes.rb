@@ -35,7 +35,7 @@ Rails.application.routes.draw do
       get ':number/reopen', to: 'issues#reopen', as: :reopen
       get ':number/archive', to: 'issues#archive', as: :archive
       get ':number/unarchive', to: 'issues#unarchive', as: :unarchive
-      get ':number/assignee/:login', to: 'issues#assignee', as: :assignee
+      get ':number/assignee/:login', to: 'issues#assignee'
       post ':number/due_date', to: 'issues#due_date', as: :due_date
       post ':number/toggle_ready', to: 'issues#toggle_ready', as: :toggle_ready
       patch ':number/update', to: 'issues#update', as: :update

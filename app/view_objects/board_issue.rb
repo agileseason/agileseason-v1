@@ -50,12 +50,17 @@ class BoardIssue
   end
 
   def to_hash
+    to_hash_min.merge({
+      body: body,
+      bodyMarkdown: markdown(body, board),
+    })
+  end
+
+  def to_hash_min
     {
       number: number,
       title: title,
-      # TODO Extract body and bodyMarkdown to full-variant.
-      body: body,
-      bodyMarkdown: markdown(body, board),
+      assignee: assignee_to_hash,
       dueDate: issue_stat.due_date_at ? issue_stat.due_date_at.to_datetime.utc.to_i * 1000 : nil,
       columns: board.columns.map { |c| { id: c.id, name: c.name } },
       columnId: column_id,
@@ -63,5 +68,12 @@ class BoardIssue
       isReady: ready?,
       commentCount: comments,
     }
+  end
+
+  private
+
+  def assignee_to_hash
+    return unless assignee
+    { login: assignee.login, avatarUrl: assignee.avatar_url }
   end
 end

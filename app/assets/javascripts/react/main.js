@@ -21,8 +21,9 @@ $(document).on('page:change', function () {
     getInitialState: function() {
       return {
         issue: this.props.issue,
+        collaborators: this.props.issue.collaborators,
         currentLabels: this.getCheckedLabels(),
-        currentAssignee: this.getAssignedUser(),
+        currentAssignee: this.props.issue.assignee,
         currentDueDate: this.props.issue.dueDate,
         currentState: this.props.issue.state,
         comments: this.getStubComments(this.props.issue.commentCount)
@@ -59,15 +60,6 @@ $(document).on('page:change', function () {
       });
       return checkedLabels;
     },
-    getAssignedUser: function() {
-      var assignee = null;
-      this.props.issue.collaborators.forEach(function(user) {
-        if (user.assigned) {
-          assignee = user;
-        }
-      });
-      return assignee;
-    },
     getStubComments: function(count) {
       var stubs = [];
       for (var i=0; i<count; i++) {
@@ -82,6 +74,7 @@ $(document).on('page:change', function () {
     componentDidMount: function() {
       this.request(this.issueUrl(), 'GET', {}, function(issue) {
         this.setState({ issue: issue });
+        this.setState({ currentAssignee: issue.assignee })
       });
       this.loadCommentFromServer();
     },
@@ -111,17 +104,11 @@ $(document).on('page:change', function () {
         this.updateIssueMiniature(data.number, data.issue);
       });
     },
-    handleAssigneeChange: function(login, assigned) {
-      this.props.issue.collaborators.forEach(function(user) {
-        if (user.login == login) {
-          user.assigned = assigned;
-        } else {
-          user.assigned = false;
-        }
-      });
-      this.setState({ currentAssignee: this.getAssignedUser() })
+    handleAssigneeChange: function(user, isAssigned) {
+      var assignee = isAssigned ? user : null;
+      this.setState({ currentAssignee: assignee })
 
-      var url = this.issueUrl() + '/assignee/' + login;
+      var url = this.issueUrl() + '/assignee/' + user.login;
       this.request(url, 'GET', {}, function(data) {
         this.updateIssueMiniature(data.number, data.issue);
       });
@@ -215,7 +202,7 @@ $(document).on('page:change', function () {
             <CurrentLabelList data={this.state.currentLabels} />
             <div className='move-to'>
               <CurrentAssignee user={this.state.currentAssignee} />
-              <ColumnList data={this.props.issue.columns} current={this.props.issue.columnId} onColumnChange={this.handleColumnChange} />
+              <ColumnList data={this.state.issue.columns} current={this.state.issue.columnId} onColumnChange={this.handleColumnChange} />
             </div>
             <div className='issue-body' dangerouslySetInnerHTML={this.bodyMarkdown()} />
 
@@ -224,8 +211,12 @@ $(document).on('page:change', function () {
           </div>
           <div className='issue-actions'>
             <LabelList data={this.props.issue.labels} onLabelChange={this.handleLabelChange} />
-            <AssigneeList data={this.props.issue.collaborators} onAssigneeChange={this.handleAssigneeChange} />
-            <DueDateAction date={this.props.issue.dueDate} onDueDateChange={this.handleDueDateChange} />
+            <AssigneeList
+              data={this.props.issue.collaborators}
+              current={this.state.currentAssignee}
+              onAssigneeChange={this.handleAssigneeChange}
+            />
+            <DueDateAction date={this.state.issue.dueDate} onDueDateChange={this.handleDueDateChange} />
             <EditButton name='Close Issue' options='close' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-issue-closed' />
             <EditButton name='Reopen Issue' options='reopen' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-issue-reopened' />
             <EditButton name='Archive Issue' options='archive' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-package' title='Remove the issue from board' />
@@ -329,16 +320,6 @@ $(document).on('page:change', function () {
     getInitialState: function() {
       return { data: this.props.data, overlay: 'none' };
     },
-    // TODO Remove this function
-    getAssignedUser: function() {
-      var assignee = null;
-      this.props.data.forEach(function(user) {
-        if (user.assigned) {
-          assignee = user;
-        }
-      });
-      return assignee;
-    },
     handleEditButtonClick: function() {
       $('.assignee-list').toggleClass('hidden');
       state = { overlay: 'block' };
@@ -349,8 +330,14 @@ $(document).on('page:change', function () {
     },
     render: function() {
       var assigneeNodes = this.state.data.map(function(user) {
+        var isAssigned = this.props.current && this.props.current.login == user.login;
         return (
-          <Assignee key={user.login} avatarUrl={user.avatarUrl} assigned={user.assigned} onAssigneeChange={this.props.onAssigneeChange}>
+          <Assignee
+            key={user.login}
+            user={user}
+            assigned={isAssigned}
+            onAssigneeChange={this.props.onAssigneeChange}
+          >
             {user.login}
           </Assignee>
         );
@@ -368,12 +355,8 @@ $(document).on('page:change', function () {
   });
 
   var Assignee = React.createClass({
-    getInitialState: function() {
-      return { assigned: this.props.assigned }
-    },
     handleChange: function() {
-      this.setState({ assigned: this.refs.assigneeCheckbox.checked });
-      this.props.onAssigneeChange(this.props.children, this.refs.assigneeCheckbox.checked);
+      this.props.onAssigneeChange(this.props.user, this.refs.assigneeCheckbox.checked);
     },
     render: function() {
       return (

@@ -28,6 +28,7 @@ class GithubApi
 
     def assign(board, number, assignee)
       issue = issue(board, number)
+      # TODO Remove current_assignee and logic with nil if eq.
       current_assignee = issue.try(:assignee).try(:login)
       assignee = nil if current_assignee == assignee
       # NOTE client.update_issue(board.github_id, number, assignee: github_username) doesn't work

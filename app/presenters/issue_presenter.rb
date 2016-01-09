@@ -43,8 +43,7 @@ class IssuePresenter < Keynote::Presenter
 
   def collaborators_to_json(board_bag)
     board_bag.collaborators.sort_by(&:login).map do |user|
-      # NOTE Do not replace on "issue.assignee.try(:login) == user.login", it doesn't work.
-      { login: user.login, avatarUrl: user.avatar_url, assigned: issue.assignee && issue.assignee.login == user.login }
+      { login: user.login, avatarUrl: user.avatar_url }
     end
   end
 
@@ -70,7 +69,7 @@ class IssuePresenter < Keynote::Presenter
   end
 
   def to_hash(board_bag)
-    issue.to_hash.merge({
+    issue.to_hash_min.merge({
       labels: labels_to_json(board_bag),
       collaborators: collaborators_to_json(board_bag)
     });
