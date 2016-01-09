@@ -53,6 +53,7 @@ class BoardIssue
     {
       number: number,
       title: title,
+      # TODO Extract body and bodyMarkdown to full-variant.
       body: body,
       bodyMarkdown: markdown(body, board),
       dueDate: issue_stat.due_date_at ? issue_stat.due_date_at.to_datetime.utc.to_i * 1000 : nil,
@@ -60,6 +61,7 @@ class BoardIssue
       columnId: column_id,
       state: full_state,
       isReady: ready?,
+      commentCount: comments,
     }
   end
 end

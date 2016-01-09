@@ -302,6 +302,11 @@
           float: left
           margin: -18px 0 0 -80px
 
+          &.stub
+            background: inline-image('pages/p-issues-show/stub_avatar.png') 0 0 no-repeat transparent
+            height: 40px
+            width: 40px
+
         .header
           color: $lightgrey
           margin-bottom: 10px
@@ -316,6 +321,9 @@
             +ajax_link
 
         .body
+          &.stub
+            background: inline-image('pages/p-issues-show/stub_body.png') 0 -8px no-repeat transparent
+            height: 46px
 
     .comment-form
       +border-radius(2px)

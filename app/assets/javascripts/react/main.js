@@ -25,7 +25,7 @@ $(document).on('page:change', function () {
         currentAssignee: this.getAssignedUser(),
         currentDueDate: this.props.issue.dueDate,
         currentState: this.props.issue.state,
-        comments: []
+        comments: this.getStubComments(this.props.issue.commentCount)
       };
     },
     issueUrl: function() {
@@ -67,6 +67,14 @@ $(document).on('page:change', function () {
         }
       });
       return assignee;
+    },
+    getStubComments: function(count) {
+      var stubs = [];
+      for (var i=0; i<count; i++) {
+        stubs.push({id: i, isStub: true});
+      }
+
+      return stubs;
     },
     updateIssueMiniature: function(number, html) {
       $('#issues_' + number).replaceWith(html);

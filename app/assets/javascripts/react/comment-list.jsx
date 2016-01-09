@@ -4,14 +4,23 @@ var ReactDOM = require('react-dom');
 module.exports = React.createClass({
   render: function() {
     var commentNodes = this.props.data.map(function(comment) {
-      return (
-        <Comment
-          data={comment}
-          key={comment.id}
-          onDeleteClick={this.props.onDeleteClick}
-          onUpdateClick={this.props.onUpdateClick}
-        />
-      );
+      if (comment.isStub) {
+        return (
+          <div key={comment.id} className='comment'>
+            <div className='avatar stub' />
+            <div className='body stub' />
+          </div>
+        );
+      } else {
+        return (
+          <Comment
+            data={comment}
+            key={comment.id}
+            onDeleteClick={this.props.onDeleteClick}
+            onUpdateClick={this.props.onUpdateClick}
+          />
+        );
+      }
     }.bind(this));
     return (
       <div className="comment-list">
