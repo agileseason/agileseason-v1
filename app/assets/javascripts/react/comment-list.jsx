@@ -59,12 +59,25 @@ var Comment = React.createClass({
   },
   handleCommentSubmit: function(comment) {
     this.props.onUpdateClick(this.props.data.id, comment, this.updateCommentFinish);
-    this.setState({ body: comment.body, opacity: 0.5 });
+    this.setState({body: comment.body, opacity: 0.5});
   },
   handleDeleteClick: function() {
     if (confirm('Are you sure?')) {
       this.props.onDeleteClick(this.props.data.id);
     }
+  },
+  handleBodyClick: function(e) {
+    if (e.target.type != 'checkbox') {
+      return;
+    }
+    var $checkbox = $(e.target);
+    var index = $checkbox.parents('.body').find('input').index($checkbox);
+    var checkbox_value = $checkbox.is(':checked') ? '[x]' : '[ ]';
+    var newBody = replaceNthMatch(
+      this.state.body, /(\[(?:x|\s)\])/, index + 1, checkbox_value
+    );
+    this.setState({body: newBody});
+    this.props.onUpdateClick(this.props.data.id, {body: newBody});
   },
   updateCommentFinish: function(comment) {
     this.setState({
@@ -90,7 +103,11 @@ var Comment = React.createClass({
           &nbsp;or&nbsp;
           <a href='#' onClick={this.handleDeleteClick}>delete</a>
         </div>
-        <div className='body' style={{display: this.state.bodyDisplay}}>
+        <div
+          className='body'
+          onClick={this.handleBodyClick}
+          style={{display: this.state.bodyDisplay}}
+        >
           <div dangerouslySetInnerHTML={this.bodyMarkdown()} />
         </div>
         <CommentEditForm
@@ -127,6 +144,29 @@ var CommentEditForm = React.createClass({
       diaplay: this.props.display
     };
   },
+  componentDidMount: function() {
+    $(this.refs.textarea).on('keydown', function(e) {
+      if (e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
+        this.saveComment();
+        return false;
+      }
+    }.bind(this));
+  },
+  componentWillReceiveProps: function(newProps) {
+    if (newProps.body && newProps.body != this.state.body) {
+      this.setState({body: newProps.body});
+    }
+    if (newProps.display == 'block') {
+      setTimeout(function() {
+        var textarea = $(this.refs.textarea)
+        if (!textarea.hasClass('elasticable')) {
+          textarea.addClass('elasticable');
+          textarea.elastic();
+        }
+        this.focusToEnd();
+      }.bind(this), 10);
+    }
+  },
   handleTextChange: function(e) {
     this.setState({ body: e.target.value });
   },
@@ -140,22 +180,6 @@ var CommentEditForm = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
     this.saveComment();
-  },
-  componentDidMount: function() {
-    $(this.refs.textarea).on('keydown', function(e) {
-      if (e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
-        this.saveComment();
-        return false;
-      }
-    }.bind(this));
-  },
-  componentDidUpdate: function() {
-    var textarea = $(this.refs.textarea)
-    if (!textarea.hasClass('elasticable')) {
-      textarea.addClass('elasticable');
-      textarea.elastic();
-      this.focusToEnd();
-    }
   },
   focusToEnd: function() {
     $(this.refs.textarea).focus().val('').val(this.state.body);

@@ -139,7 +139,9 @@ $(document).on('page:change', function () {
     handleUpdateComment: function(id, comment, successCallback) {
       var url = this.issueUrl() + '/update_comment/' + id;
       this.request(url, 'POST', { comment: comment }, function(comment) {
-        successCallback(comment);
+        if (successCallback) {
+          successCallback(comment);
+        }
       });
     },
     handleDueDateChange: function(date, time) {
