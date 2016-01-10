@@ -4,11 +4,6 @@ module Cached
     attribute :board, Board
     attribute :number, Integer
 
-    def call
-      return super if board.public? && board.private_repo?
-      fetch
-    end
-
     private
 
     def fetch

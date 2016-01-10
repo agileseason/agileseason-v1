@@ -235,7 +235,11 @@ describe IssuesController do
       before { subject }
 
       it { expect(response).to have_http_status(:success) }
-      it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+      it do
+        expect(controller).
+          to have_received(:broadcast_column).
+          with(issue_stat.column, true)
+      end
     end
 
     context 'behavior' do
