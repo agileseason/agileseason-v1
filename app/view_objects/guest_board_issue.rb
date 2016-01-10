@@ -6,12 +6,4 @@ class GuestBoardIssue < BoardIssue
     comments = Cached::Comments.call(user: user, board: issue_stat.board, number: issue_stat.number)
     comments.size
   end
-
-  def column_id
-    0
-  end
-
-  def due_date_at
-    nil
-  end
 end

@@ -10,6 +10,9 @@ module.exports = React.createClass({
     };
   },
   handleColumnClick: function(e) {
+    if (this.props.isReadonly) {
+      return;
+    }
     var columnId = $(e.target).data('column');
     if (columnId == this.state.current) {
       return;

@@ -198,17 +198,27 @@ $(document).on('page:change', function () {
               title={this.props.issue.title}
               url={githubIssueUrl}
               dueDate={this.state.currentDueDate}
+              isReadonly={this.props.isReadonly}
               onUpdateTitle={this.handleUpdateTitle}
             />
             <CloseButton onButtonClick={this.handleCloseButton} />
             <CurrentLabelList data={this.state.currentLabels} />
             <div className='move-to'>
               <CurrentAssignee user={this.state.currentAssignee} />
-              <ColumnList data={this.state.issue.columns} current={this.state.issue.columnId} onColumnChange={this.handleColumnChange} />
+              <ColumnList
+                data={this.state.issue.columns}
+                current={this.state.issue.columnId}
+                isReadonly={this.props.isReadonly}
+                onColumnChange={this.handleColumnChange}
+              />
             </div>
             <div className='issue-body' dangerouslySetInnerHTML={this.bodyMarkdown()} />
 
-            <CommentList data={this.state.comments} onDeleteClick={this.handleDeleteComment} onUpdateClick={this.handleUpdateComment} />
+            <CommentList
+              data={this.state.comments}
+              onDeleteClick={this.handleDeleteComment}
+              onUpdateClick={this.handleUpdateComment}
+            />
             <CommentForm onCommentSubmit={this.handleCommentSubmit} />
           </div>
           <div className='issue-actions'>
@@ -544,11 +554,12 @@ $(document).on('page:change', function () {
     }
   });
 
-  window.IssueModalRender = function(issue, github_full_name) {
+  window.IssueModalRender = function(issue, github_full_name, isReadonly) {
     ReactDOM.render(
       <IssueModal
         issue={issue}
         github_full_name={github_full_name}
+        isReadonly={isReadonly}
       />,
       document.getElementById('issue-modal')
     );

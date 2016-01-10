@@ -472,3 +472,24 @@
       padding: 0
       width: auto
     // [End] Date picker for issue
+
+  &.readonly
+    .issue-modal
+      .comment-list
+        .comment
+          .header
+            span, a
+              display: none !important
+      .comment-form
+        display: none !important
+
+      .issue-actions
+        .labels,
+        .assignee,
+        .due-date,
+        .close-issue,
+        .reopen-issue,
+        .archive-issue,
+        .send-to-board,
+        .ready
+          display: none !important

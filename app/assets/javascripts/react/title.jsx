@@ -21,6 +21,9 @@ module.exports = React.createClass({
     }
   },
   handleEditTitleClick: function() {
+    if (this.props.isReadonly) {
+      return;
+    }
     var title = this.state.title.trim();
     if (title == '') {
       return;

@@ -17,6 +17,7 @@ $(document).on 'page:change', ->
       window.IssueModalRender(
         $issue.data('issue'),
         $('.board').data('github_full_name'),
+        $('.board').data('readonly') == 'readonly',
       )
       $container.show()
 
