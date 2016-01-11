@@ -203,7 +203,7 @@ var CommentEditForm = React.createClass({
           <textarea
             ref='textarea'
             type='text'
-            placeholder='Edit comment or upload an image...'
+            placeholder='Leave a comment'
             value={this.state.body}
             onChange={this.handleTextChange}
             style={{opacity: this.props.opacity}}

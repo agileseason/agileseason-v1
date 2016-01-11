@@ -539,7 +539,7 @@ $(document).on('page:change', function () {
             <textarea
               ref='textarea'
               type='text'
-              placeholder='Add new comment or upload an image...'
+              placeholder='Leave a comment or upload an image...'
               value={this.state.body}
               onChange={this.handleTextChange}
               style={{opacity: this.state.opacity}}
