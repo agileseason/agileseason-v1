@@ -427,15 +427,15 @@ $(document).on('page:change', function () {
     },
     render: function() {
       return (
-        <div className='label' style={{backgroundColor: this.props.color}}>
+        <label className='label' style={{backgroundColor: this.props.color}}>
           <input
             type='checkbox'
             checked={this.state.checked}
             ref='labelCheckbox'
             onChange={this.handleChange}
           />
-          <span>{this.props.children}</span>
-        </div>
+          {this.props.children}
+        </label>
       );
     }
   });
