@@ -368,19 +368,19 @@ $(document).on('page:change', function () {
 
   var Assignee = React.createClass({
     handleChange: function() {
-      this.props.onAssigneeChange(this.props.user, this.refs.assigneeCheckbox.checked);
+      this.props.onAssigneeChange(
+        this.props.user,
+        !this.props.assigned
+      );
     },
     render: function() {
+      var checkedClass = this.props.assigned ? 'octicon octicon-check' : '';
       return (
-        <div className='assign'>
-          <input
-            type='checkbox'
-            checked={this.props.assigned}
-            ref='assigneeCheckbox'
-            onChange={this.handleChange}
-          />
+        <a className='assign' href='#' onClick={this.handleChange}>
+          <img src={this.props.user.avatarUrl} title={this.props.user.login} />
           <span>{this.props.children}</span>
-        </div>
+          <span className={checkedClass}></span>
+        </a>
       );
     }
   });
