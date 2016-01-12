@@ -52,7 +52,7 @@ $(document).on('page:change', function () {
       });
     },
     getCheckedLabels: function() {
-      var checkedLabels = []
+      var checkedLabels = [];
       this.props.issue.labels.forEach(function(label) {
         if (label.checked) {
           checkedLabels.push(label);
@@ -74,7 +74,7 @@ $(document).on('page:change', function () {
     componentDidMount: function() {
       this.request(this.issueUrl(), 'GET', {}, function(issue) {
         this.setState({ issue: issue });
-        this.setState({ currentAssignee: issue.assignee })
+        this.setState({ currentAssignee: issue.assignee });
       });
       this.loadCommentFromServer();
     },
@@ -88,7 +88,7 @@ $(document).on('page:change', function () {
       });
     },
     handleLabelChange: function(labelName, checked) {
-      var labelsToSave = []
+      var labelsToSave = [];
       this.props.issue.labels.forEach(function(label) {
         if (label.name == labelName) {
           label.checked = checked;
