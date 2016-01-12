@@ -22,8 +22,6 @@ html
     - if @board.present? && @board.persisted?
       = render partial: 'dashboard_modal'
 
-    = render partial: 'modal'
-
     - if Rails.env.production?
       = render partial: 'application/counters/yandex_metrika'
       = render partial: 'application/counters/google_analytics'

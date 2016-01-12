@@ -50,14 +50,20 @@ Look at the our development board for example - [agileseason.com](https://agiles
 2. Install [pow](http://pow.cx/) and set up app `cd ~/.pow && ln -s ~/PROJECTS_DIR/agileseason`
 3. Create databases:
   1. `$ psql -d postgres`
-  2. `postgres=# create user agileseason_development with password 'agileseason';`
-  3. `postgres=# alter user agileseason_development createdb;`
-  4. `postgres=# create user agileseason_test with password 'agileseason';`
-  5. `postgres=# alter user agileseason_test createdb;`
-  6. `$ rake db:create`
-  7. `$ rake db:migrate`
+  1. `postgres=# create user agileseason_development with password 'agileseason';`
+  1. `postgres=# alter user agileseason_development createdb;`
+  1. `postgres=# create user agileseason_test with password 'agileseason';`
+  1. `postgres=# alter user agileseason_test createdb;`
+  1. `$ rake db:create`
+  1. `$ rake db:migrate`
+  1. `npm install --save react react-dom babelify babel-preset-react`
+  1. `browserify -t [ babelify --presets [ react ] ] app/assets/javascripts/react/main.js -o app/assets/javascripts/react/bundle.js`
 4. Run Sidekiq `bundle exec sidekiq`
 5. You will now have Agile Season running on `http://agileseason.dev`.
+
+### Dependencies
+  1. `psql`
+  1. `node` and `browserify`
 
 ### Backup
 1. Add to `~/.zshrc` rows `export BACKUP_DROPBOX_API_KEY='...'` and `export BACKUP_DROPBOX_API_SECRET='...'`

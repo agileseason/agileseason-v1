@@ -138,7 +138,7 @@ describe IssuesController do
         to receive(:call).
         and_return(issue_stat)
     end
-    before { allow(IssueStats::Mover).to receive(:call) }
+    before { allow(IssueStats::Mover).to receive(:call).and_return(issue_stat) }
 
     context 'responce' do
       before { request }
@@ -235,7 +235,11 @@ describe IssuesController do
       before { subject }
 
       it { expect(response).to have_http_status(:success) }
-      it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
+      it do
+        expect(controller).
+          to have_received(:broadcast_column).
+          with(issue_stat.column, true)
+      end
     end
 
     context 'behavior' do

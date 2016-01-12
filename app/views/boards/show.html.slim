@@ -4,7 +4,12 @@
     data-faye-url="#{FayePusher::URL}"
     data-faye-channel="#{FayePusher.board_channel(@board)}"
     data-faye-client-id="#{current_user.remember_token}"
+
+    data-login="#{current_user}"
+    data-readonly="#{:readonly if @board_bag.readonly?}"
   ]
+
+  = render partial: 'issues/modal'
 
   .board-columns
     - @board_bag.columns.each do |column|

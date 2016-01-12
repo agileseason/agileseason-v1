@@ -4,12 +4,22 @@ class CommentsController < ApplicationController
   def index
     comments = Cached::Comments.call(user: current_user, board: @board, number: number)
     sync_comments(comments)
-    render(
-      partial: 'comments/show',
-      collection: comments,
-      as: :comment,
-      locals: { board: @board, number: number }
-    )
+
+    respond_to do |format|
+      format.html do
+        render(
+          partial: 'comments/show',
+          collection: comments,
+          as: :comment,
+          locals: { board: @board, number: number }
+        )
+      end
+      format.json do
+        render json: {
+          comments: comments.map { |comment| comment_to_json(comment) }
+        }
+      end
+    end
   end
 
   def create
@@ -18,20 +28,40 @@ class CommentsController < ApplicationController
     sync_checklist
     ui_event(:issue_comment)
     broadcast(comment)
-    render partial: 'show', locals: { comment: comment, board: @board, number: number }
+
+    respond_to do |format|
+      format.html do
+        render partial: 'show',
+          locals: { comment: comment, board: @board, number: number }
+      end
+      format.json do
+        render json: {
+          comment: comment_to_json(comment), board_issue: board_issue_json
+        }
+      end
+    end
   end
 
   def update
     comment = github_api.update_comment(@board, id, comment_body)
     sync_checklist
-    render partial: 'show', locals: { comment: comment, board: @board, number: number }
+    respond_to do |format|
+      format.html do
+        render partial: 'show',
+          locals: { comment: comment, board: @board, number: number }
+      end
+      format.json { render json: comment_to_json(comment) }
+    end
   end
 
   def delete
     github_api.delete_comment(@board, id)
     inc_comments_count(-1)
     sync_checklist
-    render nothing: true
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.json { render json: board_issue_json }
+    end
   end
 
   private
@@ -88,5 +118,32 @@ class CommentsController < ApplicationController
         comments: comments
       )
     end
+  end
+
+  def comment_to_json(comment)
+    {
+      id: comment.id,
+      body: comment.body,
+      bodyMarkdown: markdown(comment.body, @board),
+      created_at: comment.created_at.strftime('%b %d, %H:%M'),
+      user: {
+        id: comment.user.id,
+        login: comment.user.login,
+        avatar_url: comment.user.avatar_url
+      }
+    }
+  end
+
+  # FIX Remove duplication with IssueController
+  def board_issue_json
+    board_issue = @board_bag.issue(number)
+    {
+      number: number,
+      issue: render_to_string(
+        partial: 'issues/issue_miniature',
+        locals: { issue: board_issue },
+        formats: [:html]
+      )
+    }
   end
 end

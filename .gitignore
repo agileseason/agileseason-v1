@@ -1,15 +1,18 @@
 *.rbc
+**.orig
+**/react/bundle.js
 capybara-*.html
 .rspec
+.env
 /log
 /tmp
 /db/*.sqlite3
 /public/system
 /coverage/
 /spec/tmp
-**.orig
 rerun.txt
 pickle-email-*.html
+node_modules
 
 config/initializers/secret_token.rb
 config/faye.yml
@@ -33,5 +36,3 @@ bower.json
 dump.rdb
 app/assets/images/.DS_Store
 app/assets/images/layouts/.DS_Store
-
-.env

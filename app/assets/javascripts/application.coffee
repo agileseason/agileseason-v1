@@ -23,6 +23,9 @@
 
 #= require_tree .
 
+# ---  React ---
+#= stub react/main.js
+
 # ---  Fileupload loaded after all  ---
 #= require jquery.fileupload
 #= require jquery.scrollTo

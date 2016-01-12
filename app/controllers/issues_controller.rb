@@ -10,6 +10,11 @@ class IssuesController < ApplicationController
   def show
     @direct_post = S3Api.direct_post
     @issue = @board_bag.issue(number)
+
+    respond_to do |format|
+      format.html { redirect_to un(board_url(@board, issue: number)) }
+      format.json { render json: @issue.to_hash }
+    end
   end
 
   def create
@@ -27,13 +32,19 @@ class IssuesController < ApplicationController
   def update
     issue = github_api.update_issue(@board, number, issue_update_params)
     @board_bag.update_cache(issue)
-    render nothing: true
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.json { render_board_issue_json }
+    end
   end
 
   def update_labels
     issue = github_api.update_issue(@board, number, issue_labels_params)
     @board_bag.update_cache(issue)
-    render nothing: true
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.json { render_board_issue_json }
+    end
   end
 
   def search
@@ -43,8 +54,12 @@ class IssuesController < ApplicationController
   end
 
   def move_to
+    issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
+
     column_to = @board.columns.find(params[:column_id])
-    IssueStats::Mover.call(
+    column_from = issue_stat.column
+
+    issue_stat = IssueStats::Mover.call(
       user: current_user,
       board_bag: @board_bag,
       column_to: column_to,
@@ -52,9 +67,8 @@ class IssuesController < ApplicationController
       is_force_sort: !!params[:force]
     )
 
-    issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
-    broadcast_column(issue_stat.column)
-    broadcast_column(column_to)
+    broadcast_column(column_from, params[:force])
+    broadcast_column(column_to, params[:force])
 
     render json: {
       number: number,
@@ -75,28 +89,41 @@ class IssuesController < ApplicationController
     issue_stat = IssueStats::Closer.call(user: current_user, board_bag: @board_bag, number: number)
     broadcast_column(issue_stat.column)
 
-    render nothing: true
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.json { render_board_issue_json }
+    end
   end
 
   def reopen
     issue_stat = IssueStats::Reopener.new(current_user, @board_bag, number).call
     broadcast_column(issue_stat.column)
 
-    render nothing: true
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.json { render_board_issue_json }
+    end
   end
 
   def archive
     issue_stat = IssueStats::Archiver.new(current_user, @board_bag, number).call
     broadcast_column(issue_stat.column)
 
-    render json: wip_badge_json(issue_stat.column)
+    respond_to do |format|
+      format.html { render json: wip_badge_json(issue_stat.column) }
+      format.json { render_board_issue_json }
+    end
   end
 
   def unarchive
     issue_stat = IssueStats::Unarchiver.new(current_user, @board_bag, number).call
-    broadcast_column(issue_stat.column)
+    # NOTE Use force because there is no div#issue-n to update.
+    broadcast_column(issue_stat.column, true)
 
-    render nothing: true
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.json { render_board_issue_json }
+    end
   end
 
   def assignee
@@ -107,11 +134,14 @@ class IssuesController < ApplicationController
       params[:login]
     ).call
 
-    render partial: 'assignee', locals: { issue: board_issue }
+    respond_to do |format|
+      format.html { render partial: 'assignee', locals: { issue: board_issue } }
+      format.json { render_board_issue_json }
+    end
   end
 
   def due_date
-    due_date_at = params[:due_date].to_datetime # Not to_time, because adding localtime +03
+    due_date_at = params[:due_date].try(:to_datetime) # Not to_time, because adding localtime +03
 
     issue_stat = IssueStatService.set_due_date(
       current_user,
@@ -120,7 +150,10 @@ class IssuesController < ApplicationController
       due_date_at
     )
 
-    render text: k(:issue, issue_stat).due_date_at
+    respond_to do |format|
+      format.html { render text: k(:issue, issue_stat).due_date_at }
+      format.json { render_board_issue_json }
+    end
   end
 
   def toggle_ready
@@ -132,7 +165,10 @@ class IssuesController < ApplicationController
     end
     broadcast_column(issue_stat.column)
 
-    render nothing: true
+    respond_to do |format|
+      format.html { render nothing: true }
+      format.json { render_board_issue_json }
+    end
   end
 
   private
@@ -178,5 +214,17 @@ class IssuesController < ApplicationController
 
   def fetch_lines_graph
     Graphs::LinesWorker.perform_async(@board.id, encrypted_github_token)
+  end
+
+  def render_board_issue_json
+    board_issue = @board_bag.issue(number)
+    render json: {
+      number: number,
+      issue: render_to_string(
+        partial: 'issue_miniature',
+        locals: { issue: board_issue },
+        formats: [:html]
+      )
+    }
   end
 end

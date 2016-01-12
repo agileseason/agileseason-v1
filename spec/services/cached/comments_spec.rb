@@ -16,29 +16,48 @@ describe Cached::Comments do
 
       context 'public board' do
         let(:is_public) { true }
-        it { is_expected.to eq Cached::Comments::NO_DATA }
 
-        context 'behavior' do
-          before { subject }
+        context 'private repo' do
+          it { is_expected.to eq Cached::Comments::NO_DATA }
 
-          it do
-            expect(cache).
-              to have_received(:read).
-              with("board_bag_comments_#{number}_#{board.id}")
+          context 'behavior' do
+            before { subject }
+
+            it do
+              expect(cache).
+                to have_received(:read).
+                with("board_bag_comments_#{number}_#{board.id}")
+            end
+            it { expect(github_api).not_to have_received(:issue_comments) }
           end
-          it { expect(github_api).not_to have_received(:issue_comments) }
+        end
+
+        context 'public repo' do
+          let(:is_private_repo) { false }
+          it { is_expected.to eq Cached::Comments::NO_DATA }
+
+          context 'behavior' do
+            before { subject }
+
+            it do
+              expect(cache).
+                to have_received(:read).
+                with("board_bag_comments_#{number}_#{board.id}")
+            end
+            it { expect(github_api).not_to have_received(:issue_comments) }
+          end
         end
       end
 
       context 'private board' do
         let(:is_public) { false }
-        it { is_expected.to eq comments }
+        it { is_expected.to be_nil }
 
         context 'behavior' do
           before { subject }
 
           it { expect(cache).not_to have_received(:read) }
-          it { expect(github_api).to have_received(:issue_comments) }
+          it { expect(github_api).not_to have_received(:issue_comments) }
         end
       end
     end
@@ -66,7 +85,7 @@ describe Cached::Comments do
           context 'public repo' do
             let(:is_private_repo) { false }
 
-            it { expect(cache).not_to have_received(:read) }
+            it { expect(cache).to have_received(:read) }
             it { expect(github_api).to have_received(:issue_comments) }
           end
         end
@@ -79,8 +98,8 @@ describe Cached::Comments do
         context 'behavior' do
           before { subject }
 
-          it { expect(cache).not_to have_received(:read) }
-          it { expect(Cached::UpdateBase).not_to have_received(:call) }
+          it { expect(cache).to have_received(:read) }
+          it { expect(Cached::UpdateBase).to have_received(:call) }
           it { expect(github_api).to have_received(:issue_comments) }
         end
       end

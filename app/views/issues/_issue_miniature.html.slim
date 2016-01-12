@@ -5,17 +5,15 @@
   data-number="#{issue.number}"
   data-column="#{issue.column_id}"
   data-url="#{un show_board_issues_url(@board, issue.number)}"
-]
 
+  data-issue="#{k(:issue, issue).to_hash(@board_bag).to_json}"
+]
   = k(:issue, issue).labels_html
 
   .issue-title
     span.issue-name data-number="#{issue.number}"
       = k(:issue, issue).title
     a.url href="#{issue.html_url}" ##{issue.number}
-
-  /.issue-data
-    /= render partial: 'issues/issue_modal', locals: { issue: issue, board: @board, labels: @board_bag.labels }
 
   .icons
     = render partial: 'issues/assignee', locals: { issue: issue }
@@ -32,7 +30,6 @@
       span.checklist #{issue.checklist_progress}/#{issue.checklist}
 
     .due-date class="#{:none unless issue.due_date_at}" = k(:issue, issue).due_date_on
-
 
   .buttons
     - if can?(:update, @board)
