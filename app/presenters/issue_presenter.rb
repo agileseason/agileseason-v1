@@ -69,9 +69,9 @@ class IssuePresenter < Keynote::Presenter
   end
 
   def to_hash(board_bag)
-    issue.to_hash_min.merge({
+    issue.to_hash_min.merge(
       labels: labels_to_json(board_bag),
       collaborators: collaborators_to_json(board_bag)
-    });
+    );
   end
 end
