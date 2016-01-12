@@ -19,6 +19,7 @@ class BoardsController < ApplicationController
 
   def show
     @direct_post = S3Api.direct_post
+    @direct_issue = @board_bag.issue(params[:issue]) if params[:issue]
   end
 
   def new

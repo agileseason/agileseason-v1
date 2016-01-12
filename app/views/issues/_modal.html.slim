@@ -2,5 +2,6 @@
     class="#{:readonly if @board_bag.readonly?}"
     data-direct_post_url="#{@direct_post.url}"
     data-direct_post_form_data="#{@direct_post.fields.to_json}"
+    data-direct_issue="#{k(:issue, @direct_issue).to_hash(@board_bag).to_json if @direct_issue}"
   ]
   .issue-modal#issue-modal

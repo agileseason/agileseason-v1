@@ -11,19 +11,7 @@ $(document).on 'page:change', ->
   # перейти на страницу тикета
   $('.issues').on 'click', '.issue', (e) ->
     unless $(e.target).is 'a, .button, button'
-      $container = $('.issue-modal-container')
-      $container.find('.issue-modal').empty()
-      $issue = $(@)
-      window.IssueModalRender(
-        $issue.data('issue'),
-        $('.board').data('github_full_name'),
-        $('.board').data('readonly') == 'readonly',
-      )
-      $container.show()
-
-      # TODO Remove this code after test issue#modal
-      #$(@).closest('.issue').addClass 'current-issue'
-      #Turbolinks.visit $(@).data 'url'
+      window.showModal($(@).data('issue'))
 
   $('.issue-modal-container').on 'click', (e) ->
     $target = $(e.target)
@@ -49,6 +37,12 @@ $(document).on 'page:change', ->
   $('.board').on 'ajax:before', '.is_ready', ->
     $(@).toggleClass 'active'
 
+  directIssue = $('.issue-modal-container').data('direct_issue')
+  if directIssue
+    setTimeout ->
+        window.showModal(directIssue)
+      , 50
+
 $(window).resize ->
   return unless document.body.id == 'boards_show' & !resize_lock
   resize_lock = true
@@ -67,3 +61,13 @@ window.update_wip_column = (badge) ->
   $("#column_#{badge.column_id}")
     .find '.badge'
     .replaceWith badge.html
+
+window.showModal = (issue) ->
+  $container = $('.issue-modal-container')
+  $container.find('.issue-modal').empty()
+  window.IssueModalRender(
+    issue
+    $('.board').data('github_full_name'),
+    $('.board').data('readonly') == 'readonly',
+  )
+  $container.show()
