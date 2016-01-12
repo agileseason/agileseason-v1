@@ -149,7 +149,7 @@ $(document).on('page:change', function () {
       var datetime = null;
       var currentDueDate = null;
 
-      if (date != null) {
+      if (date !== null) {
         datetime = date + ' ' + time;
         currentDueDate = new Date(datetime + ' UTC');
       }
@@ -191,7 +191,8 @@ $(document).on('page:change', function () {
       return 'issueModal ' + this.state.currentState;
     },
     render: function() {
-      var githubIssueUrl = 'https://github.com/' + this.props.github_full_name + '/issues/' + this.props.issue.number;
+      var githubIssueUrl = 'https://github.com/' + this.props.githubFullName
+        + '/issues/' + this.props.issue.number;
       return (
         <div className={this.modalClassName()}>
           <div className='issue-content'>
@@ -552,11 +553,11 @@ $(document).on('page:change', function () {
     }
   });
 
-  window.IssueModalRender = function(issue, github_full_name, isReadonly) {
+  window.IssueModalRender = function(issue, githubFullName, isReadonly) {
     ReactDOM.render(
       <IssueModal
         issue={issue}
-        github_full_name={github_full_name}
+        githubFullName={githubFullName}
         isReadonly={isReadonly}
       />,
       document.getElementById('issue-modal')
