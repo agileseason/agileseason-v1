@@ -30,8 +30,15 @@ class CommentsController < ApplicationController
     broadcast(comment)
 
     respond_to do |format|
-      format.html { render partial: 'show', locals: { comment: comment, board: @board, number: number } }
-      format.json { render json: { comment: comment_to_json(comment), board_issue: board_issue_json } }
+      format.html do
+        render partial: 'show',
+          locals: { comment: comment, board: @board, number: number }
+      end
+      format.json do
+        render json: {
+          comment: comment_to_json(comment), board_issue: board_issue_json
+        }
+      end
     end
   end
 
@@ -39,7 +46,10 @@ class CommentsController < ApplicationController
     comment = github_api.update_comment(@board, id, comment_body)
     sync_checklist
     respond_to do |format|
-      format.html { render partial: 'show', locals: { comment: comment, board: @board, number: number } }
+      format.html do
+        render partial: 'show',
+          locals: { comment: comment, board: @board, number: number }
+      end
       format.json { render json: comment_to_json(comment) }
     end
   end

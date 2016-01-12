@@ -50,10 +50,10 @@ class BoardIssue
   end
 
   def to_hash
-    to_hash_min.merge({
+    to_hash_min.merge(
       body: body,
-      bodyMarkdown: markdown(body, board),
-    })
+      bodyMarkdown: markdown(body, board)
+    )
   end
 
   def to_hash_min
@@ -66,7 +66,7 @@ class BoardIssue
       columnId: column_id,
       state: full_state,
       isReady: ready?,
-      commentCount: comments,
+      commentCount: comments
     }
   end
 
