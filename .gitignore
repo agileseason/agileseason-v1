@@ -10,7 +10,6 @@ capybara-*.html
 /public/system
 /coverage/
 /spec/tmp
-react/bundle.js
 rerun.txt
 pickle-email-*.html
 node_modules
