@@ -100,13 +100,14 @@ $(document).on('page:change', function () {
       this.setState({ currentLabels: this.getCheckedLabels() })
 
       var url = this.issueUrl() + '/update_labels';
-      this.request(url, 'PATCH', { issue: { labels : labelsToSave } }, function(data) {
+      var params = { issue: { labels : labelsToSave } };
+      this.request(url, 'PATCH', params, function(data) {
         this.updateIssueMiniature(data.number, data.issue);
       });
     },
     handleAssigneeChange: function(user, isAssigned) {
       var assignee = isAssigned ? user : null;
-      this.setState({ currentAssignee: assignee })
+      this.setState({ currentAssignee: assignee });
 
       var url = this.issueUrl() + '/assignee/' + user.login;
       this.request(url, 'GET', {}, function(data) {
