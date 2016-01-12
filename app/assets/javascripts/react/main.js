@@ -178,6 +178,8 @@ $(document).on('page:change', function () {
     },
     handleReadyButtonClick: function(state) {
       var url = this.issueUrl() + '/toggle_ready';
+      this.state.issue.isReady = state;
+      this.setState({issue: this.state.issue});
       this.request(url, 'POST', {}, function(data) {
         this.updateIssueMiniature(data.number, data.issue);
       });
@@ -233,7 +235,7 @@ $(document).on('page:change', function () {
             <EditButton name='Reopen Issue' options='reopen' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-issue-reopened' />
             <EditButton name='Archive Issue' options='archive' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-package' title='Remove the issue from board' />
             <EditButton name='Send to Board' options='unarchive' onButtonClick={this.handleStateButtonClick} icon='octicon octicon-package' title='Send the issue to board' />
-            <ToggleButton name='Ready' isChecked={this.props.issue.isReady} onButtonClick={this.handleReadyButtonClick} icon='octicon octicon-check' title='Mark the issue with the "ready to next stage" label' />
+            <ToggleButton name='Ready' isChecked={this.state.issue.isReady} onButtonClick={this.handleReadyButtonClick} icon='octicon octicon-check' title='Mark the issue with the "ready to next stage" label' />
           </div>
         </div>
       );
@@ -458,15 +460,11 @@ $(document).on('page:change', function () {
   });
 
   var ToggleButton = React.createClass({
-    getInitialState: function() {
-      return {isChecked: this.props.isChecked};
-    },
     handleClick: function() {
-      this.setState({isChecked: !this.props.isChecked});
-      return this.props.onButtonClick(this.state.isChecked);
+      return this.props.onButtonClick(!this.props.isChecked);
     },
     buttonClass: function() {
-      var activeClass = this.state.isChecked ? 'active' : '';
+      var activeClass = this.props.isChecked ? 'active' : '';
       return this.props.name.replace(/\s/g, '-').toLowerCase()
         + ' issue-button '
         + activeClass;
