@@ -191,8 +191,8 @@ $(document).on('page:change', function () {
       return 'issueModal ' + this.state.currentState;
     },
     render: function() {
-      var githubIssueUrl = 'https://github.com/' + this.props.githubFullName
-        + '/issues/' + this.props.issue.number;
+      var githubIssueUrl = 'https://github.com/' + this.props.githubFullName +
+        '/issues/' + this.props.issue.number;
       return (
         <div className={this.modalClassName()}>
           <div className='issue-content'>
