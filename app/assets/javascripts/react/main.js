@@ -97,7 +97,7 @@ $(document).on('page:change', function () {
           labelsToSave.push(label.name);
         }
       });
-      this.setState({ currentLabels: this.getCheckedLabels() })
+      this.setState({ currentLabels: this.getCheckedLabels() });
 
       var url = this.issueUrl() + '/update_labels';
       var params = { issue: { labels : labelsToSave } };
