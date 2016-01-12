@@ -117,8 +117,8 @@ $(document).on('page:change', function () {
       var url = this.issueUrl() + '/comment';
       this.request(url, 'POST', { comment: comment }, function(data) {
         successCallback();
-        comments = this.state.comments
-        comments.push(data.comment)
+        comments = this.state.comments;
+        comments.push(data.comment);
         this.setState({ comments: comments });
         this.updateIssueMiniature(data.board_issue.number, data.board_issue.issue);
       });
