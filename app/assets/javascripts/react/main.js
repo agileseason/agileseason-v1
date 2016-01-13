@@ -30,7 +30,8 @@ $(document).on('page:change', function () {
       };
     },
     issueUrl: function() {
-      return '/boards/agileseason/test_dev/issues/' + this.props.issue.number;
+      return '/boards/' + this.props.githubFullName + '/issues/' +
+        this.props.issue.number;
     },
     request: function(url, type, data, successFunc) {
       $.ajax({
