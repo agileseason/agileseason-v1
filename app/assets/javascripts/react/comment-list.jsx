@@ -193,6 +193,7 @@ var CommentEditForm = React.createClass({
     this.props.onCommentSubmit({body: body});
   },
   render: function() {
+    var buttonText = this.props.opacity == 1.0 ? 'Update' : 'Update...';
     return (
       <div>
         <form
@@ -210,7 +211,7 @@ var CommentEditForm = React.createClass({
           />
           <div className='actions'>
             <a href='#' onClick={this.props.onCloseWithoutSaveClick}>Close without save</a>
-            <input type='submit' value='Update' className='button' />
+            <input type='submit' value={buttonText} className='button' />
           </div>
         </form>
         <UploadForm display={this.props.display} onUpload={this.handleUpload} />
