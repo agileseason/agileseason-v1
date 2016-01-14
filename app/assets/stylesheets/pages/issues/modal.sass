@@ -339,15 +339,19 @@
             +ajax_link
 
         .body
+          &.stub
+            background: inline-image('pages/p-issues-show/stub_body.png') 0 -8px no-repeat transparent
+            height: 46px
           img
             display: block
             margin: 0 0 5px
             max-width: 100%
             margin: 10px 0
-
-          &.stub
-            background: inline-image('pages/p-issues-show/stub_body.png') 0 -8px no-repeat transparent
-            height: 46px
+          p
+            line-height: 1.45
+            margin-bottom: 16px
+            &:last-child
+              margin-bottom: 0px
 
     .comment-form
       +border-radius(2px)

@@ -1,6 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+var PopoverOverlay = require('./popover.jsx');
+
 // Title
 module.exports = React.createClass({
   getInitialState: function() {
@@ -57,10 +59,10 @@ module.exports = React.createClass({
           placeholder='Edit title'
           value={this.state.title}
           onChange={this.handleTextChange}
-          onBlur={this.handleEditTitleClick}
           onKeyDown={this.handleKeyDown}
           style={{display: this.state.textarea}}
         />
+        <PopoverOverlay display={this.state.textarea} onOverlayClick={this.handleEditTitleClick} />
       </div>
     );
   }

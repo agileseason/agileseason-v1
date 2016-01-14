@@ -16,6 +16,7 @@ $(document).on('page:change', function () {
   var ColumnList = require('./column-list.jsx');
   var CommentList = require('./comment-list.jsx');
   var UploadForm = require('./upload-form.jsx');
+  var PopoverOverlay = require('./popover.jsx');
 
   window.IssueModal = React.createClass({
     getInitialState: function() {
@@ -259,7 +260,11 @@ $(document).on('page:change', function () {
     render: function() {
       var labelNodes = this.props.data.map(function(label) {
         return (
-          <li style={{ backgroundColor: label.color }} key={label.name}>{label.name}</li>
+          <li
+            style={{ backgroundColor: label.backgroundColor, color: label.color }}
+            key={label.name}>
+            {label.name}
+          </li>
         );
       }.bind(this));
       return (
@@ -405,7 +410,7 @@ $(document).on('page:change', function () {
     render: function() {
       var labelNodes = this.props.data.map(function(label) {
         return (
-          <Label key={label.id} color={label.color} checked={label.checked} onLabelChange={this.props.onLabelChange}>
+          <Label key={label.id} data={label} onLabelChange={this.props.onLabelChange}>
             {label.name}
           </Label>
         );
@@ -424,7 +429,7 @@ $(document).on('page:change', function () {
 
   var Label = React.createClass({
     getInitialState: function() {
-      return { checked: this.props.checked }
+      return { checked: this.props.data.checked }
     },
     handleChange: function() {
       this.setState({ checked: this.refs.labelCheckbox.checked });
@@ -432,7 +437,9 @@ $(document).on('page:change', function () {
     },
     render: function() {
       return (
-        <label className='label' style={{backgroundColor: this.props.color}}>
+        <label
+          className='label'
+          style={{backgroundColor: this.props.data.backgroundColor, color: this.props.data.color}}>
           <input
             type='checkbox'
             checked={this.state.checked}
@@ -478,17 +485,6 @@ $(document).on('page:change', function () {
           <span className={this.props.icon}></span>
           <span>{this.props.name}</span>
         </div>
-      );
-    }
-  });
-
-  var PopoverOverlay = React.createClass({
-    handleClick: function() {
-      return this.props.onOverlayClick();
-    },
-    render: function() {
-      return (
-        <div className='popup-overlay' style={{display: this.props.display}} onClick={this.handleClick}></div>
       );
     }
   });
