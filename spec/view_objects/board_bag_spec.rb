@@ -76,11 +76,28 @@ describe BoardBag do
   end
 
   describe '#collaborators' do
-    let(:github_api) { double(collaborators: []) }
+    subject { bag.collaborators }
+    let(:github_api) { double(collaborators: collaborators) }
+    let(:collaborators) { [] }
     before { allow(bag).to receive(:has_write_permission?).and_return(true) }
-    before { bag.collaborators }
 
-    it { expect(github_api).to have_received(:collaborators).with(board) }
+    context 'without collaborators' do
+      it { is_expected.to eq [] }
+    end
+
+    context 'with collaborators' do
+      let(:user_1) { OpenStruct.new(login: 'B') }
+      let(:user_2) { OpenStruct.new(login: 'a') }
+      let(:collaborators) { [user_1, user_2] }
+
+      its(:first) { is_expected.to eq user_2 }
+      its(:second) { is_expected.to eq user_1 }
+    end
+
+    describe 'behavior' do
+      before { subject }
+      it { expect(github_api).to have_received(:collaborators).with(board) }
+    end
   end
 
   describe '#labels' do

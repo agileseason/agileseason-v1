@@ -55,7 +55,9 @@ class BoardBag
 
   def collaborators
     return [] unless has_write_permission?
-    @collaborators ||= Cached::Collaborators.call(user: user, board: @board)
+    @collaborators ||= Cached::Collaborators.
+      call(user: user, board: @board).
+      sort_by { |user| user.login.downcase }
   end
 
   def labels

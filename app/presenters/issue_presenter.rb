@@ -42,7 +42,7 @@ class IssuePresenter < Keynote::Presenter
   end
 
   def collaborators_to_json(board_bag)
-    board_bag.collaborators.sort_by(&:login).map do |user|
+    board_bag.collaborators.map do |user|
       { login: user.login, avatarUrl: user.avatar_url }
     end
   end
