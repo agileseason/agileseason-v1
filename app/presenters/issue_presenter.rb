@@ -37,7 +37,13 @@ class IssuePresenter < Keynote::Presenter
 
   def labels_to_json(board_bag)
     board_bag.labels.sort_by(&:name).map do |label|
-      { id: label.name, name: label.name, color: "##{label.color}", checked: label_include?(label) }
+      {
+        id: label.name,
+        name: label.name,
+        color: "##{k(:label, label).font_color}",
+        backgroundColor: "##{label.color}",
+        checked: label_include?(label)
+      }
     end
   end
 
