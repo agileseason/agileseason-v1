@@ -16,6 +16,7 @@ $(document).on('page:change', function () {
   var ColumnList = require('./column-list.jsx');
   var CommentList = require('./comment-list.jsx');
   var UploadForm = require('./upload-form.jsx');
+  var PopoverOverlay = require('./popover.jsx');
 
   window.IssueModal = React.createClass({
     getInitialState: function() {
@@ -478,17 +479,6 @@ $(document).on('page:change', function () {
           <span className={this.props.icon}></span>
           <span>{this.props.name}</span>
         </div>
-      );
-    }
-  });
-
-  var PopoverOverlay = React.createClass({
-    handleClick: function() {
-      return this.props.onOverlayClick();
-    },
-    render: function() {
-      return (
-        <div className='popup-overlay' style={{display: this.props.display}} onClick={this.handleClick}></div>
       );
     }
   });
