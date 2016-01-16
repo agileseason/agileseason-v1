@@ -376,6 +376,12 @@ $(document).on('page:change', function () {
 
       return stubs;
     },
+    fetchIssueMiniature: function () {
+      var url = this.issueUrl() + '/fetch_miniature';
+      this.request(url, 'GET', {}, function (data) {
+        this.updateIssueMiniature(data.number, data.issue);
+      });
+    },
     updateIssueMiniature: function (number, html) {
       $('#issues_' + number).replaceWith(html);
     },
@@ -448,6 +454,9 @@ $(document).on('page:change', function () {
     handleUpdateComment: function (id, comment, successCallback) {
       var url = this.issueUrl() + '/update_comment/' + id;
       this.request(url, 'POST', { comment: comment }, function (comment) {
+        setTimeout((function () {
+          this.fetchIssueMiniature();
+        }).bind(this), 1000);
         if (successCallback) {
           successCallback(comment);
         }
