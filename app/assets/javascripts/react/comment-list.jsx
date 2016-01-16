@@ -210,7 +210,13 @@ var CommentEditForm = React.createClass({
             style={{opacity: this.props.opacity}}
           />
           <div className='actions'>
-            <a href='#' onClick={this.props.onCloseWithoutSaveClick}>Close without save</a>
+            <a
+              href='#'
+              onClick={this.props.onCloseWithoutSaveClick}
+              className='escapeble'
+            >
+              Close without save
+            </a>
             <input type='submit' value={buttonText} className='button' />
           </div>
         </form>
