@@ -310,4 +310,18 @@ describe IssuesController do
       it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
     end
   end
+
+  describe '#fetch_miniature' do
+    let(:issue_stat) { create :issue_stat, board: board, number: issue.number }
+    before { allow_any_instance_of(BoardBag).to receive(:issue).and_return(issue) }
+    before do
+      get(
+        :fetch_miniature,
+        board_github_full_name: board.github_full_name,
+        number: issue_stat.number
+      )
+    end
+
+    it { expect(response).to have_http_status(:success) }
+  end
 end

@@ -171,6 +171,10 @@ class IssuesController < ApplicationController
     end
   end
 
+  def fetch_miniature
+    render_board_issue_json
+  end
+
   private
 
   def wip_badge_json(column)
