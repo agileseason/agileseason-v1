@@ -1,3 +1,4 @@
 exclude_paths:
-- app/assets/javascripts/react/*
 - "app/assets/javascripts/react/bundle.js"
+- app/assets/javascripts/react/*
+- app/assets/javascripts/**/*
