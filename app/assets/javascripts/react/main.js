@@ -567,5 +567,7 @@ $(document).on('page:change', function () {
       />,
       document.getElementById('issue-modal')
     );
+    var issueUrl = window.location.href.replace(/#|\?.*/g, '') + '?issue=' + issue.number;
+    window.history.pushState({}, issue.title, issueUrl);
   }
 });
