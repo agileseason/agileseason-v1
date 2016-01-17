@@ -12,7 +12,7 @@ class IssuesController < ApplicationController
     @issue = @board_bag.issue(number)
 
     respond_to do |format|
-      format.html { redirect_to un(board_url(@board, issue: number)) }
+      format.html { redirect_to un(board_url(@board, number: number)) }
       format.json { render json: @issue.to_hash }
     end
   end

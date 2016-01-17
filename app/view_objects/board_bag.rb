@@ -9,7 +9,7 @@ class BoardBag
     issue = issues_hash[number]
     if readonly?
       issue ||= GithubApiGuest::UNKNOWN_BOARD_ISSUE
-      GuestBoardIssue.new(user, issue, issue_stat_mapper[issue])
+      GuestBoardIssue.new(user, @board, issue, issue_stat_mapper[issue])
     else
       issue ||= user.github_api.issue(board, number)
       BoardIssue.new(issue, issue_stat_mapper[issue])
