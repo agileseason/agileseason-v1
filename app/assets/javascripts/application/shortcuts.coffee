@@ -5,8 +5,13 @@ $(document).keydown (e) ->
       # закрыть все активные формы
       $('.close-without-saving', '.comment-form.active').trigger 'click'
 
-    if $('.close-modal').is(':visible')
-      $('.close-modal').trigger 'click'
+    $modal = $('.close-modal:visible')
+    if $modal.length
+      $escapables = $('.escapeble:visible')
+      if $escapables.length
+        $escapables[0].click()
+      else
+        $modal.trigger('click')
 
     if $('.simple_form.new_issue').is(':visible')
       # закрыть форму добавления тикета

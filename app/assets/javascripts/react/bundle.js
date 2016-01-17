@@ -289,7 +289,11 @@ var CommentEditForm = React.createClass({
           { className: 'actions' },
           React.createElement(
             'a',
-            { href: '#', onClick: this.props.onCloseWithoutSaveClick },
+            {
+              href: '#',
+              onClick: this.props.onCloseWithoutSaveClick,
+              className: 'escapeble'
+            },
             'Close without save'
           ),
           React.createElement('input', { type: 'submit', value: buttonText, className: 'button' })
@@ -925,6 +929,8 @@ $(document).on('page:change', function () {
       githubFullName: githubFullName,
       isReadonly: isReadonly
     }), document.getElementById('issue-modal'));
+    var issueUrl = window.location.href.replace(/#|\?.*/g, '') + '?number=' + issue.number;
+    window.history.pushState({}, issue.title, issueUrl);
   };
 });
 
@@ -940,7 +946,7 @@ module.exports = React.createClass({
     return this.props.onOverlayClick();
   },
   render: function () {
-    return React.createElement('div', { className: 'popup-overlay', style: { display: this.props.display }, onClick: this.handleClick });
+    return React.createElement('div', { className: 'popup-overlay escapeble', style: { display: this.props.display }, onClick: this.handleClick });
   }
 });
 

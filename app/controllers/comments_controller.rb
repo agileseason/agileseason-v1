@@ -6,14 +6,6 @@ class CommentsController < ApplicationController
     sync_comments(comments)
 
     respond_to do |format|
-      format.html do
-        render(
-          partial: 'comments/show',
-          collection: comments,
-          as: :comment,
-          locals: { board: @board, number: number }
-        )
-      end
       format.json do
         render json: {
           comments: comments.map { |comment| comment_to_json(comment) }
@@ -27,13 +19,8 @@ class CommentsController < ApplicationController
     inc_comments_count(1)
     sync_checklist
     ui_event(:issue_comment)
-    broadcast(comment)
 
     respond_to do |format|
-      format.html do
-        render partial: 'show',
-          locals: { comment: comment, board: @board, number: number }
-      end
       format.json do
         render json: {
           comment: comment_to_json(comment), board_issue: board_issue_json
@@ -46,10 +33,6 @@ class CommentsController < ApplicationController
     comment = github_api.update_comment(@board, id, comment_body)
     sync_checklist
     respond_to do |format|
-      format.html do
-        render partial: 'show',
-          locals: { comment: comment, board: @board, number: number }
-      end
       format.json { render json: comment_to_json(comment) }
     end
   end
@@ -59,7 +42,6 @@ class CommentsController < ApplicationController
     inc_comments_count(-1)
     sync_checklist
     respond_to do |format|
-      format.html { render nothing: true }
       format.json { render json: board_issue_json }
     end
   end
@@ -72,19 +54,6 @@ class CommentsController < ApplicationController
 
   def id
     params[:id].to_i
-  end
-
-  def broadcast(comment)
-    FayePusher.broadcast_issue(
-      current_user,
-      @board,
-      action: "comment_#{action_name}",
-      number: number,
-      html: render_to_string(
-        partial: 'show',
-        locals: { comment: comment, board: @board, number: number }
-      )
-    )
   end
 
   def inc_comments_count(delta)

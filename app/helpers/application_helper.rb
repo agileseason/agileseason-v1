@@ -22,4 +22,8 @@ module ApplicationHelper
   def number
     params[:number].to_i
   end
+
+  def number?
+    params[:number].present?
+  end
 end

@@ -1,7 +1,0 @@
-.upload
-  = form_for('/', html: { class: 'directUpload' }) do |f|
-    label.info for='_img'
-      /span Attach images by dragging &amp; dropping or&nbsp;
-      a Attach images
-    .progress Uploading <span class='b-preloader inline comment-preloader'></span>
-    = f.file_field :img

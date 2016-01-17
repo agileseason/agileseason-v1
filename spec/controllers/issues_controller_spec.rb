@@ -249,20 +249,28 @@ describe IssuesController do
   end
 
   describe '#assignee' do
-    let(:issue) { stub_issue(assigne: 'fake') }
     subject do
       get(
         :assignee,
         board_github_full_name: board.github_full_name,
         number: 1,
-        login: 'github_user'
+        login: 'github_user',
+        format: :json
       )
     end
+    let(:issue) { stub_issue(assigne: 'fake') }
+    before { allow_any_instance_of(BoardBag).to receive(:issue).and_return(issue) }
 
     context 'responce' do
-      before { allow_any_instance_of(IssueStats::Assigner).to receive(:call).and_return(issue) }
+      before do
+        allow_any_instance_of(IssueStats::Assigner).
+          to receive(:call).
+          and_return(issue)
+      end
       before { subject }
+
       it { expect(response).to have_http_status(:success) }
+      it { expect(response).to render_template(partial: '_issue_miniature') }
     end
 
     context 'behavior' do

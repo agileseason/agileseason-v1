@@ -61,7 +61,7 @@ class BoardIssue
       number: number,
       title: title,
       assignee: assignee_to_hash,
-      dueDate: issue_stat.due_date_at ? issue_stat.due_date_at.to_datetime.utc.to_i * 1000 : nil,
+      dueDate: due_date_at_to_js,
       columns: board.columns.map { |c| { id: c.id, name: c.name } },
       columnId: column_id,
       state: full_state,
@@ -75,5 +75,11 @@ class BoardIssue
   def assignee_to_hash
     return unless assignee
     { login: assignee.login, avatarUrl: assignee.avatar_url }
+  end
+
+  def due_date_at_to_js
+    if issue_stat.due_date_at
+      return issue_stat.due_date_at.to_datetime.utc.to_i * 1000
+    end
   end
 end
