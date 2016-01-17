@@ -59,7 +59,7 @@ class IssuesController < ApplicationController
     column_to = @board.columns.find(params[:column_id])
     column_from = issue_stat.column
 
-    issue_stat = IssueStats::Mover.call(
+    IssueStats::Mover.call(
       user: current_user,
       board_bag: @board_bag,
       column_to: column_to,
@@ -70,6 +70,7 @@ class IssuesController < ApplicationController
     broadcast_column(column_from, params[:force])
     broadcast_column(column_to, params[:force])
 
+    issue_stat.reload
     render json: {
       number: number,
       assignee: render_to_string(
