@@ -128,7 +128,7 @@ class IssuesController < ApplicationController
   end
 
   def assignee
-    board_issue = IssueStats::Assigner.new(
+    IssueStats::Assigner.new(
       current_user,
       @board_bag,
       number,
@@ -136,7 +136,6 @@ class IssuesController < ApplicationController
     ).call
 
     respond_to do |format|
-      format.html { render partial: 'assignee', locals: { issue: board_issue } }
       format.json { render_board_issue_json }
     end
   end

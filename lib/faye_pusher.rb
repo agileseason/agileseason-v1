@@ -28,14 +28,6 @@ class FayePusher
     "/boards/#{board.id}/update"
   end
 
-  def self.broadcast_issue(user, board, data)
-    broadcast(issue_channel(board), user, data)
-  end
-
-  def self.issue_channel(board)
-    "/boards/#{board.id}/issues"
-  end
-
   def self.on?
     Rails.env.production? || ENV['FAYE_ON']
   end

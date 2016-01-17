@@ -3,18 +3,39 @@ describe CommentsController do
   let(:board) { create(:kanban_board, :with_columns, user: user) }
   let(:body) { 'asdf' }
   let(:number) { 1 }
+  let(:issue) { stub_issue(number: number) }
+  let(:comment) do
+    OpenStruct.new(
+      id: 1,
+      body: 'test',
+      bodyMarkdown: '<p>test</p>',
+      created_at: Time.current,
+      user: OpenStruct.new(
+        id: 101,
+        login: 'user-test',
+        avatar_url: 'http://user-test/avatar'
+      )
+    )
+  end
   before { stub_sign_in(user) }
   before { allow(Cached::Issues).to receive(:call).and_return([]) }
   before { allow(Cached::Comments).to receive(:call).and_return([]) }
   before { allow(IssueStats::LazySyncChecklist).to receive(:call) }
   before { allow(CheckboxSynchronizer).to receive(:perform_async) }
+  before { allow_any_instance_of(BoardBag).to receive(:issue).and_return(issue) }
+  before do
+    allow_any_instance_of(GithubApi).
+      to receive(:update_comment).
+      and_return(comment)
+  end
 
   describe '#index' do
     before do
       get(
         :index,
         board_github_full_name: board.github_full_name,
-        number: number
+        number: number,
+        format: :json
       )
     end
 
@@ -30,16 +51,20 @@ describe CommentsController do
         board_github_full_name: board.github_full_name,
         number: number,
         id: 101,
-        comment: { body: body }
+        comment: { body: body },
+        format: :json
       )
+    end
+    before do
+      allow_any_instance_of(GithubApi).
+        to receive(:add_comment).
+        and_return(comment)
     end
 
     context 'check response' do
-      before { allow_any_instance_of(GithubApi).to receive(:add_comment) }
       before { subject }
 
       it { expect(response).to have_http_status(:success) }
-      it { expect(response.body).to be_empty }
       it { expect(IssueStats::LazySyncChecklist).not_to have_received(:call) }
       it { expect(CheckboxSynchronizer).to have_received(:perform_async) }
     end
@@ -57,16 +82,15 @@ describe CommentsController do
         board_github_full_name: board.github_full_name,
         number: number,
         id: 101,
-        comment: { body: body }
+        comment: { body: body },
+        format: :json
       )
     end
 
     context 'check response' do
-      before { allow_any_instance_of(GithubApi).to receive(:update_comment) }
       before { subject }
 
       it { expect(response).to have_http_status(:success) }
-      it { expect(response.body).to be_empty }
       it { expect(IssueStats::LazySyncChecklist).not_to have_received(:call) }
       it { expect(CheckboxSynchronizer).to have_received(:perform_async) }
     end
@@ -83,7 +107,8 @@ describe CommentsController do
         :delete,
         board_github_full_name: board.github_full_name,
         number: number,
-        id: 101
+        id: 101,
+        format: :json
       )
     end
 
@@ -91,7 +116,7 @@ describe CommentsController do
       before { allow_any_instance_of(GithubApi).to receive(:delete_comment) }
       before { subject }
       it { expect(response).to have_http_status(:success) }
-      it { expect(response.body).to be_empty }
+      it { expect(response).to render_template(partial: '_issue_miniature') }
       it { expect(IssueStats::LazySyncChecklist).not_to have_received(:call) }
       it { expect(CheckboxSynchronizer).to have_received(:perform_async) }
     end
