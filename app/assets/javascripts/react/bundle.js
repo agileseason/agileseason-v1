@@ -211,10 +211,7 @@ var CommentEditForm = React.createClass({
   displayName: 'CommentEditForm',
 
   getInitialState: function () {
-    return {
-      body: this.props.body,
-      diaplay: this.props.display
-    };
+    return { body: this.props.body };
   },
   componentDidMount: function () {
     $(this.refs.textarea).on('keydown', (function (e) {
@@ -1089,9 +1086,15 @@ module.exports = React.createClass({
       replaceFileInput: false,
 
       start: (function (e) {
+        if (this.isNeedSkip($(e.target))) {
+          return;
+        }
         this.setState({ labelText: 'Please wait...' });
       }).bind(this),
       done: (function (e, data) {
+        if (this.isNeedSkip($(e.target))) {
+          return;
+        }
         key = $(data.jqXHR.responseXML).find('Key').text();
         imageUrl = window.build_s3_image_url(url, key);
         this.uploadDone(imageUrl);
@@ -1102,6 +1105,12 @@ module.exports = React.createClass({
         this.setState({ labelText: 'Attach images [Error. Please try again later.]' });
       }).bind(this)
     });
+  },
+  isNeedSkip: function ($input) {
+    if ($input.closest('.comment-form').length && $('.comment.editable').length) {
+      return true;
+    }
+    return false;
   },
   uploadDone: function (imageUrl) {
     this.props.onUpload(imageUrl);
