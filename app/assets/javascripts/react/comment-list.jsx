@@ -139,10 +139,7 @@ var Avatar = React.createClass({
 
 var CommentEditForm = React.createClass({
   getInitialState: function() {
-    return {
-      body: this.props.body,
-      diaplay: this.props.display
-    };
+    return {body: this.props.body};
   },
   componentDidMount: function() {
     $(this.refs.textarea).on('keydown', function(e) {
