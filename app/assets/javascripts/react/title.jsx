@@ -52,6 +52,7 @@ module.exports = React.createClass({
           <span onClick={this.handleEditTitleClick}>{this.state.title}</span>
           <a href={this.props.url}>#{this.props.number}</a>
           <CurrentDueDate data={this.props.dueDate} />
+          <CurrentState data={this.props.state} />
         </h1>
         <textarea
           ref='title'
@@ -65,6 +66,34 @@ module.exports = React.createClass({
         <PopoverOverlay display={this.state.textarea} onOverlayClick={this.handleEditTitleClick} />
       </div>
     );
+  }
+});
+
+var CurrentState = React.createClass({
+  render: function() {
+    if (this.props.data == 'close' || this.props.data == 'closed' || this.props.data == 'unarchive') {
+      return(
+        <div className='current-state'>
+          <span className='octicon octicon-issue-closed'></span>
+          <span>Closed</span>
+        </div>
+      );
+    } else if (this.props.data == 'archive' || this.props.data == 'archived') {
+      return(
+        <div className='states-box'>
+          <div className='current-state'>
+            <span className='octicon octicon-issue-closed'></span>
+            <span>Closed</span>
+          </div>
+          <div className='current-state'>
+            <span className='octicon octicon-package'></span>
+            <span>Archived</span>
+          </div>
+        </div>
+      );
+    } else {
+      return <span />
+    }
   }
 });
 

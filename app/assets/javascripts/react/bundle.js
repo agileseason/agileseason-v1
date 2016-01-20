@@ -521,6 +521,7 @@ $(document).on('page:change', function () {
             number: this.props.issue.number,
             title: this.props.issue.title,
             url: githubIssueUrl,
+            state: this.state.currentState,
             dueDate: this.state.currentDueDate,
             isReadonly: this.props.isReadonly,
             onUpdateTitle: this.handleUpdateTitle
@@ -1015,7 +1016,8 @@ module.exports = React.createClass({
           '#',
           this.props.number
         ),
-        React.createElement(CurrentDueDate, { data: this.props.dueDate })
+        React.createElement(CurrentDueDate, { data: this.props.dueDate }),
+        React.createElement(CurrentState, { data: this.props.state })
       ),
       React.createElement('textarea', {
         ref: 'title',
@@ -1028,6 +1030,52 @@ module.exports = React.createClass({
       }),
       React.createElement(PopoverOverlay, { display: this.state.textarea, onOverlayClick: this.handleEditTitleClick })
     );
+  }
+});
+
+var CurrentState = React.createClass({
+  displayName: 'CurrentState',
+
+  render: function () {
+    if (this.props.data == 'close' || this.props.data == 'closed' || this.props.data == 'unarchive') {
+      return React.createElement(
+        'div',
+        { className: 'current-state' },
+        React.createElement('span', { className: 'octicon octicon-issue-closed' }),
+        React.createElement(
+          'span',
+          null,
+          'Closed'
+        )
+      );
+    } else if (this.props.data == 'archive' || this.props.data == 'archived') {
+      return React.createElement(
+        'div',
+        { className: 'states-box' },
+        React.createElement(
+          'div',
+          { className: 'current-state' },
+          React.createElement('span', { className: 'octicon octicon-issue-closed' }),
+          React.createElement(
+            'span',
+            null,
+            'Closed'
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'current-state' },
+          React.createElement('span', { className: 'octicon octicon-package' }),
+          React.createElement(
+            'span',
+            null,
+            'Archived'
+          )
+        )
+      );
+    } else {
+      return React.createElement('span', null);
+    }
   }
 });
 
