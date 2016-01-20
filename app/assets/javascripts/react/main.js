@@ -210,6 +210,7 @@ $(document).on('page:change', function () {
               number={this.props.issue.number}
               title={this.props.issue.title}
               url={githubIssueUrl}
+              state={this.state.currentState}
               dueDate={this.state.currentDueDate}
               isReadonly={this.props.isReadonly}
               onUpdateTitle={this.handleUpdateTitle}

@@ -94,9 +94,9 @@
       height: 50px
       width: 50px
 
-    .current-due-date
+    .current-due-date,
+    .current-state
       +border-radius(2px)
-      background: $orange
       color: #fff
       display: inline-block
       font-size: 14px
@@ -104,6 +104,18 @@
       margin: 8px 0 0 16px
       padding: 6px 10px
       vertical-align: top
+
+    .current-due-date
+      background: $orange
+
+    .current-state
+      background: #888
+
+      .octicon
+        margin-right: 6px
+
+    .states-box
+      display: inline-block
 
     .move-to
       ul.column-list
