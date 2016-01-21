@@ -10,12 +10,12 @@ class ExportsController < ApplicationController
 
   def current_type
     case params[:type]
+      when 'markdown'
+        :markdown
       when 'html'
         :html
       when 'text'
         :text
-      when 'markdown'
-        :markdown
       else
         :markdown
     end

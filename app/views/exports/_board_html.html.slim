@@ -8,4 +8,4 @@ h1 = @board.name
       li
         = check_box_tag 'closed', '', issue.closed?, disabled: true
         span = issue.title
-        a href=board_url(@board, number: issue.number) = "##{issue.number}"
+        a href=un(board_url(@board, number: issue.number)) = "##{issue.number}"

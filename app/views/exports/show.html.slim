@@ -1,5 +1,5 @@
 ul.view-type
-  - [:html, :markdown, :text].each do |type|
+  - [:markdown, :html, :text].each do |type|
       li class="#{:active if type == current_type}"
         a href=board_exports_url(@board, type: type) = type.to_s.capitalize
 
