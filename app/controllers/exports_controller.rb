@@ -3,21 +3,20 @@ class ExportsController < ApplicationController
   helper_method :current_type
 
   def show
-    #render 'exports/board.text', content_type: 'text/plain'
   end
 
   private
 
   def current_type
     case params[:type]
-      when 'markdown'
-        :markdown
-      when 'html'
-        :html
-      when 'text'
-        :text
-      else
-        :markdown
+    when 'markdown'
+      :markdown
+    when 'html'
+      :html
+    when 'text'
+      :text
+    else
+      :markdown
     end
   end
 end
