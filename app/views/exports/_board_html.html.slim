@@ -1,0 +1,11 @@
+h1 = @board.name
+
+- @board_bag.columns.each do |column|
+  h2 = column.name
+
+  ul.issues
+    - @board_bag.column_issues(column).each do |issue|
+      li
+        = check_box_tag 'closed', '', issue.closed?, disabled: true
+        span = issue.title
+        a href=board_url(@board, number: issue.number) = "##{issue.number}"

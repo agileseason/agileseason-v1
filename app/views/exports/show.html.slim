@@ -1,0 +1,7 @@
+ul.view-type
+  - [:html, :markdown, :text].each do |type|
+      li class="#{:active if type == current_type}"
+        a href=board_exports_url(@board, type: type) = type.to_s.capitalize
+
+.board class=current_type
+  = render partial: "board_#{current_type}"

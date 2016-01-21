@@ -1,0 +1,10 @@
+h1 = @board.name
+
+- @board_bag.columns.each do |column|
+  br
+  h2 = column.name
+  br
+
+  - @board_bag.column_issues(column).each_with_index do |issue, i|
+    = "#{i + 1}. #{issue.title}#{' ✔' if issue.closed?}"
+    br

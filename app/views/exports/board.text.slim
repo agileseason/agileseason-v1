@@ -1,7 +1,0 @@
-= "# #{@board.name}\n"
-
-- @board_bag.columns.each do |column|
-  = "\n### #{column.name}\n"
-
-  - @board_bag.column_issues(column).each do |issue|
-    = "- [#{issue.closed? ? 'x' : ' '}] #{issue.title} ##{issue.number}\n".html_safe
