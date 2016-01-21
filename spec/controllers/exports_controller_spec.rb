@@ -8,6 +8,6 @@ describe ExportsController do
     before { request }
 
     it { expect(response).to have_http_status(:success) }
-    it { expect(response).to render_template('exports/board.text') }
+    it { expect(response).to render_template(:show) }
   end
 end
