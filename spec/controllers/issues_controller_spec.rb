@@ -9,13 +9,35 @@ describe IssuesController do
   before { allow(controller).to receive(:github_api).and_return(github_api) }
 
   describe '#show' do
-    let(:request) { get :show, board_github_full_name: board.github_full_name, number: 1 }
+    let(:number) { 1 }
     before { allow(github_api).to receive(:issue_comments).and_return([]) }
     before { allow_any_instance_of(BoardBag).to receive(:issue).and_return(issue) }
     before { request }
 
-    it { expect(assigns :issue).to be_present }
-    it { expect((assigns :issue).number).to eq issue.number }
+    context 'html' do
+      let(:request) do
+        get :show, board_github_full_name: board.github_full_name, number: number
+      end
+
+      it do
+        expect(response).to redirect_to(un(board_url(board, number: number)))
+      end
+    end
+
+    context 'json' do
+      let(:request) do
+        get(
+          :show,
+          board_github_full_name: board.github_full_name,
+          number: number,
+          format: :json
+        )
+      end
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(assigns :issue).to be_present }
+      it { expect((assigns :issue).number).to eq issue.number }
+    end
   end
 
   describe '#create' do
@@ -140,7 +162,7 @@ describe IssuesController do
     end
     before { allow(IssueStats::Mover).to receive(:call).and_return(issue_stat) }
 
-    context 'responce' do
+    context 'response' do
       before { request }
       it { expect(response).to have_http_status(:success) }
       it { expect(IssueStats::Mover).to have_received(:call) }
@@ -261,7 +283,7 @@ describe IssuesController do
     let(:issue) { stub_issue(assigne: 'fake') }
     before { allow_any_instance_of(BoardBag).to receive(:issue).and_return(issue) }
 
-    context 'responce' do
+    context 'response' do
       before do
         allow_any_instance_of(IssueStats::Assigner).
           to receive(:call).
