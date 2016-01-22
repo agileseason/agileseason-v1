@@ -1,17 +1,12 @@
-# bucket = s3.bucket('agile-season-development')
-# obj = bucket.object('hello')
-# obj.put(body:'Hello World!')
-# obj.public_url
 class S3Api
   class << self
-    def direct_post
+    def direct_post(user, board)
       bucket.
         presigned_post(
-          key: "#{dir_path}/${filename}",
-          # content_type_starts_with: 'image/',
+          key: "#{dir_path(user, board)}/#{SecureRandom.uuid}",
           content_type: 'image/png',
           acl: 'public-read',
-          # content_length_range: 0..1024,
+          # content_length_range: 0..1024, - Doesn't work. Return 400.
           success_action_status: '201'
         )
     end
@@ -30,8 +25,8 @@ class S3Api
       @bucket ||= client.bucket("agile-season-#{Rails.env}")
     end
 
-    def dir_path
-      "uploads/#{Time.current.strftime('%Y-%m-%d')}/#{SecureRandom.uuid}"
+    def dir_path(user, board)
+      "uploads/#{user.id}/#{board.id}/#{Time.current.strftime('%Y%m%d')}"
     end
   end
 end
