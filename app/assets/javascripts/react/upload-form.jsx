@@ -35,8 +35,7 @@ module.exports = React.createClass({
           return;
         }
         key = $(data.jqXHR.responseXML).find('Key').text();
-        imageUrl = window.build_s3_image_url(url, key);
-        this.uploadDone(imageUrl);
+        this.uploadDone(this.getImageUrl(url, key));
         this.setState({labelText: 'Attach images'});
       }.bind(this),
       fail: function(e, data) {
@@ -44,6 +43,11 @@ module.exports = React.createClass({
         this.setState({labelText: 'Attach images [Error. Please try again later.]'});
       }.bind(this)
     });
+  },
+  getImageUrl: function(url, key) {
+    var lengthOfHash = 37;
+    var name = key.substring(0, key.length - lengthOfHash)
+    return '![' + name + '](' + url + '/' + key + ')';
   },
   isNeedSkip: function($input) {
     if ($input.closest('.comment-form').length && $('.comment.editable').length) {

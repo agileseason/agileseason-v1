@@ -8,12 +8,12 @@ class IssuesController < ApplicationController
   after_action :fetch_control_chart, only: [:close, :reopen]
 
   def show
-    @direct_post = S3Api.direct_post
-    @issue = @board_bag.issue(number)
-
     respond_to do |format|
       format.html { redirect_to un(board_url(@board, number: number)) }
-      format.json { render json: @issue.to_hash }
+      format.json do
+        @issue = @board_bag.issue(number)
+        render json: @issue.to_hash
+      end
     end
   end
 
