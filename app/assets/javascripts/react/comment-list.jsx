@@ -150,10 +150,11 @@ var CommentEditForm = React.createClass({
     }.bind(this));
   },
   componentWillReceiveProps: function(newProps) {
-    if (newProps.body && newProps.body != this.state.body) {
-      this.setState({body: newProps.body});
-    }
     if (newProps.display == 'block') {
+      if (newProps.body && newProps.body != this.state.body) {
+        this.setState({body: newProps.body});
+      }
+
       setTimeout(function() {
         var textarea = $(this.refs.textarea)
         if (!textarea.hasClass('elasticable')) {
