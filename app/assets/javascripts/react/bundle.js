@@ -1000,7 +1000,7 @@ module.exports = React.createClass({
       }
     }
   },
-  handleEditTitleClick: function (e) {
+  handleEditTitleClick: function () {
     if (this.props.isReadonly) {
       return;
     }
