@@ -12,14 +12,23 @@ module.exports = React.createClass({
       textarea: 'none'
     };
   },
-  componentDidUpdate: function() {
-    var $textarea = $(this.refs.title)
-    if (!$textarea.hasClass('elasticable')) {
-      $textarea.addClass('elasticable');
-      $textarea.elastic();
+  componentWillUpdate: function(newProps, newState) {
+    if (newState.textarea == 'block') {
+      setTimeout(function() {
+        var $textarea = $(this.refs.title)
+        if (!$textarea.hasClass('elasticable')) {
+          $textarea.addClass('elasticable');
+          $textarea.elastic();
+        }
+      }.bind(this), 10);
     }
+  },
+  componentDidUpdate: function() {
     if (this.state.textarea == 'block') {
-      $textarea.focus().val('').val(this.state.title);
+      var $textarea = $(this.refs.title)
+      if (!$textarea.is(':focus')) {
+        $textarea.focus().val('').val(this.state.title);
+      }
     }
   },
   handleEditTitleClick: function() {
