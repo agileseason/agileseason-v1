@@ -518,12 +518,16 @@ $(document).on('page:change', function () {
       $(this.refs.textarea).focus().val('').val(this.state.body);
     },
     handleUpload: function(imageUrl) {
-      this.setState({ body: this.state.body + imageUrl + "\n" });
-      this.focusToEnd();
+      if (this.state.opacity == 1.0) {
+        this.setState({ body: this.state.body + imageUrl + "\n" });
+        this.focusToEnd();
+      }
     },
     handleSubmit: function(e) {
       e.preventDefault();
-      this.saveCommentBegin();
+      if (this.state.opacity == 1.0) {
+        this.saveCommentBegin();
+      }
     },
     saveCommentBegin: function() {
       var body = this.state.body.trim();
@@ -538,6 +542,7 @@ $(document).on('page:change', function () {
       this.setState({body: '', opacity: 1.0});
     },
     render: function() {
+      var buttonText = this.state.opacity == 1.0 ? 'Comment' : 'Comment...';
       return (
         <div className='comment-form'>
           <form onSubmit={this.handleSubmit}>
@@ -550,7 +555,7 @@ $(document).on('page:change', function () {
               style={{opacity: this.state.opacity}}
             />
             <div className='actions'>
-              <input type='submit' value='Comment' className='button' />
+              <input type='submit' value={buttonText} className='button' />
             </div>
           </form>
           <UploadForm onUpload={this.handleUpload} />
