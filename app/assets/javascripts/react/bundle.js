@@ -222,10 +222,11 @@ var CommentEditForm = React.createClass({
     }).bind(this));
   },
   componentWillReceiveProps: function (newProps) {
-    if (newProps.body && newProps.body != this.state.body) {
-      this.setState({ body: newProps.body });
-    }
     if (newProps.display == 'block') {
+      if (newProps.body && newProps.body != this.state.body) {
+        this.setState({ body: newProps.body });
+      }
+
       setTimeout((function () {
         var textarea = $(this.refs.textarea);
         if (!textarea.hasClass('elasticable')) {
@@ -876,12 +877,16 @@ $(document).on('page:change', function () {
       $(this.refs.textarea).focus().val('').val(this.state.body);
     },
     handleUpload: function (imageUrl) {
-      this.setState({ body: this.state.body + imageUrl + "\n" });
-      this.focusToEnd();
+      if (this.state.opacity == 1.0) {
+        this.setState({ body: this.state.body + imageUrl + "\n" });
+        this.focusToEnd();
+      }
     },
     handleSubmit: function (e) {
       e.preventDefault();
-      this.saveCommentBegin();
+      if (this.state.opacity == 1.0) {
+        this.saveCommentBegin();
+      }
     },
     saveCommentBegin: function () {
       var body = this.state.body.trim();
@@ -896,6 +901,7 @@ $(document).on('page:change', function () {
       this.setState({ body: '', opacity: 1.0 });
     },
     render: function () {
+      var buttonText = this.state.opacity == 1.0 ? 'Comment' : 'Comment...';
       return React.createElement(
         'div',
         { className: 'comment-form' },
@@ -913,7 +919,7 @@ $(document).on('page:change', function () {
           React.createElement(
             'div',
             { className: 'actions' },
-            React.createElement('input', { type: 'submit', value: 'Comment', className: 'button' })
+            React.createElement('input', { type: 'submit', value: buttonText, className: 'button' })
           )
         ),
         React.createElement(UploadForm, { onUpload: this.handleUpload })
@@ -944,7 +950,8 @@ module.exports = React.createClass({
     return this.props.onOverlayClick();
   },
   render: function () {
-    return React.createElement('div', { className: 'popup-overlay escapeble', style: { display: this.props.display }, onClick: this.handleClick });
+    var cssClasses = 'popup-overlay escapeble ' + this.props.className;
+    return React.createElement('div', { className: cssClasses, style: { display: this.props.display }, onClick: this.handleClick });
   }
 });
 
@@ -961,40 +968,59 @@ module.exports = React.createClass({
   getInitialState: function () {
     return {
       title: this.props.title,
+      titleEdit: this.props.title,
       h1: 'block',
       textarea: 'none'
     };
   },
-  componentDidUpdate: function () {
+  componentDidMount: function () {
     var $textarea = $(this.refs.title);
-    if (!$textarea.hasClass('elasticable')) {
-      $textarea.addClass('elasticable');
-      $textarea.elastic();
+    $textarea.on('blur', (function () {
+      if (this.state.textarea == 'block') {
+        this.handleEditTitleClick();
+      }
+    }).bind(this));
+  },
+  componentWillUpdate: function (newProps, newState) {
+    if (newState.textarea == 'block') {
+      setTimeout((function () {
+        var $textarea = $(this.refs.title);
+        if (!$textarea.hasClass('elasticable')) {
+          $textarea.addClass('elasticable');
+          $textarea.elastic();
+        }
+      }).bind(this), 10);
     }
+  },
+  componentDidUpdate: function () {
     if (this.state.textarea == 'block') {
-      $textarea.focus().val('').val(this.state.title);
+      var $textarea = $(this.refs.title);
+      if (!$textarea.is(':focus')) {
+        $textarea.focus().val('').val(this.state.titleEdit);
+      }
     }
   },
   handleEditTitleClick: function () {
     if (this.props.isReadonly) {
       return;
     }
-    var title = this.state.title.trim();
-    if (title == '') {
-      return;
-    }
     if (this.state.h1 == 'block') {
       this.setState({ h1: 'none', textarea: 'block' });
     } else {
       this.setState({ h1: 'block', textarea: 'none' });
-      this.props.onUpdateTitle(title);
     }
   },
   handleTextChange: function (e) {
-    this.setState({ title: e.target.value });
+    this.setState({ titleEdit: e.target.value });
   },
   handleKeyDown: function (e) {
     if (e.keyCode == 13) {
+      var title = this.state.titleEdit.trim();
+      if (title == '') {
+        return;
+      }
+      this.props.onUpdateTitle(title);
+      this.setState({ title: title });
       this.handleEditTitleClick();
     }
   },
@@ -1023,12 +1049,16 @@ module.exports = React.createClass({
         ref: 'title',
         type: 'text',
         placeholder: 'Edit title',
-        value: this.state.title,
+        value: this.state.titleEdit,
         onChange: this.handleTextChange,
         onKeyDown: this.handleKeyDown,
         style: { display: this.state.textarea }
       }),
-      React.createElement(PopoverOverlay, { display: this.state.textarea, onOverlayClick: this.handleEditTitleClick })
+      React.createElement(PopoverOverlay, {
+        className: 'fake',
+        display: this.state.textarea,
+        onOverlayClick: this.handleEditTitleClick
+      })
     );
   }
 });
@@ -1159,6 +1189,9 @@ module.exports = React.createClass({
     return '![' + name + '](' + url + '/' + key + ')';
   },
   isNeedSkip: function ($input) {
+    if (this.state.display == 'none') {
+      return true;
+    }
     if ($input.closest('.comment-form').length && $('.comment.editable').length) {
       return true;
     }

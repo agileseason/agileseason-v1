@@ -7,8 +7,9 @@ module.exports = React.createClass({
     return this.props.onOverlayClick();
   },
   render: function() {
+    var cssClasses = 'popup-overlay escapeble ' + this.props.className;
     return (
-      <div className='popup-overlay escapeble' style={{display: this.props.display}} onClick={this.handleClick}></div>
+      <div className={cssClasses} style={{display: this.props.display}} onClick={this.handleClick}></div>
     );
   }
 });
