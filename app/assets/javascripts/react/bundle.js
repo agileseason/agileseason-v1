@@ -976,7 +976,9 @@ module.exports = React.createClass({
   componentDidMount: function () {
     var $textarea = $(this.refs.title);
     $textarea.on('blur', (function () {
-      this.handleEditTitleClick();
+      if (this.state.textarea == 'block') {
+        this.handleEditTitleClick();
+      }
     }).bind(this));
   },
   componentWillUpdate: function (newProps, newState) {
