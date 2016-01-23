@@ -50,6 +50,9 @@ module.exports = React.createClass({
     return '![' + name + '](' + url + '/' + key + ')';
   },
   isNeedSkip: function($input) {
+    if (this.state.display == 'none') {
+      return true;
+    }
     if ($input.closest('.comment-form').length && $('.comment.editable').length) {
       return true;
     }
