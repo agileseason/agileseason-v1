@@ -8,14 +8,21 @@ module.exports = React.createClass({
   getInitialState: function() {
     return {
       title: this.props.title,
+      titleEdit: this.props.title,
       h1: 'block',
       textarea: 'none'
     };
   },
+  componentDidMount: function() {
+    var $textarea = $(this.refs.title);
+    $textarea.on('blur', function() {
+      this.handleEditTitleClick();
+    }.bind(this));
+  },
   componentWillUpdate: function(newProps, newState) {
     if (newState.textarea == 'block') {
       setTimeout(function() {
-        var $textarea = $(this.refs.title)
+        var $textarea = $(this.refs.title);
         if (!$textarea.hasClass('elasticable')) {
           $textarea.addClass('elasticable');
           $textarea.elastic();
@@ -27,30 +34,31 @@ module.exports = React.createClass({
     if (this.state.textarea == 'block') {
       var $textarea = $(this.refs.title)
       if (!$textarea.is(':focus')) {
-        $textarea.focus().val('').val(this.state.title);
+        $textarea.focus().val('').val(this.state.titleEdit);
       }
     }
   },
-  handleEditTitleClick: function() {
+  handleEditTitleClick: function(e) {
     if (this.props.isReadonly) {
-      return;
-    }
-    var title = this.state.title.trim();
-    if (title == '') {
       return;
     }
     if (this.state.h1 == 'block') {
       this.setState({h1: 'none', textarea: 'block'});
     } else {
       this.setState({h1: 'block', textarea: 'none'});
-      this.props.onUpdateTitle(title);
     }
   },
   handleTextChange: function(e) {
-    this.setState({title: e.target.value});
+    this.setState({titleEdit: e.target.value});
   },
   handleKeyDown: function(e) {
     if (e.keyCode == 13) {
+      var title = this.state.titleEdit.trim();
+      if (title == '') {
+        return;
+      }
+      this.props.onUpdateTitle(title);
+      this.setState({title: title});
       this.handleEditTitleClick();
     }
   },
@@ -67,12 +75,16 @@ module.exports = React.createClass({
           ref='title'
           type='text'
           placeholder='Edit title'
-          value={this.state.title}
+          value={this.state.titleEdit}
           onChange={this.handleTextChange}
           onKeyDown={this.handleKeyDown}
           style={{display: this.state.textarea}}
         />
-        <PopoverOverlay display={this.state.textarea} onOverlayClick={this.handleEditTitleClick} />
+        <PopoverOverlay
+          className='fake'
+          display={this.state.textarea}
+          onOverlayClick={this.handleEditTitleClick}
+        />
       </div>
     );
   }
