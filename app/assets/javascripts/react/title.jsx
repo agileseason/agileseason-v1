@@ -34,13 +34,13 @@ module.exports = React.createClass({
   },
   componentDidUpdate: function() {
     if (this.state.textarea == 'block') {
-      var $textarea = $(this.refs.title)
+      var $textarea = $(this.refs.title);
       if (!$textarea.is(':focus')) {
         $textarea.focus().val('').val(this.state.titleEdit);
       }
     }
   },
-  handleEditTitleClick: function(e) {
+  handleEditTitleClick: function() {
     if (this.props.isReadonly) {
       return;
     }
