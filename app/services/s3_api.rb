@@ -3,7 +3,7 @@ class S3Api
     def direct_post(user, board)
       bucket.
         presigned_post(
-          key: "#{dir_path(user, board)}/#{SecureRandom.uuid}",
+          key: "#{dir_path(user, board)}/#{SecureRandom.hex.first(6)}/${filename}",
           content_type: 'image/png',
           acl: 'public-read',
           # content_length_range: 0..1024, - Doesn't work. Return 400.

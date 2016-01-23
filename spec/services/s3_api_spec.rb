@@ -9,14 +9,14 @@ describe S3Api do
     end
     before { allow(bucket).to receive(:presigned_post) }
     before { allow(S3Api).to receive(:bucket).and_return(bucket) }
-    before { allow(SecureRandom).to receive(:uuid).and_return('abc') }
+    before { allow(SecureRandom).to receive(:hex).and_return('abcdefg') }
     before { subject }
 
     it do
       expect(bucket).
         to have_received(:presigned_post).
         with(
-          key: "uploads/#{expected_path_prefix}/abc",
+          key: "uploads/#{expected_path_prefix}/abcdef/${filename}",
           content_type: 'image/png',
           acl: 'public-read',
           success_action_status: '201'
