@@ -25,7 +25,7 @@ $(document).on 'page:change', ->
 
   # обновить WIP у колонки после архивации тикета
   $('.issue .archive').on 'ajax:success', (e, badge) ->
-    window.update_wip_column(badge)
+    window.update_wip_column(JSON.parse(badge))
 
   # изменить тикет и открыть архивацию после успешного закрытия
   $('.board').on 'click', '.issue .close', ->

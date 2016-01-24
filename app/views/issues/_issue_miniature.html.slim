@@ -54,7 +54,6 @@
       a.button.archive [
         class="#{:hidden unless issue.closed?}"
         href="#{archive_board_issues_url(@board, issue.number)}"
-        data-type='json'
         data-remote='true'
       ] Archive
 
