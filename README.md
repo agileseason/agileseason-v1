@@ -17,10 +17,10 @@ Look at the our development board for example - [agileseason.com](https://agiles
 - [x] [Drag and drop issues between columns](https://github.com/agileseason/agileseason/wiki/Board-features)
 - [x] Search and sort issues
 - [x] Attach images by drag & drop
+- [x] [Auto-assign and auto-close issue](https://github.com/agileseason/agileseason/wiki/Board-features#auto-closing-issues)
 - [x] [Board markdown export](https://github.com/agileseason/agileseason/wiki/Board-features#board-markdown-export)
-- [ ] Roadmap
+- [x] [Public read-only access](https://github.com/agileseason/agileseason/wiki/Board-features#public-read-only-access)
 - [ ] Timeline
-- [ ] Bus factor
 
 ### Kanban
 
