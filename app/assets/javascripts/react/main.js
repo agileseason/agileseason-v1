@@ -88,6 +88,7 @@ $(document).on('page:change', function () {
     },
     handleCloseButton: function() {
       $('.issue-modal-container').hide();
+      window.RemoveNumberFromUrl();
     },
     handleUpdateTitle: function(title) {
       var url = this.issueUrl() + '/update';
@@ -573,7 +574,16 @@ $(document).on('page:change', function () {
       />,
       document.getElementById('issue-modal')
     );
-    var issueUrl = window.location.href.replace(/#|\?.*/g, '') + '?number=' + issue.number;
-    window.history.pushState({}, issue.title, issueUrl);
+    window.AddNumberToUrl(issue.number, issue.title);
   }
 });
+
+window.AddNumberToUrl = function(number, title) {
+  var issueUrl = window.location.href.replace(/#|\?.*/g, '') + '?number=' + number;
+  window.history.pushState({}, title, issueUrl);
+}
+
+window.RemoveNumberFromUrl = function() {
+  var boardUrl = window.location.href.replace(/#|\?.*/g, '')
+  window.history.pushState({}, '', boardUrl);
+}
