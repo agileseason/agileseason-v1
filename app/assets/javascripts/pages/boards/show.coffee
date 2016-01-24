@@ -16,7 +16,7 @@ $(document).on 'page:change', ->
   $('.issue-modal-container').on 'click', (e) ->
     $target = $(e.target)
     if $target.is '.issue-modal-container'
-      $target.hide()
+      $('.close-modal', $target).trigger 'click'
       false
 
   # скрыть тикет после архивации
