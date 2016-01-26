@@ -1,30 +1,8 @@
 ul.b-submenu
-  - if @board.kanban?
-    // FIX : Remove copy-paste from li... @blackchestnut
+  - submenu.each do |item|
     li
-      - if params[:controller] == 'graphs/cumulative'
-        span Cumulative Flow Diagram
-      - else
-        a href="#{un board_graphs_cumulative_index_url(@board)}" Cumulative Flow Diagram
+      a [
+        class="#{:active if params[:controller] == item.controller}"
+        href="#{un item.url}"
+      ] = item.name
 
-    li
-      - if params[:controller] == 'graphs/control'
-        span Control Chart
-      - else
-        a href="#{un board_graphs_control_index_url(@board)}" Control Chart
-
-    li
-      - if params[:controller] == 'graphs/frequency'
-        span Cycle Time Diagram
-      - else
-        a href="#{un board_graphs_frequency_index_url(@board)}" Cycle Time Diagram
-
-  - else
-    li
-      a href='#coming_soon' Burndown Chart [Coming Soon]
-
-  li
-    - if params[:controller] == 'graphs/lines'
-      span Lines of Code
-    - else
-      a href="#{un board_graphs_lines_url(@board)}" Lines of Code
