@@ -1,3 +1,15 @@
 = render partial: '/layouts/submenu'
 
 .graph
+  table border='1'
+    tr
+      td From
+      td To
+      td Open
+      td Closed
+    - @data.each do |item|
+      tr
+        td = item.interval.first.strftime('%d.%m.%y')
+        td = item.interval.last.strftime('%d.%m.%y')
+        td = item.open
+        td = item.closed
