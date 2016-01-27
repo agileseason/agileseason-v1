@@ -17,15 +17,21 @@ module SubmenuHelper
         url: board_graphs_frequency_index_url(@board)
       ),
       OpenStruct.new(
-        name: 'Forecast Duration',
-        controller: 'graphs/forecasts',
-        url: board_graphs_forecasts_url(@board)
-      ),
-      OpenStruct.new(
         name: 'Lines of Code',
         controller: 'graphs/lines',
         url: board_graphs_lines_url(@board)
       )
+    ] + extra_items
+  end
+
+  def extra_items
+    return [] unless current_user.admin?
+    [
+      OpenStruct.new(
+        name: 'Forecast Duration',
+        controller: 'graphs/forecasts',
+        url: board_graphs_forecasts_url(@board)
+      ),
     ]
   end
 end
