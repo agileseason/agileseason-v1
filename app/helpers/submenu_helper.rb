@@ -21,17 +21,6 @@ module SubmenuHelper
         controller: 'graphs/lines',
         url: board_graphs_lines_url(@board)
       )
-    ] + extra_items
-  end
-
-  def extra_items
-    return [] unless current_user.admin?
-    [
-      OpenStruct.new(
-        name: 'Forecast Duration',
-        controller: 'graphs/forecasts',
-        url: board_graphs_forecasts_url(@board)
-      ),
     ]
   end
 end
