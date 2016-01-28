@@ -504,7 +504,14 @@ $(document).on('page:change', function () {
     },
     componentDidMount: function() {
       var $textarea = $(this.refs.textarea);
-      $textarea.elastic();
+      setTimeout(function() {
+        if (!$textarea.hasClass('elasticable')) {
+          $textarea.addClass('elasticable');
+          $textarea.elastic();
+        }
+        this.focusToEnd();
+      }.bind(this), 10);
+
       $textarea.on('keydown', function(e) {
         if (e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
           this.saveCommentBegin();
