@@ -3,13 +3,6 @@ $(document).on('page:change', function () {
     return;
   }
 
-  // TODO Extract to other file.
-  Number.prototype.pad = function(size) {
-    var s = String(this);
-    while (s.length < (size || 2)) { s = '0' + s; }
-    return s;
-  };
-
   var React = require('react');
   var ReactDOM = require('react-dom');
   var Title = require('./title.jsx');
