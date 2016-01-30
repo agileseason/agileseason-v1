@@ -2,13 +2,11 @@ class CommentsController < ApplicationController
   before_action :fetch_board
 
   def index
+    # FIX Return Modal::Comment form Modal::CommentsFetcher <= Cached::Comments.call
     comments = Cached::Comments.call(user: current_user, board: @board, number: number)
     sync_comments(comments)
 
-    to_json = comments.map { |comment| comment_to_json(comment) }
-    to_json = to_json + github_events
-
-    render json: { comments: to_json.sort_by { |e| e[:created_at] } }
+    render json: { comments: comments_items(comments) }
   end
 
   def create
@@ -90,27 +88,6 @@ class CommentsController < ApplicationController
     Modal::Comment.new(comment, markdown(comment.body, @board)).to_h
   end
 
-  def github_events
-    events = []
-    issue = @board_bag.issue(number).try(:issue)
-    return events unless issue
-
-    events << Modal::Event.new(OpenStruct.new(
-      id: 1,
-      event: 'opened_fake',
-      actor: issue.user,
-      created_at: issue.created_at
-    ))
-
-    if issue.state == 'closed' || issue.closed_by
-      Cached::Events.
-        call(user: current_user, board: @board, number: number).
-        each { |event| events << Modal::Event.new(event) }
-    end
-
-    events.map(&:to_h)
-  end
-
   # FIX Remove duplication with IssueController
   def board_issue_json
     board_issue = @board_bag.issue(number)
@@ -122,5 +99,18 @@ class CommentsController < ApplicationController
         formats: [:html]
       )
     }
+  end
+
+  def comments_items(github_comments)
+    events = Modal::EventsFetcher.call(
+      user: current_user,
+      board_bag: @board_bag,
+      number: number
+    )
+    comments = github_comments.map do |comment|
+      Modal::Comment.new(comment, markdown(comment.body, @board))
+    end
+
+    (events + comments).sort_by(&:created_at).map(&:to_h)
   end
 end
