@@ -4,7 +4,7 @@ module Modal
 
     def initialize github_object
       @id = github_object.id
-      @user = Modal::User.new(fetch_user(github_object))
+      @user = Modal::Login.new(fetch_user(github_object))
       @created_at = github_object.created_at
       @created_at_str = fetch_created_at_str(github_object)
     end

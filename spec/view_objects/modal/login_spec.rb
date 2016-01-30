@@ -1,5 +1,5 @@
-describe Modal::User do
-  let(:user) { Modal::User.new(github_user) }
+describe Modal::Login do
+  let(:user) { Modal::Login.new(github_user) }
   let(:github_user) { stub_user }
 
   describe '#to_h' do

@@ -1,5 +1,5 @@
 module Modal
-  class User
+  class Login
     attr_reader :id, :login, :avatar_url
 
     def initialize github_object
