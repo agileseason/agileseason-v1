@@ -8,7 +8,7 @@ module Modal
 
     def call
       return [] unless issue.present?
-      events << opened_event if issue.user
+      events << opened_event if issue.user && issue.user.id
       return events unless more_events?
 
       events + github_events
