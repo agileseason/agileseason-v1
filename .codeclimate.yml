@@ -16,6 +16,8 @@ engines:
         enabled: false
       Rubocop/Style/AsciiComments:
         enabled: false
+      Rubocop/Style/DotPosition:
+        enabled: false
   brakeman:
     enabled: true
   bundler-audit:

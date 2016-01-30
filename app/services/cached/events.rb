@@ -11,7 +11,7 @@ module Cached
     end
 
     def expires_in
-      20.second
+      20.seconds
     end
 
     def key_identity

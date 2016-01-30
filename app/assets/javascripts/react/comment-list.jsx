@@ -55,7 +55,7 @@ var Comment = React.createClass({
       bodyDisplay: 'block',
       formDisplay: 'none',
       body: this.props.data.body,
-      bodyMarkdown: this.props.data.bodyMarkdown,
+      markdown: this.props.data.markdown,
       currentClass: 'comment',
       opacity: 1.0
     };
@@ -102,12 +102,12 @@ var Comment = React.createClass({
       bodyDisplay: 'block',
       formDisplay: 'none',
       currentClass: 'comment',
-      bodyMarkdown: comment.bodyMarkdown,
+      markdown: comment.markdown,
       opacity: 1.0
     });
   },
-  bodyMarkdown: function() {
-    return {__html: this.state.bodyMarkdown};
+  markdown: function() {
+    return {__html: this.state.markdown};
   },
   render: function() {
     return (
@@ -126,7 +126,7 @@ var Comment = React.createClass({
           onClick={this.handleBodyClick}
           style={{display: this.state.bodyDisplay}}
         >
-          <div dangerouslySetInnerHTML={this.bodyMarkdown()} />
+          <div dangerouslySetInnerHTML={this.markdown()} />
         </div>
         <CommentEditForm
           data={this.props.data}

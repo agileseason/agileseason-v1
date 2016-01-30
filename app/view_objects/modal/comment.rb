@@ -1,15 +1,15 @@
 module Modal
   class Comment < Modal::ChronicBase
-    attr_reader :body, :bodyMarkdown
+    attr_reader :body, :markdown
 
-    def initialize github_object, bodyMarkdown
+    def initialize github_object, markdown
       super github_object
       @body = github_object.body
-      @bodyMarkdown = bodyMarkdown
+      @markdown = markdown
     end
 
     def to_h
-      super.merge(type: :comment, body: body, bodyMarkdown: bodyMarkdown)
+      super.merge(type: :comment, body: body, markdown: markdown)
     end
 
     private
