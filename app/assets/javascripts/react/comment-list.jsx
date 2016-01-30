@@ -13,19 +13,37 @@ module.exports = React.createClass({
           </div>
         );
       } else {
-        return (
-          <Comment
-            data={comment}
-            key={comment.id}
-            onDeleteClick={this.props.onDeleteClick}
-            onUpdateClick={this.props.onUpdateClick}
-          />
-        );
+        if (comment.type == 'comment') {
+          return (
+            <Comment
+              data={comment}
+              key={comment.id}
+              onDeleteClick={this.props.onDeleteClick}
+              onUpdateClick={this.props.onUpdateClick}
+            />
+          );
+        } else {
+          return (<Event key={comment.id} data={comment}/>);
+        }
       }
     }.bind(this));
     return (
       <div className="comment-list">
         {commentNodes}
+      </div>
+    );
+  }
+});
+
+var Event = React.createClass({
+  render: function() {
+    return (
+      <div className={this.props.data.type}>
+        <Avatar data={this.props.data.user} width={20} height={20} />
+        <div className='login'>{this.props.data.user.login}</div>
+        <div className='text' title={this.props.data.created_at_str}>
+          {this.props.data.text}
+        </div>
       </div>
     );
   }
@@ -97,7 +115,7 @@ var Comment = React.createClass({
         <Avatar data={this.props.data.user} width={40} height={40} />
         <div className='header'>
           <div className='login'>{this.props.data.user.login}</div>
-          <div className='date'>{this.props.data.created_at}</div>
+          <div className='date'>{this.props.data.created_at_str}</div>
           &nbsp;&mdash;&nbsp;
           <a href='#' onClick={this.handleEditClick}>edit</a>
           &nbsp;or&nbsp;

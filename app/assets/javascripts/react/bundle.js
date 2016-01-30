@@ -65,18 +65,44 @@ module.exports = React.createClass({
           React.createElement('div', { className: 'body stub' })
         );
       } else {
-        return React.createElement(Comment, {
-          data: comment,
-          key: comment.id,
-          onDeleteClick: this.props.onDeleteClick,
-          onUpdateClick: this.props.onUpdateClick
-        });
+        if (comment.type == 'comment') {
+          return React.createElement(Comment, {
+            data: comment,
+            key: comment.id,
+            onDeleteClick: this.props.onDeleteClick,
+            onUpdateClick: this.props.onUpdateClick
+          });
+        } else {
+          return React.createElement(Event, { key: comment.id, data: comment });
+        }
       }
     }).bind(this));
     return React.createElement(
       'div',
       { className: 'comment-list' },
       commentNodes
+    );
+  }
+});
+
+var Event = React.createClass({
+  displayName: 'Event',
+
+  render: function () {
+    return React.createElement(
+      'div',
+      { className: this.props.data.type },
+      React.createElement(Avatar, { data: this.props.data.user, width: 20, height: 20 }),
+      React.createElement(
+        'div',
+        { className: 'login' },
+        this.props.data.user.login
+      ),
+      React.createElement(
+        'div',
+        { className: 'text', title: this.props.data.created_at_str },
+        this.props.data.text
+      )
     );
   }
 });
@@ -157,7 +183,7 @@ var Comment = React.createClass({
         React.createElement(
           'div',
           { className: 'date' },
-          this.props.data.created_at
+          this.props.data.created_at_str
         ),
         ' — ',
         React.createElement(
@@ -859,7 +885,6 @@ $(document).on('page:change', function () {
           $textarea.addClass('elasticable');
           $textarea.elastic();
         }
-        this.focusToEnd();
       }).bind(this), 10);
 
       $textarea.on('keydown', (function (e) {

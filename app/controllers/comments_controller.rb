@@ -5,13 +5,10 @@ class CommentsController < ApplicationController
     comments = Cached::Comments.call(user: current_user, board: @board, number: number)
     sync_comments(comments)
 
-    respond_to do |format|
-      format.json do
-        render json: {
-          comments: comments.map { |comment| comment_to_json(comment) }
-        }
-      end
-    end
+    to_json = comments.map { |comment| comment_to_json(comment) }
+    to_json = to_json + github_events
+
+    render json: { comments: to_json.sort_by { |e| e[:created_at] } }
   end
 
   def create
@@ -90,17 +87,28 @@ class CommentsController < ApplicationController
   end
 
   def comment_to_json(comment)
-    {
-      id: comment.id,
-      body: comment.body,
-      bodyMarkdown: markdown(comment.body, @board),
-      created_at: comment.created_at.strftime('%b %d, %H:%M'),
-      user: {
-        id: comment.user.id,
-        login: comment.user.login,
-        avatar_url: comment.user.avatar_url
-      }
-    }
+    Modal::Comment.new(comment, markdown(comment.body, @board)).to_h
+  end
+
+  def github_events
+    events = []
+    issue = @board_bag.issue(number).try(:issue)
+    return events unless issue
+
+    events << Modal::Event.new(OpenStruct.new(
+      id: 1,
+      event: 'opened_fake',
+      actor: issue.user,
+      created_at: issue.created_at
+    ))
+
+    if issue.state == 'closed' || issue.closed_by
+      Cached::Events.
+        call(user: current_user, board: @board, number: number).
+        each { |event| events << Modal::Event.new(event) }
+    end
+
+    events.map(&:to_h)
   end
 
   # FIX Remove duplication with IssueController
