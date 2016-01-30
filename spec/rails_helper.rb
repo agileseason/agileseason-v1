@@ -60,6 +60,7 @@ RSpec.configure do |config|
   config.include AuthenticationHelper
   config.include GithubIssueHelper
   config.include GithubRepoHelper
+  config.include GithubUserHelper
   config.include Unescaper
 
   DatabaseCleaner.strategy = :truncation

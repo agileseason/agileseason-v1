@@ -9,13 +9,7 @@ describe Modal::EventsFetcher do
   let(:user) { build :user }
   let(:board_bag) { double(issue: board_issue, board: nil) }
   let(:board_issue) { double(issue: issue) }
-  let(:github_user) do
-    OpenStruct.new(
-      id: 1001,
-      login: 'foo',
-      avatar_url: 'http://foo/img.jpg'
-    )
-  end
+  let(:github_user) { stub_user }
 
   context 'without issue' do
     let(:issue) { nil }
