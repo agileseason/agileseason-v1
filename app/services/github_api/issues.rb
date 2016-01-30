@@ -1,5 +1,7 @@
 class GithubApi
   module Issues
+    ALLOWED_EVENTS = ['closed', 'reopened'].freeze
+
     def issues(board)
       (open_issues(board) + closed_issues(board))
         .reject(&:pull_request)
@@ -51,6 +53,11 @@ class GithubApi
       client.search_issues(
         "#{query.gsub('@', 'assignee:')} type:issue repo:#{board.github_full_name}"
       ).items
+    end
+
+    def issue_events(board, number)
+      client.issue_events(board.github_id, number).
+        select { |e| ALLOWED_EVENTS.include?(e.event) }
     end
 
     private

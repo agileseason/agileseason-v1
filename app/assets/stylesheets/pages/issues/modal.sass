@@ -312,6 +312,25 @@
           margin-top: 8px
 
     .comment-list
+      .event
+        margin: 0 0 10px 60px
+        color: $lightgrey
+
+        .avatar
+          +border-radius(50px)
+
+        .login, .text
+          display: inline-block
+          vertical-align: top
+          line-height: 20px
+
+        .login
+          font-weight: bold
+          margin: 0 4px
+
+      .event + .comment
+        margin-top: 30px
+
       .comment
         +border-radius(2px)
         background-color: #f2f9fc

@@ -1,21 +1,7 @@
 engines:
   rubocop:
-    enabled: true
-    checks:
-      Rubocop/Style/Documentation:
-        enabled: false
-      Rubocop/Style/MethodDefParentheses:
-        enabled: false
-      Rubocop/Style/MultilineOperationIndentation:
-        enabled: false
-      Rubocop/Style/TrailingComma:
-        enabled: false
-      Rubocop/Style/ClassAndModuleChildren:
-        enabled: false
-      Rubocop/Style/SignalException:
-        enabled: false
-      Rubocop/Style/AsciiComments:
-        enabled: false
+    # Waiting fix https://github.com/codeclimate/codeclimate-rubocop/issues/39
+    enabled: false
   brakeman:
     enabled: true
   bundler-audit:

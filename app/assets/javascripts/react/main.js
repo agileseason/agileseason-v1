@@ -502,7 +502,6 @@ $(document).on('page:change', function () {
           $textarea.addClass('elasticable');
           $textarea.elastic();
         }
-        this.focusToEnd();
       }.bind(this), 10);
 
       $textarea.on('keydown', function(e) {

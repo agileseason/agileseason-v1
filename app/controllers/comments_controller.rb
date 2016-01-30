@@ -2,16 +2,11 @@ class CommentsController < ApplicationController
   before_action :fetch_board
 
   def index
+    # FIX Return Modal::Comment form Modal::CommentsFetcher <= Cached::Comments.call
     comments = Cached::Comments.call(user: current_user, board: @board, number: number)
     sync_comments(comments)
 
-    respond_to do |format|
-      format.json do
-        render json: {
-          comments: comments.map { |comment| comment_to_json(comment) }
-        }
-      end
-    end
+    render json: { comments: comments_items(comments) }
   end
 
   def create
@@ -90,17 +85,7 @@ class CommentsController < ApplicationController
   end
 
   def comment_to_json(comment)
-    {
-      id: comment.id,
-      body: comment.body,
-      bodyMarkdown: markdown(comment.body, @board),
-      created_at: comment.created_at.strftime('%b %d, %H:%M'),
-      user: {
-        id: comment.user.id,
-        login: comment.user.login,
-        avatar_url: comment.user.avatar_url
-      }
-    }
+    Modal::Comment.new(comment, markdown(comment.body, @board)).to_h
   end
 
   # FIX Remove duplication with IssueController
@@ -114,5 +99,18 @@ class CommentsController < ApplicationController
         formats: [:html]
       )
     }
+  end
+
+  def comments_items(github_comments)
+    events = Modal::EventsFetcher.call(
+      user: current_user,
+      board_bag: @board_bag,
+      number: number
+    )
+    comments = github_comments.map do |comment|
+      Modal::Comment.new(comment, markdown(comment.body, @board))
+    end
+
+    (events + comments).sort_by(&:created_at).map(&:to_h)
   end
 end
