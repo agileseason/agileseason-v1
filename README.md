@@ -1,11 +1,13 @@
 Agile Season
 ============
-[ ![Codeship Status for agileseason/agileseason](https://codeship.com/projects/79aa4950-4c53-0132-44ef-36f51938a765/status)](https://codeship.com/projects/47044)
+
+> Agile board for github issues with metrics
+
+[![Join the chat at https://gitter.im/agileseason/agileseason](https://badges.gitter.im/agileseason/agileseason.svg)](https://gitter.im/agileseason/agileseason?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Code Climate](https://codeclimate.com/github/agileseason/agileseason/badges/gpa.svg)](https://codeclimate.com/github/agileseason/agileseason)
 [![Test Coverage](https://codeclimate.com/github/agileseason/agileseason/badges/coverage.svg)](https://codeclimate.com/github/agileseason/agileseason)
 [![Dependency Status](https://gemnasium.com/agileseason/agileseason.svg)](https://gemnasium.com/agileseason/agileseason)
-
-Agile board for github issues with metrics
+[![Codeship Status for agileseason/agileseason](https://codeship.com/projects/79aa4950-4c53-0132-44ef-36f51938a765/status)](https://codeship.com/projects/47044)
 
 Look at the our development board for example - [agileseason.com](https://agileseason.com/boards/agileseason/agileseason)
 
