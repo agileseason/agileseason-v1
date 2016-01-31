@@ -9,9 +9,9 @@ module IssueStats
     attribute :number, Integer
 
     def call
-      github_issue = user.github_api.close(board_bag, number)
-      board_bag.update_cache(github_issue)
-      issue_stat.update(closed_at: github_issue.closed_at)
+      issue = user.github_api.close(board_bag, number)
+      board_bag.update_cache(issue)
+      issue_stat.update!(closed_at: issue.closed_at)
 
       issue_stat
     end
