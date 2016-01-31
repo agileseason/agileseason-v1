@@ -10,7 +10,9 @@ module Modal
       return [] unless issue.present?
       # FIX Remove defined? after removing Sawyer::Resource from cache.
       # HOTFIX https://agileseason.com/boards/agileseason/agileseason?number=831
-      events << opened_event if defined?(issue.user.id) || issue.user[:id]
+      if issue.user.is_a?(Sawyer::Resource) || defined?(issue.user.id)
+        events << opened_event
+      end
       return events unless more_events?
 
       events + github_events
