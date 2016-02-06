@@ -93,9 +93,11 @@
 
     .current-assignee
       +border-radius(30px)
-      display: inline-block
+      float: left
       height: 50px
+      margin-top: -12px
       width: 50px
+      position: absolute
 
     .current-due-date,
     .current-state
@@ -121,20 +123,22 @@
       display: inline-block
 
     .move-to
+      height: 38px
+      margin: 40px 0 14px 0
+
       ul.column-list
+        margin: 0px 0 0 70px
         display: -moz-box
         display: -webkit-box
-        //display: -webkit-flexbox
         font-size: 16px
-        float: right
         list-style: none
         padding: 0
         width: calc(100% - 70px)
+        margin-left: 70px
 
         li
-          -moz-box-flex: 1
-          -webkit-box-flex: 1
-          //-webkit-flex: 1
+          -moz-box-flex: 1       // Mozilla
+          -webkit-box-flex: 1    // WebKit
 
           &:last-child
             a
@@ -196,11 +200,8 @@
               top: -1px
               z-index: 1
 
-    .issue-body
-      margin-left: 60px
-      display: inline-block
-      p
-        margin-bottom: 30px
+    .issue-body > p
+      margin: 0 0 20px 70px
 
     .popup-overlay
       display: none
@@ -314,7 +315,7 @@
 
     .comment-list
       .event
-        margin: 0 0 10px 60px
+        margin: 0 0 10px 70px
         color: $lightgrey
 
         .avatar
@@ -335,7 +336,7 @@
       .comment
         +border-radius(2px)
         background-color: #f2f9fc
-        margin: 0 0 30px 60px
+        margin: 0 0 30px 70px
         padding: 20px
 
         &.editable
@@ -395,7 +396,7 @@
       +border-radius(2px)
       +box-shadow(0 17px 35px -15px #e4d4cf)
       +background-image(linear-gradient(to bottom,#f7f0ea,#fcf8f5))
-      margin: 30px 0 0 60px
+      margin: 30px 0 0 70px
       padding: 20px 20px 52px
 
     .comment-edit-form
