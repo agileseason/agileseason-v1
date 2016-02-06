@@ -68,6 +68,7 @@
   .icon-button
     float: right
     margin: 20px 20px 20px 0
+    min-width: 48px
 
     .menu-link
       border: 1px solid $orange
@@ -116,16 +117,14 @@
         display: block
 
   .search
-    float: right
-    margin: 20px 20px 20px 0
-
     &.active
       .field
-        background: #fff
         margin: -35px -90px 0 0px
-        padding: 20px 70px 20px 20px
+        padding: 20px 90px 20px 20px
+        background: #fff
         position: relative
         top: 0
+        right: -15px
         z-index: 2
 
       .search-input
@@ -183,7 +182,7 @@
       position: fixed
       right: 0
       top: 0
-      width: 485px
+      width: 490px
       z-index: 1
 
       .search-content

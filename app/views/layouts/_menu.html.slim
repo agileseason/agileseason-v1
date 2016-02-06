@@ -43,7 +43,7 @@
           .b-activities data-paginate="true" data-page="2" data-url=board_activities_url(@board)
 
       - if !current_user.guest? && @board_bag.has_read_permission?
-        li.list-item.search data-url=search_board_issues_url(@board)
+        li.list-item.icon-button.search data-url=search_board_issues_url(@board)
           .overlay
           .field.search-input
             input type='text'
