@@ -2,7 +2,9 @@
     id="column_#{column.id}"
     class="#{:last if k(column).last?}"
     data-column="#{column.id}"
-    data-url="#{board_column_url(@board, column)}"
+    data-url="#{un board_column_url(@board, column)}"
+    data-auto-assign="#{column.auto_assign?}"
+    data-auto-close="#{column.auto_close?}"
   ]
 
   = render partial: 'columns/menu', locals: { column: column }

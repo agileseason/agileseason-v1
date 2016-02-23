@@ -16,7 +16,7 @@
     a.url href="#{issue.html_url}" ##{issue.number}
 
   .icons
-    = render partial: 'issues/assignee', locals: { issue: issue }
+    = render partial: 'issues/assignee', locals: { assignee: issue.assignee }
 
     - unless k(:issue, issue).body_empty?
       span.octicon.octicon-book

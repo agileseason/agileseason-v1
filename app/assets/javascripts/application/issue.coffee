@@ -12,14 +12,12 @@ class @Issue
       beforeSend: =>
         return if column_id == @node.data('column')
         @node.find('.is_ready').removeClass('active')
+        $column = $("#column_#{column_id}")
+        if $column.data('auto-close')
+          @node.addClass('closed')
 
       success: (data) =>
         @node.find('.b-assignee').replaceWith(data.assignee)
-        if data.is_open
-          @node.removeClass('closed')
-        else
-          @node.addClass('closed')
-
         window.update_wip_column(badge) for badge in data.badges
 
   move_to_path: (column_id) ->
