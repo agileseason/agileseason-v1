@@ -22,10 +22,10 @@ class @Issue
           avatarUrl = $board.data('avatar-url')
           @node.find('.b-assignee').replaceWith(
             "<div class='b-assignee'><a class='user' href='#{htmlUrl}' title='#{login}'>" +
-            "<img class='avatar' src='#{avatarUrl}' /></div>"
+            "<img class='avatar' src='#{avatarUrl}' /></a></div>"
           )
 
-      success: (data) =>
+      success: (data) ->
         window.update_wip_column(badge) for badge in data.badges
 
   move_to_path: (column_id) ->
