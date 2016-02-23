@@ -1,7 +1,7 @@
-- if issue.assignee.present?
+- if assignee.present?
   .b-assignee
-    a.user href="#{issue.assignee.html_url}" title="#{issue.assignee.login}"
-      img.avatar src="#{issue.assignee.avatar_url}"
+    a.user href="#{assignee.html_url}" title="#{assignee.login}"
+      img.avatar src="#{assignee.avatar_url}"
 
 - else
   .b-assignee.hidden

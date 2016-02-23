@@ -26,25 +26,7 @@ $(document).on 'page:change', ->
 
     .on 'sortstop', (event, ui) ->
       $current_issue = $(ui.item)
-      issue_number = $current_issue.data('number')
       column_number = $current_issue.closest('.board-column').data('column')
       board = $('.board').data('github_full_name')
 
-      move_to_path = "/boards/#{board}/issues/#{issue_number}/move_to/#{column_number}"
-      $.ajax
-        url: move_to_path
-        success: (data) ->
-          $issue = $("#issues_#{data.number}")
-          $issue.find('.b-assignee').replaceWith(data.assignee)
-
-          if data.is_ready
-            $issue.find('.is_ready').addClass('active')
-          else
-            $issue.find('.is_ready').removeClass('active')
-
-          if data.is_open
-            $issue.removeClass('closed')
-          else
-            $issue.addClass('closed')
-
-          window.update_wip_column(badge) for badge in data.badges
+      new Issue($current_issue).move(column_number)
