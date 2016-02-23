@@ -6,6 +6,8 @@
     data-faye-client-id="#{current_user.remember_token}"
 
     data-login="#{current_user}"
+    data-html-url="https://github.com/#{current_user}"
+    data-avatar-url="#{github_avatar_url(current_user)}"
     data-readonly="#{:readonly if @board_bag.readonly?}"
   ]
 

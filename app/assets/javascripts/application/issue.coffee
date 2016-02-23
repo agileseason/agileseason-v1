@@ -15,9 +15,17 @@ class @Issue
         $column = $("#column_#{column_id}")
         if $column.data('auto-close')
           @node.addClass('closed')
+        if $column.data('auto-assign')
+          $board = $('.board')
+          login = $board.data('login')
+          htmlUrl = $board.data('html-url')
+          avatarUrl = $board.data('avatar-url')
+          @node.find('.b-assignee').replaceWith(
+            "<div class='b-assignee'><a class='user' href='#{htmlUrl}' title='#{login}'>" +
+            "<img class='avatar' src='#{avatarUrl}' /></div>"
+          )
 
       success: (data) =>
-        @node.find('.b-assignee').replaceWith(data.assignee)
         window.update_wip_column(badge) for badge in data.badges
 
   move_to_path: (column_id) ->

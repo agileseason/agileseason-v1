@@ -72,11 +72,6 @@ class IssuesController < ApplicationController
 
     issue_stat.reload
     render json: {
-      number: number,
-      assignee: render_to_string(
-        partial: 'issues/assignee',
-        locals: { assignee: @board_bag.issue(number).assignee }
-      ),
       # NOTE Includes(columns: :issue_stats) to remove N+1 query in view 'columns/wip_badge'.
       badges: Board.includes(columns: :issue_stats).find(@board.id).columns.map do |column|
         wip_badge_json(column)
