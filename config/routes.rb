@@ -57,10 +57,11 @@ Rails.application.routes.draw do
     end
 
     namespace :graphs do
-      resources :lines, only: [:index]
       resources :cumulative, only: [:index]
       resources :control, only: [:index]
       resources :frequency, only: [:index]
+      resources :age, only: [:index]
+      resources :lines, only: [:index]
     end
 
     resource :subscriptions, only: [:new] do

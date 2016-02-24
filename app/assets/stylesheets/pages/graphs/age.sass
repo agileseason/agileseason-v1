@@ -1,0 +1,35 @@
+.p-age-index
+  .chart
+    height: 500px
+
+    .axis
+      fill: #888
+
+      &.y
+        text
+          font-size: 10px
+          font-weight: normal
+
+        .tick
+          font-size: 12px
+
+      &.x
+        .tick
+          display: none
+
+    .bar
+      cursor: pointer
+
+      &.n0
+        fill: green
+      &.n1
+        fill: yellow
+      &.n2
+        fill: orange
+      &.n4
+        fill: red
+      &.n8
+        fill: darkred
+
+      &.hovered
+        opacity: 0.9
