@@ -17,6 +17,11 @@ module SubmenuHelper
         url: board_graphs_frequency_index_url(@board)
       ),
       OpenStruct.new(
+        name: 'Age of Issues',
+        controller: 'graphs/age',
+        url: board_graphs_age_index_url(@board)
+      ),
+      OpenStruct.new(
         name: 'Lines of Code',
         controller: 'graphs/lines',
         url: board_graphs_lines_url(@board)

@@ -1,4 +1,32 @@
 .p-age-index
+  .legend
+    text-align: center
+
+    .text
+      display: inline-block
+      font-size: 12px
+      line-height: 18px
+      vertical-align: top
+      margin: 0 8px
+      color: #333
+
+    .bar
+      display: inline-block
+      height: 18px
+      opacity: 0.7
+      width: 30px
+
+      &.n0
+        background-color: green
+      &.n1
+        background-color: yellow
+      &.n2
+        background-color: orange
+      &.n4
+        background-color: red
+      &.n8
+        background-color: darkred
+
   .chart
     height: 500px
 
@@ -31,5 +59,13 @@
       &.n8
         fill: darkred
 
+    .bar-shadow
+      opacity: 0.0
+
       &.hovered
-        opacity: 0.9
+        opacity: 0.02
+
+    .tooltip
+      padding: 10px
+      position: absolute
+      width: 100px
