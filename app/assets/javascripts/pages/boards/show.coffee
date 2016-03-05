@@ -55,14 +55,3 @@ window.update_wip_column = (badge) ->
   $("#column_#{badge.column_id}")
     .find '.badge'
     .replaceWith badge.html
-
-# Перенести этот код в какую-то глобальную область, т.к. используется уже в разных местах.
-window.showModal = (issue) ->
-  $container = $('.issue-modal-container')
-  $container.find('.issue-modal').empty()
-  window.IssueModalRender(
-    issue
-    $container.data('github_full_name'),
-    $container.data('readonly') == 'readonly',
-  )
-  $container.show()
