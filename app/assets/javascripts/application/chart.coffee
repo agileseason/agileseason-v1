@@ -28,7 +28,7 @@ class ClicksChart
     @margin = { top: 50, right: 60, bottom: 40, left: 60 }
     @chart_width = @$chart.width() - @margin.left - @margin.right
     @chart_height = @$chart.height() - @margin.top - @margin.bottom
-    bar_step = @chart_width / @data.length / 12
+    bar_step = @chart_width / @data.length / 20
     @bar_width = @chart_width / @data.length - bar_step
 
   _prepare_svg: ->
@@ -116,7 +116,7 @@ class ClicksChart
         .attr 'height', @chart_height
         .on('mouseover', (d, i) -> _on_bar_mouseover @, d, i)
         .on('mouseout', (d, i) -> _on_bar_mouseout @, d, i)
-        .on('click', (d, i) -> alert(d.number))
+        .on('click', (d, i) -> window.showModal(d.issue))
 
   _render_axes: ->
     @svg

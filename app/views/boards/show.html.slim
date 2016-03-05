@@ -1,5 +1,6 @@
 .board [
     data-github_full_name="#{@board_bag.github_full_name}"
+
     data-faye-on="#{FayePusher.on?}"
     data-faye-url="#{FayePusher::URL}"
     data-faye-channel="#{FayePusher.board_channel(@board)}"
@@ -8,7 +9,6 @@
     data-login="#{current_user}"
     data-html-url="https://github.com/#{current_user}"
     data-avatar-url="#{github_avatar_url(current_user)}"
-    data-readonly="#{:readonly if @board_bag.readonly?}"
   ]
 
   = render partial: 'issues/modal'
