@@ -27,7 +27,9 @@ module Graphs
     end
 
     def days_from(created_at)
-      ((Time.current - created_at) / 1.day).round
+      days = (Time.current - created_at) / 1.day
+      return days.round if days >= 1
+      days.round(1)
     end
 
     def age_group(created_at)
