@@ -159,12 +159,13 @@ class AgeChart
         left: "#{@_calculate_tooltip_left bar}px"
         top: "#{@_calculate_tooltip_top bar}px"
 
-  _tooltip_content: (number, days) =>
+  _tooltip_content: (number, days) ->
     "<b>##{number}</b><br/>#{days} Days"
 
   _calculate_tooltip_left: (bar) =>
     tooltip_width = @tooltip.node().getBoundingClientRect().width
-    parseInt(bar.attr('x')) + @margin.left + parseInt(bar.attr('width')) / 2 - 10
+    parseInt(bar.attr('x')) + @margin.left +
+      parseInt(bar.attr('width')) / 2 - 10
 
   _calculate_tooltip_top: (bar) =>
     tooltip_height = @tooltip.node().getBoundingClientRect().height

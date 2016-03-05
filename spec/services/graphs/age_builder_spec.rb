@@ -26,13 +26,11 @@ describe Graphs::AgeBuilder do
       it { is_expected.not_to be_empty }
       its(:first) do
         is_expected.to eq(
-          {
-            index: 1,
-            number: issue.number,
-            days: 0,
-            age: :n0,
-            issue: IssuePresenter.new(:issue, board_issue).to_hash(board_bag)
-          }
+          index: 1,
+          number: issue.number,
+          days: 0,
+          age: :n0,
+          issue: IssuePresenter.new(:issue, board_issue).to_hash(board_bag)
         )
       end
     end

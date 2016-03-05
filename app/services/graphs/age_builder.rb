@@ -26,11 +26,11 @@ module Graphs
         sort_by(&:created_at)
     end
 
-    def days_from created_at
+    def days_from(created_at)
       ((Time.current - created_at) / 1.day).round
     end
 
-    def age_group created_at
+    def age_group(created_at)
       days = days_from(created_at)
       return :n0 if days <= @step_days_base
       return :n1 if days <= @step_days_base * 2
