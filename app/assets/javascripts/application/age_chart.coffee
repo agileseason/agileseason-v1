@@ -1,11 +1,11 @@
 (($) ->
   $.fn.extend render_chart: ->
-    $(@).data('clicks-chart') || @each ->
-      chart = new ClicksChart @
-      $(@).data 'clicks-chart': chart
+    $(@).data('age-chart') || @each ->
+      chart = new AgeChart @
+      $(@).data 'age-chart': chart
 ) jQuery
 
-class ClicksChart
+class AgeChart
   constructor: (root) ->
     @$chart = $(root)
 
