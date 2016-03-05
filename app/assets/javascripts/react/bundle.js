@@ -330,9 +330,17 @@ var CommentEditForm = React.createClass({
 
 },{"./upload-form.jsx":6,"react":163,"react-dom":34}],3:[function(require,module,exports){
 $(document).on('page:change', function () {
-  if (document.body.id != 'boards_show') {
+  if (!/boards_show|age_index/.test(document.body.id)) {
     return;
   }
+
+  $('.issue-modal-container').on('click', function (e) {
+    var $target = $(e.target);
+    if ($target.is('.issue-modal-container')) {
+      $('.close-modal', $target).trigger('click');
+      return false;
+    }
+  });
 
   var React = require('react');
   var ReactDOM = require('react-dom');

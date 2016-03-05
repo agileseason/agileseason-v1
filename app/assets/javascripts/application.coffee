@@ -67,3 +67,13 @@ show_dashboard = ->
           $('.b-preloader', $board_list).hide()
           $board_list.html $(html)
           new Dashboard $('.b-dashboard')
+
+window.showModal = (issue) ->
+  $container = $('.issue-modal-container')
+  $container.find('.issue-modal').empty()
+  window.IssueModalRender(
+    issue
+    $container.data('github_full_name'),
+    $container.data('readonly') == 'readonly',
+  )
+  $container.show()

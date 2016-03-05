@@ -40,7 +40,7 @@ class IssuePresenter < Keynote::Presenter
       {
         id: label.name,
         name: label.name,
-        color: "##{k(:label, label).font_color}",
+        color: "##{LabelPresenter.new(:label, label).font_color}",
         backgroundColor: "##{label.color}",
         checked: label_include?(label)
       }

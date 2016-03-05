@@ -13,12 +13,6 @@ $(document).on 'page:change', ->
     unless $(e.target).is 'a, .button, button'
       window.showModal($(@).data('issue'))
 
-  $('.issue-modal-container').on 'click', (e) ->
-    $target = $(e.target)
-    if $target.is '.issue-modal-container'
-      $('.close-modal', $target).trigger 'click'
-      false
-
   # скрыть тикет после архивации
   $('.board').on 'click', '.issue .archive', ->
     $(@).closest('.issue').addClass 'hidden'
@@ -61,13 +55,3 @@ window.update_wip_column = (badge) ->
   $("#column_#{badge.column_id}")
     .find '.badge'
     .replaceWith badge.html
-
-window.showModal = (issue) ->
-  $container = $('.issue-modal-container')
-  $container.find('.issue-modal').empty()
-  window.IssueModalRender(
-    issue
-    $('.board').data('github_full_name'),
-    $('.board').data('readonly') == 'readonly',
-  )
-  $container.show()

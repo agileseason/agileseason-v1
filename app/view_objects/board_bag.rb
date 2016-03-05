@@ -107,6 +107,10 @@ class BoardBag
     subscribed_at.present? && subscribed_at >= Time.current
   end
 
+  def direct_post
+    @direct_post ||= S3Api.direct_post(user, @board)
+  end
+
   private
 
   def issue_stat_mapper
