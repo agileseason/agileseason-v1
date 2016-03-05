@@ -1,32 +1,6 @@
+@import globals/common
+
 .p-age-index
-  .legend
-    text-align: center
-
-    .text
-      display: inline-block
-      font-size: 12px
-      line-height: 18px
-      vertical-align: top
-      margin: 0 8px
-      color: #333
-
-    .bar
-      display: inline-block
-      height: 18px
-      opacity: 0.7
-      width: 30px
-
-      &.n0
-        background-color: green
-      &.n1
-        background-color: yellow
-      &.n2
-        background-color: orange
-      &.n4
-        background-color: red
-      &.n8
-        background-color: darkred
-
   .chart
     height: 500px
 
@@ -46,8 +20,6 @@
           display: none
 
     .bar
-      cursor: pointer
-
       &.n0
         fill: green
       &.n1
@@ -60,6 +32,7 @@
         fill: darkred
 
     .bar-shadow
+      cursor: pointer
       opacity: 0.0
 
       &.hovered
@@ -69,3 +42,34 @@
       padding: 10px
       position: absolute
       width: 100px
+
+  .legend
+    text-align: center
+
+    .text
+      display: inline-block
+      font-size: 1226
+      line-height: 18px
+      vertical-align: top
+      margin: 0 8px
+      color: #333
+
+    .bar
+      display: inline-block
+      height: 18px
+      opacity: 0.8
+      width: 30px
+
+      &.n0-full
+        background-color: green
+      &.n0
+        +background-image(linear-gradient(to right, yellow, green))
+      &.n1
+        +background-image(linear-gradient(to right, orange, yellow))
+      &.n2
+        +background-image(linear-gradient(to right, red, orange))
+      &.n4
+        +background-image(linear-gradient(to right, darkred, red))
+      &.n8-full
+        background-color: darkred
+
