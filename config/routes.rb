@@ -68,10 +68,6 @@ Rails.application.routes.draw do
       get :early_access
     end
 
-    resource :roadmap, only: [:show] do
-      post :build
-    end
-
     resources :activities, only: [:index]
     resources :issue_stats, only: :update
     resource :exports, only: [:show]
