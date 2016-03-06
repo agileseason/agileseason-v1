@@ -83,27 +83,26 @@
         color: $orange-hover
         border-color: $orange-hover
 
-        span.octicon
-          color: $orange-hover
+      .octicon
+        color: $orange-hover
+        display: inline-block
+        font-size: 18px
+        height: 18px
+        width: 18px
 
-      span.octicon
-        color: $orange
+        &.octicon-sync,
+        &.octicon-comment-discussion
+          position: relative
+          top: 2px
 
         &.octicon-sync
-          font-size: 18px
-          position: relative
-          top: 1px
+          +animation(spin linear 0.8s)
+          +animation-iteration-count(4)
 
   .alert-timeout
     display: none
     list-style: none
     position: relative
-
-    .octicon
-      +animation(spin linear 0.6s)
-      display: inline-block
-      height: 18px
-      width: 18px
 
     .hint
       +popup_left
