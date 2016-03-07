@@ -4,4 +4,6 @@
   ul
     - issues.each do |issue|
       li
-        a.issue-url href="#{un show_board_issues_url(board, issue.number)}" #{issue.title} ##{issue.number}
+        a href="#{un show_board_issues_url(board, issue.number)}"
+          | #{issue.title}
+          span ##{issue.number}

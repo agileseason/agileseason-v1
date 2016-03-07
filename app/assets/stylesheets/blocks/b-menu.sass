@@ -118,8 +118,8 @@
   .search
     &.active
       .field
-        margin: -35px -90px 0 0px
-        padding: 20px 90px 20px 20px
+        margin: -35px -160px 0 0px
+        padding: 20px 160px 20px 20px
         background: #fff
         position: relative
         top: 0
@@ -181,22 +181,33 @@
       position: fixed
       right: 0
       top: 0
-      width: 490px
+      width: 560px
       z-index: 1
 
       .search-content
         margin-top: 90px
 
         ul
-          padding-left: 25px
+          padding-left: 0px
 
           li
             display: block
             margin: 0
-            padding: 0 0 10px 0
+            padding: 0
+            &:hover
+              background-color: #eee
 
             a
-              padding: 0
+              color: $text-usual
+              display: block
+              padding: 6px 0 6px 26px
+              &:hover
+                color: $orange-hover
+                span
+                  color: $orange-hover
+              span
+                color: $link
+                margin-left: 4px
 
         p
           color: $text-muted
