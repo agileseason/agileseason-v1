@@ -38,14 +38,27 @@
               span.a-child Settings
 
       li.list-item.icon-button.activities data-url=board_activities_url(@board)
-        a.menu-link.activities-link : span.octicon.octicon-bell
+        a.menu-link.activities-link title='Last activities'
+          span.octicon.octicon-bell
         - if @board.present?
-          .b-activities data-paginate="true" data-page="2" data-url=board_activities_url(@board)
+          .b-activities [
+            data-paginate='true'
+            data-page='2'
+            data-url=board_activities_url(@board)
+          ]
+
+      li.list-item.icon-button.support
+        a.menu-link [
+          href='https://gitter.im/agileseason/agileseason'
+          target='_blank'
+          title='Chat Support'
+        ]
+          span.octicon.octicon-comment-discussion
 
       - if !current_user.guest? && @board_bag.has_read_permission?
         li.list-item.icon-button.search data-url=search_board_issues_url(@board)
           .overlay
-          .field.search-input
+          .field.search-input title='Search issues'
             input type='text'
             span.octicon.octicon-search
           .search-popup
@@ -53,8 +66,12 @@
             .help
               ' Refine your search with operators like @member or assignee:member,
               ' label:name, text in:title, and text in:body, comment.
-              a href="https://help.github.com/articles/searching-issues/" target='_blank' Learn more…
+              a [
+                href='https://help.github.com/articles/searching-issues/'
+                target='_blank'
+              ] Learn more…
 
       li.list-item.icon-button.alert-timeout
-        a.menu-link href="#{un board_url(@board)}" : span.octicon.octicon-sync
+        a.menu-link href="#{un board_url(@board)}"
+          span.octicon.octicon-sync
         .hint Click to reload the page for synchronization
