@@ -1,4 +1,4 @@
-RSpec.describe Activity, type: :model do
+describe Activity do
   describe 'validations' do
     subject { Activity.new }
 

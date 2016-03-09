@@ -47,6 +47,10 @@ class IssuesController < ApplicationController
     end
   end
 
+  def modal_data
+    render json: k(:issue, @board_bag.issue(number)).to_hash(@board_bag)
+  end
+
   def search
     issues = github_api.search_issues(@board, params[:query])
     ui_event(:issue_search)
