@@ -2,7 +2,9 @@
 class IssueStatService
   class << self
     def create(board, github_issue)
-      build_issue_stat(board, github_issue).save!
+      issue_stat = build_issue_stat(board, github_issue)
+      issue_stat.save!
+      issue_stat
     end
 
     def find_or_build_issue_stat(board, github_issue)

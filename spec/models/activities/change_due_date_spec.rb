@@ -13,7 +13,7 @@ describe Activities::ChangeDueDate, type: :model do
   end
 
   describe '#description' do
-    subject { activity.description(issue_link) }
+    subject { activity.description(issue_link).gsub(/\s+/, ' ') }
     let(:issue_link) { 'test/123' }
     let(:issue_stat) { build(:issue_stat) }
     let(:activity) do
@@ -27,17 +27,17 @@ describe Activities::ChangeDueDate, type: :model do
 
     context 'with due date' do
       let(:due_date_at) { DateTime.now }
-      it { is_expected.to eq "changed due date for <a href='#{issue_link}' class='issue-url'>issue&nbsp;##{issue_stat.number}</a> on #{due_date_at.strftime('%b %d %H:%M')}" }
+      it { is_expected.to eq "changed due date for <a href='#' class='issue-ajax' data-number='#{issue_stat.number}' data-url='#{issue_link}'>issue&nbsp;##{issue_stat.number}</a> on #{due_date_at.strftime('%b %d %H:%M')}" }
     end
 
     context 'without due date' do
       let(:due_date_at) { nil }
-      it { is_expected.to eq "changed due date for <a href='#{issue_link}' class='issue-url'>issue&nbsp;##{issue_stat.number}</a> on nil" }
+      it { is_expected.to eq "changed due date for <a href='#' class='issue-ajax' data-number='#{issue_stat.number}' data-url='#{issue_link}'>issue&nbsp;##{issue_stat.number}</a> on nil" }
     end
 
     context 'without data' do
       let(:data) { nil }
-      it { is_expected.to eq "changed due date for <a href='#{issue_link}' class='issue-url'>issue&nbsp;##{issue_stat.number}</a> on nil" }
+      it { is_expected.to eq "changed due date for <a href='#' class='issue-ajax' data-number='#{issue_stat.number}' data-url='#{issue_link}'>issue&nbsp;##{issue_stat.number}</a> on nil" }
     end
   end
 end
