@@ -78,8 +78,7 @@ class BoardIssue
   end
 
   def due_date_at_to_js
-    if issue_stat.due_date_at
-      return issue_stat.due_date_at.to_datetime.utc.to_i * 1000
-    end
+    return if due_date_at.nil?
+    due_date_at.to_datetime.utc.to_i * 1000
   end
 end

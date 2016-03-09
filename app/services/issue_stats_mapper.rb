@@ -2,7 +2,7 @@ class IssueStatsMapper
   pattr_initialize :board_bag
 
   def [](issue)
-    issue_stats_map[issue.number] || fix_missing(issue)
+    issue_stats_map[issue.number] || fix_missing(issue) || fake_reaonly(issue)
   end
 
   private
@@ -38,5 +38,9 @@ class IssueStatsMapper
   # FIX : Remove duplicates with IssueStatsWroker.
   def last_number
     @last_number ||= board_bag.issue_stats.maximum(:number).to_i
+  end
+
+  def fake_reaonly(issue)
+    IssueStatService.build_issue_stat(board_bag, issue)
   end
 end
