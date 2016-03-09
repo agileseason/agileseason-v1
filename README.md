@@ -22,7 +22,7 @@ Look at the our development board for example - [agileseason.com](https://agiles
 - [x] [Auto-assign and auto-close issue](https://github.com/agileseason/agileseason/wiki/Board-features#auto-closing-issues)
 - [x] [Board markdown export](https://github.com/agileseason/agileseason/wiki/Board-features#board-markdown-export)
 - [x] [Public read-only access](https://github.com/agileseason/agileseason/wiki/Board-features#public-read-only-access)
-- [ ] Timeline
+- [ ] Roadmap with milestones
 
 ### Kanban
 
@@ -33,9 +33,9 @@ Look at the our development board for example - [agileseason.com](https://agiles
 - [x] [Cumulative Flow Diagram](https://github.com/agileseason/agileseason/wiki/Kanban-metrics#cumulative-flow-diagram)
 - [x] [Control Chart](https://github.com/agileseason/agileseason/wiki/Kanban-metrics#control-chart)
 - [x] Cycle Time Diagram
-- [ ] Forecast Duration
+- [x] Age of Issues
 
-### Scrum [MVP 2]
+### Scrum [soon]
 
 - [ ] Sprints
 
@@ -43,7 +43,6 @@ Look at the our development board for example - [agileseason.com](https://agiles
 
 - [ ] Velocity Chart
 - [ ] Burndown Chart
-- [ ] Forecast Duration
 
 ## Development
 
