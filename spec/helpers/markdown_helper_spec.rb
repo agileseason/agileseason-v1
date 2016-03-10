@@ -18,7 +18,7 @@ describe MarkdownHelper do
 
       context 'simple text' do
         let(:text) { 'text' }
-        it { is_expected.to eq "<p>text</p>" }
+        it { is_expected.to eq '<p>text</p>' }
       end
 
       context 'with #number' do
@@ -37,12 +37,12 @@ describe MarkdownHelper do
 
       context 'with #abs' do
         let(:text) { '#abs' }
-        it { is_expected.to eq "<p>#abs</p>" }
+        it { is_expected.to eq '<p>#abs</p>' }
       end
 
       context 'with ##abs' do
         let(:text) { '##abs' }
-        it { is_expected.to eq "<p>##abs</p>" }
+        it { is_expected.to eq '<p>##abs</p>' }
       end
 
       context 'with two numbers' do
@@ -85,12 +85,18 @@ describe MarkdownHelper do
     context 'checkboxes' do
       context 'one - unchecked' do
         let(:text) { '- [ ] ch1' }
-        it { is_expected.to eq "<p><input type=\"checkbox\" class=\"task\" />ch1</p>" }
+        it do
+          is_expected.
+            to eq '<p><input type=\"checkbox\" class=\"task\" />ch1</p>'
+        end
       end
 
       context 'one - checked' do
         let(:text) { '- [x] ch1' }
-        it { is_expected.to eq "<p><input type=\"checkbox\" class=\"task\" checked />ch1</p>" }
+        it do
+          is_expected.
+            to eq '<p><input type=\"checkbox\" class=\"task\" checked />ch1</p>'
+        end
       end
 
       context 'complex' do
