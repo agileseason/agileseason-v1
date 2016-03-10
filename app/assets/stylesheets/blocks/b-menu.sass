@@ -119,12 +119,12 @@
     &.active
       .field
         margin: -35px -160px 0 0px
-        padding: 20px 160px 20px 20px
+        padding: 20px 160px 0 20px
         background: #fff
         position: relative
         top: 0
         right: -15px
-        z-index: 2
+        z-index: 4
 
       .search-input
         input
@@ -134,7 +134,7 @@
 
       .overlay
         display: block
-        z-index: 1
+        z-index: 3
 
       .search-popup
         display: block
@@ -182,7 +182,7 @@
       right: 0
       top: 0
       width: 560px
-      z-index: 1
+      z-index: 3
 
       .search-content
         margin-top: 90px
@@ -211,13 +211,13 @@
 
         p
           color: $text-muted
-          padding: 15px 15px
+          padding: 15px 26px
 
       .help
         color: $lightgrey
         line-height: 20px
         margin-top: 80px
-        padding: 10px 20px
+        padding: 10px 26px
 
         a
           +link

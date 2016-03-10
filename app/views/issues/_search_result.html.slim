@@ -4,6 +4,10 @@
   ul
     - issues.each do |issue|
       li
-        a href="#{un show_board_issues_url(board, issue.number)}"
+        a.issue-ajax [
+          href='#'
+          data-number=issue.number
+          data-url="#{un modal_data_board_issues_url(board, issue.number)}"
+        ]
           | #{issue.title}
           span ##{issue.number}

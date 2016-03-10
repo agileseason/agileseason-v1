@@ -1,8 +1,9 @@
 module Graphs
   class ControlService
-    def initialize(board, rolling_window, issue_link_getter = -> (_number) {})
+    include Unescaper
+
+    def initialize(board, rolling_window)
       @board = board
-      @issue_link_getter = issue_link_getter
       @rolling_window = rolling_window
     end
 
@@ -12,7 +13,7 @@ module Graphs
           x: issue.closed_at.to_js,
           y: issue.elapsed_days,
           number: issue.number,
-          url: @issue_link_getter.call(issue.number)
+          url: UrlGenerator.show_board_issues_url(@board, issue.number)
         }
       end
     end
