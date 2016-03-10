@@ -1,11 +1,11 @@
 ruby:
   enabled: true
-  config_file: config/style_guides/ruby.yml
+  config_file: .rubocop.yml
 
-coffee_script:
-  enabled: false
+coffeescript:
+  enabled: true
 
-java_script:
+javascript:
   enabled: false
 
 scss:
