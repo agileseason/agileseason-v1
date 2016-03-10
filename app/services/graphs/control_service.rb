@@ -13,7 +13,7 @@ module Graphs
           x: issue.closed_at.to_js,
           y: issue.elapsed_days,
           number: issue.number,
-          url: UrlGenerator.show_board_issues_url(@board, issue.number)
+          url: un(UrlGenerator.show_board_issues_url(@board, issue.number))
         }
       end
     end
