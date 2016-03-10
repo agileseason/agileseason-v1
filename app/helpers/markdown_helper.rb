@@ -26,7 +26,11 @@ module MarkdownHelper
 
   def replace_issue_numbers(text, board)
     url_prefix = un(UrlGenerator.show_board_issues_url(board, ''))
-    text.gsub(/#([0-9]+)/, "<a href='#{url_prefix}\\1'>#\\1</a>")
+    text.gsub(
+      /#([0-9]+)/,
+      "<a class='issue-ajax' href='#' data-number='\\1' \
+        data-url='#{url_prefix}\\1/modal_data'>#\\1</a>"
+    )
   end
 
   def replace_checkbox(text)

@@ -1,10 +1,7 @@
 - @activities.each do |activity|
   .activity
-    /type will be a special github icon
-    /a.type
-
     img.avatar src="#{github_avatar_url(activity.user)}"
     .description
       span.user = activity.user.github_username
-      == activity.description(un show_board_issues_url(@board, activity.issue_stat.number))
+      == activity.description(un modal_data_board_issues_url(@board, activity.issue_stat.number))
       .date = "#{activity.created_at.strftime('%B %-d')} at #{activity.created_at.strftime('%H:%M')}"

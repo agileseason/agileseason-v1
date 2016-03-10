@@ -52,6 +52,17 @@ $(document).on 'page:change', ->
     new SearchIssue $('.b-menu .search')
     new Activities $('.b-menu .activities')
 
+  $('body').on 'click', '.issue-ajax', ->
+    $link = $(@)
+    $issue = $("#issues_#{$link.data('number')}")
+    if $issue.length
+      window.showModal($issue.data('issue'))
+    else
+      $.ajax
+        url: $(@).data('url'),
+        success: (issue) ->
+          window.showModal(issue)
+
 show_dashboard = ->
   $('.b-menu .left-menu-link').click ->
     $issue_modal = $('.settings-modal')

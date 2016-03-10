@@ -1,7 +1,6 @@
 engines:
   rubocop:
-    # Waiting fix https://github.com/codeclimate/codeclimate-rubocop/issues/39
-    enabled: false
+    enabled: true
   brakeman:
     enabled: true
   bundler-audit:

@@ -1,7 +1,8 @@
 class IssuesController < ApplicationController
+  READ_ACTION = [:show, :new, :search, :modal_data].freeze
   # FIX : Need specs.
-  before_action :fetch_board, only: [:show, :search, :new]
-  before_action :fetch_board_for_update, except: [:show, :search, :new]
+  before_action :fetch_board, only: READ_ACTION
+  before_action :fetch_board_for_update, except: READ_ACTION
 
   after_action :fetch_cumulative_graph, only: [:create, :move_to, :archive, :unarchive]
   after_action :fetch_lines_graph, only: [:move_to]
@@ -45,6 +46,10 @@ class IssuesController < ApplicationController
       format.html { render nothing: true }
       format.json { render_board_issue_json }
     end
+  end
+
+  def modal_data
+    render json: k(:issue, @board_bag.issue(number)).to_hash(@board_bag)
   end
 
   def search

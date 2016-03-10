@@ -1,15 +1,15 @@
 describe IssuesController do
+  let(:number) { 1 }
   let(:user) { create(:user) }
   let(:board) { create(:kanban_board, :with_columns, user: user) }
   let(:column_1) { board.columns.first }
-  let(:issue) { stub_issue(number: 1) }
+  let(:issue) { stub_issue(number: number) }
   let(:github_api) { GithubApi.new('fake_token', user) }
   before { stub_sign_in(user) }
   before { allow(controller).to receive(:broadcast_column) }
   before { allow(controller).to receive(:github_api).and_return(github_api) }
 
   describe '#show' do
-    let(:number) { 1 }
     before { allow(github_api).to receive(:issue_comments).and_return([]) }
     before { allow_any_instance_of(BoardBag).to receive(:issue).and_return(issue) }
     before { request }
@@ -140,11 +140,29 @@ describe IssuesController do
     end
   end
 
+  describe '#modal_data' do
+    let(:board_issue) { BoardIssue.new(issue, issue_stat) }
+    let(:issue_stat) { create(:issue_stat, number: number, board: board) }
+    let(:request) do
+      get(
+        :modal_data,
+        board_github_full_name: board.github_full_name,
+        number: number
+      )
+    end
+    before { allow(Boards::DetectRepo).to receive(:call).and_return(stub_repo) }
+    before { allow(github_api).to receive(:labels).and_return([]) }
+    before do
+      allow_any_instance_of(BoardBag).to receive(:issue).and_return(board_issue)
+    end
+    before { request }
+
+    it { expect(response).to have_http_status(:success) }
+  end
+
   describe '#move_to' do
-    let(:board) { create(:board, :with_columns, user: user) }
     let(:column_to) { board.columns.first }
     let(:issue_stat) { create(:issue_stat, number: number, board: board, column: column_to) }
-    let(:number) { 1 }
     let(:request) do
       get(
         :move_to,

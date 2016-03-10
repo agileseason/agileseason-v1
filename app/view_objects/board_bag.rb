@@ -1,8 +1,8 @@
 class BoardBag
   rattr_initialize :user, :board
-  delegate :github_id, :github_name, :github_full_name, :columns, :issue_stats,
-           :to_param, :subscribed_at, :default_column, :public?, :user_id,
-           to: :board
+  delegate :id, :github_id, :github_name, :github_full_name, :columns,
+           :issue_stats, :to_param, :subscribed_at, :default_column, :public?,
+           :user_id, to: :board
 
   # TODO Need more specs.
   def issue(number)

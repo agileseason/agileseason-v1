@@ -12,7 +12,8 @@ describe IssueStatsMapper do
 
       context 'guest' do
         let(:user) { build :user, :guest }
-        it { is_expected.to be_nil }
+        it { is_expected.not_to be_nil }
+        its(:id) { is_expected.to be_nil }
       end
 
       context 'signed user without permissions' do
@@ -20,7 +21,8 @@ describe IssueStatsMapper do
         let(:board) { build_stubbed :board }
         before { allow(Boards::DetectRepo).to receive(:call) }
 
-        it { is_expected.to be_nil }
+        it { is_expected.not_to be_nil }
+        its(:id) { is_expected.to be_nil }
       end
     end
 

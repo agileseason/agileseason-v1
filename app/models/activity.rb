@@ -17,6 +17,8 @@ class Activity < ActiveRecord::Base
   def link_to(issue_url)
     return if issue_url.blank?
 
-    "<a href='#{issue_url}' class='issue-url'>issue&nbsp;##{issue_stat.number}</a>"
+    "<a href='#' class='issue-ajax' \
+      data-number='#{issue_stat.number}' \
+      data-url='#{issue_url}'>issue&nbsp;##{issue_stat.number}</a>"
   end
 end

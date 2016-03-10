@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     resource :issues, only: [:new, :create] do
       get :search, :collection
       get ':number', to: 'issues#show', as: :show
+      get ':number/modal_data', to: 'issues#modal_data', as: :modal_data
       get ':number/move_to/:column_id(/:force)', to: 'issues#move_to', as: :move_to_column
       get ':number/close', to: 'issues#close', as: :close
       get ':number/reopen', to: 'issues#reopen', as: :reopen
