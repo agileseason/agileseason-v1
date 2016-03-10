@@ -68,12 +68,12 @@ describe MarkdownHelper do
     context 'check header' do
       context 'not header' do
         let(:text) { '#abs' }
-        it { is_expected.to eq "<p>#abs</p>" }
+        it { is_expected.to eq '<p>#abs</p>' }
       end
 
       context 'header' do
         let(:text) { '# abs' }
-        it { is_expected.to eq "<h1>abs</h1>" }
+        it { is_expected.to eq '<h1>abs</h1>' }
       end
     end
 
@@ -87,7 +87,7 @@ describe MarkdownHelper do
         let(:text) { '- [ ] ch1' }
         it do
           is_expected.
-            to eq '<p><input type=\"checkbox\" class=\"task\" />ch1</p>'
+            to eq '<p><input type="checkbox" class="task" />ch1</p>'
         end
       end
 
@@ -95,7 +95,7 @@ describe MarkdownHelper do
         let(:text) { '- [x] ch1' }
         it do
           is_expected.
-            to eq '<p><input type=\"checkbox\" class=\"task\" checked />ch1</p>'
+            to eq '<p><input type="checkbox" class="task" checked />ch1</p>'
         end
       end
 

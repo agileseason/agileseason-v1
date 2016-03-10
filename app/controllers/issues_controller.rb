@@ -1,5 +1,5 @@
 class IssuesController < ApplicationController
-  READ_ACTION = [:show, :new, :search, :modal_data]
+  READ_ACTION = [:show, :new, :search, :modal_data].freeze
   # FIX : Need specs.
   before_action :fetch_board, only: READ_ACTION
   before_action :fetch_board_for_update, except: READ_ACTION
