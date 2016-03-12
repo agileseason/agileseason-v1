@@ -1,0 +1,12 @@
+.toggling {
+  position: relative;
+}
+
+.toggling .toggling-popup {
+  display: none !important;
+}
+
+.toggling.toggling-active .toggling-popup {
+  display: block !important;
+  position: absolute;
+}

@@ -1,0 +1,71 @@
+@import ../mixins/date
+
+.b-activities
+  //+transition(right ease 0.1s)
+  background: #fff
+  border-left: 1px solid #eee
+  border-top: 1px solid #eee
+  height: 100%
+  overflow-x: hidden
+  overflow-y: auto
+  position: fixed
+  right: -390px
+  top: 0
+  width: 390px
+  z-index: 3
+
+  &.active
+    right: 0
+
+  .activity
+    padding: 20px 0 20px 20px
+    position: relative
+    z-index: 2
+
+    &:after
+      background: #eee
+      bottom: 0
+      content: ' '
+      height: 1px
+      left: 20px
+      position: absolute
+      width: 350px
+
+    &:last-child
+      &:after
+        display: none
+
+    .type
+      display: inline-block
+      height: 28px
+      margin-right: 10px
+      vertical-align: top
+      width: 28px
+
+    .avatar
+      //+border-radius(100px)
+      display: inline-block
+      height: 24px
+      margin: -1px 8px 0 0
+      width: 24px
+
+    .description
+      display: inline-block
+      width: 306px
+      vertical-align: top
+
+    .date
+      //+date
+      margin-top: 5px
+
+    .user
+      font-weight: bold
+      margin-right: 6px
+
+  .no-activities
+    text-align: center
+    margin-top: 40px
+    color: #ccc
+
+  .b-preloader
+    margin: 40px auto

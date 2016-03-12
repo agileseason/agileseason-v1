@@ -1,0 +1,163 @@
+@import ../mixins/button
+
+$image-path: 'pages/p-settings-show'
+
+.p-settings-show
+  .b-menu
+    margin-bottom: 0
+
+  .title
+    padding-bottom: 30px
+
+  .columns-block
+    display: inline-block
+    width: 700px
+    vertical-align: top
+
+    .actions
+      float: right
+      display: none
+
+      a
+        height: 20px
+        width: 30px
+        text-align: center
+        display: inline-block
+        padding-top: 10px
+
+        &.blocked
+          display: none
+
+    ul
+      list-style: none
+      padding: 0
+
+      li
+        cursor: pointer
+        padding: 10px
+        margin: 0 0 0 -10px
+        position: relative
+
+        &:hover
+          background: $active
+
+          .actions
+            display: inline-block
+
+  .setting
+    input[type='text'],
+    input[type='input']
+      padding-right: 30px
+      margin-right: 10px
+
+  .board-name
+    input[type='submit']
+      display: none
+
+    input
+      margin-left: 10px
+
+    label
+      display: inline-block
+
+  .column-name
+    display: inline-block
+
+  .active-settings
+    display: inline-block
+
+    span
+      margin-right: 10px
+
+    .autoassign, .autoclose
+      display: none
+
+      &.active
+        display: inline-block
+
+  .other-settings
+    display: none
+
+    .autoassign
+      margin-top: 20px
+
+    .autoassign, .autoclose
+      label
+        display: inline-block
+
+    .wip
+      input
+        width: 30px
+
+      input[name="wip_min"]
+        margin-right: 5px
+
+  .notes
+    display: inline-block
+    width: 400px
+    vertical-align: top
+    margin-left: 20px
+    padding-top: 36px
+
+    p
+      margin-bottom: 10px
+
+  input
+    display: inline-block
+    padding: 10px
+
+  .iphone-button
+    //+iphone_button
+
+  .button
+    padding: 7px 15px
+
+    &.danger
+      background: $error
+
+  .subtitle
+    margin-bottom: 20px
+    padding-bottom: 0
+    padding-top: 0
+
+  .setting
+    margin: 30px 0
+
+    .action
+      display: inline-block
+      width: 160px
+      vertical-align: middle
+
+    .setting-label
+      display: inline-block
+      width: calc(90% - 180px)
+      padding-left: 20px
+      vertical-align: middle
+
+
+  .with-enter-submit
+    position: relative
+    width: 228px
+    margin-right: 10px
+
+    input
+      padding-right: 30px
+
+    &:hover
+      .enter-submit
+        opacity: 1
+
+  .enter-submit
+    background: inline-image("#{$image-path}/enter-submit.png") no-repeat 50% 50% transparent
+    cursor: pointer
+    display: block
+    height: 38px
+    opacity: 0.6
+    padding: 0 !important
+    position: absolute
+    right: 0
+    top: 1px
+    width: 12px
+
+  .danger:not(.button)
+    color: $error

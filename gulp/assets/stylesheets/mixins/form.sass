@@ -1,0 +1,55 @@
+=issue_form
+  form.simple_form
+    textarea, textarea:focus
+      line-height: 1.4
+      background: none
+      border: none
+      display: block
+      height: 38px
+      padding: 0
+      margin: 0
+      text-overflow: clip
+      outline: none
+      padding: 0
+      width: 100%
+
+    .actions
+      display: inline-block
+      float: right
+      margin: 10px 5px 0 0
+
+      a
+        margin-right: 10px
+        //+ajax_link
+
+      .close-without-saving
+        font-size: 13px
+
+  .upload
+    border-top: 1px solid #aaa
+    padding: 10px 0 0
+
+    form
+      display: inline-block
+
+    label
+      display: inline
+      font-size: 13px
+      padding: 0
+
+      a
+        //+ajax_link
+
+    .progress
+      display: none
+
+      .b-preloader
+        margin: 0
+
+    input[type="file"]
+      cursor: pointer
+      height: 40px
+      left: 0
+      opacity: 0.00001
+      position: absolute
+      top: -10px

@@ -1,0 +1,242 @@
+@import ../mixins/close
+@import ../mixins/link
+@import ../mixins/popup
+@import ../globals/variables
+
+.b-menu
+  .menu
+    margin: 0
+    padding: 0
+
+  .list-item
+    display: inline-block
+    font-size: 18px
+
+    &.active
+      padding: 15px
+
+    .menu-link
+      //+border-radius(35px)
+      cursor: pointer
+      display: inline-block
+      padding: 15px
+
+      span
+        //+link
+        color: $text-usual
+
+      span:not(.octicon)
+        border-bottom: 1px solid rgba(90,90,90,0.3)
+
+        &:hover
+          border-bottom: 1px solid rgba($orange-hover,0.3)
+
+      &:hover
+        span:not(.octicon)
+          border-bottom: 1px solid rgba($orange-hover,0.3)
+          color: $orange-hover
+
+      &.active,
+      &.active:hover
+        border: none
+        color: $text-usual
+        cursor: default
+
+        span
+          cursor: default
+          color: $text-usual
+          border: none
+
+  .left-menu-link
+    margin: 0
+
+    .menu-link
+      background: $orange
+      color: #fff
+      display: inline-block
+      font-size: 20px
+      height: 20px
+      margin: 20px
+      text-align: center
+      width: 20px
+
+      &:hover
+        background: $orange-hover
+        color: #fff
+
+  .icon-button
+    float: right
+    margin: 20px 20px 20px 0
+    min-width: 48px
+
+    .menu-link
+      border: 1px solid $orange
+      color: $orange
+      height: 48px
+      line-height: 240%
+      padding: 0
+      text-align: center
+      width: 48px
+
+      &:hover
+        color: $orange-hover
+        border-color: $orange-hover
+
+      .octicon
+        color: $orange-hover
+        display: inline-block
+        font-size: 18px
+        height: 18px
+        width: 18px
+
+        &.octicon-sync,
+        &.octicon-comment-discussion
+          position: relative
+          top: 2px
+
+        &.octicon-sync
+          //+animation(spin linear 0.8s)
+          //+animation-iteration-count(4)
+
+  .alert-timeout
+    display: none
+    list-style: none
+    position: relative
+
+    .hint
+      //+popup_left
+      font-size: 14px
+      padding: 10px
+      right: 64px
+      top: 4px
+
+    &:hover
+      .hint
+        display: block
+
+  .search
+    &.active
+      .field
+        margin: -35px -160px 0 0px
+        padding: 20px 160px 0 20px
+        background: #fff
+        position: relative
+        top: 0
+        right: -15px
+        z-index: 4
+
+      .search-input
+        input
+          background: #fff
+          padding: 14px 14px
+          width: 350px
+
+      .overlay
+        display: block
+        z-index: 3
+
+      .search-popup
+        display: block
+
+    .overlay
+      display: none
+
+    .search-input
+      &:hover
+        span.octicon-search
+          color: $orange-hover
+
+        input
+          border-color: $orange-hover
+
+      span.octicon-search
+        color: $orange
+
+      input
+        //+border-radius(35px)
+        //+transition(all ease 0.1s)
+        background: transparent
+        border: 1px solid $orange
+        cursor: pointer
+        font-size: 16px
+        height: 20px
+        outline: none
+        padding: 14px 24px
+        width: 0px
+
+    span.octicon-search
+      color: $text-usual
+      cursor: pointer
+      margin-left: -33px
+      vertical-align: middle
+
+    .search-popup
+      background: rgba(255,255,255,1)
+      border-left: 1px solid #eee
+      display: none
+      height: 100%
+      overflow-x: hidden
+      overflow-y: auto
+      position: fixed
+      right: 0
+      top: 0
+      width: 560px
+      z-index: 3
+
+      .search-content
+        margin-top: 90px
+
+        ul
+          padding-left: 0px
+
+          li
+            display: block
+            margin: 0
+            padding: 0
+            &:hover
+              background-color: #eee
+
+            a
+              color: $text-usual
+              display: block
+              padding: 6px 0 6px 26px
+              &:hover
+                color: $orange-hover
+                span
+                  color: $orange-hover
+              span
+                color: $link
+                margin-left: 4px
+
+        p
+          color: $text-muted
+          padding: 15px 26px
+
+      .help
+        color: $lightgrey
+        line-height: 20px
+        margin-top: 80px
+        padding: 10px 26px
+
+        a
+          //+link
+          font-size: 14px
+          padding: 0
+
+// @-webkit-keyframes spin
+  // 50%
+    // //+transform(rotate(180deg))
+  // 100%
+    // //+transform(rotate(360deg))
+
+// @-moz-keyframes spin
+  // 50%
+    // //+transform(rotate(180deg))
+  // 100%
+    // //+transform(rotate(360deg))
+
+// @keyframes spin
+  // 50%
+    // //+transform(rotate(180deg))
+  // 100%
+    // //+transform(rotate(360deg))

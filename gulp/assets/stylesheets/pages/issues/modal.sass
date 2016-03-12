@@ -1,0 +1,554 @@
+@import ../../globals/common
+
+.issue-modal-container
+  background: rgba(90,90,90,0.3)
+  display: none
+  height: 100%
+  left: 0
+  overflow: auto
+  position: fixed
+  top: 0
+  width: 100%
+  z-index: 1
+
+  .issue-modal
+    //+issue_popup
+    //+box-sizing(border-box)
+    display: block
+    height: auto
+    left: 20px
+    min-height: 460px
+    padding: 10px 30px 50px
+    top: 90px
+    width: calc(100% - 40px)
+    z-index: 2
+
+    .issueModal
+      &.open,
+      &.reopen
+        .issue-actions
+          .close-issue,
+            display: block
+          .reopen-issue,
+          .archive-issue,
+          .send-to-board
+            display: none
+
+      &.close,
+      &.closed,
+      &.unarchive
+        .issue-actions
+          .reopen-issue,
+          .archive-issue,
+            display: block
+          .close-issue,
+          .send-to-board
+            display: none
+
+      &.archive,
+      &.archived,
+        .issue-actions
+          .reopen-issue,
+          .archive-issue,
+          .close-issue,
+            display: none
+          .send-to-board
+            display: block
+
+    .issue-title
+      h1,
+      textarea
+        font-size: 36px
+        font-weight: normal
+        line-height: 1.2
+
+      h1
+        a
+          display: inline-block
+          margin-left: 8px
+
+      textarea
+        margin: 24px 0
+        width: 100%
+        z-index: 4
+
+    input[type='submit']
+      display: block
+
+    .close-modal
+      //+close
+      right: 0
+      top: 0
+
+    .current-label-list
+      list-style: none
+      position: absolute
+      top: -18px
+      left: 10px
+      li
+        //+border-radius(0 0 4px 4px)
+        display: inline-block
+        padding: 2px 14px 4px 14px
+        margin: 0 6px 0 0
+
+    .current-assignee
+      //+border-radius(30px)
+      float: left
+      height: 50px
+      margin-top: -12px
+      width: 50px
+      position: absolute
+
+    .current-due-date,
+    .current-state
+      //+border-radius(2px)
+      color: #fff
+      display: inline-block
+      font-size: 14px
+      font-weight: normal
+      margin: 8px 0 0 16px
+      padding: 6px 10px
+      vertical-align: top
+
+    .current-due-date
+      background: $orange
+
+    .current-state
+      background: #888
+
+      .octicon
+        margin-right: 6px
+
+    .states-box
+      display: inline-block
+
+    .move-to
+      height: 38px
+      margin: 40px 0 14px 0
+
+      ul.column-list
+        margin: 0px 0 0 70px
+        display: -moz-box
+        display: -webkit-box
+        font-size: 16px
+        list-style: none
+        padding: 0
+        width: calc(100% - 70px)
+        margin-left: 70px
+
+        li
+          -moz-box-flex: 1       // Mozilla
+          -webkit-box-flex: 1    // WebKit
+
+          &:last-child
+            a
+              //+border-radius(0 100px 100px 0)
+              border-right: 1px solid #eee
+              &:after,
+              &:before
+                display: none
+
+          &:first-child
+            a
+              //+border-radius(100px 0 0 100px)
+          &:hover
+            a
+              background: #eee
+            a
+              &:after
+                border-color: transparent transparent transparent #eee
+
+          &.active
+            &:hover
+              a
+                color: #000
+                cursor: default
+            a
+              background: $active
+              color: #000
+              border: 1px solid $active
+              border-right: none
+
+              &:after
+                border-color: transparent transparent transparent $active
+          a
+            //+ajax_link
+            display: block
+            position: relative
+            padding: 1px 5px 2px 10px
+            border: 1px solid #eee
+            border-right: none
+
+            &:after, &:before
+              content: " "
+              width: 0
+              height: 0
+              border-style: solid
+              position: absolute
+
+            &:after
+              border-width: 11px 0 11px 9px
+              border-color: transparent transparent transparent #fff
+              right: -8px
+              top: 0px
+              z-index: 2
+
+            &:before
+              border-width: 12px 0 12px 10px
+              border-color: transparent transparent transparent #eeeeee
+              right: -9px
+              top: -1px
+              z-index: 1
+
+    .issue-body > p
+      margin: 0 0 20px 70px
+
+    .popup-overlay
+      display: none
+      height: 100%
+      left: 0px
+      position: fixed
+      top: 90px
+      width: 100%
+      z-index: 3
+
+      &.fake
+        height: 1px
+        width: 1px
+
+    .issue-content
+      margin-right: 240px
+
+    .issue-actions
+      width: 200px
+      position: absolute
+      right: 30px
+      top: 60px
+
+      .issue-button
+        //+light_button
+        //+border-radius(50px)
+        font-size: 16px
+        padding: 10px 20px
+        margin-bottom: 12px
+
+        .octicon
+          margin: 0 8px 1px -4px
+
+      .ready.issue-button
+        margin-top: 50px
+
+        &.active
+          .octicon.octicon-check
+            color: #fff
+
+          background: $button
+          border: 1px solid $button
+          color: #fff
+
+          &:hover
+            background: $button-hover
+            border: 1px solid $button-hover
+
+      .label-list,
+      .assignee-list,
+      .due-date-calendar
+        //+issue_popup
+        display: block
+        z-index: 4
+
+      .label-list
+        top: 0
+
+        .label
+          border-radius: 4px
+          cursor: pointer
+          display: block
+          margin: 4px 2px
+          padding: 4px 6px
+
+          input
+            margin-right: 6px
+
+      .assignee-list
+        top: 54px
+
+        .assign
+          display: block
+          margin: 6px
+
+          img
+            //+border-radius(30px)
+            display: inline-block
+            height: 30px
+            width: 30px
+
+          span
+            margin-left: 8px
+            font-size: 16px
+            line-height: 30px
+            vertical-align: top
+
+      .due-date-calendar
+        top: 108px
+        width: 210px
+        padding: 18px
+
+        .datepicker
+          margin-bottom: 4px
+
+        input.time
+          display: inline-block
+          margin: 0
+          outline: none
+          padding: 5px
+          width: 50px
+
+        a.save
+          //+light_button
+          float: right
+          padding: 5px
+
+        a.remove
+          float: right
+          margin-top: 8px
+
+    .comment-list
+      .event
+        margin: 0 0 10px 70px
+        color: $lightgrey
+
+        .avatar
+          //+border-radius(50px)
+
+        .login, .text
+          display: inline-block
+          vertical-align: top
+          line-height: 20px
+
+        .login
+          font-weight: bold
+          margin: 0 4px
+
+      .event + .comment
+        margin-top: 24px
+
+      .comment
+        //+border-radius(2px)
+        background-color: #f2f9fc
+        margin: 0 0 30px 70px
+        padding: 20px
+
+        &.editable
+          background-color: $active
+          &:before
+            border-color: transparent $active transparent transparent
+
+        &:before
+          border-color: transparent #f2f9fc transparent transparent
+          border-style: solid
+          border-width: 8px 10px 8px 0
+          content: ' '
+          height: 0
+          margin: -5px 0 0 -30px
+          position: absolute
+          width: 0
+
+        .avatar
+          //+border-radius(100px)
+          float: left
+          margin: -18px 0 0 -80px
+
+          &.stub
+            background: inline-image('pages/p-issues-show/stub_avatar.png') 0 0 no-repeat transparent
+            height: 40px
+            width: 40px
+
+        .header
+          color: $lightgrey
+          margin-bottom: 10px
+
+          .login,
+          .date
+            display: inline-block
+          .login
+            font-weight: bold
+            margin-right: 6px
+          a
+            //+ajax_link
+
+        .body
+          &.stub
+            background: inline-image('pages/p-issues-show/stub_body.png') 0 -8px no-repeat transparent
+            height: 46px
+          img
+            display: block
+            margin: 0 0 5px
+            max-width: 100%
+            margin: 10px 0
+          p
+            line-height: 1.45
+            margin-bottom: 16px
+            &:last-child
+              margin-bottom: 0px
+
+    .comment-form
+      //+border-radius(2px)
+      //+box-shadow(0 17px 35px -15px #e4d4cf)
+      //+background-image(linear-gradient(to bottom,#f7f0ea,#fcf8f5))
+      margin: 30px 0 0 70px
+      padding: 20px 20px 52px
+
+    .comment-edit-form
+      background: $active
+      margin-bottom: 40px
+
+    .comment-form,
+    .comment-edit-form
+      textarea, textarea:focus
+        background: none
+        border: none
+        border-bottom: 1px solid #bbb
+        display: block
+        height: 40px
+        line-height: 1.45
+        margin: 0
+        max-height: 300px
+        outline: none
+        padding: 0
+        width: 100%
+
+      .actions
+        float: right
+        height: 26px
+        margin: 8px 5px 0 0
+
+        a
+          //+ajax_link
+        a,
+        input
+          display: inline-block
+          margin-left: 20px
+
+    .comment-form
+      .directUpload
+        margin-top: 4px
+
+    // TODO Rename after it works.
+    .directUpload
+      cursor: pointer
+      float: left
+      margin-top: -30px
+      padding-top: 10px
+      position: relative
+      a
+        //+ajax_link
+        left: 0
+        position: absolute
+      input
+        opacity: 0.0001
+        cursor: pointer
+        height: 40px
+
+    // [Begin] Date picker for issue
+    .ui-datepicker
+      .ui-datepicker-prev, .ui-datepicker-next,
+      .ui-datepicker-prev:hover, .ui-datepicker-next:hover
+        background: none
+        border: none
+        color: #333
+        font-size: 18px
+        margin: 0
+        padding: 3px 5px 5px 5px
+        top: 0
+
+        &:hover
+          color: $orange
+
+        span
+          display: none
+
+      .ui-datepicker-prev, .ui-datepicker-prev:hover
+        left: 0
+
+        &:after
+          content: '←'
+
+      .ui-datepicker-next, .ui-datepicker-next:hover
+        right: -15px
+
+        &:after
+          content: '→'
+
+      .ui-datepicker-header
+        //+border-radius(0)
+        background: none
+        border-bottom: 1px solid #bbb
+        border: none
+        width: 210px
+
+      table
+        width: auto !important
+
+      .ui-datepicker-title,
+      th
+        font-weight: normal
+
+      td
+        border-collapse: collapse
+        padding: 0
+
+        a
+          border: 0 !important
+          height: 20px
+          line-height: 160%
+          padding: 5px
+          text-align: center
+          width: 20px
+
+      .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active
+        //+border-radius(3px)
+        background: $orange !important
+        color: #fff !important
+
+      .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight
+        //+border-radius(3px)
+        background: #333 !important
+        color: #fff !important
+
+      .ui-state-default
+        background: #f6f6f6
+        font-weight: normal
+        color: #454545
+
+      .ui-state-hover
+        background: #ededed
+        font-weight: normal
+        color: #2b2b2b
+
+    .ui-widget-content
+      border: none
+      padding: 0
+      width: auto
+    // [End] Date picker for issue
+
+  &.readonly
+    .issue-modal
+      .comment-list
+        .comment
+          .header
+            span, a
+              display: none !important
+      .comment-form
+        display: none !important
+
+      .issue-actions
+        .labels,
+        .assignee,
+        .due-date,
+        .close-issue,
+        .reopen-issue,
+        .archive-issue,
+        .send-to-board,
+        .ready
+          display: none !important

@@ -1,0 +1,25 @@
+@import ../globals/variables
+
+=close
+  border-bottom: none
+  cursor: pointer
+  height: 18px
+  opacity: 0.4
+  padding: 20px
+  position: absolute
+  right: -10px
+  top: -10px
+  width: 16px
+
+  &:before
+    content: "×"
+    display: block
+    font-size: 24px
+    height: 14px
+    line-height: 10px
+    position: absolute
+    width: 14px
+
+  &:hover
+    opacity: 0.6
+    color: $link-hover
