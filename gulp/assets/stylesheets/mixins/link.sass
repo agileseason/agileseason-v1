@@ -1,4 +1,4 @@
-@import ../globals/variables
+@import ../application/variables
 @import preloaders
 
 =link
@@ -27,7 +27,7 @@
     display: none !important
 
   &.loading + .button-preloader
-    //+small_button_preloader
+    +small_button_preloader
 
   &.disabled,
   &:disabled
@@ -58,7 +58,7 @@
       color: $orange-hover
 
 =menu_link
-  //+ajax_link
+  +ajax_link
   border-bottom: 1px solid rgba(90,90,90,0.3)
 
   &:hover

@@ -1,7 +1,7 @@
 @import ../mixins/date
 
 .b-activities
-  //+transition(right ease 0.1s)
+  transition: right ease 0.1s
   background: #fff
   border-left: 1px solid #eee
   border-top: 1px solid #eee
@@ -43,7 +43,7 @@
       width: 28px
 
     .avatar
-      //+border-radius(100px)
+      border-radius: 100px
       display: inline-block
       height: 24px
       margin: -1px 8px 0 0
@@ -55,7 +55,7 @@
       vertical-align: top
 
     .date
-      //+date
+      +date
       margin-top: 5px
 
     .user

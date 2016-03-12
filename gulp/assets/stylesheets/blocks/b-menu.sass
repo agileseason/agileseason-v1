@@ -1,7 +1,7 @@
 @import ../mixins/close
 @import ../mixins/link
 @import ../mixins/popup
-@import ../globals/variables
+@import ../application/variables
 
 .b-menu
   .menu
@@ -16,13 +16,13 @@
       padding: 15px
 
     .menu-link
-      //+border-radius(35px)
+      border-radius: 35px
       cursor: pointer
       display: inline-block
       padding: 15px
 
       span
-        //+link
+        +link
         color: $text-usual
 
       span:not(.octicon)
@@ -95,8 +95,8 @@
           top: 2px
 
         &.octicon-sync
-          //+animation(spin linear 0.8s)
-          //+animation-iteration-count(4)
+          animation: spin linear 0.8s
+          animation-iteration-count: 4
 
   .alert-timeout
     display: none
@@ -104,7 +104,7 @@
     position: relative
 
     .hint
-      //+popup_left
+      +popup_left
       font-size: 14px
       padding: 10px
       right: 64px
@@ -153,8 +153,8 @@
         color: $orange
 
       input
-        //+border-radius(35px)
-        //+transition(all ease 0.1s)
+        border-radius: 35px
+        transition: all ease 0.1s
         background: transparent
         border: 1px solid $orange
         cursor: pointer
@@ -219,24 +219,24 @@
         padding: 10px 26px
 
         a
-          //+link
+          +link
           font-size: 14px
           padding: 0
 
-// @-webkit-keyframes spin
-  // 50%
-    // //+transform(rotate(180deg))
-  // 100%
-    // //+transform(rotate(360deg))
+@-webkit-keyframes spin
+  50%
+    transform: rotate(180deg)
+  100%
+    transform: rotate(360deg)
 
-// @-moz-keyframes spin
-  // 50%
-    // //+transform(rotate(180deg))
-  // 100%
-    // //+transform(rotate(360deg))
+@-moz-keyframes spin
+  50%
+    transform: rotate(180deg)
+  100%
+    transform: rotate(360deg)
 
-// @keyframes spin
-  // 50%
-    // //+transform(rotate(180deg))
-  // 100%
-    // //+transform(rotate(360deg))
+@keyframes spin
+  50%
+    transform: rotate(180deg)
+  100%
+    transform: rotate(360deg)

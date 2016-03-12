@@ -1,11 +1,7 @@
-@import ../globals/variables
+@import ../application/variables
 @import ../mixins/preloaders
 
-$image-path: 'blocks/b-dashboard'
-
-@font-face
-  font-family: 'SignPainter'
-  src: asset-url('SignPainter.otf')
+$image-path: "#{$images-url}/blocks/b-dashboard"
 
 .b-dashboard
   .header
@@ -19,12 +15,12 @@ $image-path: 'blocks/b-dashboard'
       display: inline-block
       width: 50%
       vertical-align: top
-      background: image-url("#{$image-path}/logo.png") 50% 0 no-repeat
+      background: url("#{$image-path}/logo.png") 50% 0 no-repeat
       background-size: 80px
       padding-top: 88px
 
       span
-        font-family: 'SignPainter'
+        font-family: 'Fredericka the Great'
         font-size: 30px
         line-height: 25px
         color: #7f756c
@@ -35,7 +31,7 @@ $image-path: 'blocks/b-dashboard'
       vertical-align: top
 
       .avatar
-        //+border-radius(100px)
+        border-radius: 100px
         background: #eee
         height: 60px
         margin: 10px 0 20px -10px
@@ -73,8 +69,8 @@ $image-path: 'blocks/b-dashboard'
         opacity: 0.5
 
     .modal-inner
-      //+border-radius(10px)
-      //+box-shadow(0px 20px 50px -3px rgba(60,60,60,0.2))
+      border-radius: 10px
+      box-shadow: 0px 20px 50px -3px rgba(60,60,60,0.2)
       background: #fafafa
       margin: 20px
       padding: 40px 60px
@@ -110,8 +106,8 @@ $image-path: 'blocks/b-dashboard'
         vertical-align: top
 
         a
-          //+border-radius(4px)
-          //+box-sizing(border-box)
+          border-radius: 4px
+          box-sizing: border-box
           background-color: #eee
           color: $text-usual
           display: inline-block
@@ -135,7 +131,7 @@ $image-path: 'blocks/b-dashboard'
               color: $orange
 
             &.loading + .button-preloader
-              //+medium_preloader
+              +medium_preloader
               background-position: center center
               display: inline-block
               height: 100px

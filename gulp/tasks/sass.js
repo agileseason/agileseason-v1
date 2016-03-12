@@ -7,6 +7,7 @@ var config       = require('../config').sass;
 var autoprefixer = require('gulp-autoprefixer');
 var postcss    = require('gulp-postcss');
 var concatCss = require('gulp-concat-css');
+var postcssFontMagician = require('postcss-font-magician')
 
 gulp.task('sass', function () {
   return gulp.src(config.src)
@@ -14,6 +15,9 @@ gulp.task('sass', function () {
     .pipe(sass(config.settings))
     .on('error', handleErrors)
     .pipe(autoprefixer({ browsers: ['last 3 version'] }))
+    .pipe(postcss(
+      [postcssFontMagician()]
+    ))
     .pipe(concatCss("app.css"))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.dest))

@@ -1,16 +1,16 @@
-@import ../globals/variables
+@import ../application/variables
 
 =popup
-  //+border-radius(8px)
-  //+box-shadow(0 14px 40px -7px rgba(100,99,90,0.4))
+  border-radius: 8px
+  box-shadow: 0 14px 40px -7px rgba(100,99,90,0.4)
   background: $tooltip
   display: none
   position: absolute
   z-index: 1
 
   &:after
-    //+border-radius(2px)
-    //+transform(rotate(45deg))
+    border-radius: 2px
+    transform: rotate(45deg)
     background: $tooltip
     content: ' '
     height: 15px
@@ -30,15 +30,15 @@
     top: -10px
 
 =popup_left
-  //+popup
+  +popup
 
   &:after
     right: -7px
     left: auto
 
 =issue_popup
-  //+border-radius(8px)
-  //+box-shadow(3px 4px 30px -7px rgba(100, 99, 90, 0.6))
+  border-radius: 8px
+  box-shadow: 3px 4px 30px -7px rgba(100, 99, 90, 0.6)
   background: $tooltip
   display: none
   font-size: 14px

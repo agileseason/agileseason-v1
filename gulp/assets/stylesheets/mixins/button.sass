@@ -1,8 +1,8 @@
-@import ../globals/variables
+@import ../application/variables
 @import preloaders
 
 =button
-  //+border-radius(100px)
+  border-radius: 100px
   background: $button
   border: none
   color: #fff
@@ -29,10 +29,10 @@
     display: none !important
 
   &.loading + .button-preloader
-    //+small_button_preloader
+    +small_button_preloader
 
 =iphone_button
-  //+border-radius(100px)
+  border-radius: 100px
   border: none
   color: #fff
   cursor: pointer
@@ -42,7 +42,7 @@
   padding: 7px 15px 8px 40px
   background: $button
   position: relative
-  //+transition(all ease 0.2s)
+  transition: all ease 0.2s
 
   &:hover
     background: $button-hover
@@ -51,12 +51,12 @@
     width: 28px
     height: 28px
     background: #fff
-    //+box-shadow(0 2px 2px 2px rgba(67,67,67,0.2))
+    box-shadow: 0 2px 2px 2px rgba(67,67,67,0.2)
     content: ' '
     position: absolute
-    //+border-radius(30px)
+    border-radius: 30px
     top: 2px
-    //+transition(all ease-in 0.2s)
+    transition: all ease-in 0.2s
     left: 2px
 
   &.true
@@ -81,10 +81,8 @@
   .false
     display: inline-block
 
-
-
 =light_button
-  //+border-radius(6px)
+  border-radius: 6px
   background: none
   border: 1px solid
   color: $button
@@ -103,7 +101,7 @@
   -ms-flex: 0 0 auto
   -webkit-box-flex: 0
   -webkit-flex: 0 0 auto
-  //+border-radius(100px)
+  border-radius: 100px
   border: 1px dashed #aaa
   cursor: pointer
   flex: 0 0 auto

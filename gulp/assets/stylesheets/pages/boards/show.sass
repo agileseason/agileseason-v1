@@ -1,10 +1,10 @@
-@import ../../globals/variables
+@import ../../application/variables
 @import ../../mixins/button
 @import ../../mixins/close
 @import ../../mixins/link
 @import ../../mixins/popup
 
-$image-path: 'pages/p-boards-show'
+$image-path: '#{$images-url}/pages/p-boards-show'
 
 .p-boards-show
   background: $board-background
@@ -35,9 +35,7 @@ $image-path: 'pages/p-boards-show'
       top: 0
 
       .board-column
-        //+border-radius(4px)
-        -ms-flex: 0 0 260px
-        -webkit-flex: 0 0 260px
+        border-radius: 4px
         align-items: stretch
         flex: 0 0 260px
         height: calc(100% - 50px)
@@ -94,7 +92,7 @@ $image-path: 'pages/p-boards-show'
             top: 0
 
             a
-              //+ajax_link
+              +ajax_link
               color: $text-light
               font-weight: bold
 
@@ -109,7 +107,7 @@ $image-path: 'pages/p-boards-show'
                 color: #ff5252
 
             .column-settings-popup
-              //+popup
+              +popup
               font-size: 14px
               height: auto
               left: 100%
@@ -119,7 +117,7 @@ $image-path: 'pages/p-boards-show'
               z-index: 3
 
               .delete
-                //+light_button
+                +light_button
 
               ul
                 list-style-type: none
@@ -137,7 +135,7 @@ $image-path: 'pages/p-boards-show'
 
                   &.move
                     a
-                      //+light_button
+                      +light_button
                     label + a
                       margin-right: 10px
 
@@ -176,8 +174,8 @@ $image-path: 'pages/p-boards-show'
                       width: 137px
 
           .new-issue
-            //+ajax_link
-            //+border-radius(6px)
+            +ajax_link
+            border-radius: 6px
             border: 1px solid $button-light
             color: $button-light
             display: inline-block
@@ -210,8 +208,8 @@ $image-path: 'pages/p-boards-show'
     z-index: 1
 
     form.new_issue
-      //+border-radius(8px)
-      //+box-shadow(5px 10px 40px -3px rgba(90,80,80,0.3))
+      border-radius: 8px
+      box-shadow: 5px 10px 40px -3px rgba(90,80,80,0.3)
       background: #fff
       left: 50%
       margin-bottom: 100px
@@ -227,7 +225,7 @@ $image-path: 'pages/p-boards-show'
         margin: 15px 25px 0 20px
 
       textarea
-        //+border-radius(0)
+        border-radius: 0
         font-size: 24px
         min-height: 80px
         width: 100%
@@ -247,14 +245,14 @@ $image-path: 'pages/p-boards-show'
       display: none
 
     .submit-area
-      //+border-radius(0)
+      border-radius: 0
       background: none
       border-top: 1px solid $form-border
       margin: 0 20px 10px
       padding: 15px 0 5px
 
       .cancel
-        //+ajax_link
+        +ajax_link
         display: inline-block
         font-size: 13px
 
@@ -263,7 +261,7 @@ $image-path: 'pages/p-boards-show'
       text-align: left
 
       label
-        //+border-radius(6px)
+        border-radius: 6px
         cursor: pointer
         display: inline-block
         margin: 10px 10px 0 0
@@ -287,10 +285,10 @@ $image-path: 'pages/p-boards-show'
       display: block
 
     .close-popup
-      //+close
+      +close
 
   .empty-issue
-    //+border-radius(4px)
+    border-radius: 4px
     background: #ccc
     margin-bottom: 10px
     min-width: 40px
@@ -304,7 +302,7 @@ $image-path: 'pages/p-boards-show'
     visibility: visible !important
 
   .issue
-    //+border-radius(2px)
+    border-radius: 2px
     background-color: #fff
     border-bottom: 1px solid #ddd
     border-right: 1px solid #eee
@@ -362,8 +360,8 @@ $image-path: 'pages/p-boards-show'
       width: 50px
 
       a.button
-        //+button
-        //+border-radius(2px)
+        +button
+        border-radius: 2px
         display: none
         float: right
         font-size: 9px
@@ -373,7 +371,7 @@ $image-path: 'pages/p-boards-show'
         text-transform: uppercase
 
       .is_ready
-        //+border-radius(0)
+        border-radius: 0
         background: image-url("#{$image-path}/ready.png") 0 0 no-repeat transparent
         background-size: 50px
         border: none
