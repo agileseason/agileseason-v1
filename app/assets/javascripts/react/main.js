@@ -174,7 +174,9 @@ $(document).on('page:change', function () {
     handleColumnChange: function(columnId) {
       var url = this.issueUrl() + '/move_to/' + columnId + '/force';
       this.request(url, 'GET', {}, function(data) {
-        // TODO Update column badges.
+        for (var badge of data.badges) {
+          window.update_wip_column(badge);
+        }
       });
     },
     handleStateButtonClick: function(state) {

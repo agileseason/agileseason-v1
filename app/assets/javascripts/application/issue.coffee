@@ -4,9 +4,6 @@ class @Issue
     @number = @node.data('number')
 
   move: (column_id) ->
-    console.log "move: #{column_id}"
-    console.log @move_to_path(column_id)
-
     $.ajax
       url: @move_to_path(column_id)
       beforeSend: =>
