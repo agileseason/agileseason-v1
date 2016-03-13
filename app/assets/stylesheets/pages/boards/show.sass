@@ -297,11 +297,11 @@ $image-path: 'pages/p-boards-show'
     min-width: 40px
 
   .ui-sortable-helper
-    +box-shadow(0 25px 20px -10px rgba(100, 100, 100, 0.3))
+    +box-shadow(0 25px 20px -10px rgba(100, 100, 100, 0.5))
 
   .issue.ui-sortable-placeholder
     +border-radius(2px)
-    background-color: #dfdfdf
+    background-color: #dfdfdf !important
     border: none
     visibility: visible !important
 
@@ -309,11 +309,13 @@ $image-path: 'pages/p-boards-show'
     +border-radius(2px)
     background-color: #fff
     border-bottom: 1px solid #ddd
+    border-right: 1px solid #eee
     margin-bottom: 2px
-    padding: 4px 10px 4px
+    padding: 4px 9px 4px 10px
     position: relative
 
     &:hover
+      background: #eaf4fc
       cursor: -webkit-grab
 
       .buttons
@@ -327,15 +329,10 @@ $image-path: 'pages/p-boards-show'
       width: 220px
       z-index: 1
 
-    &:hover
-      background: #EAF4FC
-
     &.closed
-      opacity: 0.8
-      background: $card-closed
-
-      .issue-title
-        color: #999
+      opacity: 0.85
+      background: #efeeea
+      border-right: 1px solid #eaeaea
 
       a,
       .labels,
@@ -398,8 +395,8 @@ $image-path: 'pages/p-boards-show'
         &:hover
           color: $button-hover
           background: image-url("#{$image-path}/ready-hover.png") 0 0 no-repeat transparent
-          border: none
           background-size: 50px
+          border: none
           opacity: 1
 
         &.active
