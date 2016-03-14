@@ -63,3 +63,14 @@ end
 
 after 'deploy:started', 'sidekiq:stop'
 after 'deploy:published', 'sidekiq:start'
+
+before "deploy:assets:precompile", "deploy:npm_install"
+
+namespace :deploy do
+  desc "Run npm install"
+  task :npm_install do
+    on roles :app do
+      execute "cd #{release_path} && npm install -g gulp && npm install && npm rebuild node-sass && gulp build"
+    end
+  end
+end
