@@ -1,0 +1,110 @@
+@import ../application/variables
+@import ../mixins/button
+@import ../mixins/link
+
+.b-wizard
+  display: none
+  margin: 20px auto
+  width: 750px
+
+  .button
+    margin-left: 10px
+
+  .menu
+    list-style: none
+    margin: 0
+    padding: 20px 0 10px
+    font-size: 24px
+
+    li
+      +link
+      display: inline-block
+      padding: 5px 10px
+      margin-left: -10px
+
+      &:last-child
+        &.active
+          margin-left: 10px
+
+    .arrow
+      margin: 0 10px
+      color: #7f756c
+
+  .repo-list
+    list-style: none
+    margin: 0
+    padding: 0
+
+    li
+      margin-bottom: 20px
+
+      &.repo-list-item
+        .price
+          display: none
+
+      .actions
+        float: right
+
+        .price
+          border-radius: 4px
+          background: #fffef8
+          border: 1px solid #fcd880
+          color: #e5a303
+          font-size: 12px
+          margin-right: 8px
+          padding: 4px 6px
+
+        .button, .light-button
+          box-sizing: border-box
+          margin-top: -5px
+          text-align: center
+          width: 120px
+
+        .light-button
+          +light_button
+          border-radius: 15px
+          display: inline-block
+          font-size: 14px
+          padding: 5px 7px
+
+  .new-board-form
+    display: none
+
+  form
+    .error
+      margin-left: 10px
+
+    input:disabled + .collection_radio_buttons
+      color: $lightgrey
+
+    .row
+      margin-bottom: 16px
+
+      .label
+        display: inline-block
+        vertical-align: top
+        width: 90px
+
+      input[type="text"]
+        padding: 4px 6px
+
+      .type
+        display: inline-block
+        vertical-align: top
+
+        label
+          padding-bottom: 0
+          padding-bottom: 10px
+          width: 300px
+
+          label
+            padding-bottom: 0
+            vertical-align: top
+            width: 240px
+
+      ul
+        display: inline-block
+        list-style: none
+        margin: 0
+        padding: 0
+        vertical-align: top

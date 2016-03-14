@@ -1,6 +1,5 @@
 /*
- *= require toggling.sass
+ *= require toggling
  *= require solarized_light.min
- *= require_tree .
- *= require_self
+ *= require app.css
  */

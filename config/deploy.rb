@@ -34,7 +34,7 @@ set :linked_files, %w{config/database.yml config/secrets.yml config/faye.yml}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+# set :default_env, { path: '/opt/ruby/bin:$PATH' }
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
@@ -63,3 +63,14 @@ end
 
 after 'deploy:started', 'sidekiq:stop'
 after 'deploy:published', 'sidekiq:start'
+
+before 'deploy:assets:precompile', 'deploy:npm_install'
+
+namespace :deploy do
+  desc 'Run npm install'
+  task :npm_install do
+    on roles :app do
+      execute 'cd #{release_path} && npm install -g gulp && npm install && npm rebuild node-sass && gulp build'
+    end
+  end
+end

@@ -1,0 +1,75 @@
+@import ../../application/common
+
+.p-age-index
+  .chart
+    height: 600px
+
+    .axis
+      fill: #888
+
+      &.y
+        text
+          font-size: 10px
+          font-weight: normal
+
+        .tick
+          font-size: 12px
+
+      &.x
+        .tick
+          display: none
+
+    .bar
+      &.n0
+        fill: green
+      &.n1
+        fill: yellow
+      &.n2
+        fill: orange
+      &.n4
+        fill: red
+      &.n8
+        fill: darkred
+
+    .bar-shadow
+      cursor: pointer
+      opacity: 0.0
+
+      &.hovered
+        opacity: 0.02
+
+    .tooltip
+      padding: 10px
+      position: absolute
+      width: 100px
+
+  .legend
+    text-align: center
+
+    .text
+      display: inline-block
+      font-size: 1226
+      line-height: 18px
+      vertical-align: top
+      margin: 0 8px
+      color: #333
+
+    .bar
+      display: inline-block
+      height: 18px
+      opacity: 0.8
+      width: 30px
+
+      &.n0-full
+        background-color: green
+      &.n0
+        background: linear-gradient(to right, yellow, green)
+      &.n1
+        background: linear-gradient(to right, orange, yellow)
+      &.n2
+        background: linear-gradient(to right, red, orange)
+      &.n4
+        background: linear-gradient(to right, darkred, red)
+      &.n8-full
+        background-color: darkred
+

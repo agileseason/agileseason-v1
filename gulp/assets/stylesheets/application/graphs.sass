@@ -1,0 +1,26 @@
+@import ../mixins/link
+
+.graph
+  #container
+    margin-bottom: 18px
+
+    svg > text
+      &:last-child
+        display: none
+
+  .footer
+    min-height: 20px
+    position: relative
+
+    .help
+      position: absolute
+      top: 0
+      right: 0
+
+    a.preference
+      +ajax_link
+
+    .preference-content
+      padding: 10px 0
+      input[type=submit]
+        margin-left: 10px
