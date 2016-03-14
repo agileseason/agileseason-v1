@@ -1,4 +1,14 @@
 module Graphs
+  #class FrequencyBuilder
+    #EMPTY = [0].freeze
+
+    #pattr_initialize :issues
+
+    #def chart_data
+      #return EMPTY if issues.blank?
+    #end
+  #end
+
   class FrequencyService
     pattr_initialize :board, :from_at
 
@@ -10,7 +20,7 @@ module Graphs
         to_a
     end
 
-    def chart_series
+    def chart_data
       return zero_point if issues.blank?
 
       normolized = (1..max_cycle_time).each_with_object(zero_point) do |day, hash|

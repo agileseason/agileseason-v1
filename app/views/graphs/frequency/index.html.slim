@@ -1,6 +1,11 @@
 = render partial: '/layouts/submenu'
 
-.graph-area
+.graph
+  /.chart data-chart-data="#{@frequency_all.chart_data.map(&:second).to_json}"
+  .chart data-chart-data="#{{d1: [2, 0, 1, 10, 0, 0, 5, 0, 1], d2: [1, 1, 0, 4]}.to_json}"
+  /.chart data-chart-data="#{20.times.map.to_json}"
+
+/.graph-area
   .info
     .row
       .title Past 30 days

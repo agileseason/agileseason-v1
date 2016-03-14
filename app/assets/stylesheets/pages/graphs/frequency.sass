@@ -1,31 +1,61 @@
-@import globals/variables
-
-$info_width: 260px
-
+@import globals/common
 .p-frequency-index
-  .graph-area
-    position: relative
-    padding-left: $info_width
+  .chart
+    height: 600px
 
-    .info
+    .axis
+      fill: #888
+
+      &.x,
+      &.y
+        text
+          font-size: 10px
+          font-weight: normal
+
+        .tick
+          font-size: 12px
+      &.x
+        .tick
+          &:first-child
+            display: none
+
+    .bar-shadow
+      opacity: 0.0
+
+      &.hovered
+        opacity: 0.02
+
+    .tooltip
+      padding: 10px
       position: absolute
-      top: 0
-      left: 0
-      width: $info_width
-      height: 100%
+      width: 100px
 
-      .row
-        margin-bottom: 30px
-        color: $text-light
+//$info_width: 260px
 
-        .title
-          font-weight: 700
-          font-size: 18px
+//.p-frequency-index
+  //.graph-area
+    //position: relative
+    //padding-left: $info_width
 
-        .stats
-          font-size: 14px
-          line-height: 22px
+    //.info
+      //position: absolute
+      //top: 0
+      //left: 0
+      //width: $info_width
+      //height: 100%
 
-          span
-            margin-left: 4px
-            color: $text-usual
+      //.row
+        //margin-bottom: 30px
+        //color: $text-light
+
+        //.title
+          //font-weight: 700
+          //font-size: 18px
+
+        //.stats
+          //font-size: 14px
+          //line-height: 22px
+
+          //span
+            //margin-left: 4px
+            //color: $text-usual
