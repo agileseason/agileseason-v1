@@ -19,7 +19,7 @@ section.main
       .note 20-Day Free Trial - No Credit Card&nbsp;Required. Free for public repository.
 
 section.demo
-  = image_tag 'pages/p-landing-index/demo.png'
+  = image_tag "#{gulp_asset_path 'landing_images/demo.png'}"
 
 section.metrics
   .container
@@ -27,7 +27,7 @@ section.metrics
     p It visually points out shortages and bottlenecks and works<br>in conjunction with WIP limits.
 
     .cumulative-flow
-      = image_tag 'pages/p-landing-index/cumulative-flow.png'
+      = image_tag "#{gulp_asset_path 'landing_images/cumulative-flow.png'}"
     .text
       p The diagram should look smooth(ish) from left to right. Bubbles or gaps in any one color indicate shortages and bottlenecks
       p Colors are the various workflow states of issues.
@@ -39,7 +39,7 @@ section.metrics
       p This helps you identify whether data from the current process can be used to determine future performance.
 
     .control-chart
-      = image_tag 'pages/p-landing-index/control-chart.png'
+      = image_tag "#{gulp_asset_path 'landing_images/control-chart.png'}"
 
 section.action
   a.button.sign-in href='/auth/github'
@@ -65,11 +65,11 @@ section.footer
     li : a href='https://github.com/agileseason/agileseason/blob/master/doc/SECURITY.md' Security
 
   p
-    ' Agile Season is maintained by&nbsp;
+    ' Maintained by&nbsp;
     a href='https://github.com/blackchestnut' @blackchestnut
     '  and&nbsp;
     a href='https://github.com/Sfolt' @Sfolt
-    ' . Agile Season is Copyright © 2015 Alexander Kalinichev
+    ' . © 2015 Alexander Kalinichev
 
   p
     ' It is&nbsp;open source software and may be&nbsp;redistributed under the terms specified in the&nbsp;

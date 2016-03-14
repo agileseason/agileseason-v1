@@ -1,7 +1,6 @@
-@import application/variables
-@import mixins/link
+@import ../stylesheets/mixins/link
 
-$image-path: "#{$images-url}/pages/p-landing-index"
+$image-path: "/assets/landing_images"
 
 .p-landing-index
   min-width: 1200px
@@ -32,7 +31,9 @@ $image-path: "#{$images-url}/pages/p-landing-index"
         font-weight: normal
         font-size: 56px
         margin: 0
-        background: image-url("#{$image-path}/logo.png") 0 50% no-repeat
+        background: inline("../landing_images/logo.png")
+        background-position: 0 50%
+        background-repeat: no-repeat
         display: inline-block
         padding: 18px 0 0 59px
         background-size: 55px
@@ -84,7 +85,7 @@ $image-path: "#{$images-url}/pages/p-landing-index"
       &:after
         content: ' '
         position: absolute
-        background: image-url("#{$image-path}/demo-light.png") 0 0 no-repeat
+        background: url("#{$image-path}/demo-light.png") 0 0 no-repeat
         width: 309px
         background-size: 309px auto
         height: 102px
@@ -97,7 +98,7 @@ $image-path: "#{$images-url}/pages/p-landing-index"
       position: relative
 
       &:after
-        background: image-url("#{$image-path}/sign-in-light.png") 0 0 no-repeat
+        background: url("#{$image-path}/sign-in-light.png") 0 0 no-repeat
         content: ' '
         height: 88px
         left: -10px

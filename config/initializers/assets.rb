@@ -6,5 +6,5 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 Rails.application.config.assets.paths << Rails.root.join("public", "assets", "stylesheets")
-Rails.application.config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
-Rails.application.config.assets.precompile += %w( landing.js )
+Rails.application.config.assets.paths << Rails.root.join("public", "assets", "landing_stylesheets")
+Rails.application.config.assets.precompile += %w( landing.css landing.js )
