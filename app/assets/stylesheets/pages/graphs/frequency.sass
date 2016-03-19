@@ -1,4 +1,5 @@
 @import globals/common
+
 .p-frequency-index
   .chart
     height: 600px
@@ -19,16 +20,29 @@
           &:first-child
             display: none
 
+    .bar
+      &.bar-0
+        fill: #FFE082
+        &.hovered
+          fill: #FFD54F
+      &.bar-1
+        fill: #EF5350
+        &.hovered
+          fill: #F44336
+
     .bar-shadow
       opacity: 0.0
+      z-index: 3
 
-      &.hovered
-        opacity: 0.02
+      //&.hovered
+        opacity: 0.015
 
     .tooltip
-      padding: 10px
+      color: #111
+      font-size: 14px
       position: absolute
       width: 100px
+      z-index: 2
 
 //$info_width: 260px
 

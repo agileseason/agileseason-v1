@@ -28,7 +28,7 @@ class @BarChartBase
     @margin = { top: 50, right: 60, bottom: 40, left: 60 }
     @chart_width = @$chart.width() - @margin.left - @margin.right
     @chart_height = @$chart.height() - @margin.top - @margin.bottom
-    bar_step = @chart_width / @_length() / 20
+    bar_step = @chart_width / @_length() * @_bar_step()
     @bar_width = @chart_width / @_length() - bar_step
 
   _prepare_svg: ->
@@ -42,6 +42,9 @@ class @BarChartBase
         .attr
           transform: "translate(#{@margin.left},#{@margin.top})"
 
+  _bar_step: ->
+    0.05
+
   _prepare_scales: ->
     # Override
 
@@ -54,8 +57,6 @@ class @BarChartBase
 class @FrequencyChart extends @BarChartBase
   constructor: (root) ->
     super(root)
-
-    @colors = ['#f2a03e', '#bf4a4e']
 
     @_render_axes()
     @_render_chart()
@@ -103,14 +104,16 @@ class @FrequencyChart extends @BarChartBase
       .tickPadding 15
       .outerTickSize 1
 
+  _bar_step: -> 0
+
   _render_chart: ->
-    for data, i in @data
+    for data, n in @data
       bar = @svg
-        .selectAll(".bar-#{i}")
+        .selectAll(".bar-#{n}")
           .data(data)
         .enter().append('rect')
-          .attr('class', (d) -> "bar bar-#{i}")
-          .attr('style', (d) => "fill: #{@colors[i]}")
+          .attr('id', (d, i) -> "bar-#{n}-#{i}")
+          .attr('class', (d) -> "bar bar-#{n}")
           .attr('x', (d, i) => @x_scale(i + 1) - @bar_width)
           .attr 'width', @bar_width
           .attr 'y', @y_scale(0)
@@ -171,41 +174,45 @@ class @FrequencyChart extends @BarChartBase
   _on_bar_mouseover: (node, d, i) =>
     d3.select(node).classed hovered: true
 
-    @tooltip
-      .transition()
-      .duration 200
-      .style opacity: 0.8
+    for data, n in @data
+      if data[i] > 0
+        @tooltip[n]
+          .transition()
+          .duration 100
+          .style opacity: 0.8
 
-    bar = d3.select "#bar-shadow-#{i}"
-    @tooltip
-      .html @_tooltip_content i
-      .style
-        left: "#{@_calculate_tooltip_left bar}px"
-        top: "#{@_calculate_tooltip_top bar}px"
+      bar = d3.select("#bar-#{n}-#{i}")
+      bar.classed hovered: true
 
-  _tooltip_content: (day) ->
-    "#{day} Day"
+      @tooltip[n]
+        .html @_tooltip_content(data[i], i + 1)
+        .style
+          left: "#{@_calculate_tooltip_left(bar, n)}px"
+          top: "#{@_calculate_tooltip_top(bar, n)}px"
 
-  _calculate_tooltip_left: (bar) =>
-    tooltip_width = @tooltip.node().getBoundingClientRect().width
-    parseInt(bar.attr('x')) + @margin.left +
-      parseInt(bar.attr('width')) / 2 - 10
+  _tooltip_content: (issues, day) ->
+    "Issues: #{issues} Closed for: #{day}d"
 
-  _calculate_tooltip_top: (bar) =>
-    tooltip_height = @tooltip.node().getBoundingClientRect().height
-    parseInt(bar.attr('y')) + tooltip_height + @margin.top + 26
+  _calculate_tooltip_left: (bar, n) =>
+    tooltip_width = @tooltip[n].node().getBoundingClientRect().width
+    parseInt(bar.attr('x')) + @margin.left + tooltip_width / 2
+
+  _calculate_tooltip_top: (bar, n) =>
+    tooltip_height = @tooltip[n].node().getBoundingClientRect().height
+    parseInt(bar.attr('y')) + tooltip_height + @margin.top + 64
 
   _on_bar_mouseout: (node, d, i) =>
     d3.select(node).classed hovered: false
 
-    @tooltip
-      .transition()
-      .duration 400
-      .style opacity: 0
+    for data, n in @data
+      d3.select("#bar-#{n}-#{i}").classed hovered: false
+      @tooltip[n].style opacity: 0
 
   _render_tooltip: ->
-    @tooltip = d3
-      .selectAll @$chart
-      .append 'div'
-      .attr class: 'tooltip'
-      .style opacity: 0
+    @tooltip = []
+    for data, n in @data
+      @tooltip[n] = d3
+        .selectAll @$chart
+        .append 'div'
+        .attr class: "tooltip tooltip-#{n}"
+        .style opacity: 0

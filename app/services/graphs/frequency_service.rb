@@ -1,14 +1,4 @@
 module Graphs
-  #class FrequencyBuilder
-    #EMPTY = [0].freeze
-
-    #pattr_initialize :issues
-
-    #def chart_data
-      #return EMPTY if issues.blank?
-    #end
-  #end
-
   class FrequencyService
     pattr_initialize :board, :from_at
 
