@@ -1,75 +1,69 @@
 @import globals/common
 
 .p-frequency-index
-  .chart
-    height: 600px
+  .container
+    position: relative
 
-    .axis
-      fill: #888
-
-      &.x,
-      &.y
-        text
-          font-size: 10px
-          font-weight: normal
-
-        .tick
-          font-size: 12px
-      &.x
-        .tick
-          &:first-child
-            display: none
-
-    .bar
-      &.bar-0
-        fill: #FFE082
-        &.hovered
-          fill: #FFD54F
-      &.bar-1
-        fill: #EF5350
-        &.hovered
-          fill: #F44336
-
-    .bar-shadow
-      opacity: 0.0
-      z-index: 3
-
-      //&.hovered
-        opacity: 0.015
-
-    .tooltip
-      color: #111
+    .stats
+      background-color: #fff
+      border-radius: 2px
+      border: 1px solid #90caf9
       font-size: 14px
+      left: 500px
+      opacity: 0.75
+      padding: 10px
       position: absolute
-      width: 100px
-      z-index: 2
+      top: 20px
 
-//$info_width: 260px
+    .chart
+      height: 600px
 
-//.p-frequency-index
-  //.graph-area
-    //position: relative
-    //padding-left: $info_width
+      .axis
+        fill: #888
 
-    //.info
-      //position: absolute
-      //top: 0
-      //left: 0
-      //width: $info_width
-      //height: 100%
+        &.x,
+        &.y
+          text
+            font-size: 10px
+            font-weight: normal
 
-      //.row
-        //margin-bottom: 30px
-        //color: $text-light
+          .tick
+            font-size: 12px
+        &.x
+          .tick
+            &:first-child
+              display: none
 
-        //.title
-          //font-weight: 700
-          //font-size: 18px
+      .bar
+        &.bar-0
+          fill: #90caf9
+          &.hovered
+            fill: #64b5f6
+        &.bar-1
+          fill: #FFE082
+          &.hovered
+            fill: #FFD54F
+        &.bar-2
+          fill: #ef5350
+          &.hovered
+            fill: #f44336
 
-        //.stats
-          //font-size: 14px
-          //line-height: 22px
+      .bar-shadow
+        opacity: 0.0
+        z-index: 3
 
-          //span
-            //margin-left: 4px
-            //color: $text-usual
+      .tooltip
+        color: #111
+        background-color: #fff
+        font-size: 14px
+        padding: 4px
+        position: absolute
+        width: 110px
+        z-index: 2
+
+        &.tooltip-0
+          border: 1px solid #64b5f6
+        &.tooltip-1
+          border: 1px solid #ffd54f
+        &.tooltip-2
+          border: 1px solid #f44336

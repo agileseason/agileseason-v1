@@ -5,11 +5,15 @@ module Graphs
     helper_method :stat_to_html
 
     def index
-      @frequency_all = FrequencyService.new(@board, @board.created_at)
-      @frequency_month = FrequencyService.new(@board, [1.month.ago, @board.created_at].max)
+      @frequency = FrequencyService.new(@board, from_at)
     end
 
     private
+
+    def from_at
+      return [1.month.ago, @board.created_at].max unless params[:from]
+      Time.parse(params[:from])
+    end
 
     def stat_to_html(value)
       value.nil? ? '-' : value.round(2)

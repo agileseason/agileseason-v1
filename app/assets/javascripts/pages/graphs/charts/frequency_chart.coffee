@@ -195,11 +195,11 @@ class @FrequencyChart extends @BarChartBase
 
   _calculate_tooltip_left: (bar, n) =>
     tooltip_width = @tooltip[n].node().getBoundingClientRect().width
-    parseInt(bar.attr('x')) + @margin.left + tooltip_width / 2
+    parseInt(bar.attr('x')) + @margin.left + @bar_width / 2 - tooltip_width / 4
 
   _calculate_tooltip_top: (bar, n) =>
     tooltip_height = @tooltip[n].node().getBoundingClientRect().height
-    parseInt(bar.attr('y')) + tooltip_height + @margin.top + 64
+    parseInt(bar.attr('y')) + @margin.top - tooltip_height - 10
 
   _on_bar_mouseout: (node, d, i) =>
     d3.select(node).classed hovered: false
