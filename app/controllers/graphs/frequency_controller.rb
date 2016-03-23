@@ -11,8 +11,9 @@ module Graphs
     private
 
     def from_at
-      return [1.month.ago, @board.created_at].max unless params[:from]
-      Time.parse(params[:from])
+      from = Time.parse(params[:from]) if params[:from]
+      from ||= 1.month.ago
+      [from, @board.created_at].max
     end
 
     def stat_to_html(value)

@@ -15,3 +15,12 @@
     .issues == "Closed issues: <b>#{@frequency.issues.count}</b>"
     .throughput == "Throughput: \
                     <b>#{stat_to_html(@frequency.throughput)} issues per day</b>"
+
+  ul.intervals
+    - [['Past 30 days', 30.days.ago], ['60 days', 60.days.ago],
+       ['90 days', 90.days.ago], ['All', @board.created_at]].each do |item|
+      li
+        a [
+          class="#{:active if current_date?(item.second)}"
+          href=board_graphs_frequency_index_url(@board, from: date_to_url(item.second))
+        ] = item.first

@@ -4,6 +4,28 @@
   .container
     position: relative
 
+    .intervals
+      list-style: none
+      margin-top: 20px
+
+      li
+        float: left
+        margin-left: 2px
+
+        a
+          display: inline-block
+          padding: 4px 8px
+          border-radius: 4px
+
+          &.active
+            background-color: #e1f5fe
+            color: $text-usual
+            &:hover
+              background-color: #e1f5fe
+
+          &:hover
+            background-color: #ddd
+
     .stats
       background-color: #fff
       border-radius: 2px

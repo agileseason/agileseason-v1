@@ -1,4 +1,6 @@
 module SubmenuHelper
+  include UrlHelper
+
   def submenu
     [
       OpenStruct.new(
@@ -14,7 +16,10 @@ module SubmenuHelper
       OpenStruct.new(
         name: 'Cycle Time Diagram',
         controller: 'graphs/frequency',
-        url: board_graphs_frequency_index_url(@board)
+        url: board_graphs_frequency_index_url(
+          @board,
+          from: date_to_url(30.days.ago)
+        )
       ),
       OpenStruct.new(
         name: 'Age of Issues',
