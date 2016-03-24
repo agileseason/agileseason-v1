@@ -16,11 +16,13 @@ class @BarChartBase
     else
       @data = (raw_data[key] for key of raw_data)
 
-  # TODO right max
   _max: ->
-    d3.max @data[0], (d) -> d
+    max = Number.MIN_SAFE_INTEGER
+    for data, n in @data
+      max_tmp = d3.max(data, (d) -> d)
+      max = max_tmp if max_tmp > max
+    max
 
-  # TODO right length
   _length: ->
     @data[0].length
 
