@@ -22,6 +22,7 @@
 #= require turbolinks
 #= require toggling.coffee
 
+#= require ./pages/graphs/charts/bar_chart_base
 #= require_tree .
 
 # ---  React ---
