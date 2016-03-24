@@ -10,7 +10,7 @@ module Graphs
         to_a
     end
 
-    def chart_series
+    def chart_data
       return zero_point if issues.blank?
 
       normolized = (1..max_cycle_time).each_with_object(zero_point) do |day, hash|

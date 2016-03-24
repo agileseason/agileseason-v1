@@ -1,6 +1,9 @@
 @import globals/common
 
 .p-age-index
+  .graph
+    position: relative
+
   .chart
     height: 600px
 
@@ -21,27 +24,44 @@
 
     .bar
       &.n0
-        fill: green
+        fill: #81c784
+        &.hovered
+          fill: #66bb6a
       &.n1
-        fill: yellow
+        fill: #fff176
+        &.hovered
+          fill: #ffeb3b
       &.n2
-        fill: orange
+        fill: #ffb74d
+        &.hovered
+          fill: #ffa726
       &.n4
-        fill: red
+        fill: #ef5350
+        &.hovered
+          fill: #f44336
       &.n8
-        fill: darkred
+        fill: #c62828
+        &.hovered
+          fill: #b71c1c
 
     .bar-shadow
       cursor: pointer
       opacity: 0.0
 
       &.hovered
-        opacity: 0.02
+        opacity: 0.01
 
     .tooltip
-      padding: 10px
+      color: #111
+      background-color: #fff
+      font-size: 14px
+      padding: 4px
       position: absolute
-      width: 100px
+      width: 110px
+      z-index: 2
+
+      &.tooltip-0
+        border: 1px solid #888
 
   .legend
     text-align: center
@@ -61,15 +81,14 @@
       width: 30px
 
       &.n0-full
-        background-color: green
+        background-color: #66bb6a
       &.n0
-        +background-image(linear-gradient(to right, yellow, green))
+        +background-image(linear-gradient(to right, #ffeb3b, #66bb6a))
       &.n1
-        +background-image(linear-gradient(to right, orange, yellow))
+        +background-image(linear-gradient(to right, #ffa726, #ffeb3b))
       &.n2
-        +background-image(linear-gradient(to right, red, orange))
+        +background-image(linear-gradient(to right, #f44336, #ffa726))
       &.n4
-        +background-image(linear-gradient(to right, darkred, red))
+        +background-image(linear-gradient(to right, #b71c1c, #f44336))
       &.n8-full
-        background-color: darkred
-
+        background-color: #b71c1c

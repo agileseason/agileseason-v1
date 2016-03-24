@@ -1,31 +1,91 @@
-@import globals/variables
-
-$info_width: 260px
+@import globals/common
 
 .p-frequency-index
-  .graph-area
+  .container
     position: relative
-    padding-left: $info_width
 
-    .info
-      position: absolute
-      top: 0
-      left: 0
-      width: $info_width
-      height: 100%
+    .intervals
+      list-style: none
+      margin-top: 20px
 
-      .row
-        margin-bottom: 30px
-        color: $text-light
+      li
+        float: left
+        margin-left: 2px
 
-        .title
-          font-weight: 700
-          font-size: 18px
+        a
+          display: inline-block
+          padding: 4px 8px
+          border-radius: 4px
 
-        .stats
-          font-size: 14px
-          line-height: 22px
-
-          span
-            margin-left: 4px
+          &.active
+            background-color: #e1f5fe
             color: $text-usual
+            &:hover
+              background-color: #e1f5fe
+
+          &:hover
+            background-color: #ddd
+
+    .stats
+      background-color: #fff
+      border-radius: 2px
+      border: 1px solid #90caf9
+      font-size: 14px
+      left: 500px
+      opacity: 0.75
+      padding: 10px
+      position: absolute
+      top: 20px
+
+    .chart
+      height: 600px
+
+      .axis
+        fill: #888
+
+        &.x,
+        &.y
+          text
+            font-size: 10px
+            font-weight: normal
+
+          .tick
+            font-size: 12px
+        &.x
+          .tick
+            &:first-child
+              display: none
+
+      .bar
+        &.bar-0
+          fill: #90caf9
+          &.hovered
+            fill: #64b5f6
+        &.bar-1
+          fill: #FFE082
+          &.hovered
+            fill: #FFD54F
+        &.bar-2
+          fill: #ef5350
+          &.hovered
+            fill: #f44336
+
+      .bar-shadow
+        opacity: 0.0
+        z-index: 3
+
+      .tooltip
+        color: #111
+        background-color: #fff
+        font-size: 14px
+        padding: 4px
+        position: absolute
+        width: 110px
+        z-index: 2
+
+        &.tooltip-0
+          border: 1px solid #64b5f6
+        &.tooltip-1
+          border: 1px solid #ffd54f
+        &.tooltip-2
+          border: 1px solid #f44336

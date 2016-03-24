@@ -1,48 +1,24 @@
 = render partial: '/layouts/submenu'
 
-.graph-area
-  .info
-    .row
-      .title Past 30 days
-      .stats
-        .avg
-          | Issue Avg Cycle time:
-          span #{stat_to_html(@frequency_month.avg_cycle_time)} days
-
-        .avg-percentile
-          | Issue Avg Cycle time
-          br
-          | 80% persentile:
-          span #{stat_to_html(@frequency_month.avg_cycle_time_percentile(0.8))} days
-
-        .issues
-          | Closed issues:
-          span #{@frequency_month.issues.count}
-
-        .throughput
-          | Throughput:
-          span #{stat_to_html(@frequency_month.throughput)} issues per day
-
-    .row
-      .title All times
-      .stats
-        .avg
-          | Issue Avg Cycle time:
-          span #{stat_to_html(@frequency_all.avg_cycle_time)} days
-
-        .avg-percentile
-          | Issue Avg Cycle time
-          br
-          | 80% persentile:
-          span #{stat_to_html(@frequency_all.avg_cycle_time_percentile(0.8))} days
-
-        .issues
-          | Closed issues:
-          span #{@frequency_all.issues.count}
-
-        .throughput
-          | Throughput:
-          span #{stat_to_html(@frequency_all.throughput)} issues per day
-
+.container
   .graph
-    = render partial: 'graph'
+    .chart data-chart-data="#{@frequency.chart_data.map(&:second).to_json}"
+
+  .stats
+    .avg
+      == "Issue Avg Cycle time: \
+          <b>#{stat_to_html(@frequency.avg_cycle_time)} days</b>, \
+          80% persentile: \
+          <b>#{stat_to_html(@frequency.avg_cycle_time_percentile(0.8))} days</b>"
+    .issues == "Closed issues: <b>#{@frequency.issues.count}</b>"
+    .throughput == "Throughput: \
+                    <b>#{stat_to_html(@frequency.throughput)} issues per day</b>"
+
+  ul.intervals
+    - [['Past 30 days', 30.days.ago], ['60 days', 60.days.ago],
+       ['90 days', 90.days.ago], ['All', @board.created_at]].each do |item|
+      li
+        a [
+          class="#{:active if current_date?(item.second)}"
+          href=board_graphs_frequency_index_url(@board, from: date_to_url(item.second))
+        ] = item.first

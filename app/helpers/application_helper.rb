@@ -2,6 +2,7 @@ module ApplicationHelper
   include Unescaper
   include MarkdownHelper
   include SubmenuHelper
+  include UrlHelper
 
   def github_token
     session[:github_token]

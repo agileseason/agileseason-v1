@@ -4,8 +4,8 @@ describe Graphs::FrequencyService do
   let(:service) { Graphs::FrequencyService.new(board, board.created_at) }
   let(:zero_point) { { 0 => 0 } }
 
-  describe '#chart_series' do
-    subject { service.chart_series }
+  describe '#chart_data' do
+    subject { service.chart_data }
     it { is_expected.not_to be_nil }
 
     context 'empty but have zero point' do
