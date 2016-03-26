@@ -1,8 +1,11 @@
 @import globals/common
 
 .p-frequency-index
-  .container
+  .graph-container
     position: relative
+
+    .graph
+      padding-top: 10px
 
     .intervals
       list-style: none
@@ -32,13 +35,13 @@
       border: 1px solid #90caf9
       font-size: 14px
       left: 500px
-      opacity: 0.75
+      opacity: 0.7
       padding: 10px
       position: absolute
-      top: 20px
+      top: 16px
 
     .chart
-      height: 600px
+      height: 590px
 
       .axis
         fill: #888
@@ -80,7 +83,7 @@
         font-size: 14px
         padding: 4px
         position: absolute
-        width: 110px
+        width: 126px
         z-index: 2
 
         &.tooltip-0
