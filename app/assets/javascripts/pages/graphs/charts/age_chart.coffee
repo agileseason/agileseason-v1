@@ -50,6 +50,12 @@ class @AgeChart extends BarChartBase
         .attr class: 'axis x'
         .attr transform: "translate(0,#{@chart_height})"
         .call @x_axis
+      .append 'text'
+        .attr 'class', 'title'
+        .attr 'y', 20
+        .attr 'x', @chart_width / 2
+        .style 'text-anchor', 'end'
+        .text 'Issues'
 
     @svg
       .append 'g'
@@ -58,7 +64,7 @@ class @AgeChart extends BarChartBase
       .append 'text'
         .attr 'class', 'title'
         .attr 'transform', 'rotate(-90)'
-        .attr 'y', -45
+        .attr 'y', -50
         .attr 'x', @margin.bottom - @chart_height / 2
         .style 'text-anchor', 'end'
         .text 'WIP, Days'

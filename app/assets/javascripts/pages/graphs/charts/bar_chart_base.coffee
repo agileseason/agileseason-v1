@@ -113,6 +113,7 @@ class @BarChartBase
         .style opacity: 0
 
   _on_bar_mouseover: (node, d, i) =>
+    return unless d
     d3.select(node).classed hovered: true
 
     for data, n in @data

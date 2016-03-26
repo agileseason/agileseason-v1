@@ -2,26 +2,25 @@ describe Graphs::FrequencyService do
   let(:board) { build(:board, :with_columns, created_at: now - 1.year) }
   let(:now) { Time.local(2015, 1, 1, 0, 0, 0) }
   let(:service) { Graphs::FrequencyService.new(board, board.created_at) }
-  let(:zero_point) { { 0 => 0 } }
+  let(:first_point) { { 1 => 0 } }
 
   describe '#chart_data' do
     subject { service.chart_data }
     it { is_expected.not_to be_nil }
 
     context 'empty but have zero point' do
-      it { is_expected.to eq zero_point }
+      it { is_expected.to eq first_point }
     end
 
     context 'only open issues - only zero point again' do
       let!(:issue) { create(:issue_stat, :open, board: board) }
-      it { is_expected.to eq zero_point }
+      it { is_expected.to eq first_point }
     end
 
     context 'one closed issue plus zero point' do
       let!(:issue) { create(:issue_stat, :closed, created_at: 1.day.ago, board: board) }
 
-      it { is_expected.to have(3).items }
-      its([0]) { is_expected.to eq 0 }
+      it { is_expected.to have(2).items }
       its([1]) { is_expected.to eq 0 }
       its([2]) { is_expected.to eq 1 }
     end
@@ -30,8 +29,7 @@ describe Graphs::FrequencyService do
       let!(:issue_1) { create(:issue_stat, :closed, wip: 2, board: board) }
       let!(:issue_2) { create(:issue_stat, :closed, wip: 1, board: board) }
 
-      it { is_expected.to have(3).item }
-      its([0]) { is_expected.to eq 0 }
+      it { is_expected.to have(2).item }
       its([1]) { is_expected.to eq 1 }
       its([2]) { is_expected.to eq 1 }
     end
@@ -40,8 +38,7 @@ describe Graphs::FrequencyService do
       let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: board) }
       let!(:issue_2) { create(:issue_stat, :closed, wip: 1, board: board) }
 
-      it { is_expected.to have(2).items }
-      its([0]) { is_expected.to eq 0 }
+      it { is_expected.to have(1).items }
       its([1]) { is_expected.to eq 2 }
     end
 
@@ -50,7 +47,7 @@ describe Graphs::FrequencyService do
       let!(:issue_1) { create(:issue_stat, :closed, wip: 1, board: other_board) }
       let!(:issue_2) { create(:issue_stat, :closed, wip: 1, board: other_board) }
 
-      it { is_expected.to eq zero_point }
+      it { is_expected.to eq first_point }
     end
   end
 

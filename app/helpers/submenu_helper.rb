@@ -18,7 +18,7 @@ module SubmenuHelper
         controller: 'graphs/frequency',
         url: board_graphs_frequency_index_url(
           @board,
-          from: date_to_url(30.days.ago)
+          from: date_to_url(@board.created_at)
         )
       ),
       OpenStruct.new(

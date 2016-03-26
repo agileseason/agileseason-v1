@@ -11,9 +11,9 @@ module Graphs
     end
 
     def chart_data
-      return zero_point if issues.blank?
+      return first_point if issues.blank?
 
-      normolized = (1..max_cycle_time).each_with_object(zero_point) do |day, hash|
+      normolized = (2..max_cycle_time).each_with_object(first_point) do |day, hash|
         hash[day] = 0
       end
 
@@ -53,8 +53,8 @@ module Graphs
       (max - min) * percentile + min
     end
 
-    def zero_point
-      { 0 => 0 }
+    def first_point
+      { 1 => 0 }
     end
 
     def max_cycle_time

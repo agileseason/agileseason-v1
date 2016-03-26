@@ -51,10 +51,6 @@ class @FrequencyChart extends BarChartBase
         .text 'Cycle time in days'
 
     @svg
-      .selectAll '.tick text'
-      .attr 'dx', "#{-@bar_width / 2 + 2}"
-
-    @svg
       .append 'g'
         .attr class: 'axis y'
         .call @y_axis
@@ -67,4 +63,5 @@ class @FrequencyChart extends BarChartBase
         .text 'Issues'
 
   _tooltip_content: (node, d, i, data_item) ->
-    "Issues: #{data_item} Closed for: #{i + 1}d"
+    days = if i == 0 then '<1' else i
+    "Issues: <b>#{data_item}</b> <br/>Closed for: <b>#{days}</b>d"
