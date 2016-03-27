@@ -12,7 +12,8 @@ require File.expand_path('../../lib/time_with_timezone', __FILE__)
 
 module Agileseason
   DOMAIN = Rails.env.production? ? 'https://agileseason.com' : 'http://agileseason.dev'
-  SUPPORT_EMAIL = 'support@agileseason.com'.freeze
+  SUPPORT_EMAIL = 'support@agileseason.com'
+  SUPPORT_CHAT = 'https://gitter.im/agileseason/agileseason'
 
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

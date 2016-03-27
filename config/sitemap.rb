@@ -28,4 +28,5 @@ SitemapGenerator::Sitemap.create do
   add(board_features_docs_path, lastmod: Time.new(2015, 11, 28))
   add(cumulative_docs_path, lastmod: Time.new(2015, 9, 17))
   add(control_docs_path, lastmod: Time.new(2015, 9, 17))
+  add(age_docs_path, lastmod: Time.new(2016, 3, 27))
 end

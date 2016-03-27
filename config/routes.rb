@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       get :board_features
       get :cumulative
       get :control
+      get :age
     end
   end
 
