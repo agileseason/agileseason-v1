@@ -27,20 +27,14 @@ Look at the our development board for example - [agileseason.com](https://agiles
 ### Kanban
 
 - [x] WIP limit on columns
-
-#### Graphs
-
 - [x] [Cumulative Flow Diagram](https://github.com/agileseason/agileseason/wiki/Kanban-metrics#cumulative-flow-diagram)
 - [x] [Control Chart](https://github.com/agileseason/agileseason/wiki/Kanban-metrics#control-chart)
 - [x] Cycle Time Diagram
-- [x] Age of Issues
+- [x] [Age of Issues](https://agileseason.com/docs/age)
 
 ### Scrum [soon]
 
 - [ ] Sprints
-
-#### Graphs
-
 - [ ] Velocity Chart
 - [ ] Burndown Chart
 
