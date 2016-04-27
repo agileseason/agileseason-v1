@@ -65,7 +65,7 @@ describe IssuesController do
       it { expect(response).to render_template(partial: '_issue_miniature') }
       it { expect(controller).to have_received(:ui_event).with(:issue_create) }
       it { expect(creator).to have_received(:call) }
-      it { expect(controller).not_to have_received(:broadcast_column) }
+      it { expect(controller).to have_received(:broadcast_column) }
     end
   end
 
