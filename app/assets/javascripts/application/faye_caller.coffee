@@ -23,6 +23,7 @@ class @FayeCaller
   subscribe: (channel, node) ->
     @subscriptions[channel] = @client.subscribe channel, (message) =>
       return if @client_id == message.client_id
+      return if message.client_id == 'guest_token'
       node.trigger "faye:#{message.data.action}", message.data
       @log "trigger faye:#{message.data.action},
         client_id: #{message.client_id}, data:#{JSON.stringify(message.data)}"

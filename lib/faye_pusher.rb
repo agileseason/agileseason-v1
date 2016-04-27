@@ -5,13 +5,12 @@ class FayePusher
     @client ||= Faye::Client.new(URL)
   end
 
-  # FIX : Inline parameter user (user.remember_token => client_id)
-  def self.broadcast(channel, user, data)
+  def self.broadcast(channel, client_id, data)
     return unless on?
 
     message = {
       channel: channel,
-      data: { client_id: user.remember_token, data: data },
+      data: { client_id: client_id, data: data },
       ext: { auth_token: config['token'] }
     }
     begin
@@ -20,8 +19,8 @@ class FayePusher
     end
   end
 
-  def self.broadcast_board(user, board, data)
-    broadcast(board_channel(board), user, data)
+  def self.broadcast_board(client_id, board, data)
+    broadcast(board_channel(board), client_id, data)
   end
 
   def self.board_channel(board)

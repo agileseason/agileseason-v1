@@ -156,9 +156,9 @@ class ApplicationController < ActionController::Base
   end
 
   def broadcast(options, force = false)
-    user = force ? User.new(remember_token: 'system_message') : current_user
+    client_id = force ? 'system_message' : current_user.remember_token
     FayePusher.broadcast_board(
-      user,
+      client_id,
       @board,
       { action: action_name }.merge(options)
     )
