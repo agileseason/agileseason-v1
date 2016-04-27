@@ -8,6 +8,7 @@ class WebhooksController < ApplicationController
     if issue_present? && trusted_request? && board.present?
       update_cache_issues
       issue_stat = IssueStatService.find(board_bag, issue.number)
+      # NOTE Broadcast event from GuesUser with client_id: guest_token
       broadcast_column(issue_stat.column) if issue_stat.present?
     end
 
