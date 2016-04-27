@@ -24,7 +24,8 @@ class @FayeCaller
     @subscriptions[channel] = @client.subscribe channel, (message) =>
       return if @client_id == message.client_id
       node.trigger "faye:#{message.data.action}", message.data
-      @log "trigger faye:#{message.data.action}"
+      @log "trigger faye:#{message.data.action},
+        client_id: #{message.client_id}, data:#{JSON.stringify(message.data)}"
 
     @channels.push channel
     @lastConnectedAt = new Date()
