@@ -50,13 +50,13 @@ describe IssuesController do
       )
     end
     let(:params) { { title: 'test edit title' } }
-    let(:issue_stat) { create(:issue_stat, number: issue.number, board: board, column: column_1) }
-    before { allow(controller).to receive(:ui_event) }
-    before do
-      allow_any_instance_of(IssueStats::Creator).
-        to receive(:call).
-        and_return(BoardIssue.new(issue, issue_stat))
+    let(:issue_stat) do
+      create(:issue_stat, number: issue.number, board: board, column: column_1)
     end
+    let(:creator) { double(call: created_issue) }
+    let(:created_issue) { BoardIssue.new(issue, issue_stat) }
+    before { allow(IssueStats::Creator).to receive(:new).and_return(creator) }
+    before { allow(controller).to receive(:ui_event) }
 
     context 'response' do
       before { subject }
@@ -64,11 +64,8 @@ describe IssuesController do
       it { expect(response).to have_http_status(:success) }
       it { expect(response).to render_template(partial: '_issue_miniature') }
       it { expect(controller).to have_received(:ui_event).with(:issue_create) }
-    end
-
-    context 'behavior' do
-      after { subject }
-      it { expect_any_instance_of(IssueStats::Creator).to receive(:call) }
+      it { expect(creator).to have_received(:call) }
+      it { expect(controller).to have_received(:broadcast_column) }
     end
   end
 
