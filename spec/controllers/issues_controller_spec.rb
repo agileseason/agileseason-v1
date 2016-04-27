@@ -40,7 +40,7 @@ describe IssuesController do
     end
   end
 
-  describe '#create', :focus do
+  describe '#create' do
     subject do
       post(
         :create,
