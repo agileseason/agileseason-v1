@@ -19,8 +19,8 @@ module MarkdownHelper
   private
 
   def markdown_github_fixes(text, board)
-    text = replace_issue_numbers(text, board)
     text = replace_checkbox(text)
+    text = replace_issue_numbers(text, board)
     text
   end
 
@@ -35,6 +35,7 @@ module MarkdownHelper
 
   def replace_checkbox(text)
     text.
+      gsub(/( ){2}(?=(- \[)|\s)/, '<span class="tab"/>').
       gsub(/- \[ \] (.*)/, '<input type="checkbox" class="task" />\1').
       gsub(/- \[x\] (.*)/, '<input type="checkbox" class="task" checked />\1')
   end
