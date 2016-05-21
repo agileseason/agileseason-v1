@@ -117,6 +117,23 @@ TEXT
         end
         it { is_expected.to eq expected_text }
       end
+
+      context 'padding' do
+        let(:text) do
+<<-TEXT
+- [ ] n
+  - [ ] k
+    - [ ] m
+TEXT
+        end
+        let(:expected_text) do
+<<-TEXT
+<p><input type="checkbox" class="task" />n<br> <span class="tab"/><input type="checkbox" class="task" />k<br> <span class="tab"/><span class="tab"/><input type="checkbox" class="task" />m</p>
+TEXT
+        end
+
+        it { is_expected.to eq expected_text.strip }
+      end
     end
   end
 end
