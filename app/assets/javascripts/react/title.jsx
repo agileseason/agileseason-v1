@@ -23,13 +23,17 @@ module.exports = React.createClass({
   },
   componentWillUpdate: function(newProps, newState) {
     if (newState.textarea == 'block') {
-      setTimeout(function() {
-        var $textarea = $(this.refs.title);
-        if (!$textarea.hasClass('elasticable')) {
+      var $textarea = $(this.refs.title);
+      var isNeedElastic = !$textarea.hasClass('elasticable');
+
+      if (isNeedElastic) {
+        $textarea.css('height',
+          $textarea.parent().find('h1').height().toString() + 'px');
+        setTimeout(function() {
           $textarea.addClass('elasticable');
           $textarea.elastic();
-        }
-      }.bind(this), 10);
+        }.bind(this), 10);
+      }
     }
   },
   componentDidUpdate: function() {
