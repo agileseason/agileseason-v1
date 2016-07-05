@@ -508,9 +508,9 @@ $(document).on('page:change', function () {
     handleColumnChange: function (columnId) {
       var url = this.issueUrl() + '/move_to/' + columnId + '/force';
       this.request(url, 'GET', {}, function (data) {
-        for (var badge of data.badges) {
+        data.badges.forEach(function (badge) {
           window.update_wip_column(badge);
-        }
+        });
       });
     },
     handleStateButtonClick: function (state) {
