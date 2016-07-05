@@ -76,11 +76,12 @@ module.exports = React.createClass({
         <textarea
           ref='title'
           type='text'
-          placeholder='Edit title'
           value={this.state.titleEdit}
           onChange={this.handleTextChange}
           onKeyDown={this.handleKeyDown}
+          placeholder='Edit title'
           style={{display: this.state.textarea}}
+          className='elastic-min-height'
         />
         <PopoverOverlay
           className='fake'

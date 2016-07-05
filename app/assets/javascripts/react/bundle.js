@@ -508,9 +508,9 @@ $(document).on('page:change', function () {
     handleColumnChange: function (columnId) {
       var url = this.issueUrl() + '/move_to/' + columnId + '/force';
       this.request(url, 'GET', {}, function (data) {
-        data.badges.forEach(function (badge) {
+        for (var badge of data.badges) {
           window.update_wip_column(badge);
-        });
+        }
       });
     },
     handleStateButtonClick: function (state) {
@@ -1091,11 +1091,12 @@ module.exports = React.createClass({
       React.createElement('textarea', {
         ref: 'title',
         type: 'text',
-        placeholder: 'Edit title',
         value: this.state.titleEdit,
         onChange: this.handleTextChange,
         onKeyDown: this.handleKeyDown,
-        style: { display: this.state.textarea }
+        placeholder: 'Edit title',
+        style: { display: this.state.textarea },
+        className: 'elastic-min-height'
       }),
       React.createElement(PopoverOverlay, {
         className: 'fake',
