@@ -9,15 +9,12 @@ Mactag.configure do |config|
   config.tags_file = 'tmp/tags'
 
   # Command used to create the tags table. {INPUT} and {OUTPUT} are required!
-  #config.binary = '/usr/local/Cellar/ctags/5.8_1/bin/ctags -e -o {OUTPUT} {INPUT}'
+  # config.binary = '/usr/local/Cellar/ctags/5.8_1/bin/ctags -e -o {OUTPUT} {INPUT}'
 end
 
 Mactag do
-  # Index current project.
-  #index :lib
-
   # Index current Rails project.
-  index :app, :devise
+  index :app, :lib
 
   # Index all models and helpers.
   # index 'app/models/*.rb', 'app/helpers/*.rb'
