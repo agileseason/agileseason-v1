@@ -85,6 +85,23 @@ module.exports = React.createClass({
   }
 });
 
+var Login = React.createClass({
+  displayName: 'Login',
+
+  render: function () {
+    var githubProfile = "https://github.com/" + this.props.data;
+    return React.createElement(
+      'div',
+      { className: 'login' },
+      React.createElement(
+        'a',
+        { href: githubProfile },
+        this.props.data
+      )
+    );
+  }
+});
+
 var Event = React.createClass({
   displayName: 'Event',
 
@@ -93,11 +110,7 @@ var Event = React.createClass({
       'div',
       { className: this.props.data.type },
       React.createElement(Avatar, { data: this.props.data.user, width: 20, height: 20 }),
-      React.createElement(
-        'div',
-        { className: 'login' },
-        this.props.data.user.login
-      ),
+      React.createElement(Login, { data: this.props.data.user.login }),
       React.createElement(
         'div',
         { className: 'text', title: this.props.data.created_at_str },
@@ -175,11 +188,7 @@ var Comment = React.createClass({
       React.createElement(
         'div',
         { className: 'header' },
-        React.createElement(
-          'div',
-          { className: 'login' },
-          this.props.data.user.login
-        ),
+        React.createElement(Login, { data: this.props.data.user.login }),
         React.createElement(
           'div',
           { className: 'date' },
@@ -188,13 +197,13 @@ var Comment = React.createClass({
         ' — ',
         React.createElement(
           'a',
-          { href: '#', onClick: this.handleEditClick },
+          { className: 'action', href: '#', onClick: this.handleEditClick },
           'edit'
         ),
         ' or ',
         React.createElement(
           'a',
-          { href: '#', onClick: this.handleDeleteClick },
+          { className: 'action', href: '#', onClick: this.handleDeleteClick },
           'delete'
         )
       ),
@@ -514,9 +523,9 @@ $(document).on('page:change', function () {
     handleColumnChange: function (columnId) {
       var url = this.issueUrl() + '/move_to/' + columnId + '/force';
       this.request(url, 'GET', {}, function (data) {
-        data.badges.forEach(function (badge) {
+        for (var badge of data.badges) {
           window.update_wip_column(badge);
-        });
+        }
       });
     },
     handleStateButtonClick: function (state) {

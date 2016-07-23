@@ -35,12 +35,23 @@ module.exports = React.createClass({
   }
 });
 
+var Login = React.createClass({
+  render: function() {
+    var githubProfile = "https://github.com/" + this.props.data;
+    return (
+      <div className='login'>
+        <a href={githubProfile}>{this.props.data}</a>
+      </div>
+    );
+  }
+});
+
 var Event = React.createClass({
   render: function() {
     return (
       <div className={this.props.data.type}>
         <Avatar data={this.props.data.user} width={20} height={20} />
-        <div className='login'>{this.props.data.user.login}</div>
+        <Login data={this.props.data.user.login} />
         <div className='text' title={this.props.data.created_at_str}>
           {this.props.data.text}
         </div>
@@ -114,12 +125,12 @@ var Comment = React.createClass({
       <div className={this.state.currentClass} style={{backgroundColor: this.state.backgroundColor}}>
         <Avatar data={this.props.data.user} width={40} height={40} />
         <div className='header'>
-          <div className='login'>{this.props.data.user.login}</div>
+          <Login data={this.props.data.user.login} />
           <div className='date'>{this.props.data.created_at_str}</div>
           &nbsp;&mdash;&nbsp;
-          <a href='#' onClick={this.handleEditClick}>edit</a>
+          <a className='action' href='#' onClick={this.handleEditClick}>edit</a>
           &nbsp;or&nbsp;
-          <a href='#' onClick={this.handleDeleteClick}>delete</a>
+          <a className='action' href='#' onClick={this.handleDeleteClick}>delete</a>
         </div>
         <div
           className='body'
