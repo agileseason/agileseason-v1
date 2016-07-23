@@ -3,6 +3,7 @@ $(document).on('page:change', function () {
     return;
   }
 
+  // Close Issue-Modal by click on container shadow
   $('.issue-modal-container').on('click', function(e) {
     var $target = $(e.target);
     if ($target.is('.issue-modal-container')) {
@@ -10,6 +11,11 @@ $(document).on('page:change', function () {
       return false;
     }
   });
+
+  // Fixed action buttons on scroll down.
+  $('.issue-modal-container').on('scroll', function(e) {
+    $('.issue-actions').toggleClass('fixed', $(e.target).scrollTop() >= 138);
+  })
 
   var React = require('react');
   var ReactDOM = require('react-dom');
