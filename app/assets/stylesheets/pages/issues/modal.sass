@@ -329,18 +329,26 @@
 
         .avatar
           +border-radius(50px)
+          margin-right: 4px
 
-        .login, .text
+        .text
           display: inline-block
           vertical-align: top
           line-height: 20px
 
-        .login
-          font-weight: bold
-          margin: 0 4px
-
       .event + .comment
         margin-top: 24px
+
+      .event, .comment
+        .login
+          display: inline-block
+          vertical-align: top
+          line-height: 20px
+          font-weight: bold
+          margin-right: 6px
+          a
+            +link
+            color: $lightgrey
 
       .comment
         +border-radius(2px)
@@ -376,15 +384,16 @@
         .header
           color: $lightgrey
           margin-bottom: 10px
-
-          .login,
+          a.action
+            +ajax_link
           .date
             display: inline-block
           .login
             font-weight: bold
-            margin-right: 6px
-          a
-            +ajax_link
+            line-height: 18px
+            a
+              +link
+              color: $lightgrey
 
         .body
           &.stub
