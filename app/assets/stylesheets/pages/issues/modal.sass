@@ -18,6 +18,7 @@
     height: auto
     left: 20px
     min-height: 460px
+    min-width: 820px
     padding: 10px 30px 50px
     top: 90px
     width: calc(100% - 40px)
@@ -230,9 +231,10 @@
       right: 30px
       top: 60px
       &.fixed
-        position: fixed
-        top: 10px
-        right: 50px
+        @media only screen and (min-width: $desktop-width)
+          position: fixed
+          top: 10px
+          right: 50px
 
       .issue-button
         +light_button
