@@ -523,9 +523,9 @@ $(document).on('page:change', function () {
     handleColumnChange: function (columnId) {
       var url = this.issueUrl() + '/move_to/' + columnId + '/force';
       this.request(url, 'GET', {}, function (data) {
-        data.badges.forEach(function (badge) {
-           window.update_wip_column(badge);
-        });
+        for (var badge of data.badges) {
+          window.update_wip_column(badge);
+        }
       });
     },
     handleStateButtonClick: function (state) {
@@ -1177,17 +1177,26 @@ var CurrentDueDate = React.createClass({
   getDate: function () {
     var res = '';
     if (this.props.data) {
-      var date = new Date(this.props.data);
+      var date = this.dueDate();
       var yearStr = new Date().getUTCFullYear() == date.getUTCFullYear() ? '' : '.' + date.getUTCFullYear();
       res = date.getUTCDate().pad() + '.' + (date.getUTCMonth() + 1).pad() + yearStr + ' ' + date.getUTCHours().pad() + ':' + date.getUTCMinutes().pad();
     }
     return res;
   },
+  dueDate: function () {
+    return new Date(this.props.data);
+  },
+  dueDateClasses: function () {
+    if (this.dueDate() < new Date()) {
+      return 'current-due-date passed';
+    }
+    return 'current-due-date';
+  },
   render: function () {
     if (this.props.data) {
       return React.createElement(
         'div',
-        { className: 'current-due-date', title: 'Due Date' },
+        { className: this.dueDateClasses(), title: 'Due Date' },
         this.getDate()
       );
     } else {
