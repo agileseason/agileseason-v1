@@ -442,12 +442,17 @@ $image-path: 'pages/p-boards-show'
         margin-right: 6px
 
       .due-date
-        color: $orange
+        color: $due-date
         display: inline-block
         font-size: 12px
         font-weight: bold
         letter-spacing: -0.2px
         padding: 2px 3px
+        &.passed
+          +border-radius(3px)
+          background: $due-date-passed
+          color: #fff
+          padding: 2px 4px
 
         &.none
           display: none

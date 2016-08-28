@@ -117,7 +117,9 @@
       vertical-align: top
 
     .current-due-date
-      background: $orange
+      background: $due-date
+      &.passed
+        background: $due-date-passed
 
     .current-state
       background: #888

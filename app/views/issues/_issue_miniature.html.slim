@@ -2,18 +2,16 @@
 .issue [
   id="issues_#{issue.number}"
   class="#{issue.state} issue-#{issue.number}"
-  data-number="#{issue.number}"
-  data-column="#{issue.column_id}"
-  data-url="#{un show_board_issues_url(@board, issue.number)}"
-
+  data-number=issue.number
+  data-column=issue.column_id
+  data-url=un(show_board_issues_url(@board, issue.number))
   data-issue="#{k(:issue, issue).to_hash(@board_bag).to_json}"
 ]
   = k(:issue, issue).labels_html
 
   .issue-title
-    span.issue-name data-number="#{issue.number}"
-      = k(:issue, issue).title
-    a.url href="#{issue.html_url}" ##{issue.number}
+    span.issue-name data-number=issue.number = k(:issue, issue).title
+    a.url href=issue.html_url ##{issue.number}
 
   .icons
     = render partial: 'issues/assignee', locals: { assignee: issue.assignee }
@@ -29,23 +27,27 @@
       span.octicon.octicon-check
       span.checklist #{issue.checklist_progress}/#{issue.checklist}
 
-    .due-date class="#{:none unless issue.due_date_at}"
+    .due-date [
+      class="#{:none unless issue.due_date_at}
+        #{:passed if issue.due_date_at && issue.due_date_at < Time.current}"
+      title=k(:issue, issue).due_date_at
+    ]
       = k(:issue, issue).due_date_on
 
   .buttons
     - if can?(:update, @board)
       = link_to 'ready',
-        toggle_ready_board_issues_url(@board, issue.number),
-        class: "is_ready #{:active if issue.ready?}",
-        remote: true,
-        method: :post
+          toggle_ready_board_issues_url(@board, issue.number),
+          class: "is_ready #{:active if issue.ready?}",
+          remote: true,
+          method: :post
     - else
       a class="is_ready #{:active if issue.ready?}" ready
 
     - if can?(:update, @board)
       - if issue.open? && can?(:update_issue, @board_bag)
         a.button.close [
-          href="#{close_board_issues_url(@board, issue.number)}"
+          href=close_board_issues_url(@board, issue.number)
           data-type='json'
           data-remote='true'
           title='Click to close'
@@ -53,7 +55,7 @@
 
       a.button.archive [
         class="#{:hidden unless issue.closed?}"
-        href="#{archive_board_issues_url(@board, issue.number)}"
+        href=archive_board_issues_url(@board, issue.number)
         data-remote='true'
       ] Archive
 
