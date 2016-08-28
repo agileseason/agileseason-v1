@@ -20,6 +20,7 @@ Look at the our development board for example - [agileseason.com](https://agiles
 - [x] Search and sort issues
 - [x] Attach images by drag & drop
 - [x] [Auto-assign and auto-close issue](https://github.com/agileseason/agileseason/wiki/Board-features#auto-closing-issues)
+- [x] [Issues due dates](https://github.com/agileseason/agileseason/wiki/Board-features#issues-due-dates)
 - [x] [Board markdown export](https://github.com/agileseason/agileseason/wiki/Board-features#board-markdown-export)
 - [x] [Public read-only access](https://github.com/agileseason/agileseason/wiki/Board-features#public-read-only-access)
 - [ ] Roadmap with milestones
