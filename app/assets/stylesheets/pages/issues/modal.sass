@@ -459,20 +459,24 @@
 
     .comment-form
       .directUpload
-        cursor: pointer
-        float: left
         margin-top: 4px
-        padding-top: 10px
-        position: relative
+
+    .directUpload
+      cursor: pointer
+      float: left
+      margin-top: -30px
+      padding-top: 10px
+      position: relative
+      width: 560px
+      a
+        +ajax_link
+        left: 0
+        position: absolute
+      input
+        opacity: 0.0001
+        cursor: pointer
+        height: 40px
         width: 560px
-        a
-          +ajax_link
-          left: 0
-          position: absolute
-        input
-          opacity: 0.0001
-          cursor: pointer
-          height: 40px
 
     // [Begin] Date picker for issue
     .ui-datepicker
