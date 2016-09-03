@@ -16,13 +16,13 @@ Look at the our development board for example - [agileseason.com](https://agiles
 ## Features List
 
 - [x] Agile board with custom columns
-- [x] [Drag and drop issues between columns](https://github.com/agileseason/agileseason/wiki/Board-features)
+- [x] [Drag and drop issues between columns](https://github.com/agileseason/agileseason/wiki/Ready-to-next-stage-button)
 - [x] Search and sort issues
 - [x] Attach images by drag & drop
-- [x] [Auto-assign and auto-close issue](https://github.com/agileseason/agileseason/wiki/Board-features#auto-closing-issues)
-- [x] [Issues due dates](https://github.com/agileseason/agileseason/wiki/Board-features#issues-due-dates)
-- [x] [Board markdown export](https://github.com/agileseason/agileseason/wiki/Board-features#board-markdown-export)
-- [x] [Public read-only access](https://github.com/agileseason/agileseason/wiki/Board-features#public-read-only-access)
+- [x] [Auto-assign and auto-close issue](https://github.com/agileseason/agileseason/wiki/Auto-closing-issues)
+- [x] [Issues due dates](https://github.com/agileseason/agileseason/wiki/Issues-due-dates)
+- [x] [Board markdown export](https://github.com/agileseason/agileseason/wiki/Board-Markdown-Export)
+- [x] [Public read-only access](https://github.com/agileseason/agileseason/wiki/Public-read-only-access)
 - [ ] Roadmap with milestones
 
 ### Kanban
