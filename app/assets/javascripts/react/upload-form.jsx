@@ -24,7 +24,7 @@ module.exports = React.createClass({
       dataType: 'XML',
       replaceFileInput: false,
 
-      start: function(e, data) {
+      start: function(e) {
         if (this.isNeedSkip($(e.target))) {
           return;
         }
