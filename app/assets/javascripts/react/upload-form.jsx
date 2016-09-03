@@ -30,6 +30,16 @@ module.exports = React.createClass({
         }
         this.setState({labelText: 'Please wait...'});
       }.bind(this),
+      add: function(e, data) {
+        types = /(\.|\/)(gif|jpe?g|png)$/i;
+        file = data.files[0]
+        if (types.test(file.type) || types.test(file.name)) {
+          data.submit();
+        } else {
+          this.setState({labelText: 'Unfortunately, we don’t support that file type. Try again with a PNG, GIF, JPG'});
+          return;
+        }
+      }.bind(this),
       done: function(e, data) {
         if (this.isNeedSkip($(e.target))) {
           return;
