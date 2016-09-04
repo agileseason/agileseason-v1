@@ -135,5 +135,27 @@ TEXT
         it { is_expected.to eq expected_text.strip }
       end
     end
+
+    context 'tabs' do
+      context 'in blocks of code' do
+        let(:text) do
+<<-TEXT
+```ruby
+  class Foo
+    def bar
+    end
+  end
+```
+TEXT
+        end
+        let(:expected_text) do
+<<-TEXT
+<pre><code class=\"prettyprint lang-ruby\"> class Foo def bar end end </code></pre>
+TEXT
+        end
+
+        it { is_expected.to eq expected_text.strip }
+      end
+    end
   end
 end

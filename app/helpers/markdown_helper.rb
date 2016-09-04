@@ -35,7 +35,7 @@ module MarkdownHelper
 
   def replace_checkbox(text)
     text.
-      gsub(/( ){2}(?=(- \[)|\s)/, '<span class="tab"/>').
+      gsub(/( ){2}(?=\s{2}*(?=- \[))/, '<span class="tab"/>').
       gsub(/- \[ \] (.*)/, '<input type="checkbox" class="task" />\1').
       gsub(/- \[x\] (.*)/, '<input type="checkbox" class="task" checked />\1')
   end
