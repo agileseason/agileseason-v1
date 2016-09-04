@@ -741,12 +741,10 @@ $(document).on('page:change', function () {
     displayName: 'ColorPickerAction',
 
     getInitialState: function () {
-      if (this.props.date) {}
       return {
         overlay: 'none'
       };
     },
-    componentDidMount: function () {},
     handleColorOnChange: function (color, name) {
       this.handleEditButtonClick();
       this.props.onColorChange(color, name);
