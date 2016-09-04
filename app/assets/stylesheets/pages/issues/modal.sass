@@ -18,7 +18,7 @@
     height: auto
     left: 20px
     min-height: 490px
-    min-width: 820px
+    min-width: 920px
     padding: 10px 30px 50px
     top: 90px
     width: calc(100% - 40px)
@@ -340,6 +340,23 @@
           &:hover
             border: 1px solid #adadad
 
+    .directUpload
+      cursor: pointer
+      float: left
+      margin-top: -38px
+      padding-top: 16px
+      position: absolute
+      width: calc(100% - 140px)
+      a
+        +ajax_link
+        left: 0
+        position: absolute
+      input
+        opacity: 0.0001
+        cursor: pointer
+        height: 40px
+        width: 100%
+
     .comment-list
       .event
         margin: 0 0 10px 70px
@@ -373,6 +390,7 @@
         background-color: #f2f9fc
         margin: 0 0 30px 70px
         padding: 20px
+        position: relative
 
         &.editable
           background-color: $active
@@ -388,6 +406,9 @@
           margin: -5px 0 0 -30px
           position: absolute
           width: 0
+
+        .directUpload
+          width: calc(100% - 280px)
 
         .avatar
           +border-radius(100px)
@@ -438,7 +459,7 @@
       +box-shadow(0 17px 35px -15px #e4d4cf)
       +background-image(linear-gradient(to bottom,#f7f0ea,#fcf8f5))
       margin: 30px 0 0 70px
-      padding: 20px 20px 52px
+      padding: 20px 20px 60px
 
     .comment-edit-form
       background: $active
@@ -462,7 +483,7 @@
       .actions
         float: right
         height: 26px
-        margin: 8px 5px 0 0
+        margin-top: 12px
 
         a
           +ajax_link
@@ -472,25 +493,9 @@
           margin-left: 20px
 
     .comment-form
-      .directUpload
-        margin-top: 4px
-
-    .directUpload
-      cursor: pointer
-      float: left
-      margin-top: -30px
-      padding-top: 10px
       position: relative
-      width: 560px
-      a
-        +ajax_link
-        left: 0
-        position: absolute
-      input
-        opacity: 0.0001
-        cursor: pointer
-        height: 40px
-        width: 560px
+      .directUpload
+        margin-top: 0px
 
     // [Begin] Date picker for issue
     .ui-datepicker
