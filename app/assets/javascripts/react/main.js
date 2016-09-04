@@ -417,7 +417,7 @@ $(document).on('page:change', function () {
         '#b3e5fc', '#a7ffeb', '#dcedc8', '#e1bee7'
       ].map(function(color) {
         return (
-          <Color color={color} onColorChange={this.props.onColorChange} />
+          <Color key={color} color={color} onColorChange={this.props.onColorChange} />
         );
       }.bind(this));
       return (

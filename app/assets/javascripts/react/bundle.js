@@ -784,7 +784,7 @@ $(document).on('page:change', function () {
     render: function () {
       // NOTE: First  set: #ffffff #ff8a80 #ffd180 #ffff8d #80d8ff #a7ffeb #ccff90 #e1bee7
       var colors = ['#ffffff', '#ffcdd2', '#ffe0b2', '#fff59d', '#b3e5fc', '#a7ffeb', '#dcedc8', '#e1bee7'].map((function (color) {
-        return React.createElement(Color, { color: color, onColorChange: this.props.onColorChange });
+        return React.createElement(Color, { key: color, color: color, onColorChange: this.props.onColorChange });
       }).bind(this));
       return React.createElement(
         'div',
