@@ -372,13 +372,9 @@ $(document).on('page:change', function () {
 
   var ColorPickerAction = React.createClass({
     getInitialState: function() {
-      if (this.props.date) {
-      }
       return {
         overlay: 'none'
       };
-    },
-    componentDidMount: function() {
     },
     handleColorOnChange: function(color, name) {
       this.handleEditButtonClick();
