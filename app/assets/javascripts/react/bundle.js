@@ -376,6 +376,7 @@ $(document).on('page:change', function () {
         currentAssignee: this.props.issue.assignee,
         currentDueDate: this.props.issue.dueDate,
         currentState: this.props.issue.state,
+        currentColor: this.props.issue.color,
         comments: this.getStubComments(this.props.issue.commentCount)
       };
     },
@@ -520,12 +521,20 @@ $(document).on('page:change', function () {
         this.updateIssueMiniature(data.number, data.issue);
       });
     },
+    handleColorChange: function (color) {
+      this.setState({ currentColor: color });
+      var url = this.issueUrl() + '/update_color';
+      var params = { issue: { color: color } };
+      this.request(url, 'PATCH', params, function (data) {
+        this.updateIssueMiniature(data.number, data.issue);
+      });
+    },
     handleColumnChange: function (columnId) {
       var url = this.issueUrl() + '/move_to/' + columnId + '/force';
       this.request(url, 'GET', {}, function (data) {
-        data.badges.forEach(function (badge) {
+        for (var badge in data.badges) {
           window.update_wip_column(badge);
-        });
+        }
       });
     },
     handleStateButtonClick: function (state) {
@@ -547,6 +556,9 @@ $(document).on('page:change', function () {
         this.updateIssueMiniature(data.number, data.issue);
       });
     },
+    setColor: function (color) {
+      $('.issue-modal').css('background-color', color);
+    },
     bodyMarkdown: function () {
       return { __html: this.state.issue.bodyMarkdown };
     },
@@ -554,6 +566,7 @@ $(document).on('page:change', function () {
       return 'issueModal ' + this.state.currentState;
     },
     render: function () {
+      this.setColor(this.state.currentColor);
       var githubIssueUrl = 'https://github.com/' + this.props.githubFullName + '/issues/' + this.props.issue.number;
       return React.createElement(
         'div',
@@ -577,8 +590,8 @@ $(document).on('page:change', function () {
             { className: 'move-to' },
             React.createElement(CurrentAssignee, { user: this.state.currentAssignee }),
             React.createElement(ColumnList, {
-              data: this.state.issue.columns,
               current: this.state.issue.columnId,
+              data: this.state.issue.columns,
               isReadonly: this.props.isReadonly,
               onColumnChange: this.handleColumnChange
             })
@@ -601,11 +614,12 @@ $(document).on('page:change', function () {
             onAssigneeChange: this.handleAssigneeChange
           }),
           React.createElement(DueDateAction, { date: this.state.issue.dueDate, onDueDateChange: this.handleDueDateChange }),
+          React.createElement(ColorPickerAction, { onColorChange: this.handleColorChange }),
+          React.createElement(ToggleButton, { name: 'Ready', isChecked: this.state.issue.isReady, onButtonClick: this.handleReadyButtonClick, icon: 'octicon octicon-check', title: 'Mark the issue with the "ready to next stage" label' }),
           React.createElement(EditButton, { name: 'Close Issue', options: 'close', onButtonClick: this.handleStateButtonClick, icon: 'octicon octicon-issue-closed' }),
           React.createElement(EditButton, { name: 'Reopen Issue', options: 'reopen', onButtonClick: this.handleStateButtonClick, icon: 'octicon octicon-issue-reopened' }),
           React.createElement(EditButton, { name: 'Archive Issue', options: 'archive', onButtonClick: this.handleStateButtonClick, icon: 'octicon octicon-package', title: 'Remove the issue from board' }),
-          React.createElement(EditButton, { name: 'Send to Board', options: 'unarchive', onButtonClick: this.handleStateButtonClick, icon: 'octicon octicon-package', title: 'Send the issue to board' }),
-          React.createElement(ToggleButton, { name: 'Ready', isChecked: this.state.issue.isReady, onButtonClick: this.handleReadyButtonClick, icon: 'octicon octicon-check', title: 'Mark the issue with the "ready to next stage" label' })
+          React.createElement(EditButton, { name: 'Send to Board', options: 'unarchive', onButtonClick: this.handleStateButtonClick, icon: 'octicon octicon-package', title: 'Send the issue to board' })
         )
       );
     }
@@ -720,6 +734,83 @@ $(document).on('page:change', function () {
           )
         )
       );
+    }
+  });
+
+  var ColorPickerAction = React.createClass({
+    displayName: 'ColorPickerAction',
+
+    getInitialState: function () {
+      if (this.props.date) {}
+      return {
+        overlay: 'none'
+      };
+    },
+    componentDidMount: function () {},
+    handleColorOnChange: function (color, name) {
+      this.handleEditButtonClick();
+      this.props.onColorChange(color, name);
+    },
+    handleEditButtonClick: function () {
+      if (this.state.overlay == 'none') {
+        overlay = 'block';
+      } else {
+        overlay = 'none';
+      }
+      this.setState({ overlay: overlay });
+    },
+    render: function () {
+      return React.createElement(
+        'div',
+        null,
+        React.createElement(EditButton, {
+          name: 'Color',
+          onButtonClick: this.handleEditButtonClick,
+          icon: 'octicon octicon-paintcan'
+        }),
+        React.createElement(PopoverOverlay, {
+          display: this.state.overlay,
+          onOverlayClick: this.handleEditButtonClick
+        }),
+        React.createElement(ColorPicker, {
+          overlay: this.state.overlay,
+          onColorChange: this.handleColorOnChange
+        })
+      );
+    }
+  });
+
+  var ColorPicker = React.createClass({
+    displayName: 'ColorPicker',
+
+    render: function () {
+      return React.createElement(
+        'div',
+        { className: 'color-picker', style: { display: this.props.overlay } },
+        React.createElement(Color, { color: '#ffffff', onColorChange: this.props.onColorChange }),
+        React.createElement(Color, { color: '#ff8a80', onColorChange: this.props.onColorChange }),
+        React.createElement(Color, { color: '#FFE0B2', onColorChange: this.props.onColorChange }),
+        React.createElement(Color, { color: '#ffff8d', onColorChange: this.props.onColorChange }),
+        React.createElement(Color, { color: '#80d8ff', onColorChange: this.props.onColorChange }),
+        React.createElement(Color, { color: '#a7ffeb', onColorChange: this.props.onColorChange }),
+        React.createElement(Color, { color: '#ccff90', onColorChange: this.props.onColorChange }),
+        React.createElement(Color, { color: '#e1bee7', onColorChange: this.props.onColorChange })
+      );
+    }
+  });
+
+  var Color = React.createClass({
+    displayName: 'Color',
+
+    handleClick: function () {
+      return this.props.onColorChange(this.props.color);
+    },
+    render: function () {
+      return React.createElement('div', {
+        className: 'color',
+        onClick: this.handleClick,
+        style: { backgroundColor: this.props.color }
+      });
     }
   });
 
@@ -1234,7 +1325,7 @@ module.exports = React.createClass({
       dataType: 'XML',
       replaceFileInput: false,
 
-      start: (function (e, data) {
+      start: (function (e) {
         if (this.isNeedSkip($(e.target))) {
           return;
         }

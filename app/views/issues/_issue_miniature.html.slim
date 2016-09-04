@@ -2,6 +2,7 @@
 .issue [
   id="issues_#{issue.number}"
   class="#{issue.state} issue-#{issue.number}"
+  style="background-color: #{issue.color}"
   data-number=issue.number
   data-column=issue.column_id
   data-url=un(show_board_issues_url(@board, issue.number))

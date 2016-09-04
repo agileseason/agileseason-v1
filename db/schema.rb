@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151219194631) do
+ActiveRecord::Schema.define(version: 20160904084232) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 20151219194631) do
     t.boolean  "is_ready",           default: false
     t.integer  "checklist"
     t.integer  "checklist_progress"
+    t.string   "color"
   end
 
   add_index "issue_stats", ["board_id"], name: "index_issue_stats_on_board_id", using: :btree
