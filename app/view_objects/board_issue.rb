@@ -5,7 +5,7 @@ class BoardIssue
   delegate :number, :title, :body, :state, :labels, :html_url,
            :assignee, :comments, :all_comments,
            :created_at, :updated_at, :closed_at, to: :issue
-  delegate :board, :column_id, :ready?,
+  delegate :board, :column_id, :ready?, :color,
            :checklist, :checklist_progress, to: :issue_stat
 
   attr_initialize :issue, :issue_stat
@@ -66,6 +66,7 @@ class BoardIssue
       columnId: column_id,
       state: full_state,
       isReady: ready?,
+      color: color || '#fff',
       commentCount: comments
     }
   end

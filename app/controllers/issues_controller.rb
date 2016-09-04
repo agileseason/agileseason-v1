@@ -48,6 +48,17 @@ class IssuesController < ApplicationController
     end
   end
 
+  def update_color
+    issue_stat = IssueStats::Painter.call(
+      user: current_user,
+      board_bag: @board_bag,
+      number: number,
+      color: params[:issue][:color]
+    )
+    broadcast_column(issue_stat.column)
+    render_board_issue_json
+  end
+
   def modal_data
     render json: k(:issue, @board_bag.issue(number)).to_hash(@board_bag)
   end
@@ -186,15 +197,11 @@ class IssuesController < ApplicationController
   end
 
   def issue_create_params
-    params.
-      require(:issue).
-      permit(:title, labels: [])
+    params.require(:issue).permit(:title, labels: [])
   end
 
   def issue_update_params
-    params.
-      require(:issue).
-      permit(:title)
+    params.require(:issue).permit(:title)
   end
 
   def issue_labels_params

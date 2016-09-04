@@ -147,8 +147,10 @@
         li
           -moz-box-flex: 1       // Mozilla
           -webkit-box-flex: 1    // WebKit
+          background-color: #fff
 
           &:last-child
+            +border-radius(0 100px 100px 0)
             a
               +border-radius(0 100px 100px 0)
               border-right: 1px solid #eee
@@ -157,6 +159,7 @@
                 display: none
 
           &:first-child
+            +border-radius(100px 0 0 100px)
             a
               +border-radius(100px 0 0 100px)
           &:hover
@@ -208,6 +211,9 @@
               top: -1px
               z-index: 1
 
+            span
+              color: $ajax-link
+
     .issue-body > p
       margin: 0 0 20px 70px
 
@@ -248,7 +254,8 @@
         .octicon
           margin: 0 8px 1px -4px
 
-      .ready.issue-button
+      .close-issue.issue-button,
+      .reopen-issue.issue-button
         margin-top: 50px
 
         &.active
@@ -265,37 +272,33 @@
 
       .label-list,
       .assignee-list,
-      .due-date-calendar
+      .due-date-calendar,
+      .color-picker
         +issue_popup
         display: block
         z-index: 4
 
       .label-list
         top: 0
-
         .label
           border-radius: 4px
           cursor: pointer
           display: block
           margin: 4px 2px
           padding: 4px 6px
-
           input
             margin-right: 6px
 
       .assignee-list
         top: 54px
-
         .assign
           display: block
           margin: 6px
-
           img
             +border-radius(30px)
             display: inline-block
             height: 30px
             width: 30px
-
           span
             margin-left: 8px
             font-size: 16px
@@ -306,25 +309,36 @@
         top: 108px
         width: 210px
         padding: 18px
-
         .datepicker
           margin-bottom: 4px
-
         input.time
           display: inline-block
           margin: 0
           outline: none
           padding: 5px
           width: 50px
-
         a.save
           +light_button
           float: right
           padding: 5px
-
         a.remove
           float: right
           margin-top: 8px
+
+      .color-picker
+        top: 160px
+        width: 200px
+        padding: 18px
+        .color
+          +border-radius(40px)
+          border: 1px solid #e0e0e0
+          cursor: pointer
+          display: inline-block
+          height: 40px
+          margin: 4px
+          width: 40px
+          &:hover
+            border: 1px solid #adadad
 
     .comment-list
       .event
