@@ -784,17 +784,14 @@ $(document).on('page:change', function () {
     displayName: 'ColorPicker',
 
     render: function () {
+      // NOTE: First  set: #ffffff #ff8a80 #ffd180 #ffff8d #80d8ff #a7ffeb #ccff90 #e1bee7
+      var colors = ['#ffffff', '#ffcdd2', '#ffe0b2', '#fff59d', '#b3e5fc', '#a7ffeb', '#dcedc8', '#e1bee7'].map((function (color) {
+        return React.createElement(Color, { color: color, onColorChange: this.props.onColorChange });
+      }).bind(this));
       return React.createElement(
         'div',
         { className: 'color-picker', style: { display: this.props.overlay } },
-        React.createElement(Color, { color: '#ffffff', onColorChange: this.props.onColorChange }),
-        React.createElement(Color, { color: '#ff8a80', onColorChange: this.props.onColorChange }),
-        React.createElement(Color, { color: '#FFE0B2', onColorChange: this.props.onColorChange }),
-        React.createElement(Color, { color: '#ffff8d', onColorChange: this.props.onColorChange }),
-        React.createElement(Color, { color: '#80d8ff', onColorChange: this.props.onColorChange }),
-        React.createElement(Color, { color: '#a7ffeb', onColorChange: this.props.onColorChange }),
-        React.createElement(Color, { color: '#ccff90', onColorChange: this.props.onColorChange }),
-        React.createElement(Color, { color: '#e1bee7', onColorChange: this.props.onColorChange })
+        colors
       );
     }
   });

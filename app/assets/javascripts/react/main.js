@@ -415,17 +415,18 @@ $(document).on('page:change', function () {
 
   var ColorPicker = React.createClass({
     render: function() {
-      // NOTE: First set: #ffffff #ff8a80 #ffd180 #ffff8d #80d8ff #a7ffeb #ccff90 #e1bee7
+      // NOTE: First  set: #ffffff #ff8a80 #ffd180 #ffff8d #80d8ff #a7ffeb #ccff90 #e1bee7
+      var colors = [
+        '#ffffff', '#ffcdd2', '#ffe0b2', '#fff59d',
+        '#b3e5fc', '#a7ffeb', '#dcedc8', '#e1bee7'
+      ].map(function(color) {
+        return (
+          <Color color={color} onColorChange={this.props.onColorChange} />
+        );
+      }.bind(this));
       return (
         <div className='color-picker' style={{display: this.props.overlay}}>
-          <Color color='#ffffff' onColorChange={this.props.onColorChange} />
-          <Color color='#ff8a80' onColorChange={this.props.onColorChange} />
-          <Color color='#ffd180' onColorChange={this.props.onColorChange} />
-          <Color color='#ffff8d' onColorChange={this.props.onColorChange} />
-          <Color color='#80d8ff' onColorChange={this.props.onColorChange} />
-          <Color color='#a7ffeb' onColorChange={this.props.onColorChange} />
-          <Color color='#ccff90' onColorChange={this.props.onColorChange} />
-          <Color color='#e1bee7' onColorChange={this.props.onColorChange} />
+          {colors}
         </div>
       );
     }
