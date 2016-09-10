@@ -3,8 +3,9 @@ class LabelPresenter < Keynote::Presenter
   delegate :color, :name, to: :label
 
   GITHUB_LIGHT_COLORS = [
-    'ffffff', 'e6e6e6', 'fef2c0', '84b6eb', 'cccccc', 'fbca04', 'f7c6c7',
-    'fad8c7', 'fef2c0', 'bfe5bf', 'bfdadc', 'c7def8', 'bfd4f2', 'd4c5f9'
+    'ffffff', 'e6e6e6', '84b6eb', 'cccccc', 'fbca04', 'f7c6c7',
+    'fad8c7', 'bfe5bf', 'bfdadc', 'c7def8', 'bfd4f2', 'd4c5f9',
+    'c5def5', 'e99695', 'f9d0c4', 'c2e0c6'
   ]
 
   def css_style
