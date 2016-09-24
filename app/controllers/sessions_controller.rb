@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  skip_before_action :authenticate, only: [:create, :destroy]
+  skip_authorization_check only: [:create, :destroy]
 
   def create
     user = find_user || create_user

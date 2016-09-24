@@ -1,8 +1,10 @@
 class LandingController < ApplicationController
+  include CanCan::ControllerAdditions
+
   AUTH_URL = '/auth/github'
   DEMO_URL = "#{Agileseason::DOMAIN}/boards/agileseason/agileseason"
 
-  skip_before_filter :authenticate, unless: -> { signed_in? }
+  skip_authorization_check unless: -> { signed_in? }
   layout 'landing'
 
   def index
