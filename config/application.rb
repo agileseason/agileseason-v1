@@ -8,7 +8,7 @@ Bundler.require(*Rails.groups)
 
 require File.expand_path('../../lib/core_extensions/string', __FILE__)
 require File.expand_path('../../lib/time_with_timezone', __FILE__)
-require 'lib/faye_pusher'
+require File.expand_path('../../lib/faye_pusher', __FILE__)
 
 module Agileseason
   DOMAIN = Rails.env.production? ? 'https://agileseason.com' : 'http://agileseason.dev'
