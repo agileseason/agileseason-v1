@@ -9,6 +9,14 @@ Bundler.require(*Rails.groups)
 require File.expand_path('../../lib/core_extensions/string', __FILE__)
 require File.expand_path('../../lib/time_with_timezone', __FILE__)
 require File.expand_path('../../lib/faye_pusher', __FILE__)
+require File.expand_path('../../lib/boolean_attribute', __FILE__)
+require File.expand_path('../../lib/encryptor', __FILE__)
+require File.expand_path('../../lib/patch_attributes', __FILE__)
+require File.expand_path('../../lib/renderable', __FILE__)
+require File.expand_path('../../lib/service', __FILE__)
+require File.expand_path('../../lib/sidekiq_constraint', __FILE__)
+require File.expand_path('../../lib/unescaper', __FILE__)
+require File.expand_path('../../lib/virtus_service', __FILE__)
 
 module Agileseason
   DOMAIN = Rails.env.production? ? 'https://agileseason.com' : 'http://agileseason.dev'
