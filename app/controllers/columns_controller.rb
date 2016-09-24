@@ -37,7 +37,8 @@ class ColumnsController < ApplicationController
       @column.update_sort_issues(params[:issues])
       broadcast_column(@column)
     end
-    render nothing: true
+
+    head :ok
   end
 
   def destroy

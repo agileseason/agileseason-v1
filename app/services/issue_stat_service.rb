@@ -1,4 +1,3 @@
-# FIX : Move methods to instance and add user to initializer.
 class IssueStatService
   class << self
     def create(board, github_issue)

@@ -68,11 +68,11 @@ class SettingsController < ApplicationController
 
   def build_board_settings
     if params[:danger_settings]
-      DangerSettings.new(danger_settings_params)
+      DangerSettings.new(danger_settings_params.to_h)
     elsif @board.kanban?
-      KanbanSettings.new(kanban_settings_params)
+      KanbanSettings.new(kanban_settings_params.to_h)
     elsif @board.scrum?
-      ScrumSettings.new(scrum_settings_params)
+      ScrumSettings.new(scrum_settings_params.to_h)
     end
   end
 end

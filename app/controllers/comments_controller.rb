@@ -3,7 +3,11 @@ class CommentsController < ApplicationController
 
   def index
     # FIX Return Modal::Comment form Modal::CommentsFetcher <= Cached::Comments.call
-    comments = Cached::Comments.call(user: current_user, board: @board, number: number)
+    comments = Cached::Comments.call(
+      user: current_user,
+      board: @board,
+      number: number
+    )
     sync_comments(comments)
 
     render json: { comments: comments_items(comments) }
@@ -73,7 +77,8 @@ class CommentsController < ApplicationController
 
   def sync_checklist(comments = nil)
     if comments.nil?
-      CheckboxSynchronizer.perform_async(@board.id, number, encrypted_github_token)
+      CheckboxSynchronizer.perform_async(@board.id, number,
+        encrypted_github_token)
     else
       IssueStats::LazySyncChecklist.call(
         user: current_user,

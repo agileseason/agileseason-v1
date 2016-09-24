@@ -15,6 +15,7 @@ class Graphs::CumulativeController < ApplicationController
   def fetch_cumulative_graph
     return unless @board_bag.has_write_permission?
     return unless @board.board_histories.where(collected_on: Date.today).blank?
+
     Graphs::CumulativeWorker.perform_async(@board.id, encrypted_github_token)
   end
 end

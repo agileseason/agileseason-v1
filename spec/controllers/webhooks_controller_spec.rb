@@ -5,7 +5,7 @@ describe WebhooksController do
   before { allow(Cached::UpdateIssues).to receive(:call) }
 
   describe '#github' do
-    subject { get :github, params }
+    subject { get :github, params: params }
     let(:params) { { repository: repo, issue: issue_params } }
     let(:repo) { { full_name: board.github_full_name } }
     let(:issue) { stub_issue }
@@ -35,10 +35,7 @@ describe WebhooksController do
       it do
         expect(Cached::UpdateIssues).
           to have_received(:call).
-          with(
-            board: board,
-            objects: { issue.number => issue }
-          )
+          with(board: board, objects: anything)
       end
     end
   end

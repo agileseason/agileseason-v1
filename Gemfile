@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'attr_extras'
 gem 'awesome_print'
 gem 'aws-sdk'
-gem 'browser-timezone-rails', github: 'blackchestnut/browser-timezone-rails'
+gem 'browser-timezone-rails', git: 'https://github.com/blackchestnut/browser-timezone-rails.git'
 gem 'cancancan'
 gem 'coffee-rails'
 gem 'compass-rails'
@@ -21,7 +21,8 @@ gem 'octokit'
 gem 'omniauth-github'
 gem 'pg'
 gem 'pry-rails'
-gem 'rails', '< 5.0.0'
+gem 'rails'
+gem 'rails-controller-testing'
 gem 'redcarpet'
 gem 'sass-rails'
 gem 'sidekiq'
@@ -30,9 +31,10 @@ gem 'simple_form'
 gem 'simple_form-magic_submit'
 gem 'sinatra', require: nil
 gem 'slim-rails'
+gem 'sprockets-rails', '3.2.0'
 gem 'state_machine'
 gem 'thin'
-gem 'turbolinks'
+gem 'turbolinks', '2.5.3'
 gem 'uglifier'
 gem 'unicode'
 gem 'virtus'
@@ -65,7 +67,6 @@ group :development do
   gem 'guard-rspec', require: false
   gem 'guard-spring', require: false
   gem 'meta_request'
-  gem 'quiet_assets'
   gem 'rack-mini-profiler'
   gem 'sitemap_generator'
   gem 'spring'
@@ -86,6 +87,6 @@ end
 
 group :test do
   gem 'codeclimate-test-reporter', require: nil
-  gem 'docile', github: 'blackchestnut/docile'
+  gem 'docile', git: 'https://github.com/blackchestnut/docile.git'
   gem 'timecop'
 end

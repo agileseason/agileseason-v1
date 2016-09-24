@@ -33,9 +33,11 @@ describe CommentsController do
     before do
       get(
         :index,
-        board_github_full_name: board.github_full_name,
-        number: number,
-        format: :json
+        params: {
+          board_github_full_name: board.github_full_name,
+          number: number,
+          format: :json
+        }
       )
     end
 
@@ -48,11 +50,13 @@ describe CommentsController do
     subject do
       post(
         :create,
-        board_github_full_name: board.github_full_name,
-        number: number,
-        id: 101,
-        comment: { body: body },
-        format: :json
+        params: {
+          board_github_full_name: board.github_full_name,
+          number: number,
+          id: 101,
+          comment: { body: body },
+          format: :json
+        }
       )
     end
     before do
@@ -79,11 +83,13 @@ describe CommentsController do
     subject do
       post(
         :update,
-        board_github_full_name: board.github_full_name,
-        number: number,
-        id: 101,
-        comment: { body: body },
-        format: :json
+        params: {
+          board_github_full_name: board.github_full_name,
+          number: number,
+          id: 101,
+          comment: { body: body },
+          format: :json
+        }
       )
     end
 
@@ -105,10 +111,12 @@ describe CommentsController do
     subject do
       delete(
         :delete,
-        board_github_full_name: board.github_full_name,
-        number: number,
-        id: 101,
-        format: :json
+        params: {
+          board_github_full_name: board.github_full_name,
+          number: number,
+          id: 101,
+          format: :json
+        }
       )
     end
 

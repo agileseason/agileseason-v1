@@ -1,13 +1,13 @@
-RSpec.describe ActivitiesController, type: :controller do
+describe ActivitiesController do
   render_views
 
-  describe 'GET index' do
+  describe '#index' do
     let(:user) { create(:user) }
     let!(:board) { create(:board, :with_columns, user: user) }
     let!(:issue_stat) { create(:issue_stat, :closed, board: board) }
     let!(:activity_1) { create(:archive_activity, board: board, user: user, issue_stat: issue_stat) }
-    before { stub_sign_in(user) }
 
+    before { stub_sign_in(user) }
     before(:each) do
       create_list(
         :column_changed_activity,
@@ -19,7 +19,10 @@ RSpec.describe ActivitiesController, type: :controller do
 
     context 'next page of activities' do
       before do
-        get :index, board_github_full_name: board.github_full_name, page: 2
+        get(:index, params: {
+          board_github_full_name: board.github_full_name,
+          page: 2
+        })
       end
 
       it { expect(response).to have_http_status(:success) }
@@ -28,11 +31,14 @@ RSpec.describe ActivitiesController, type: :controller do
 
     context 'no next page of activities' do
       before do
-        get :index, board_github_full_name: board.github_full_name, page: 4
+        get(:index, params: {
+          board_github_full_name: board.github_full_name,
+          page: 4
+        })
       end
 
       it { expect(response).to have_http_status(:success) }
-      it { expect(response.body).to eq '' }
+      it { expect(response.body).to be_empty }
     end
   end
 end

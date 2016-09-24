@@ -1,5 +1,5 @@
 class MixpanelEventsController < ApplicationController
-  skip_before_filter :authenticate, unless: -> { current_user }
+  skip_authorization_check unless: -> { current_user }
 
   CLIENT_SIDE_EVENTS = ['landing']
 
@@ -8,6 +8,6 @@ class MixpanelEventsController < ApplicationController
       ui_event(params[:event].to_sym)
     end
 
-    render nothing: true
+    head :ok
   end
 end

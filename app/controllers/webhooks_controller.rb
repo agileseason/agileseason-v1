@@ -1,6 +1,6 @@
 class WebhooksController < ApplicationController
-  skip_before_filter :authenticate
-  skip_before_filter :verify_authenticity_token
+  skip_authorization_check
+  skip_before_action :verify_authenticity_token
 
   HMAC_DIGEST = OpenSSL::Digest.new('sha1')
 
@@ -12,7 +12,7 @@ class WebhooksController < ApplicationController
       broadcast_column(issue_stat.column) if issue_stat.present?
     end
 
-    render nothing: true
+    head :ok
   end
 
   private

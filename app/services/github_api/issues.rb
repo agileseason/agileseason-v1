@@ -3,8 +3,8 @@ class GithubApi
     ALLOWED_EVENTS = ['closed', 'reopened'].freeze
 
     def issues(board)
-      (open_issues(board) + closed_issues(board))
-        .reject(&:pull_request)
+      (open_issues(board) + closed_issues(board)).
+        select { |issue| issue.pull_request.blank? }
     end
 
     def create_issue(board, issue)
