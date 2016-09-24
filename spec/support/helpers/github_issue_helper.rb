@@ -25,7 +25,7 @@ module GithubIssueHelper
       title: 'test name',
       body: 'test body',
       labels: [],
-      assigne: '',
+      assigne: nil,
       state: 'open',
       pull_request: nil,
       comments: 0,
