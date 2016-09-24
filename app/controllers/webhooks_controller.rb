@@ -12,7 +12,7 @@ class WebhooksController < ApplicationController
       broadcast_column(issue_stat.column) if issue_stat.present?
     end
 
-    render nothing: true
+    head :ok
   end
 
   private

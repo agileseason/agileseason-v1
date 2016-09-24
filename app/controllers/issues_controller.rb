@@ -4,7 +4,8 @@ class IssuesController < ApplicationController
   before_action :fetch_board, only: READ_ACTION
   before_action :fetch_board_for_update, except: READ_ACTION
 
-  after_action :fetch_cumulative_graph, only: [:create, :move_to, :archive, :unarchive]
+  after_action :fetch_cumulative_graph, only: [:create, :move_to,
+    :archive, :unarchive]
   after_action :fetch_lines_graph, only: [:move_to]
   after_action :fetch_control_chart, only: [:close, :reopen]
 
@@ -19,31 +20,31 @@ class IssuesController < ApplicationController
   end
 
   def create
-    @issue = Issue.new(issue_create_params)
+    @issue = Issue.new(issue_create_params.to_h)
     if @issue.valid?
       board_issue = IssueStats::Creator.new(current_user, @board_bag, @issue).call
       ui_event(:issue_create)
       broadcast_column(board_issue.column)
       render(partial: 'issue_miniature', locals: { issue: board_issue })
     else
-      render nothing: true
+      head :ok
     end
   end
 
   def update
-    issue = github_api.update_issue(@board, number, issue_update_params)
+    issue = github_api.update_issue(@board, number, issue_update_params.to_h)
     @board_bag.update_cache(issue)
     respond_to do |format|
-      format.html { render nothing: true }
+      format.html { head :ok }
       format.json { render_board_issue_json }
     end
   end
 
   def update_labels
-    issue = github_api.update_issue(@board, number, issue_labels_params)
+    issue = github_api.update_issue(@board, number, issue_labels_params.to_h)
     @board_bag.update_cache(issue)
     respond_to do |format|
-      format.html { render nothing: true }
+      format.html { head :ok }
       format.json { render_board_issue_json }
     end
   end
@@ -87,20 +88,21 @@ class IssuesController < ApplicationController
     broadcast_column(column_to, params[:force])
 
     issue_stat.reload
-    render json: {
-      # NOTE Includes(:issue_stats) to remove N+1 query in view 'columns/wip_badge'.
-      badges: Column.includes(:issue_stats).where(board_id: @board.id).map do |column|
-        wip_badge_json(column)
-      end
-    }
+    # NOTE Includes(:issue_stats) to remove N+1 query in view 'columns/wip_badge'.
+    columns = Column.includes(:issue_stats).where(board_id: @board.id)
+    render json: { badges: columns.map { |column| wip_badge_json(column) } }
   end
 
   def close
-    issue_stat = IssueStats::Closer.call(user: current_user, board_bag: @board_bag, number: number)
+    issue_stat = IssueStats::Closer.call(
+      user: current_user,
+      board_bag: @board_bag,
+      number: number
+    )
     broadcast_column(issue_stat.column)
 
     respond_to do |format|
-      format.html { render nothing: true }
+      format.html { head :ok }
       format.json { render_board_issue_json }
     end
   end
@@ -110,7 +112,7 @@ class IssuesController < ApplicationController
     broadcast_column(issue_stat.column)
 
     respond_to do |format|
-      format.html { render nothing: true }
+      format.html { head :ok }
       format.json { render_board_issue_json }
     end
   end
@@ -131,7 +133,7 @@ class IssuesController < ApplicationController
     broadcast_column(issue_stat.column, true)
 
     respond_to do |format|
-      format.html { render nothing: true }
+      format.html { head :ok }
       format.json { render_board_issue_json }
     end
   end
@@ -150,7 +152,8 @@ class IssuesController < ApplicationController
   end
 
   def due_date
-    due_date_at = params[:due_date].try(:to_datetime) # Not to_time, because adding localtime +03
+    # Not to_time, because adding localtime +03
+    due_date_at = params[:due_date].try(:to_datetime)
 
     issue_stat = IssueStatService.set_due_date(
       current_user,
@@ -160,7 +163,7 @@ class IssuesController < ApplicationController
     )
 
     respond_to do |format|
-      format.html { render text: k(:issue, issue_stat).due_date_at }
+      format.html { render plain: k(:issue, issue_stat).due_date_at }
       format.json { render_board_issue_json }
     end
   end
@@ -168,14 +171,16 @@ class IssuesController < ApplicationController
   def toggle_ready
     issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
     if issue_stat.ready?
-      IssueStats::Unready.call(user: current_user, board_bag: @board_bag, number: number)
+      IssueStats::Unready.call(user: current_user, board_bag: @board_bag,
+        number: number)
     else
-      IssueStats::Ready.call(user: current_user, board_bag: @board_bag, number: number)
+      IssueStats::Ready.call(user: current_user, board_bag: @board_bag,
+        number: number)
     end
     broadcast_column(issue_stat.column)
 
     respond_to do |format|
-      format.html { render nothing: true }
+      format.html { head :ok }
       format.json { render_board_issue_json }
     end
   end

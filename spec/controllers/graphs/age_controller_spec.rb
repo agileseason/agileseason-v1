@@ -8,8 +8,11 @@ describe Graphs::AgeController do
   end
 
   describe '#index' do
-    subject { get :index, board_github_full_name: board.github_full_name }
-    before { subject }
+    before do
+      get(:index, params: {
+        board_github_full_name: board.github_full_name
+      })
+    end
 
     it { expect(response).to have_http_status(:success) }
     it { expect(response).to render_template(:index) }

@@ -1,7 +1,7 @@
-RSpec.describe MixpanelEventsController, type: :controller do
+describe MixpanelEventsController do
   describe '#client_event' do
     before { allow(controller).to receive(:ui_event) }
-    before { post :client_event, event: event }
+    before { post :client_event, params: { event: event } }
 
     context 'valid event' do
       let(:event) { 'landing' }

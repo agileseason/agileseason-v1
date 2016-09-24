@@ -16,7 +16,9 @@ describe IssuesController do
 
     context 'html' do
       let(:request) do
-        get :show, board_github_full_name: board.github_full_name, number: number
+        get(:show, params: {
+          board_github_full_name: board.github_full_name, number: number
+        })
       end
 
       it do
@@ -28,9 +30,11 @@ describe IssuesController do
       let(:request) do
         get(
           :show,
-          board_github_full_name: board.github_full_name,
-          number: number,
-          format: :json
+          params: {
+            board_github_full_name: board.github_full_name,
+            number: number,
+            format: :json
+          }
         )
       end
 
@@ -44,9 +48,11 @@ describe IssuesController do
     subject do
       post(
         :create,
-        board_github_full_name: board.github_full_name,
-        number: issue.number,
-        issue: params
+        params: {
+          board_github_full_name: board.github_full_name,
+          number: issue.number,
+          issue: params
+        }
       )
     end
     let(:params) { { title: 'test edit title' } }
@@ -73,12 +79,14 @@ describe IssuesController do
     let(:request) do
       patch(
         :update,
-        board_github_full_name: board.github_full_name,
-        number: issue.number,
-        issue: params
+        params: {
+          board_github_full_name: board.github_full_name,
+          number: issue.number,
+          issue: issue_params
+        }
       )
     end
-    let(:params) { { title: 'test edit title' } }
+    let(:issue_params) { { title: 'test edit title' } }
     before { allow(Cached::Issues).to receive(:call).and_return([]) }
     before { allow(github_api).to receive(:update_issue).and_return(issue) }
 
@@ -89,7 +97,7 @@ describe IssuesController do
       it do
         expect(github_api).
           to have_received(:update_issue).
-          with(board, issue.number, params)
+          with(board, issue.number, issue_params)
       end
     end
 
@@ -107,9 +115,11 @@ describe IssuesController do
     let(:request) do
       patch(
         :update_labels,
-        board_github_full_name: board.github_full_name,
-        number: issue.number,
-        issue: params
+        params: {
+          board_github_full_name: board.github_full_name,
+          number: issue.number,
+          issue: params
+        }
       )
     end
     let(:params) { { labels: ['label-1', 'label-2'] } }
@@ -143,8 +153,10 @@ describe IssuesController do
     let(:request) do
       get(
         :modal_data,
-        board_github_full_name: board.github_full_name,
-        number: number
+        params: {
+          board_github_full_name: board.github_full_name,
+          number: number
+        }
       )
     end
     before { allow(Boards::DetectRepo).to receive(:call).and_return(stub_repo) }
@@ -163,9 +175,11 @@ describe IssuesController do
     let(:request) do
       get(
         :move_to,
-        board_github_full_name: board.github_full_name,
-        number: number,
-        column_id: column_to.id
+        params: {
+          board_github_full_name: board.github_full_name,
+          number: number,
+          column_id: column_to.id
+        }
       )
     end
     before { allow(Cached::Issues).to receive(:call).and_return(issue.number => issue) }
@@ -186,7 +200,13 @@ describe IssuesController do
 
   describe '#search' do
     let(:request) do
-      get :search, board_github_full_name: board.github_full_name, query: 'test'
+      get(
+        :search,
+        params: {
+          board_github_full_name: board.github_full_name,
+          query: 'test'
+        }
+      )
     end
     before { allow_any_instance_of(GithubApi).to receive(:search_issues).and_return([]) }
     before { allow(controller).to receive(:ui_event) }
@@ -197,7 +217,15 @@ describe IssuesController do
   end
 
   describe '#close' do
-    subject { get :close, board_github_full_name: board.github_full_name, number: 1 }
+    subject do
+      get(
+        :close,
+        params: {
+          board_github_full_name: board.github_full_name,
+          number: 1
+        }
+      )
+    end
     let(:issue_stat) { build(:issue_stat, board: board, column: column_1) }
 
     before do
@@ -215,7 +243,15 @@ describe IssuesController do
   end
 
   describe '#reopen' do
-    subject { get :reopen, board_github_full_name: board.github_full_name, number: 1 }
+    subject do
+      get(
+        :reopen,
+        params: {
+          board_github_full_name: board.github_full_name,
+          number: 1
+        }
+      )
+    end
     let(:issue_stat) { build(:issue_stat, board: board, column: column_1) }
 
     before do
@@ -240,7 +276,12 @@ describe IssuesController do
   end
 
   describe '#archive' do
-    subject { get :archive, board_github_full_name: board.github_full_name, number: 1 }
+    subject do
+      get(:archive, params: {
+        board_github_full_name: board.github_full_name,
+        number: 1
+      })
+    end
     let(:issue_stat) { build(:issue_stat, board: board, column: column_1) }
     before do
       allow_any_instance_of(IssueStats::Archiver).
@@ -261,7 +302,11 @@ describe IssuesController do
   end
 
   describe '#unarchive' do
-    subject { get :unarchive, board_github_full_name: board.github_full_name, number: 1 }
+    subject do
+      get(:unarchive, params: {
+        board_github_full_name: board.github_full_name, number: 1
+      })
+    end
     let(:issue_stat) { create(:issue_stat, board: board, column: column_1) }
     before do
       allow_any_instance_of(IssueStats::Unarchiver).
@@ -287,13 +332,12 @@ describe IssuesController do
 
   describe '#assignee' do
     subject do
-      get(
-        :assignee,
+      get(:assignee, params: {
         board_github_full_name: board.github_full_name,
         number: 1,
         login: 'github_user',
         format: :json
-      )
+      })
     end
     let(:issue) { stub_issue(assigne: 'fake') }
     before { allow_any_instance_of(BoardBag).to receive(:issue).and_return(issue) }
@@ -320,8 +364,9 @@ describe IssuesController do
     let(:date) { '10/11/2015 12:00' }
     let!(:issue) { create(:issue_stat, board: board, number: 1, due_date_at: nil) }
     before do
-      post :due_date, board_github_full_name: board.github_full_name,
-        number: 1, due_date: date
+      post(:due_date, params: {
+        board_github_full_name: board.github_full_name, number: 1, due_date: date
+      })
     end
 
     it { expect(response).to have_http_status(:success) }
@@ -332,11 +377,10 @@ describe IssuesController do
   describe '#toggle_ready' do
     let(:issue_stat) { create :issue_stat, board: board, is_ready: is_ready }
     before do
-      post(
-        :toggle_ready,
+      post(:toggle_ready, params: {
         board_github_full_name: board.github_full_name,
         number: issue_stat.number
-      )
+      })
     end
 
     context 'true' do
@@ -360,11 +404,10 @@ describe IssuesController do
     let(:issue_stat) { create :issue_stat, board: board, number: issue.number }
     before { allow_any_instance_of(BoardBag).to receive(:issue).and_return(issue) }
     before do
-      get(
-        :fetch_miniature,
+      get(:fetch_miniature, params: {
         board_github_full_name: board.github_full_name,
         number: issue_stat.number
-      )
+      })
     end
 
     it { expect(response).to have_http_status(:success) }

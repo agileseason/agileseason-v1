@@ -12,7 +12,7 @@ describe BoardsController, type: :controller do
     before { stub_sign_in }
 
     context 'request is xhr' do
-      before { xhr :get, :index }
+      before { get :index, xhr: true }
 
       it { expect(response).to have_http_status(:success) }
       it { expect(response).to render_template('boards/_board_list') }
@@ -27,7 +27,9 @@ describe BoardsController, type: :controller do
   end
 
   describe '#show' do
-    let(:request) { get(:show, github_full_name: board.github_full_name) }
+    let(:request) do
+      get(:show, params: { github_full_name: board.github_full_name })
+    end
     let(:user) { create(:user) }
     let(:issue) { stub_issue(labels: [label_1]) }
     let(:label_1) { OpenStruct.new(name: 'techdebt', color: '000') }
@@ -71,8 +73,10 @@ describe BoardsController, type: :controller do
   end
 
   describe '#new' do
-    subject { get :new, github_id: repo.id }
-    let(:repo) { OpenStruct.new(id: 1, name: 'foo', full_name: 'bar/foo') }
+    subject { get :new, params: { github_id: repo.id } }
+    let(:repo) do
+      OpenStruct.new(id: 1, name: 'foo', full_name: 'bar/foo')
+    end
     before do
       allow_any_instance_of(GithubApi).
         to receive(:cached_repos).and_return([repo])
@@ -83,7 +87,10 @@ describe BoardsController, type: :controller do
 
     it { expect(response).to have_http_status(:success) }
     it { expect(response).to render_template('_new') }
-    it { expect(controller).to have_received(:ui_event).with(:board_new, step: 'setup board') }
+    it do
+      expect(controller).to have_received(:ui_event).
+        with(:board_new, step: 'setup board')
+    end
   end
 
 
@@ -103,14 +110,16 @@ describe BoardsController, type: :controller do
     before do
       post(
         :create,
-        board: {
-          name: board_name,
-          type: 'Boards::KanbanBoard',
-          github_id: '123',
-          github_name: 'test-1',
-          github_full_name: 'test/test-1',
-          is_private_repo: false,
-          column: { name: column_names }
+        params: {
+          board: {
+            name: board_name,
+            type: 'Boards::KanbanBoard',
+            github_id: '123',
+            github_name: 'test-1',
+            github_full_name: 'test/test-1',
+            is_private_repo: false,
+            column: { name: column_names }
+          }
         }
       )
     end
@@ -145,7 +154,9 @@ describe BoardsController, type: :controller do
   describe '#destroy' do
     let(:user) { create(:user) }
     let(:repo) { OpenStruct.new(id: board.github_id) }
-    let(:request) { delete(:destroy, github_full_name: board.github_full_name) }
+    let(:request) do
+      delete(:destroy, params: { github_full_name: board.github_full_name })
+    end
     before do
       allow_any_instance_of(GithubApi).
         to receive(:cached_repos).and_return([repo])

@@ -8,6 +8,6 @@ class MixpanelEventsController < ApplicationController
       ui_event(params[:event].to_sym)
     end
 
-    render nothing: true
+    head :ok
   end
 end

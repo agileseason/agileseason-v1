@@ -14,7 +14,7 @@ module GithubIssueHelper
   end
 
   def stub_pull_request_issue(options = {})
-    stub_issue({ pull_request: {} }.merge(options))
+    stub_issue({ pull_request: { number: 1 } }.merge(options))
   end
 
   private
@@ -25,7 +25,7 @@ module GithubIssueHelper
       title: 'test name',
       body: 'test body',
       labels: [],
-      assigne: nil,
+      assigne: '',
       state: 'open',
       pull_request: nil,
       comments: 0,

@@ -6,11 +6,13 @@ describe GithubApi::Issues do
 
   describe '#issues' do
     subject { service.issues(board) }
-    before do
-      allow_any_instance_of(Octokit::Client)
-        .to receive(:issues).with(board.github_id).and_return(open_issues)
-    end
     before { Timecop.freeze(Time.current) }
+    before do
+      allow_any_instance_of(Octokit::Client).
+        to receive(:issues).
+        with(board.github_id).
+        and_return(open_issues)
+    end
     before do
       allow_any_instance_of(Octokit::Client).
         to receive(:issues).
@@ -46,9 +48,9 @@ describe GithubApi::Issues do
 
     it { is_expected.to eq issue }
     it do
-      expect_any_instance_of(Octokit::Client).to(
-        receive(:create_issue)
-          .with(board.github_id, issue.title, issue.body, labels: expected_labels))
+      expect_any_instance_of(Octokit::Client).
+        to receive(:create_issue).
+        with(board.github_id, issue.title, issue.body, labels: expected_labels)
     end
   end
 

@@ -1,6 +1,10 @@
 describe Graphs::CumulativeController, type: :controller do
   describe '#index' do
-    subject { get :index, board_github_full_name: board.github_full_name, interval: interval }
+    subject do
+      get(:index, params: {
+        board_github_full_name: board.github_full_name, interval: interval
+      })
+    end
     let(:user) { create(:user) }
     let(:board) { create(:board, :with_columns, user: user) }
     let(:interval) {}
