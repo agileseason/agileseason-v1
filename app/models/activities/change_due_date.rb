@@ -10,17 +10,17 @@ module Activities
     end
 
     def description(issue_url)
+      return "removed due date for #{link_to(issue_url)}" if due_date.nil?
       "changed due date for #{link_to(issue_url)} on #{due_date}"
     end
 
     private
 
     def due_date
-      if data && data[:due_date_at]
-        data[:due_date_at].strftime('%b %d %H:%M')
-      else
-        'nil'
-      end
+      return if data.blank?
+      return if data[:due_date_at].nil?
+
+      data[:due_date_at].strftime('%b %d %H:%M')
     end
   end
 end
