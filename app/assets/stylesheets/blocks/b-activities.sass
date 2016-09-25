@@ -1,5 +1,6 @@
 @import compass/css3
 @import mixins/date
+@import mixins/link
 
 .b-activities
   +transition(right ease 0.1s)
@@ -60,8 +61,10 @@
       margin-top: 5px
 
     .user
+      +link
       font-weight: bold
       margin-right: 6px
+      color: $text-usual
 
   .no-activities
     text-align: center

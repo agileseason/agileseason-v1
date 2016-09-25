@@ -32,12 +32,12 @@ describe Activities::ChangeDueDate, type: :model do
 
     context 'without due date' do
       let(:due_date_at) { nil }
-      it { is_expected.to eq "changed due date for <a href='#' class='issue-ajax' data-number='#{issue_stat.number}' data-url='#{issue_link}'>issue&nbsp;##{issue_stat.number}</a> on nil" }
+      it { is_expected.to eq "removed due date for <a href='#' class='issue-ajax' data-number='#{issue_stat.number}' data-url='#{issue_link}'>issue&nbsp;##{issue_stat.number}</a>" }
     end
 
     context 'without data' do
       let(:data) { nil }
-      it { is_expected.to eq "changed due date for <a href='#' class='issue-ajax' data-number='#{issue_stat.number}' data-url='#{issue_link}'>issue&nbsp;##{issue_stat.number}</a> on nil" }
+      it { is_expected.to eq "removed due date for <a href='#' class='issue-ajax' data-number='#{issue_stat.number}' data-url='#{issue_link}'>issue&nbsp;##{issue_stat.number}</a>" }
     end
   end
 end

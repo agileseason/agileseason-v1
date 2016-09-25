@@ -67,4 +67,18 @@ describe User do
       it { is_expected.to eq false }
     end
   end
+
+  describe '#github_url' do
+    subject { user.github_url }
+
+    context 'real user' do
+      let(:user) { build_stubbed(:user, github_username: 'blackchestnut') }
+      it { is_expected.to eq 'https://github.com/blackchestnut' }
+    end
+
+    context 'guest' do
+      let(:user) { build(:user, github_username: 'blackchestnut') }
+      it { is_expected.to eq '#' }
+    end
+  end
 end

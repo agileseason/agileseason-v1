@@ -34,7 +34,12 @@ class User < ActiveRecord::Base
     id.nil?
   end
 
-  private
+  def github_url
+    return '#' if guest?
+    "https://github.com/#{github_username}"
+  end
+
+private
 
   def generate_remember_token
     self.remember_token = SecureRandom.hex(20)
