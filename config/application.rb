@@ -8,14 +8,6 @@ Bundler.require(*Rails.groups)
 
 require File.expand_path('../../lib/core_extensions/string', __FILE__)
 require File.expand_path('../../lib/time_with_timezone', __FILE__)
-require File.expand_path('../../lib/faye_pusher', __FILE__)
-require File.expand_path('../../lib/boolean_attribute', __FILE__)
-require File.expand_path('../../lib/patch_attributes', __FILE__)
-require File.expand_path('../../lib/renderable', __FILE__)
-require File.expand_path('../../lib/service', __FILE__)
-require File.expand_path('../../lib/sidekiq_constraint', __FILE__)
-require File.expand_path('../../lib/unescaper', __FILE__)
-require File.expand_path('../../lib/virtus_service', __FILE__)
 
 module Agileseason
   DOMAIN = Rails.env.production? ? 'https://agileseason.com' : 'http://agileseason.dev'
@@ -27,7 +19,8 @@ module Agileseason
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     config.autoload_paths += Dir["#{config.root}/app/**/"]
-    config.autoload_paths += Dir["#{config.root}/lib/**/"]
+
+    config.paths.add 'lib', eager_load: true
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
