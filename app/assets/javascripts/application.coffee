@@ -32,11 +32,8 @@
 #= require jquery.fileupload
 #= require jquery.scrollTo
 
-$ ->
-  Turbolinks.enableProgressBar true
-
-# скрипт выплняется на всех страницах
-$(document).on 'page:change', ->
+# Script runs on all pages
+$(document).on 'turbolinks:load', ->
   $('.notice').on 'click', -> $(@).remove()
 
   # закрыть дашборд по крестику или по клику мимо

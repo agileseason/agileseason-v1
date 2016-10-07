@@ -128,9 +128,9 @@ var Comment = React.createClass({
           <Login data={this.props.data.user.login} />
           <div className='date'>{this.props.data.created_at_str}</div>
           &nbsp;&mdash;&nbsp;
-          <a className='action' href='#' onClick={this.handleEditClick}>edit</a>
+          <a className='action' href='#' data-turbolinks='false' onClick={this.handleEditClick}>edit</a>
           &nbsp;or&nbsp;
-          <a className='action' href='#' onClick={this.handleDeleteClick}>delete</a>
+          <a className='action' href='#' data-turbolinks='false' onClick={this.handleDeleteClick}>delete</a>
         </div>
         <div
           className='body'
@@ -239,6 +239,7 @@ var CommentEditForm = React.createClass({
           <div className='actions'>
             <a
               href='#'
+              data-turbolinks='false'
               onClick={this.props.onCloseWithoutSaveClick}
               className='escapeble'
             >

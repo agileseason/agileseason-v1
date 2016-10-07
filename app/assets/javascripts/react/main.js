@@ -1,4 +1,4 @@
-$(document).on('page:change', function () {
+$(document).on('turbolinks:load', function () {
   if (!/boards_show|age_index/.test(document.body.id)) {
     return;
   }
@@ -362,8 +362,8 @@ $(document).on('page:change', function () {
           <div className='due-date-calendar hidden'>
             <div className='datepicker' ref='datepicker'/>
             <input className='time' ref='time' value={this.state.datepickerTime} onChange={this.handleTimeOnChange} placeholder='hh:mm' />
-            <a className='save' href='#' onClick={this.handleSaveClick}>Save Date & Time</a>
-            <a className='remove' href='#' onClick={this.handleRemoveClick}>Remove</a>
+            <a className='save' href='#' data-turbolinks='false' onClick={this.handleSaveClick}>Save Date & Time</a>
+            <a className='remove' href='#' data-turbolinks='false' onClick={this.handleRemoveClick}>Remove</a>
           </div>
         </div>
       );
@@ -491,7 +491,7 @@ $(document).on('page:change', function () {
     render: function() {
       var checkedClass = this.props.assigned ? 'octicon octicon-check' : '';
       return (
-        <a className='assign' href='#' onClick={this.handleChange}>
+        <a className='assign' href='#' data-turbolinks='false' onClick={this.handleChange}>
           <img src={this.props.user.avatarUrl} title={this.props.user.login} />
           <span>{this.props.children}</span>
           <span className={checkedClass}></span>

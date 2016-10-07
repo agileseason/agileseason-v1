@@ -1,67 +1,71 @@
 <div id="container"></div>
 <script type="text/javascript" charset="utf-8">
   $(function () {
-      $('#container').highcharts({
-          chart: {
-              marginTop: 40,
-              height: 600,
-              zoomType: 'x'
-          },
-          title: {
-              text: ''
-          },
-          subtitle: {
-              text: ''
-          },
-          xAxis: {
-              type: 'datetime',
-              minRange: 14 * 24 * 3600000 // fourteen days
-          },
-          yAxis: {
-              title: {
-                  text: 'Lines'
-              },
-              min: 0,
-              minTickInterval: 1
-          },
-          legend: {
-              enabled: false
-          },
-          plotOptions: {
-              area: {
-                  fillColor: {
-                      linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-                      stops: [
-                          [0, Highcharts.getOptions().colors[0]],
-                          [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                      ]
-                  },
-                  marker: {
-                    enabled: false,
-                    states: {
-                        hover: {
-                            enabled: true,
-                            radius: 5
-                        }
-                    }
-                  },
-                  lineWidth: 1,
-                  states: {
-                      hover: {
-                          lineWidth: 1
-                      }
-                  },
-                  threshold: null
-              }
-          },
+    if ($('#container').html() != '') {
+      return;
+    }
 
-          series: [{
-              type: 'area',
-              name: 'Lines',
-              pointInterval: 24 * 3600 * 1000,
-              pointStart: <%= point_start %>,
-              data: <%= raw(@lines) %>
-          }]
-      });
+    $('#container').highcharts({
+      chart: {
+        marginTop: 40,
+        height: 600,
+        zoomType: 'x'
+      },
+      title: {
+        text: ''
+      },
+      subtitle: {
+        text: ''
+      },
+      xAxis: {
+        type: 'datetime',
+        minRange: 14 * 24 * 3600000 // fourteen days
+      },
+      yAxis: {
+        title: {
+          text: 'Lines'
+        },
+        min: 0,
+        minTickInterval: 1
+      },
+      legend: {
+        enabled: false
+      },
+      plotOptions: {
+        area: {
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+            stops: [
+              [0, Highcharts.getOptions().colors[0]],
+              [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+            ]
+          },
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: true,
+                radius: 5
+              }
+            }
+          },
+          lineWidth: 1,
+          states: {
+            hover: {
+              lineWidth: 1
+            }
+          },
+          threshold: null
+        }
+      },
+
+      series: [{
+        type: 'area',
+        name: 'Lines',
+        pointInterval: 24 * 3600 * 1000,
+        pointStart: <%= point_start %>,
+        data: <%= raw(@lines) %>
+      }]
+    });
   });
 </script>

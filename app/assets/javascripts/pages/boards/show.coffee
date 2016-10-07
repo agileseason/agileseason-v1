@@ -1,6 +1,4 @@
-resize_lock = false
-
-$(document).on 'page:change', ->
+$(document).on 'turbolinks:load', ->
   return unless document.body.id == 'boards_show'
   new NewIssueForm $('.board-column:first')
   subscribe_board_update()
@@ -36,6 +34,9 @@ $(document).on 'page:change', ->
     setTimeout ->
         window.showModal(directIssue)
       , 50
+
+
+resize_lock = false
 
 $(window).resize ->
   return unless document.body.id == 'boards_show' & !resize_lock
