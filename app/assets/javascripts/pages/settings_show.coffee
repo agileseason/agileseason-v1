@@ -1,4 +1,4 @@
-$(document).on 'page:change', ->
+$(document).on 'turbolinks:load', ->
   return unless document.body.id == 'settings_show'
   $('ul.columns li').each ->
     new ColumnsSettings $(@)

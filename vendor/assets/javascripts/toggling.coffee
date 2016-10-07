@@ -1,7 +1,7 @@
 # Достаточно указать только класс .toggling у контейнера,
 # внутри которого именно первым чайлдом лежит скрытый попап.
 
-$(document).on 'ready page:load', ->
+$(document).on 'ready turbolinks:load', ->
   return unless $('.toggling').length
   $('.toggling').toggling()
 

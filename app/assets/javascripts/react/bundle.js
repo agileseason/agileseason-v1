@@ -34,7 +34,11 @@ module.exports = React.createClass({
         { className: className, key: column.id },
         React.createElement(
           'a',
-          { href: '#', onClick: this.handleColumnClick, 'data-column': column.id },
+          {
+            href: '#',
+            'data-turbolinks': 'false',
+            'data-column': column.id,
+            onClick: this.handleColumnClick },
           column.name
         )
       );
@@ -197,13 +201,13 @@ var Comment = React.createClass({
         ' — ',
         React.createElement(
           'a',
-          { className: 'action', href: '#', onClick: this.handleEditClick },
+          { className: 'action', href: '#', 'data-turbolinks': 'false', onClick: this.handleEditClick },
           'edit'
         ),
         ' or ',
         React.createElement(
           'a',
-          { className: 'action', href: '#', onClick: this.handleDeleteClick },
+          { className: 'action', href: '#', 'data-turbolinks': 'false', onClick: this.handleDeleteClick },
           'delete'
         )
       ),
@@ -324,6 +328,7 @@ var CommentEditForm = React.createClass({
             'a',
             {
               href: '#',
+              'data-turbolinks': 'false',
               onClick: this.props.onCloseWithoutSaveClick,
               className: 'escapeble'
             },
@@ -338,7 +343,7 @@ var CommentEditForm = React.createClass({
 });
 
 },{"./upload-form.jsx":6,"react":163,"react-dom":34}],3:[function(require,module,exports){
-$(document).on('page:change', function () {
+$(document).on('turbolinks:load', function () {
   if (!/boards_show|age_index/.test(document.body.id)) {
     return;
   }
@@ -724,12 +729,12 @@ $(document).on('page:change', function () {
           React.createElement('input', { className: 'time', ref: 'time', value: this.state.datepickerTime, onChange: this.handleTimeOnChange, placeholder: 'hh:mm' }),
           React.createElement(
             'a',
-            { className: 'save', href: '#', onClick: this.handleSaveClick },
+            { className: 'save', href: '#', 'data-turbolinks': 'false', onClick: this.handleSaveClick },
             'Save Date & Time'
           ),
           React.createElement(
             'a',
-            { className: 'remove', href: '#', onClick: this.handleRemoveClick },
+            { className: 'remove', href: '#', 'data-turbolinks': 'false', onClick: this.handleRemoveClick },
             'Remove'
           )
         )
@@ -861,7 +866,7 @@ $(document).on('page:change', function () {
       var checkedClass = this.props.assigned ? 'octicon octicon-check' : '';
       return React.createElement(
         'a',
-        { className: 'assign', href: '#', onClick: this.handleChange },
+        { className: 'assign', href: '#', 'data-turbolinks': 'false', onClick: this.handleChange },
         React.createElement('img', { src: this.props.user.avatarUrl, title: this.props.user.login }),
         React.createElement(
           'span',

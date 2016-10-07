@@ -247,7 +247,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
-    minitest (5.9.0)
+    minitest (5.9.1)
     mixpanel-ruby (2.2.0)
     multi_json (1.12.1)
     multi_xml (0.5.5)
@@ -258,9 +258,8 @@ GEM
     net-ssh (3.2.0)
     newrelic_rpm (3.16.1.320)
     nio4r (1.2.1)
-    nokogiri (1.6.8)
+    nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
-      pkg-config (~> 1.1.7)
     notiffany (0.1.0)
       nenv (~> 0.1)
       shellany (~> 0.0)
@@ -282,7 +281,6 @@ GEM
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
     pg (0.18.4)
-    pkg-config (1.1.7)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -434,8 +432,9 @@ GEM
     thread_safe (0.3.5)
     tilt (2.0.5)
     timecop (0.8.1)
-    turbolinks (2.5.3)
-      coffee-rails
+    turbolinks (5.0.1)
+      turbolinks-source (~> 5)
+    turbolinks-source (5.0.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (3.0.2)
@@ -524,12 +523,12 @@ DEPENDENCIES
   sitemap_generator
   slim-rails
   spring
-  sprockets-rails (= 3.2.0)
+  sprockets-rails
   state_machine
   table_print
   thin
   timecop
-  turbolinks (= 2.5.3)
+  turbolinks (~> 5.0.0)
   uglifier
   unicode
   unicorn

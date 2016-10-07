@@ -28,7 +28,11 @@ module.exports = React.createClass({
       var className = column.id == this.state.current ? 'active' : '';
       return (
         <li className={className} key={column.id}>
-          <a href='#' onClick={this.handleColumnClick} data-column={column.id}>
+          <a
+            href='#'
+            data-turbolinks='false'
+            data-column={column.id}
+            onClick={this.handleColumnClick}>
             {column.name}
           </a>
         </li>
