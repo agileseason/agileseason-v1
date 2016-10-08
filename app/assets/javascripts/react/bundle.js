@@ -344,7 +344,7 @@ var CommentEditForm = React.createClass({
 
 },{"./upload-form.jsx":6,"react":163,"react-dom":34}],3:[function(require,module,exports){
 $(document).on('turbolinks:load', function () {
-  if (!/boards_show|age_index/.test(document.body.id)) {
+  if (!/boards_show|age_index|control_index|cumulative_index|frequency_index|lines_index/.test(document.body.id)) {
     return;
   }
 

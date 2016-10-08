@@ -1,0 +1,78 @@
+.b-menu
+  ul.menu
+    li.list-item.left-menu-link data-url=boards_url
+      a.menu-link.octicon.octicon-three-bars
+
+    - if @board&.persisted?
+      - unless controller_name == 'boards' && action_name == 'index'
+        li.list-item.boards
+          - if controller_name == 'boards'
+            a.menu-link.active
+              span #{k(:board, @board).name} board
+          - else
+            a.menu-link.current-board-link href="#{un board_url(@board)}"
+              span #{k(:board, @board).name} board
+
+      - if ['cumulative', 'control', 'forecast', 'frequency', 'lines'].include?(controller_name)
+        li.list-item.active
+          span
+            span.a-child.octicon.octicon-graph &nbsp;
+            span.a-child Metrics
+
+      - else
+        li.list-item
+          a.menu-link href="#{un board_graphs_cumulative_index_url(@board)}"
+            span.a-child.octicon.octicon-graph &nbsp;
+            span.a-child Metrics
+
+      - if can? :update, @board
+        - if controller_name == 'settings' && action_name == 'show'
+          li.list-item.board-settings.active
+            span.octicon.octicon-gear &nbsp;
+            span Settings
+
+        - else
+          li.list-item
+            a.menu-link href="#{un board_settings_url(@board)}" title='Board Settings'
+              span.a-child.octicon.octicon-gear &nbsp;
+              span.a-child Settings
+
+      - if MenuControlsPolicy.new(controller).visible?
+        li.list-item.icon-button.activities data-url=un(board_activities_url(@board))
+          a.menu-link.activities-link title='Last activities'
+            span.octicon.octicon-bell
+          - if @board.present?
+            .b-activities [
+              data-paginate='true'
+              data-page='2'
+              data-url=un(board_activities_url(@board))
+            ]
+
+        li.list-item.icon-button.support
+          a.menu-link [
+            href=Agileseason::SUPPORT_CHAT
+            target='_blank'
+            title='Chat Support'
+          ]
+            span.octicon.octicon-comment-discussion
+
+        - if !current_user.guest? && @board_bag.has_read_permission?
+          li.list-item.icon-button.search data-url=un(search_board_issues_url(@board))
+            .overlay
+            .field.search-input title='Search issues'
+              input type='text'
+              span.octicon.octicon-search
+            .search-popup
+              .search-content
+              .help
+                ' Refine your search with operators like @member or assignee:member,
+                ' label:name, text in:title, and text in:body, comment.
+                a [
+                  href='https://help.github.com/articles/searching-issues/'
+                  target='_blank'
+                ] Learn more…
+
+        li.list-item.icon-button.alert-timeout
+          a.menu-link href="#{un board_url(@board)}"
+            span.octicon.octicon-sync
+          .hint Click to reload the page for synchronization
