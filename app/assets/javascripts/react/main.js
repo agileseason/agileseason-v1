@@ -1,5 +1,5 @@
 $(document).on('turbolinks:load', function () {
-  if (!/boards_show|age_index/.test(document.body.id)) {
+  if (!/boards_show|age_index|control_index|cumulative_index|frequency_index|lines_index/.test(document.body.id)) {
     return;
   }
 
