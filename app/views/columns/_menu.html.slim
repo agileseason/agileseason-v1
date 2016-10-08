@@ -1,11 +1,9 @@
 .column-menu
-  .title.toggling
+  .title class="#{'toggling' if can?(:update, @board)}"
     .column-settings-popup
       = render 'columns/columns_settings', board: @board, column: column
 
-    a class="#{'js-show-popup' if can?(:update, @board)}"
-      = column.name
-
+    a = column.name
     = render 'columns/wip_badge', column: column
 
   - if can?(:update, @board) && k(column).first?
