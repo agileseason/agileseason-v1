@@ -15,7 +15,7 @@
 #= require replace_nth_match.js
 #= require js_patch
 #= require pad
-#= require global/view
+#= require globals/view
 #= require faye-browser
 #= require highlight.min
 #= require d3

@@ -8,18 +8,19 @@ html
     = csrf_meta_tags
     = render partial: 'globals/favicons'
 
-  body class="p-#{controller_name}-#{action_name}" id="#{controller_name}_#{action_name}"
+  body [
+    class="c-#{controller_name} p-#{controller_name}-#{action_name}"
+    id="#{controller_name}_#{action_name}"
+  ]
     .drag-n-drop-overlay
-
     = render partial: 'globals/notice'
-    / FIX : Do something with this if-statement
-    - if (controller_name == 'boards' && action_name == 'show' && @board.present? && @board.persisted?) || (controller_name != 'boards' && controller_name != 'docs' && (action_name != 'show' || action_name != 'index'))
+    - if MenuPolicy.new(controller, @board).visible?
       = render partial: 'globals/menu'
 
     .container
       = yield
 
-    - if @board.present? && @board.persisted?
+    - if @board&.persisted?
       = render partial: 'globals/dashboard_modal'
 
     - if Rails.env.production?
