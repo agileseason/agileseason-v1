@@ -10,8 +10,8 @@ module Activities
     end
 
     def description(issue_url)
-      return "removed due date for #{link_to(issue_url)}" if due_date.nil?
-      "changed due date for #{link_to(issue_url)} on #{due_date}"
+      return "removed due date for #{link_to_issue(issue_url)}" if due_date.nil?
+      "changed due date for #{link_to_issue(issue_url)} on #{due_date}"
     end
 
     private

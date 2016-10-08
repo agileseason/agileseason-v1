@@ -30,6 +30,7 @@ describe MarkdownHelper do
             to eq(
               "<p><a class='issue-ajax' \
                 href='#' data-number='#{number}' \
+                data-turbolinks='false' \
                 data-url='#{un UrlGenerator.modal_data_board_issues_url(board, number)}'>##{number}</a></p>".gsub(/\s+/, ' ')
             )
         end
@@ -55,11 +56,13 @@ describe MarkdownHelper do
             to eq(
               "<p>text <a class='issue-ajax' \
                 href='#' data-number='#{number_1}' \
+                data-turbolinks='false' \
                 data-url='#{un UrlGenerator.modal_data_board_issues_url(board, number_1)}'>##{number_1}</a> \
                 text2 <a class='issue-ajax' \
                 href='#' data-number='#{number_2}' \
+                data-turbolinks='false' \
                 data-url='#{un UrlGenerator.modal_data_board_issues_url(board, number_2)}'>##{number_2}</a></p>".
-                gsub(/\s+/, ' ')
+                prettify
             )
         end
       end

@@ -12,7 +12,9 @@ module Activities
     end
 
     def description(issue_url)
-      "moved #{link_to(issue_url)} from #{column_name(:column_from)} to the #{column_name(:column_to)}"
+      "moved #{link_to_issue(issue_url)} \
+        from #{column_name(:column_from)} \
+        to the #{column_name(:column_to)}"
     end
 
     private

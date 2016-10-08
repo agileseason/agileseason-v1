@@ -37,14 +37,14 @@
               span.a-child.octicon.octicon-gear &nbsp;
               span.a-child Settings
 
-      li.list-item.icon-button.activities data-url=board_activities_url(@board)
+      li.list-item.icon-button.activities data-url=un(board_activities_url(@board))
         a.menu-link.activities-link title='Last activities'
           span.octicon.octicon-bell
         - if @board.present?
           .b-activities [
             data-paginate='true'
             data-page='2'
-            data-url=board_activities_url(@board)
+            data-url=un(board_activities_url(@board))
           ]
 
       li.list-item.icon-button.support
@@ -56,7 +56,7 @@
           span.octicon.octicon-comment-discussion
 
       - if !current_user.guest? && @board_bag.has_read_permission?
-        li.list-item.icon-button.search data-url=search_board_issues_url(@board)
+        li.list-item.icon-button.search data-url=un(search_board_issues_url(@board))
           .overlay
           .field.search-input title='Search issues'
             input type='text'

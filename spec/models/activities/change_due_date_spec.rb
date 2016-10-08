@@ -27,17 +27,42 @@ describe Activities::ChangeDueDate, type: :model do
 
     context 'with due date' do
       let(:due_date_at) { DateTime.now }
-      it { is_expected.to eq "changed due date for <a href='#' class='issue-ajax' data-number='#{issue_stat.number}' data-url='#{issue_link}'>issue&nbsp;##{issue_stat.number}</a> on #{due_date_at.strftime('%b %d %H:%M')}" }
+      it do
+        is_expected.to eq(
+          "changed due date for <a href='#' class='issue-ajax' \
+            data-number='#{issue_stat.number}' \
+            data-turbolinks='false' \
+            data-url='#{issue_link}'>issue&nbsp;##{issue_stat.number}</a> \
+            on #{due_date_at.strftime('%b %d %H:%M')}".
+            prettify
+        )
+      end
     end
 
     context 'without due date' do
       let(:due_date_at) { nil }
-      it { is_expected.to eq "removed due date for <a href='#' class='issue-ajax' data-number='#{issue_stat.number}' data-url='#{issue_link}'>issue&nbsp;##{issue_stat.number}</a>" }
+      it do
+        is_expected.to eq(
+          "removed due date for <a href='#' class='issue-ajax' \
+          data-number='#{issue_stat.number}' \
+          data-turbolinks='false' \
+          data-url='#{issue_link}'>issue&nbsp;##{issue_stat.number}</a>".
+          prettify
+        )
+      end
     end
 
     context 'without data' do
       let(:data) { nil }
-      it { is_expected.to eq "removed due date for <a href='#' class='issue-ajax' data-number='#{issue_stat.number}' data-url='#{issue_link}'>issue&nbsp;##{issue_stat.number}</a>" }
+      it do
+        is_expected.to eq(
+          "removed due date for <a href='#' class='issue-ajax' \
+          data-number='#{issue_stat.number}' \
+          data-turbolinks='false' \
+          data-url='#{issue_link}'>issue&nbsp;##{issue_stat.number}</a>".
+          prettify
+        )
+      end
     end
   end
 end
