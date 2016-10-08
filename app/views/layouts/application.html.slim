@@ -6,23 +6,23 @@ html
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
-    = render partial: 'global/favicons'
+    = render partial: 'globals/favicons'
 
   body class="p-#{controller_name}-#{action_name}" id="#{controller_name}_#{action_name}"
     .drag-n-drop-overlay
 
-    = render partial: 'layouts/notice'
+    = render partial: 'globals/notice'
     / FIX : Do something with this if-statement
     - if (controller_name == 'boards' && action_name == 'show' && @board.present? && @board.persisted?) || (controller_name != 'boards' && controller_name != 'docs' && (action_name != 'show' || action_name != 'index'))
-      = render partial: 'layouts/menu'
+      = render partial: 'globals/menu'
 
     .container
       = yield
 
     - if @board.present? && @board.persisted?
-      = render partial: 'dashboard_modal'
+      = render partial: 'globals/dashboard_modal'
 
     - if Rails.env.production?
-      = render partial: 'global/counters/yandex_metrika'
-      = render partial: 'global/counters/google_analytics'
-      = render partial: 'layouts/intercom/observe'
+      = render partial: 'globals/counters/yandex_metrika'
+      = render partial: 'globals/counters/google_analytics'
+      = render partial: 'globals/intercom/observe'
