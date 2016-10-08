@@ -7,6 +7,7 @@
         a.issue-ajax [
           href='#'
           data-number=issue.number
+          data-turbolinks='false'
           data-url="#{un modal_data_board_issues_url(board, issue.number)}"
         ]
           | #{issue.title}

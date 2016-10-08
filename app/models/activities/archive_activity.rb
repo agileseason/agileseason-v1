@@ -11,7 +11,7 @@ module Activities
     end
 
     def description(issue_url)
-      "archived #{link_to(issue_url)}"
+      "archived #{link_to_issue(issue_url)}"
     end
   end
 end

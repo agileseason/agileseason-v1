@@ -29,6 +29,7 @@ module MarkdownHelper
     text.gsub(
       /#([0-9]+)/,
       "<a class='issue-ajax' href='#' data-number='\\1' \
+        data-turbolinks='false' \
         data-url='#{url_prefix}\\1/modal_data'>#\\1</a>"
     )
   end

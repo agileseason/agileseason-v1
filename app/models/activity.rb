@@ -12,13 +12,14 @@ class Activity < ActiveRecord::Base
   def description(issue_url = nil)
   end
 
-  private
+private
 
-  def link_to(issue_url)
+  def link_to_issue(issue_url)
     return if issue_url.blank?
 
     "<a href='#' class='issue-ajax' \
       data-number='#{issue_stat.number}' \
+      data-turbolinks='false' \
       data-url='#{issue_url}'>issue&nbsp;##{issue_stat.number}</a>"
   end
 end
