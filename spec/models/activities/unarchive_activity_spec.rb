@@ -19,8 +19,8 @@ describe Activities::UnarchiveActivity, type: :model do
       it do
         is_expected.to eq(
           "<a href='#' class='issue-ajax' \
-            data-number='5' data-turbolinks='false' \
-            data-url='/1'>issue&nbsp;##{issue_stat.number}</a> \
+            data-number='#{issue_stat.number}' data-turbolinks='false' \
+            data-url='#{issue_url}'>issue&nbsp;##{issue_stat.number}</a> \
             sent to the board".
             prettify
         )
