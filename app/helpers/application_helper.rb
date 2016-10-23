@@ -28,4 +28,8 @@ module ApplicationHelper
   def number?
     params[:number].present?
   end
+
+  def action_full_name
+    "#{controller_name}-#{action_name}"
+  end
 end

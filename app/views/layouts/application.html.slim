@@ -9,7 +9,7 @@ html
     = render partial: 'globals/favicons'
 
   body [
-    class="c-#{controller_name} p-#{controller_name}-#{action_name}"
+    class="c-#{controller_name} p-#{action_full_name}"
     id="#{controller_name}_#{action_name}"
   ]
     .drag-n-drop-overlay
