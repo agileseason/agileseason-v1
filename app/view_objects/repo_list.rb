@@ -6,15 +6,10 @@ class RepoList < Renderable
   end
 
   def menu_repos
-    repos.map do |repo|
-      class_item_by(repo).new(
-        repo,
-        board_by(repo)
-      )
-    end.select(&:enough_permissions?)
+    repos.map { |repo| class_item_by(repo).new(repo, board_by(repo)) }
   end
 
-  private
+private
 
   def board_by_repos
     @boards ||= Board.where(github_id: repos.map(&:id))

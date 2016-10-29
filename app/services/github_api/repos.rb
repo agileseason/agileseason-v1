@@ -20,7 +20,7 @@ class GithubApi
       client.collaborators(board.github_id)
     end
 
-    private
+  private
 
     def user_repos
       paginate { |page| client.repos(nil, page: page) }
