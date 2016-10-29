@@ -508,7 +508,7 @@ DEPENDENCIES
   rails-assets-jquery.scrollTo!
   rails-controller-testing
   rb-fsevent
-  redcarpet
+  redcarpet (~> 3.3.4)
   rspec-collection_matchers
   rspec-its
   rspec-rails

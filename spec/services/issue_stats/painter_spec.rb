@@ -19,6 +19,11 @@ describe IssueStats::Painter do
       end
 
       its(:color) { is_expected.to eq color }
+
+      context 'remove color if color is white' do
+        let(:color) { '#ffffff' }
+        its(:color) { is_expected.to be_nil }
+      end
     end
   end
 end

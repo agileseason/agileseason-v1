@@ -10,8 +10,15 @@ module IssueStats
 
     def call
       issue_stat = IssueStats::Finder.new(user, board_bag, number).call
-      issue_stat.update(color: color)
+      issue_stat.update(color: normolized_color)
       issue_stat
+    end
+
+  private
+
+    def normolized_color
+      return nil if color.downcase == '#ffffff'
+      return color
     end
   end
 end
