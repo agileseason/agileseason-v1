@@ -12,6 +12,7 @@ module MarkdownHelper
       highlight: true,
       lax_spacing: true, # Now it doesn't work. Partially helps hard_wrap.
       space_after_headers: true,
+      no_intra_emphasis: true,
     )
     markdown.render(markdown_github_fixes(text, board)).html_safe
   end
