@@ -106,26 +106,17 @@ $image-path: 'blocks/b-dashboard'
     width: 750px
 
     ul.boards
+      &.public
+        a.settings
+          display: none
+
       li
         display: inline-block
         vertical-align: top
+        position: relative
 
-        a
-          +border-radius(4px)
-          +box-sizing(border-box)
-          background-color: #eee
-          color: $text-usual
-          display: inline-block
-          font-size: 20px
-          height: 80px
-          margin: 0 20px 20px 0
-          padding: 18px 20px
-          width: 230px
-
-          .preloader
-            display: none
-
-          &.new
+        &.new
+          a.pick
             color: #bebebe
             background-color: transparent
             border: 1px dashed #bebebe
@@ -143,6 +134,25 @@ $image-path: 'blocks/b-dashboard'
               margin: 0
               width: 215px
 
+        &.new,
+          a.settings,
+            display: none
+
+        a.pick
+          +border-radius(4px)
+          +box-sizing(border-box)
+          background-color: #eee
+          color: $text-usual
+          display: inline-block
+          font-size: 20px
+          height: 80px
+          margin: 0 20px 20px 0
+          padding: 18px 20px
+          width: 230px
+
+          .preloader
+            display: none
+
           &:hover
             background-color: $orange
             color: #fff
@@ -159,3 +169,11 @@ $image-path: 'blocks/b-dashboard'
             font-size: 14px
             color: #bebebe
             display: block
+
+        a.settings
+          bottom: 36px
+          color: #c0c0c0
+          position: absolute
+          right: 36px
+          &:hover
+            color: $orange-hover

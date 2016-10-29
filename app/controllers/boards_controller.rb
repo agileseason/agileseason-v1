@@ -10,8 +10,16 @@ class BoardsController < ApplicationController
 
   def index
     @boards_lists = [
-      { title: 'My Boards', boards: BoardPick.list_by(current_user, k(:user, current_user).boards) },
-      { title: 'Explore Public Boards', boards: BoardPick.public_list },
+      {
+        title: 'My Boards',
+        boards: BoardPick.list_by(current_user, k(:user, current_user).boards),
+        html_class: :my
+      },
+      {
+        title: 'Explore Public Boards',
+        boards: BoardPick.public_list,
+        html_class: :public
+      },
     ]
 
     render partial: 'board_list' if request.xhr?

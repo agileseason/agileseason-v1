@@ -9,7 +9,7 @@
       a.sign-out href="#{sign_out_url}" sign out
 
 .board-lists
-  - if controller_name == 'boards' && action_name == 'index'
+  - if action_full_name == 'boards-index'
     = render partial: 'board_list'
 
   - else
