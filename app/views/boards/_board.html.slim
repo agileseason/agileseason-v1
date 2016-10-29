@@ -1,5 +1,8 @@
 li class="#{board.html_class}"
-  a.pick href=un(board.link)
+  a.pick [
+    href=un(board.link)
+    class="#{board.html_class}"
+  ]
     span.name = board.name
     span.issues = raw board.issues_count
     span.settins
