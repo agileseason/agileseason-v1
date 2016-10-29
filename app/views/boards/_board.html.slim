@@ -1,5 +1,9 @@
-li
-  a class="#{ :new unless board.id }" href="#{un board.link}"
+li class="#{board.html_class}"
+  a.pick href=un(board.link)
     span.name = board.name
     span.issues = raw board.issues_count
+    span.settins
+  - if current_user == board.owner
+    a.settings href=un(board.settings_url) title='Board Settings'
+      span.octicon.octicon-gear
   span.button-preloader

@@ -26,18 +26,6 @@
             span.a-child.octicon.octicon-graph &nbsp;
             span.a-child Metrics
 
-      - if can?(:update, @board)
-        - if action_full_name == 'settings-show'
-          li.list-item.board-settings.active
-            span.octicon.octicon-gear &nbsp;
-            span Settings
-
-        - else
-          li.list-item
-            a.menu-link href="#{un board_settings_url(@board)}" title='Board Settings'
-              span.a-child.octicon.octicon-gear &nbsp;
-              span.a-child Settings
-
       - if MenuControlsPolicy.new(controller).visible?
         li.list-item.icon-button.activities data-url=un(board_activities_url(@board))
           a.menu-link.activities-link title='Last activities'

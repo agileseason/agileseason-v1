@@ -20,8 +20,9 @@ describe RepoList do
       stub_repo(permissions: double(admin: false))
     end
 
-    it { is_expected.to have(2).items }
+    it { is_expected.to have(3).items }
     its('first.repo') { is_expected.to eq repo_public }
     its('second.repo') { is_expected.to eq repo_private }
+    its('third.repo') { is_expected.to eq repo_without_permissions }
   end
 end

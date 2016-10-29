@@ -12,3 +12,6 @@ li class="#{repo.to_css}"
       span.price = repo.price
       a.button.create_board href="#{new_board_url(github_id: repo.id)}" Create Board
       span.button-preloader
+
+    - else
+      span Not Enough Permissions
