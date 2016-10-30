@@ -99,14 +99,12 @@ describe BoardsController, type: :controller do
     let(:user) { create(:user) }
     let(:board_name) { 'test-1' }
     let(:column_names) { ['c1', 'c2', '', nil] }
-    let(:issue_stat_worker) { double(perform: nil) }
     before do
       allow_any_instance_of(User).
         to receive(:repo_admin?).and_return(true)
     end
     before { allow(Cached::Issues).to receive(:call).and_return({}) }
-    before { allow(WebhookWorker).to receive(:perform_async) }
-    before { allow(Graphs::IssueStatsWorker).to receive(:new).and_return(issue_stat_worker) }
+    before { allow(Boards::Create).to receive(:call).and_return(board) }
     before { allow(controller).to receive(:ui_event) }
     before { stub_sign_in(user) }
     before do
@@ -127,32 +125,16 @@ describe BoardsController, type: :controller do
     end
 
     context 'success' do
-      its(:name) { is_expected.to eq 'test-1' }
-      its(:private_repo?) { is_expected.to eq false }
-      it { expect(subject.columns.map(&:name)).to eq ['c1', 'c2'] }
-      it { expect(subject.columns.first.order).to eq 1 }
-      it { expect(subject.columns.second.order).to eq 2 }
-      it { expect(WebhookWorker).to have_received(:perform_async) }
-      it { expect(issue_stat_worker).to have_received(:perform) }
+      let(:board) { build_stubbed(:board) }
       it { expect(controller).to have_received(:ui_event).with(:board_create) }
+      it { expect(response).to redirect_to un(board_url(board)) }
     end
 
-    context 'blank name' do
-      let(:board_name) { '' }
-
-      it { is_expected.to be_nil }
-      it { expect(WebhookWorker).not_to have_received(:perform_async) }
-      it { expect(issue_stat_worker).not_to have_received(:perform) }
+    context 'invalid' do
+      let(:board) { build(:board) }
       it { expect(controller).not_to have_received(:ui_event).with(:board_create) }
-    end
-
-    context 'to few columns' do
-      let(:column_names) { ['c1'] }
-
-      it { is_expected.to be_nil }
-      it { expect(WebhookWorker).not_to have_received(:perform_async) }
-      it { expect(issue_stat_worker).not_to have_received(:perform) }
-      it { expect(controller).not_to have_received(:ui_event).with(:board_create) }
+      it { expect(response).to have_http_status(:success) }
+      it { expect(response).to render_template(:new) }
     end
   end
 

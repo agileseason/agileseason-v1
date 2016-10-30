@@ -6,8 +6,6 @@ class BoardsController < ApplicationController
   before_action :fetch_board,        only: [:show, :destroy]
   before_action :check_subscription, only: [:show]
 
-  after_action :first_init_issues, only: [:create]
-
   def index
     @boards_lists = [
       {
@@ -44,12 +42,14 @@ class BoardsController < ApplicationController
   end
 
   def create
-    @board = current_user.boards.new(board_params)
-    @board.columns << build_columns
+    @board = Boards::Create.call(
+      user: current_user,
+      board_params: board_params,
+      columns_params: columns_params,
+      encrypted_github_token: encrypted_github_token
+    )
 
-    if @board.save
-      WebhookWorker.perform_async(@board.id, encrypted_github_token)
-      Graphs::IssueStatsWorker.new.perform(@board.id, encrypted_github_token)
+    if @board.persisted?
       ui_event(:board_create)
       redirect_to un(board_url(@board))
     else
@@ -75,19 +75,11 @@ class BoardsController < ApplicationController
       )
   end
 
-  def column_params
+  def columns_params
     params.
       require(:board).
       require(:column).
       permit(name: [])
-  end
-
-  def build_columns
-    order = 0
-    column_params[:name].select(&:present?).map do |name|
-      order += 1
-      Column.new(name: name, order: order, board: @board)
-    end
   end
 
   def check_permissions
@@ -99,9 +91,5 @@ class BoardsController < ApplicationController
 
   def issue_new
     Issue.new(labels: @board_bag.labels.map(&:name))
-  end
-
-  def first_init_issues
-    BoardBag.new(current_user, @board).board_issues
   end
 end
