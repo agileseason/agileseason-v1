@@ -34,7 +34,8 @@ class GithubApi
       current_assignee = issue.try(:assignee).try(:login)
       assignee = nil if current_assignee == assignee
       # NOTE client.update_issue(board.github_id, number, assignee: github_username) doesn't work
-      client.update_issue(board.github_id, number, issue.title, issue.body, assignee: assignee)
+      client.update_issue(board.github_id, number, issue.title,
+        issue.body, assignee: assignee)
     end
 
     def update_issue(board, number, issue_params, issue = issue(board, number))
@@ -60,7 +61,7 @@ class GithubApi
         select { |e| ALLOWED_EVENTS.include?(e.event) }
     end
 
-    private
+  private
 
     def open_issues(board)
       client.issues(board.github_id)
@@ -69,7 +70,9 @@ class GithubApi
     # FIX : Think about this - since: ... (added after cache problem)
     # NOTE : Reason missed issues and broken CFD.
     def closed_issues(board)
-      client.issues(board.github_id, state: :closed, since: 2.month.ago.iso8601)
+      client.
+        issues(board.github_id, state: :closed, since: 2.month.ago.iso8601).
+        reject { |issue| issue.closed_at < board.created_at }
     end
   end
 end

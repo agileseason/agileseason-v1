@@ -1,7 +1,9 @@
 describe GithubApi::Issues do
   let(:service) { GithubApi.new('fake_token', user) }
   let(:user) { create(:user) }
-  let(:board) { build(:board, :with_columns, number_of_columns: 1) }
+  let(:board) do
+    build(:board, :with_columns, number_of_columns: 1, created_at: 1.month.ago)
+  end
   let(:issue) { stub_issue }
 
   describe '#issues' do
@@ -23,13 +25,25 @@ describe GithubApi::Issues do
 
     context 'open and closed' do
       let(:open_issues) { [stub_issue] }
-      let(:closed_issues) { [stub_closed_issue] }
+      let(:closed_issues) { [stub_closed_issue(closed_at: board.created_at)] }
       it { is_expected.to eq open_issues + closed_issues }
+    end
+
+    context 'skip closed issues before board created' do
+      let(:open_issues) { [] }
+      let(:closed_issues) do
+        [stub_closed_issue(closed_at: board.created_at - 1.second)]
+      end
+
+      it { is_expected.to be_empty }
     end
 
     context 'without pull request' do
       let(:open_issues) { [stub_pull_request_issue] }
-      let(:closed_issues) { [stub_pull_request_issue] }
+      let(:closed_issues) do
+        [stub_pull_request_issue(closed_at: board.created_at)]
+      end
+
       it { is_expected.to be_empty }
     end
   end
