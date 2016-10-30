@@ -49,8 +49,9 @@ class BoardsController < ApplicationController
 
     if @board.save
       WebhookWorker.perform_async(@board.id, encrypted_github_token)
+      Graphs::IssueStatsWorker.new.perform(@board.id, encrypted_github_token)
       ui_event(:board_create)
-      redirect_to un board_url(@board)
+      redirect_to un(board_url(@board))
     else
       render 'new'
     end

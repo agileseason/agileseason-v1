@@ -5,7 +5,7 @@ module Cached
     attribute :user, User
     attribute :board, Board
 
-    private
+  private
 
     def fetch
       user.github_api.issues(board).each_with_object({}) do |issue, hash|

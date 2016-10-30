@@ -9,7 +9,7 @@ module Graphs
       update_issue_stats(issues)
     end
 
-    private
+  private
 
     def fetch_issues_to_sync(encrypted_github_token)
       issues = github_api(encrypted_github_token).issues(@board)

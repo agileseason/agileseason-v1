@@ -16,7 +16,7 @@ module Cached
       Cached::UpdateBase.call(objects: fetch, key: key)
     end
 
-    private
+  private
 
     def fetch
       # See inheritors
