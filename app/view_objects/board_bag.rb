@@ -111,7 +111,7 @@ class BoardBag
     @direct_post ||= S3Api.direct_post(user, @board)
   end
 
-  private
+private
 
   def issue_stat_mapper
     @issue_stat_mapper ||= IssueStatsMapper.new(self)
