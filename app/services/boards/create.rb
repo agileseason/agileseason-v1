@@ -26,10 +26,8 @@ module Boards
     end
 
     def build_columns
-      order = 0
-      columns_params[:name].select(&:present?).map do |name|
-        order += 1
-        Column.new(name: name, order: order, board: board)
+      columns_params[:name].select(&:present?).each_with_index.map do |name, index|
+        Column.new(name: name, order: index + 1, board: board)
       end
     end
   end
