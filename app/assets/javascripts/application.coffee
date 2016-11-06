@@ -62,7 +62,6 @@ $(document).on 'turbolinks:load', ->
           window.showModal(issue)
 
   $('.new-issue.ajax-link').on 'click', ->
-    console.log('window.showModalNew')
     window.showModalNew()
 
 show_dashboard = ->
