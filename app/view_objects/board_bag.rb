@@ -111,6 +111,20 @@ class BoardBag
     @direct_post ||= S3Api.direct_post(user, @board)
   end
 
+  # TODO: Remove duplications with IssuePresenter
+  def labels_to_json
+    labels.sort_by(&:name).map do |label|
+      {
+        id: label.name,
+        name: label.name,
+        color: "##{LabelPresenter.new(:label, label).font_color}",
+        backgroundColor: "##{label.color}",
+        checked: false
+      }
+    end.
+      to_json
+  end
+
 private
 
   def issue_stat_mapper

@@ -35,18 +35,6 @@ class IssuePresenter < Keynote::Presenter
     end
   end
 
-  def labels_to_json(board_bag)
-    board_bag.labels.sort_by(&:name).map do |label|
-      {
-        id: label.name,
-        name: label.name,
-        color: "##{LabelPresenter.new(:label, label).font_color}",
-        backgroundColor: "##{label.color}",
-        checked: label_include?(label)
-      }
-    end
-  end
-
   def collaborators_to_json(board_bag)
     board_bag.collaborators.map do |user|
       { login: user.login, avatarUrl: user.avatar_url }
@@ -80,4 +68,19 @@ class IssuePresenter < Keynote::Presenter
       collaborators: collaborators_to_json(board_bag)
     );
   end
+
+private
+
+  def labels_to_json(board_bag)
+    board_bag.labels.sort_by(&:name).map do |label|
+      {
+        id: label.name,
+        name: label.name,
+        color: "##{LabelPresenter.new(:label, label).font_color}",
+        backgroundColor: "##{label.color}",
+        checked: label_include?(label)
+      }
+    end
+  end
+
 end
