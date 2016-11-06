@@ -10,11 +10,17 @@ module IssueStats
       BoardIssue.new(@github_issue, @issue_stat)
     end
 
-    private
+  private
 
     def create_issue
       @github_issue = user.github_api.create_issue(board_bag, issue_info)
       @issue_stat = IssueStatService.create(board_bag, @github_issue)
+      @issue_stat = IssueStats::Painter.call(
+        user: user,
+        board_bag: board_bag,
+        number: @issue_stat.number,
+        color: issue_info.color
+      )
       board_bag.update_cache(@github_issue)
     end
 

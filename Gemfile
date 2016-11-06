@@ -69,6 +69,7 @@ group :development do
   gem 'guard-spring', require: false
   gem 'meta_request'
   gem 'rack-mini-profiler'
+  gem 'rb-readline'
   gem 'sitemap_generator'
   gem 'spring'
   gem 'table_print'

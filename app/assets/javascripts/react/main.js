@@ -3,7 +3,7 @@ $(document).on('turbolinks:load', function () {
     return;
   }
 
-  // Close Issue-Modal by click on container shadow
+  // Close Issue modals by click on container shadow
   $('.issue-modal-container').on('click', function(e) {
     var $target = $(e.target);
     if ($target.is('.issue-modal-container')) {
@@ -19,11 +19,26 @@ $(document).on('turbolinks:load', function () {
 
   var React = require('react');
   var ReactDOM = require('react-dom');
+  var CloseButton = require('./close-button.jsx');
   var Title = require('./title.jsx');
   var ColumnList = require('./column-list.jsx');
   var CommentList = require('./comment-list.jsx');
+  var Label = require('./label.jsx');
   var UploadForm = require('./upload-form.jsx');
   var PopoverOverlay = require('./popover.jsx');
+  var ColorPicker = require('./color-picker.jsx');
+  var IssueModalNew = require('./modal-new.jsx');
+
+  window.IssueModalNewRender = function(labels, submitUrl, columnId) {
+    ReactDOM.render(
+      <IssueModalNew
+        labels={labels}
+        submitUrl={submitUrl}
+        columnId={columnId}
+      />,
+      document.getElementById('issue-modal-new')
+    );
+  }
 
   window.IssueModal = React.createClass({
     getInitialState: function() {
@@ -305,16 +320,6 @@ $(document).on('turbolinks:load', function () {
     }
   });
 
-  var CloseButton = React.createClass({
-    handleClick: function(e) {
-      e.preventDefault();
-      this.props.onButtonClick();
-    },
-    render: function() {
-      return (<div className='close-modal' onClick={this.handleClick}></div>)
-    }
-  });
-
   var DueDateAction = React.createClass({
     getInitialState: function() {
       var date = new Date();
@@ -401,44 +406,10 @@ $(document).on('turbolinks:load', function () {
             onOverlayClick={this.handleEditButtonClick}
           />
           <ColorPicker
-            overlay={this.state.overlay}
+            display={this.state.overlay}
             onColorChange={this.handleColorOnChange}
           />
         </div>
-      );
-    }
-  });
-
-  var ColorPicker = React.createClass({
-    render: function() {
-      // NOTE: First  set: #ffffff #ff8a80 #ffd180 #ffff8d #80d8ff #a7ffeb #ccff90 #e1bee7
-      var colors = [
-        '#ffffff', '#ffcdd2', '#ffe0b2', '#fff59d',
-        '#b3e5fc', '#a7ffeb', '#dcedc8', '#e1bee7'
-      ].map(function(color) {
-        return (
-          <Color key={color} color={color} onColorChange={this.props.onColorChange} />
-        );
-      }.bind(this));
-      return (
-        <div className='color-picker' style={{display: this.props.overlay}}>
-          {colors}
-        </div>
-      );
-    }
-  });
-
-  var Color = React.createClass({
-    handleClick: function() {
-      return this.props.onColorChange(this.props.color);
-    },
-    render: function() {
-      return (
-        <div
-          className='color'
-          onClick={this.handleClick}
-          style={{backgroundColor: this.props.color}}
-        />
       );
     }
   });
@@ -528,31 +499,6 @@ $(document).on('turbolinks:load', function () {
             {labelNodes}
           </div>
         </div>
-      );
-    }
-  });
-
-  var Label = React.createClass({
-    getInitialState: function() {
-      return { checked: this.props.data.checked }
-    },
-    handleChange: function() {
-      this.setState({ checked: this.refs.labelCheckbox.checked });
-      this.props.onLabelChange(this.props.children, this.refs.labelCheckbox.checked);
-    },
-    render: function() {
-      return (
-        <label
-          className='label'
-          style={{backgroundColor: this.props.data.backgroundColor, color: this.props.data.color}}>
-          <input
-            type='checkbox'
-            checked={this.state.checked}
-            ref='labelCheckbox'
-            onChange={this.handleChange}
-          />
-          {this.props.children}
-        </label>
       );
     }
   });

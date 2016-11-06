@@ -25,7 +25,10 @@ class IssuesController < ApplicationController
       board_issue = IssueStats::Creator.new(current_user, @board_bag, @issue).call
       ui_event(:issue_create)
       broadcast_column(board_issue.column)
-      render(partial: 'issue_miniature', locals: { issue: board_issue })
+      render(json: {
+        html: render_to_string(partial: 'issue_miniature',
+          locals: { issue: board_issue })
+      })
     else
       head :ok
     end
@@ -202,7 +205,7 @@ class IssuesController < ApplicationController
   end
 
   def issue_create_params
-    params.require(:issue).permit(:title, labels: [])
+    params.require(:issue).permit(:title, :color, labels: [])
   end
 
   def issue_update_params

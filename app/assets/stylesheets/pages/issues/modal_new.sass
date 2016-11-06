@@ -1,0 +1,48 @@
+@import globals/common
+
+.issue-modal-container
+  .issue-modal-new
+    +issue_popup
+    +box-sizing(border-box)
+    display: block
+    left: 50%
+    margin-bottom: 100px
+    margin-left: -335px
+    outline: none
+    overflow: hidden
+    padding: 34px 24px 24px
+    position: absolute
+    top: 170px
+    width: 672px
+    z-index: 2
+
+    .label-list
+      padding-bottom: 3px
+      .label
+        display: inline-block
+        width: 140px
+
+    textarea
+      +border-radius(0)
+      background: transparent
+      font-size: 24px
+      min-height: 60px
+      max-height: 200px
+      width: 100%
+
+      border: none
+      border-bottom: 1px solid $form-border
+      color: $text-usual
+      outline: none
+      resize: vertical
+
+    .actions
+      border-top: 1px solid $form-border
+      padding: 16px 0px 0px
+
+    .options
+      +ajax_link
+      line-height: 30px
+
+    .options-block
+      padding: 12px 0px 0px

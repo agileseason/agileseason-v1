@@ -18,25 +18,6 @@ describe IssuePresenter do
     end
   end
 
-  describe '#labels_edit_html' do
-    subject { presenter.labels_edit_html(board_bag) }
-    let(:board) { build_stubbed(:board) }
-    let(:board_bag) { BoardBag.new(nil, board) }
-    before do
-      allow(board_bag).to receive(:labels).and_return([label_1, label_2])
-    end
-
-    context 'with labels' do
-      let(:labels) { [label_1, label_2] }
-      it { is_expected.not_to eq '' }
-    end
-
-    context 'without labels' do
-      let(:labels) { nil }
-      it { is_expected.not_to eq '' }
-    end
-  end
-
   describe '#body_empty?' do
     let(:issue) { OpenStruct.new(body: body) }
     subject { presenter.body_empty? }

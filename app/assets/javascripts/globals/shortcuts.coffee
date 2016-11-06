@@ -13,10 +13,6 @@ $(document).keydown (e) ->
       else
         $modal.trigger('click')
 
-    if $('.simple_form.new_issue').is(':visible')
-      # закрыть форму добавления тикета
-      $('.simple_form.new_issue .cancel').trigger 'click'
-
     # закрыть лог событий
     else if $('.b-activities').hasClass 'active'
       $('.overlay', '.b-activities').trigger 'click'
@@ -34,6 +30,5 @@ $(document).keydown (e) ->
     # Для input не игнорируем cmd+enter.
     # Пришлось вешать на body, т.к. если фокус немного сместится,
     # то в event.target будет уже body, а не поля ввода.
-    if $('.simple_form.new_issue').is(':visible')
-      $('.simple_form.new_issue').find('input:submit').click()
-      false
+    if $('#issue-modal-new').is(':visible')
+      $('#issue-modal-new').find('input:submit').click()

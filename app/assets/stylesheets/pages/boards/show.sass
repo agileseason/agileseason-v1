@@ -135,7 +135,6 @@ $image-path: 'pages/p-boards-show'
                     display: none
                     font-size: 11px
                     margin-top: 10px
-
                   &.move
                     a
                       +light_button
@@ -144,10 +143,6 @@ $image-path: 'pages/p-boards-show'
 
                   &.disabled
                     position: relative
-
-                    .text
-                      display: block
-
                     &:after
                       background: rgba(255,255,255,0.7)
                       content: ''
@@ -156,6 +151,8 @@ $image-path: 'pages/p-boards-show'
                       position: absolute
                       top: 0
                       width: 100%
+                    .text
+                      display: block
 
                   &.delimiter
                     border-bottom: 1px solid $form-border
@@ -187,7 +184,6 @@ $image-path: 'pages/p-boards-show'
             margin: -32px 10px 0 0
             padding: 3px 5px
             vertical-align: top
-
             &:hover
               border-color: $orange
 
@@ -198,97 +194,6 @@ $image-path: 'pages/p-boards-show'
 
           .add-user
             display: none
-
-  .create-issue
-    background: rgba(90,90,90,0.3)
-    display: none
-    height: 100%
-    left: 0
-    overflow: auto
-    position: fixed
-    top: 0
-    width: 100%
-    z-index: 1
-
-    form.new_issue
-      +border-radius(8px)
-      +box-shadow(5px 10px 40px -3px rgba(90,80,80,0.3))
-      background: #fff
-      left: 50%
-      margin-bottom: 100px
-      margin-left: -335px
-      outline: none
-      overflow: hidden
-      padding: 0
-      position: absolute
-      top: 170px
-      width: 670px
-
-      .issue_title
-        margin: 15px 25px 0 20px
-
-      textarea
-        +border-radius(0)
-        font-size: 24px
-        min-height: 80px
-        width: 100%
-
-        background: none
-        border: none
-        border-bottom: 1px solid #ddd
-        color: $text-usual
-        margin-bottom: 2px
-        outline: none
-        resize: vertical
-
-    label
-      display: none
-
-    .issue_body
-      display: none
-
-    .submit-area
-      +border-radius(0)
-      background: none
-      border-top: 1px solid $form-border
-      margin: 0 20px 10px
-      padding: 15px 0 5px
-
-      .cancel
-        +ajax_link
-        display: inline-block
-        font-size: 13px
-
-    .labels
-      padding: 0 0 15px 20px
-      text-align: left
-
-      label
-        +border-radius(6px)
-        cursor: pointer
-        display: inline-block
-        margin: 10px 10px 0 0
-        padding: 0px 5px 3px
-        text-align: left
-        width: 140px
-
-        .label-name
-          display: inline-block
-          font-size: 14px
-          overflow: hidden
-          vertical-align: middle
-          white-space: nowrap
-          width: 110px
-
-        .input
-          display: inline-block
-          vertical-align: middle
-
-    .octicon.octicon-triangle-up
-      display: block
-
-    .close-popup
-      +close
 
   .empty-issue
     +border-radius(4px)

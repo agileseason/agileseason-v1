@@ -4,7 +4,8 @@ describe IssueStats::Creator do
   let(:board) { create(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(nil, board) }
   let(:github_api) { double(create_issue: issue) }
-  let(:issue) { stub_issue }
+  let(:issue) { stub_issue(color: color) }
+  let(:color) { '#dcedc8' }
   before { allow(user).to receive(:github_api).and_return(github_api) }
 
   describe '#call' do
@@ -20,6 +21,7 @@ describe IssueStats::Creator do
     its(:updated_at) { is_expected.to eq issue.updated_at }
     its(:closed_at) { is_expected.to eq issue.closed_at }
     its(:column) { is_expected.to eq board.columns.first }
+    its(:color) { is_expected.to eq issue.color }
     it { is_expected.to be_a(BoardIssue) }
 
     context 'behavior' do

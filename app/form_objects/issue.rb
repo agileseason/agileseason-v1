@@ -8,6 +8,7 @@ class Issue
   attribute :title, String
   attribute :body, String
   attribute :labels, Array[String]
+  attribute :color, String
 
   validates :title, presence: true
 
