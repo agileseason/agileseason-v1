@@ -26,6 +26,7 @@ $(document).on('turbolinks:load', function () {
   var Label = require('./label.jsx');
   var UploadForm = require('./upload-form.jsx');
   var PopoverOverlay = require('./popover.jsx');
+  var ColorPicker = require('./color-picker.jsx');
   var IssueModalNew = require('./modal-new.jsx');
 
   window.IssueModalNewRender = function(labels, submitUrl, columnId) {
@@ -405,44 +406,10 @@ $(document).on('turbolinks:load', function () {
             onOverlayClick={this.handleEditButtonClick}
           />
           <ColorPicker
-            overlay={this.state.overlay}
+            display={this.state.overlay}
             onColorChange={this.handleColorOnChange}
           />
         </div>
-      );
-    }
-  });
-
-  var ColorPicker = React.createClass({
-    render: function() {
-      // NOTE: First  set: #ffffff #ff8a80 #ffd180 #ffff8d #80d8ff #a7ffeb #ccff90 #e1bee7
-      var colors = [
-        '#ffffff', '#ffcdd2', '#ffe0b2', '#fff59d',
-        '#b3e5fc', '#a7ffeb', '#dcedc8', '#e1bee7'
-      ].map(function(color) {
-        return (
-          <Color key={color} color={color} onColorChange={this.props.onColorChange} />
-        );
-      }.bind(this));
-      return (
-        <div className='color-picker' style={{display: this.props.overlay}}>
-          {colors}
-        </div>
-      );
-    }
-  });
-
-  var Color = React.createClass({
-    handleClick: function() {
-      return this.props.onColorChange(this.props.color);
-    },
-    render: function() {
-      return (
-        <div
-          className='color'
-          onClick={this.handleClick}
-          style={{backgroundColor: this.props.color}}
-        />
       );
     }
   });

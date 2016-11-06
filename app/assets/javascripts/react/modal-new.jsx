@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var CloseButton = require('./close-button.jsx');
 var Label = require('./label.jsx');
+var ColorPicker = require('./color-picker.jsx');
 
 // IssueModalNew
 module.exports = React.createClass({
@@ -9,13 +10,16 @@ module.exports = React.createClass({
     return {
       title: '',
       selectedLabels: [],
+      selectedColor: '#fff',
       labels: this.props.labels,
+      displayOption: 'none',
       isSubmiting: false,
       submitButtonText: 'Submit new issue'
     };
   },
 
   componentDidMount: function() {
+    this.handleColorOnChange(this.state.selectedColor);
     var $textarea = $(this.refs.textarea);
     setTimeout(function() {
       if (!$textarea.hasClass('elasticable')) {
@@ -72,7 +76,8 @@ module.exports = React.createClass({
       data: {
         issue: {
           title: this.state.title,
-          labels: this.state.selectedLabels
+          labels: this.state.selectedLabels,
+          color: this.state.selectedColor
         }
       },
       cache: false,
@@ -87,6 +92,20 @@ module.exports = React.createClass({
         this.setState({ isSubmiting: false, submitButtonText: 'Submit new issue' })
       }.bind(this)
     });
+  },
+
+  handerOption: function() {
+    if (this.state.displayOption == 'none') {
+      displayOption = 'block';
+    } else {
+      displayOption = 'none';
+    }
+    this.setState({displayOption: displayOption});
+  },
+
+  handleColorOnChange: function(color) {
+    this.setState({selectedColor: color});
+    $('.issue-modal-new').css('background-color', color);
   },
 
   render: function() {
@@ -109,11 +128,16 @@ module.exports = React.createClass({
           {labelNodes}
         </div>
         <div className='actions'>
-          <div className='pull-right'>
-            <a
-              className='button'
-              onClick={this.handleSubmit}>{this.state.submitButtonText}</a>
-          </div>
+          <a className='options' onClick={this.handerOption}>Options</a>
+          <a
+            className='button pull-right'
+            onClick={this.handleSubmit}>{this.state.submitButtonText}</a>
+        </div>
+        <div className='options-block' style={{display: this.state.displayOption}}>
+          <ColorPicker
+            display={'block'}
+            onColorChange={this.handleColorOnChange}
+          />
         </div>
       </div>
     );

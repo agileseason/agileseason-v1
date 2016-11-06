@@ -205,7 +205,7 @@ class IssuesController < ApplicationController
   end
 
   def issue_create_params
-    params.require(:issue).permit(:title, labels: [])
+    params.require(:issue).permit(:title, :color, labels: [])
   end
 
   def issue_update_params
