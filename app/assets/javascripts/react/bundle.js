@@ -1114,7 +1114,7 @@ var ReactDOM = require('react-dom');
 var CloseButton = require('./close-button.jsx');
 var Label = require('./label.jsx');
 
-//window.IssueModalNew = React.createClass({
+// IssueModalNew
 module.exports = React.createClass({
   displayName: 'exports',
 
@@ -1122,9 +1122,12 @@ module.exports = React.createClass({
     return {
       title: '',
       selectedLabels: [],
-      labels: this.props.labels
+      labels: this.props.labels,
+      isSubmiting: false,
+      submitButtonText: 'Submit new issue'
     };
   },
+
   componentDidMount: function () {
     var $textarea = $(this.refs.textarea);
     setTimeout((function () {
@@ -1142,13 +1145,16 @@ module.exports = React.createClass({
       }
     }).bind(this));
   },
+
   // TODO: Remove jquery if issue-modal-container be React component.
   handleCloseButton: function () {
     $('.issue-modal-container').hide();
   },
+
   handleTextChange: function (e) {
     this.setState({ title: e.target.value });
   },
+
   handleLabelChange: function (labelName, checked) {
     selectedLabels = this.state.selectedLabels;
     if (checked) {
@@ -1160,13 +1166,18 @@ module.exports = React.createClass({
       }
     }
     this.setState({ selectedLabels: selectedLabels });
-    console.log(this.state.selectedLabels);
   },
+
   handleSubmit: function () {
+    if (this.state.isSubmiting) {
+      return false;
+    }
     if (this.state.title.trim() == '') {
       $(this.refs.textarea).focus();
       return false;
     }
+
+    this.setState({ isSubmiting: true, submitButtonText: 'Submit new issue...' });
     $.ajax({
       url: this.props.submitUrl,
       dataType: 'json',
@@ -1186,9 +1197,11 @@ module.exports = React.createClass({
       error: (function (xhr, status, err) {
         console.error(status, err.toString());
         alert(err.toString());
+        this.setState({ isSubmiting: false, submitButtonText: 'Submit new issue' });
       }).bind(this)
     });
   },
+
   render: function () {
     var labelNodes = this.props.labels.map((function (label) {
       return React.createElement(
@@ -1219,13 +1232,10 @@ module.exports = React.createClass({
           { className: 'pull-right' },
           React.createElement(
             'a',
-            { className: 'cancel', onClick: this.handleCloseButton },
-            'Cancel'
-          ),
-          React.createElement(
-            'a',
-            { className: 'button', onClick: this.handleSubmit },
-            'Submit new issue'
+            {
+              className: 'button',
+              onClick: this.handleSubmit },
+            this.state.submitButtonText
           )
         )
       )

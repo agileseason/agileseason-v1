@@ -8,6 +8,3 @@
 
   - if can?(:update, @board) && k(column).first?
     .new-issue.ajax-link New issue
-    // TODO: Remove it
-    /.create-issue
-      = render 'issues/new', board_bag: @board_bag, issue: @board_bag.build_issue_new
