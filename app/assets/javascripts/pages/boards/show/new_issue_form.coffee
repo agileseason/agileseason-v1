@@ -1,3 +1,4 @@
+# TODO: Remove after refactoring
 class @NewIssueForm extends View
   initialize: ->
     @$form_content = @$('.create-issue')

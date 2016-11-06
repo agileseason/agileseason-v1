@@ -3,7 +3,7 @@ $(document).on('turbolinks:load', function () {
     return;
   }
 
-  // Close Issue-Modal by click on container shadow
+  // Close Issue modals by click on container shadow
   $('.issue-modal-container').on('click', function(e) {
     var $target = $(e.target);
     if ($target.is('.issue-modal-container')) {
@@ -19,11 +19,21 @@ $(document).on('turbolinks:load', function () {
 
   var React = require('react');
   var ReactDOM = require('react-dom');
+  var CloseButton = require('./close-button.jsx');
   var Title = require('./title.jsx');
   var ColumnList = require('./column-list.jsx');
   var CommentList = require('./comment-list.jsx');
+  var Label = require('./label.jsx');
   var UploadForm = require('./upload-form.jsx');
   var PopoverOverlay = require('./popover.jsx');
+  var IssueModalNew = require('./modal-new.jsx');
+
+  window.IssueModalNewRender = function(labels) {
+    ReactDOM.render(
+      <IssueModalNew labels={labels}/>,
+      document.getElementById('issue-modal-new')
+    );
+  }
 
   window.IssueModal = React.createClass({
     getInitialState: function() {
@@ -305,16 +315,6 @@ $(document).on('turbolinks:load', function () {
     }
   });
 
-  var CloseButton = React.createClass({
-    handleClick: function(e) {
-      e.preventDefault();
-      this.props.onButtonClick();
-    },
-    render: function() {
-      return (<div className='close-modal' onClick={this.handleClick}></div>)
-    }
-  });
-
   var DueDateAction = React.createClass({
     getInitialState: function() {
       var date = new Date();
@@ -532,30 +532,30 @@ $(document).on('turbolinks:load', function () {
     }
   });
 
-  var Label = React.createClass({
-    getInitialState: function() {
-      return { checked: this.props.data.checked }
-    },
-    handleChange: function() {
-      this.setState({ checked: this.refs.labelCheckbox.checked });
-      this.props.onLabelChange(this.props.children, this.refs.labelCheckbox.checked);
-    },
-    render: function() {
-      return (
-        <label
-          className='label'
-          style={{backgroundColor: this.props.data.backgroundColor, color: this.props.data.color}}>
-          <input
-            type='checkbox'
-            checked={this.state.checked}
-            ref='labelCheckbox'
-            onChange={this.handleChange}
-          />
-          {this.props.children}
-        </label>
-      );
-    }
-  });
+  //var Label = React.createClass({
+    //getInitialState: function() {
+      //return { checked: this.props.data.checked }
+    //},
+    //handleChange: function() {
+      //this.setState({ checked: this.refs.labelCheckbox.checked });
+      //this.props.onLabelChange(this.props.children, this.refs.labelCheckbox.checked);
+    //},
+    //render: function() {
+      //return (
+        //<label
+          //className='label'
+          //style={{backgroundColor: this.props.data.backgroundColor, color: this.props.data.color}}>
+          //<input
+            //type='checkbox'
+            //checked={this.state.checked}
+            //ref='labelCheckbox'
+            //onChange={this.handleChange}
+          ///>
+          //{this.props.children}
+        //</label>
+      //);
+    //}
+  //});
 
   var EditButton = React.createClass({
     handleClick: function() {

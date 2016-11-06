@@ -1,6 +1,6 @@
 $(document).on 'turbolinks:load', ->
   return unless document.body.id == 'boards_show'
-  new NewIssueForm $('.board-column:first')
+  # new NewIssueForm $('.board-column:first')
   subscribe_board_update()
   resize_height() # высота борда подгоняется под высоту браузера
 

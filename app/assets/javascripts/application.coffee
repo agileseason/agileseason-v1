@@ -61,6 +61,10 @@ $(document).on 'turbolinks:load', ->
         success: (issue) ->
           window.showModal(issue)
 
+  $('.new-issue.ajax-link').on 'click', ->
+    console.log('window.showModalNew')
+    window.showModalNew()
+
 show_dashboard = ->
   $('.b-menu .left-menu-link').click ->
     $issue_modal = $('.settings-modal')
@@ -78,11 +82,19 @@ show_dashboard = ->
           new Dashboard $('.b-dashboard')
 
 window.showModal = (issue) ->
-  $container = $('.issue-modal-container')
+  $container = $('.issue-modal').parent('.issue-modal-container')
   $container.find('.issue-modal').empty()
   window.IssueModalRender(
     issue
     $container.data('github_full_name'),
     $container.data('readonly') == 'readonly',
+  )
+  $container.show()
+
+window.showModalNew = ->
+  $container = $('.issue-modal-new').parent('.issue-modal-container')
+  $container.find('.issue-modal-new').empty()
+  window.IssueModalNewRender(
+    $container.data('labels'),
   )
   $container.show()
