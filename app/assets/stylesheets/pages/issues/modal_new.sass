@@ -1,9 +1,6 @@
-// TODO: Extract modal base block with container and labels stylesheets
 @import globals/common
 
 .issue-modal-container
-  // NOTE: All data in issues/modal.sass
-
   .issue-modal-new
     +issue_popup
     +box-sizing(border-box)
@@ -19,26 +16,8 @@
     width: 672px
     z-index: 2
 
-    // TODO: extract to base class
-    .close-modal
-      +close
-      right: 0
-      top: 0
-
-    // TODO: extract to base class
-    .label-list
-      .label
-        +border-radius(6px)
-        cursor: pointer
-        display: block
-        margin: 4px 2px
-        padding: 4px 6px
-        input
-          margin-right: 6px
-
     .label-list
       padding-bottom: 3px
-
       .label
         display: inline-block
         width: 140px
