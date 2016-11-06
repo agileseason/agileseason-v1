@@ -111,8 +111,8 @@ class BoardBag
     @direct_post ||= S3Api.direct_post(user, @board)
   end
 
-  # TODO: Remove duplications with IssuePresenter
   def labels_to_json
+    # TODO: Remove duplications with IssuePresenter
     labels.sort_by(&:name).map do |label|
       {
         id: label.name,
