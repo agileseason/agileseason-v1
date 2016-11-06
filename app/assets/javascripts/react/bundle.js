@@ -1258,13 +1258,11 @@ module.exports = React.createClass({
           { className: 'options', onClick: this.handerOption },
           'Options'
         ),
-        React.createElement(
-          'a',
-          {
-            className: 'button pull-right',
-            onClick: this.handleSubmit },
-          this.state.submitButtonText
-        )
+        React.createElement('input', { type: 'submit',
+          className: 'button pull-right',
+          onClick: this.handleSubmit,
+          value: this.state.submitButtonText
+        })
       ),
       React.createElement(
         'div',

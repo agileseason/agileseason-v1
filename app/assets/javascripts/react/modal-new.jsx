@@ -129,9 +129,11 @@ module.exports = React.createClass({
         </div>
         <div className='actions'>
           <a className='options' onClick={this.handerOption}>Options</a>
-          <a
+          <input type='submit'
             className='button pull-right'
-            onClick={this.handleSubmit}>{this.state.submitButtonText}</a>
+            onClick={this.handleSubmit}
+            value={this.state.submitButtonText}
+          />
         </div>
         <div className='options-block' style={{display: this.state.displayOption}}>
           <ColorPicker

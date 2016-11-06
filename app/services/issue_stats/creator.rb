@@ -10,7 +10,7 @@ module IssueStats
       BoardIssue.new(@github_issue, @issue_stat)
     end
 
-    private
+  private
 
     def create_issue
       @github_issue = user.github_api.create_issue(board_bag, issue_info)
