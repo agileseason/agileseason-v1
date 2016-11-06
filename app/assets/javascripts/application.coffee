@@ -96,5 +96,7 @@ window.showModalNew = ->
   $container.find('.issue-modal-new').empty()
   window.IssueModalNewRender(
     $container.data('labels'),
+    $container.data('submit-url'),
+    $container.data('column-id'),
   )
   $container.show()

@@ -1,5 +1,7 @@
 // TODO: Add labels json
 .issue-modal-container [
+    data-submit-url=board_issues_url(@board)
+    data-column-id=@board.columns.first.id
     data-labels="#{[
       { id: 'bug', name: 'bug', color: '#fff', backgroundColor: '#d93f0b', checked: false},
       { id: 'duplicate', name: 'duplicate', color: '#000', backgroundColor: '#ccc', checked: false }

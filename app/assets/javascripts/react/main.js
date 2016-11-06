@@ -28,9 +28,13 @@ $(document).on('turbolinks:load', function () {
   var PopoverOverlay = require('./popover.jsx');
   var IssueModalNew = require('./modal-new.jsx');
 
-  window.IssueModalNewRender = function(labels) {
+  window.IssueModalNewRender = function(labels, submitUrl, columnId) {
     ReactDOM.render(
-      <IssueModalNew labels={labels}/>,
+      <IssueModalNew
+        labels={labels}
+        submitUrl={submitUrl}
+        columnId={columnId}
+      />,
       document.getElementById('issue-modal-new')
     );
   }
@@ -531,31 +535,6 @@ $(document).on('turbolinks:load', function () {
       );
     }
   });
-
-  //var Label = React.createClass({
-    //getInitialState: function() {
-      //return { checked: this.props.data.checked }
-    //},
-    //handleChange: function() {
-      //this.setState({ checked: this.refs.labelCheckbox.checked });
-      //this.props.onLabelChange(this.props.children, this.refs.labelCheckbox.checked);
-    //},
-    //render: function() {
-      //return (
-        //<label
-          //className='label'
-          //style={{backgroundColor: this.props.data.backgroundColor, color: this.props.data.color}}>
-          //<input
-            //type='checkbox'
-            //checked={this.state.checked}
-            //ref='labelCheckbox'
-            //onChange={this.handleChange}
-          ///>
-          //{this.props.children}
-        //</label>
-      //);
-    //}
-  //});
 
   var EditButton = React.createClass({
     handleClick: function() {

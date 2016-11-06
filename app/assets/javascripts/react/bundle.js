@@ -422,8 +422,12 @@ $(document).on('turbolinks:load', function () {
   var PopoverOverlay = require('./popover.jsx');
   var IssueModalNew = require('./modal-new.jsx');
 
-  window.IssueModalNewRender = function (labels) {
-    ReactDOM.render(React.createElement(IssueModalNew, { labels: labels }), document.getElementById('issue-modal-new'));
+  window.IssueModalNewRender = function (labels, submitUrl, columnId) {
+    ReactDOM.render(React.createElement(IssueModalNew, {
+      labels: labels,
+      submitUrl: submitUrl,
+      columnId: columnId
+    }), document.getElementById('issue-modal-new'));
   };
 
   window.IssueModal = React.createClass({
@@ -958,31 +962,6 @@ $(document).on('turbolinks:load', function () {
     }
   });
 
-  //var Label = React.createClass({
-  //getInitialState: function() {
-  //return { checked: this.props.data.checked }
-  //},
-  //handleChange: function() {
-  //this.setState({ checked: this.refs.labelCheckbox.checked });
-  //this.props.onLabelChange(this.props.children, this.refs.labelCheckbox.checked);
-  //},
-  //render: function() {
-  //return (
-  //<label
-  //className='label'
-  //style={{backgroundColor: this.props.data.backgroundColor, color: this.props.data.color}}>
-  //<input
-  //type='checkbox'
-  //checked={this.state.checked}
-  //ref='labelCheckbox'
-  //onChange={this.handleChange}
-  ///>
-  //{this.props.children}
-  //</label>
-  //);
-  //}
-  //});
-
   var EditButton = React.createClass({
     displayName: 'EditButton',
 
@@ -1141,16 +1120,74 @@ module.exports = React.createClass({
 
   getInitialState: function () {
     return {
+      title: '',
+      selectedLabels: [],
       labels: this.props.labels
     };
+  },
+  componentDidMount: function () {
+    var $textarea = $(this.refs.textarea);
+    setTimeout((function () {
+      if (!$textarea.hasClass('elasticable')) {
+        $textarea.addClass('elasticable');
+        $textarea.elastic();
+      }
+      $textarea.focus();
+    }).bind(this), 10);
+
+    $textarea.on('keydown', (function (e) {
+      if (e.keyCode == 13) {
+        this.handleSubmit();
+        return false;
+      }
+    }).bind(this));
   },
   // TODO: Remove jquery if issue-modal-container be React component.
   handleCloseButton: function () {
     $('.issue-modal-container').hide();
   },
+  handleTextChange: function (e) {
+    this.setState({ title: e.target.value });
+  },
   handleLabelChange: function (labelName, checked) {
-    console.log(labelName);
-    console.log(checked);
+    selectedLabels = this.state.selectedLabels;
+    if (checked) {
+      selectedLabels.push(labelName);
+    } else {
+      index = selectedLabels.indexOf(labelName);
+      if (index > -1) {
+        selectedLabels.splice(index, 1);
+      }
+    }
+    this.setState({ selectedLabels: selectedLabels });
+    console.log(this.state.selectedLabels);
+  },
+  handleSubmit: function () {
+    if (this.state.title.trim() == '') {
+      $(this.refs.textarea).focus();
+      return false;
+    }
+    $.ajax({
+      url: this.props.submitUrl,
+      dataType: 'json',
+      type: 'POST',
+      data: {
+        issue: {
+          title: this.state.title,
+          labels: this.state.selectedLabels
+        }
+      },
+      cache: false,
+      success: (function (data) {
+        var columnSelector = '#column_' + this.props.columnId;
+        $(columnSelector + ' .issues').prepend(data.html);
+        this.handleCloseButton();
+      }).bind(this),
+      error: (function (xhr, status, err) {
+        console.error(status, err.toString());
+        alert(err.toString());
+      }).bind(this)
+    });
   },
   render: function () {
     var labelNodes = this.props.labels.map((function (label) {
@@ -1164,10 +1201,33 @@ module.exports = React.createClass({
       'div',
       { className: 'issueModal' },
       React.createElement(CloseButton, { onButtonClick: this.handleCloseButton }),
+      React.createElement('textarea', {
+        ref: 'textarea',
+        placeholder: 'Issue title',
+        onChange: this.handleTextChange
+      }),
       React.createElement(
         'div',
         { className: 'label-list' },
         labelNodes
+      ),
+      React.createElement(
+        'div',
+        { className: 'actions' },
+        React.createElement(
+          'div',
+          { className: 'pull-right' },
+          React.createElement(
+            'a',
+            { className: 'cancel', onClick: this.handleCloseButton },
+            'Cancel'
+          ),
+          React.createElement(
+            'a',
+            { className: 'button', onClick: this.handleSubmit },
+            'Submit new issue'
+          )
+        )
       )
     );
   }

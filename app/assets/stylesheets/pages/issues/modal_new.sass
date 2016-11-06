@@ -8,13 +8,15 @@
     +issue_popup
     +box-sizing(border-box)
     display: block
-    height: auto
-    left: 20px
-    min-height: 490px
-    min-width: 920px
-    padding: 10px 30px 50px
-    top: 90px
-    width: calc(100% - 40px)
+    left: 50%
+    margin-bottom: 100px
+    margin-left: -335px
+    outline: none
+    overflow: hidden
+    padding: 34px 24px 24px
+    position: absolute
+    top: 170px
+    width: 670px
     z-index: 2
 
     // TODO: extract to base class
@@ -22,3 +24,44 @@
       +close
       right: 0
       top: 0
+
+    // TODO: extract to base class
+    .label-list
+      .label
+        +border-radius(6px)
+        cursor: pointer
+        display: block
+        margin: 4px 2px
+        padding: 4px 6px
+        input
+          margin-right: 6px
+
+    .label-list
+      padding-bottom: 3px
+
+      .label
+        display: inline-block
+        width: 140px
+
+    textarea
+      +border-radius(0)
+      font-size: 24px
+      min-height: 60px
+      max-height: 200px
+      width: 100%
+
+      border: none
+      border-bottom: 1px solid #ddd
+      color: $text-usual
+      outline: none
+      resize: vertical
+
+    .actions
+      +border-radius(0)
+      border-top: 1px solid $form-border
+      padding: 16px 0px 0px
+
+      .cancel
+        +ajax_link
+        margin-right: 30px
+        font-size: 13px
