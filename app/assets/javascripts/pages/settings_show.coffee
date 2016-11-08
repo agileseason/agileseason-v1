@@ -7,7 +7,7 @@ $(document).on 'turbolinks:load', ->
 
   $('#board_name').on 'blur', -> $($(@).closest('form')).submit()
 
-  $('.iphone-button').on 'ajax:success', -> change_url $(@)
+  $('.toggle-button').on 'ajax:success', -> change_url $(@)
 
 toggle_column_settings = ($target) ->
   if $target.is('.toggle-settings') ||

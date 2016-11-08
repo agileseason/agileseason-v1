@@ -12,6 +12,9 @@
   font-size: 14px
   outline: none
   padding: 7px 10px
+  appearance: none
+  -webkit-appearance: none
+  -moz-appearance: none
 
   &:focus,
   &:active
@@ -32,10 +35,11 @@
   &.loading + .button-preloader
     +small_button_preloader
 
-=iphone_button
+=toggle_button
   +border-radius(100px)
+  +transition(all ease 0.2s)
   border: none
-  color: #fff
+  color: #fff !important
   cursor: pointer
   display: inline-block
   font-size: 14px
@@ -43,7 +47,6 @@
   padding: 7px 15px 8px 40px
   background: $button
   position: relative
-  +transition(all ease 0.2s)
 
   &:hover
     background: $button-hover
