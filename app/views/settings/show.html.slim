@@ -115,7 +115,7 @@
       .action
         = link_to @board.is_public? ? 'Public board' : 'Private board',
           board_settings_url(@board, @board.danger_settings, danger_settings: { is_public: @board.is_public? ? 'false' : 'true' }),
-          class: "#{@board.is_public? ? 'true' : 'false'} iphone-button is_public",
+          class: "#{@board.is_public? ? 'true' : 'false'} toggle-button is_public",
           remote: true,
           method: :patch
       .setting-label = @board.is_public? ? 'Visible to anyone.' : 'Not visible to anyone.'
