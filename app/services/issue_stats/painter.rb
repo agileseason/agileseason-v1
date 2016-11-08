@@ -3,6 +3,8 @@ module IssueStats
     include Service
     include Virtus.model
 
+    DEFAULT_COLOR = '#ffffff'
+
     attribute :user, User
     attribute :board_bag, BoardBag
     attribute :number, Integer
@@ -17,7 +19,7 @@ module IssueStats
   private
 
     def normolized_color
-      return nil if color.downcase == '#ffffff'
+      return nil if color.downcase == DEFAULT_COLOR
       return color
     end
   end
