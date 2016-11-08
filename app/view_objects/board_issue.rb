@@ -66,7 +66,7 @@ class BoardIssue
       columnId: column_id,
       state: full_state,
       isReady: ready?,
-      color: color || '#fff',
+      color: color || IssueStats::Painter::DEFAULT_COLOR,
       commentCount: comments
     }
   end

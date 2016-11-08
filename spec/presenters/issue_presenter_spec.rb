@@ -1,8 +1,8 @@
 describe IssuePresenter do
   let(:presenter) { present(:issue, issue) }
   let(:issue) { stub_issue(labels: labels) }
-  let(:label_1) { OpenStruct.new(name: 'feature', color: 'fff') }
-  let(:label_2) { OpenStruct.new(name: 'bug', color: 'fff') }
+  let(:label_1) { OpenStruct.new(name: 'bug', color: 'fc2929') }
+  let(:label_2) { OpenStruct.new(name: 'feature', color: '84b6eb') }
   let(:labels) { [] }
 
   describe '#labels_html' do
@@ -10,7 +10,11 @@ describe IssuePresenter do
 
     context 'with labels' do
       let(:labels) { [label_1, label_2] }
-      it { is_expected.to eq '<div class="b-issue-labels"><div class="label" style="background-color:#fff; color:#fff; border: 1px solid #fff">bug</div><div class="label" style="background-color:#fff; color:#fff; border: 1px solid #fff">feature</div></div>' }
+      it do
+        is_expected.to eq(
+          "<div class=\"b-issue-labels\"><div class=\"label\" style=\"background-color:#fc2929; color:#fff; border: 1px solid #fc2929\">bug</div><div class=\"label\" style=\"background-color:#84b6eb; color:#000; border: 1px solid #84b6eb\">feature</div></div>"
+        )
+      end
     end
 
     context 'without labels' do
