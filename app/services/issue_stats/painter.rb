@@ -19,6 +19,7 @@ module IssueStats
   private
 
     def normolized_color
+      return nil if color.nil?
       return nil if color.downcase == DEFAULT_COLOR
       return color
     end

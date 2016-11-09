@@ -24,6 +24,11 @@ describe IssueStats::Painter do
         let(:color) { '#ffffff' }
         its(:color) { is_expected.to be_nil }
       end
+
+      context 'without color' do
+        let(:color) { nil }
+        its(:color) { is_expected.to be_nil }
+      end
     end
   end
 end

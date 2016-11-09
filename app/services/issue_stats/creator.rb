@@ -14,13 +14,7 @@ module IssueStats
 
     def create_issue
       @github_issue = user.github_api.create_issue(board_bag, issue_info)
-      @issue_stat = IssueStatService.create(board_bag, @github_issue)
-      @issue_stat = IssueStats::Painter.call(
-        user: user,
-        board_bag: board_bag,
-        number: @issue_stat.number,
-        color: issue_info.color
-      )
+      @issue_stat = create_issue_stat
       board_bag.update_cache(@github_issue)
     end
 
@@ -41,6 +35,24 @@ module IssueStats
         is_force_sort: true
       )
       Lifetimes::Starter.new(@issue_stat, @issue_stat.column).call
+    end
+
+    def create_issue_stat
+      issue_stat = IssueStatService.build_issue_stat(board_bag,
+        @github_issue, column)
+      issue_stat.save!
+      issue_stat = IssueStats::Painter.call(
+        user: user,
+        board_bag: board_bag,
+        number: issue_stat.number,
+        color: issue_info.color
+      )
+      issue_stat
+    end
+
+    def column
+      return board_bag.default_column if issue_info.column_id.nil?
+      board_bag.columns.find(issue_info.column_id)
     end
   end
 end
