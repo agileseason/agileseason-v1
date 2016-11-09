@@ -6,5 +6,14 @@
     a = column.name
     = render 'columns/wip_badge', column: column
 
-  - if can?(:update, @board) && k(column).first?
-    .new-issue.ajax-link New issue
+  - if can?(:update, @board)
+    - if k(column).first?
+      .issue-new.primary [
+        title="New issue in #{column.name} column"
+        data-column-id=column.id
+      ] New issue
+    - elsif !k(column).last?
+      .issue-new.secondary [
+        title="New issue in #{column.name} column"
+        data-column-id=column.id
+      ] +

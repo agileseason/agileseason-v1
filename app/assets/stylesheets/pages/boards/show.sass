@@ -173,19 +173,29 @@ $image-path: 'pages/p-boards-show'
                     &.name
                       width: 137px
 
-          .new-issue
-            +ajax_link
-            +border-radius(6px)
-            border: 1px solid $button-light
-            color: $button-light
+          .issue-new
             display: inline-block
             float: right
-            font-size: 14px
+            vertical-align: top
             margin: -32px 10px 0 0
             padding: 3px 5px
-            vertical-align: top
-            &:hover
-              border-color: $orange
+
+            &.primary
+              +light_button
+              font-size: 14px
+              &:hover
+                border-color: $orange
+            &.secondary
+              +ajax_link
+              +border-radius(6px)
+              color: rgba(90, 90, 90, 0.3)
+              font-size: 18px
+              margin: -32px 12px 0 0
+              border: none
+              padding: 1px 8px 3px
+              &:hover
+                border: 1px solid $orange
+                margin: -33px 11px 0 0
 
         .issues
           height: 100%

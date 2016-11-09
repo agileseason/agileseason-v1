@@ -20,6 +20,8 @@ class IssuesController < ApplicationController
   end
 
   def create
+    # NOTE : to_h fixed DEPRECATION WARNING: Method to_hash is deprecated
+    #        and will be removed in Rails 5.1
     @issue = Issue.new(issue_create_params.to_h)
     if @issue.valid?
       board_issue = IssueStats::Creator.new(current_user, @board_bag, @issue).call
@@ -192,7 +194,7 @@ class IssuesController < ApplicationController
     render_board_issue_json
   end
 
-  private
+private
 
   def wip_badge_json(column)
     {
@@ -205,7 +207,7 @@ class IssuesController < ApplicationController
   end
 
   def issue_create_params
-    params.require(:issue).permit(:title, :color, labels: [])
+    params.require(:issue).permit(:title, :color, :column_id, labels: [])
   end
 
   def issue_update_params

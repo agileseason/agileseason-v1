@@ -4,8 +4,9 @@ describe IssueStats::Creator do
   let(:board) { create(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(nil, board) }
   let(:github_api) { double(create_issue: issue) }
-  let(:issue) { stub_issue(color: color) }
+  let(:issue) { stub_issue(color: color, column_id: column_id) }
   let(:color) { '#dcedc8' }
+  let(:column_id) { nil }
   before { allow(user).to receive(:github_api).and_return(github_api) }
 
   describe '#call' do
@@ -23,6 +24,13 @@ describe IssueStats::Creator do
     its(:column) { is_expected.to eq board.columns.first }
     its(:color) { is_expected.to eq issue.color }
     it { is_expected.to be_a(BoardIssue) }
+
+    context 'with specific column_id' do
+      let(:issue) { stub_issue(column_id: column_id) }
+      let(:column_id) { board.columns.second.id }
+
+      its(:column) { is_expected.to eq board.columns.second }
+    end
 
     context 'behavior' do
       context 'before' do

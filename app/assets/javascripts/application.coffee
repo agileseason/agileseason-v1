@@ -61,8 +61,8 @@ $(document).on 'turbolinks:load', ->
         success: (issue) ->
           window.showModal(issue)
 
-  $('.new-issue.ajax-link').on 'click', ->
-    window.showModalNew()
+  $('.issue-new').on 'click', (e) ->
+    window.showModalNew($(e.target).data('column-id'))
 
 show_dashboard = ->
   $('.b-menu .left-menu-link').click ->
@@ -90,12 +90,12 @@ window.showModal = (issue) ->
   )
   $container.show()
 
-window.showModalNew = ->
+window.showModalNew = (columnId) ->
   $container = $('.issue-modal-new').parent('.issue-modal-container')
   $container.find('.issue-modal-new').empty()
   window.IssueModalNewRender(
     $container.data('labels'),
     $container.data('submit-url'),
-    $container.data('column-id'),
+    columnId,
   )
   $container.show()

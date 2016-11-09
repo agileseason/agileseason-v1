@@ -9,6 +9,7 @@ class Issue
   attribute :body, String
   attribute :labels, Array[String]
   attribute :color, String
+  attribute :column_id, Integer
 
   validates :title, presence: true
 

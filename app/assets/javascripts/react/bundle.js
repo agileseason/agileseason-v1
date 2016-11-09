@@ -1197,7 +1197,8 @@ module.exports = React.createClass({
         issue: {
           title: this.state.title,
           labels: this.state.selectedLabels,
-          color: this.state.selectedColor
+          color: this.state.selectedColor,
+          column_id: this.props.columnId
         }
       },
       cache: false,
