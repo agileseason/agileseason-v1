@@ -1,6 +1,5 @@
 class IssueStatService
   class << self
-    # NOTE : depricated
     def create(board, github_issue)
       issue_stat = build_issue_stat(board, github_issue)
       issue_stat.save!
@@ -16,10 +15,10 @@ class IssueStatService
       board.issue_stats.find_by(number: number)
     end
 
-    def build_issue_stat(board, github_issue, column = nil)
+    def build_issue_stat(board, github_issue)
       board.issue_stats.build(
         number: github_issue.number,
-        column: column || board.default_column,
+        column: board.default_column,
         created_at: github_issue.created_at,
         updated_at: github_issue.updated_at,
         closed_at: github_issue.closed_at,

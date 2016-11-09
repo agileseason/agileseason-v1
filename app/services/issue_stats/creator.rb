@@ -39,8 +39,10 @@ module IssueStats
 
     def create_issue_stat
       issue_stat = IssueStatService.build_issue_stat(board_bag,
-        @github_issue, column)
+        @github_issue)
+      issue_stat.column = column
       issue_stat.save!
+
       issue_stat = IssueStats::Painter.call(
         user: user,
         board_bag: board_bag,
