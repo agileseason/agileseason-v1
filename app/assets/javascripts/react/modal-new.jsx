@@ -10,7 +10,7 @@ module.exports = React.createClass({
     return {
       title: '',
       selectedLabels: [],
-      selectedColor: '#fff',
+      selectedColor: '#ffffff',
       labels: this.props.labels,
       displayOption: 'none',
       isSubmiting: false,
