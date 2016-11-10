@@ -1,11 +1,15 @@
 $(document).keydown (e) ->
   # Create issue
   if document.body.id == 'boards_show'
-    # c
-    if (e.keyCode == 67)
-      return false if e.shiftKey || e.ctrlKey || e.altKey
-      return false if $('.issue-modal-container:visible').length > 0
-      $('.issue-new.primary').click()
+    # Char c or 1..9
+    if (e.keyCode == 67 || (e.keyCode >= 49 && e.keyCode <= 57))
+      return if e.shiftKey || e.ctrlKey || e.altKey
+      return if $('.issue-modal-container:visible').length > 0
+      if (e.keyCode == 67)
+        columnNumber = 1
+      else
+        columnNumber = e.keyCode - 48
+      $(".column-shortcut-number-#{columnNumber} .issue-new").click()
 
   # Esc
   if (e.keyCode == 27)
