@@ -23,6 +23,7 @@ Look at the our development board for example - [agileseason.com](https://agiles
 - [x] [Issues due dates](https://github.com/agileseason/agileseason/wiki/Issues-due-dates)
 - [x] [Board markdown export](https://github.com/agileseason/agileseason/wiki/Board-Markdown-Export)
 - [x] [Public read-only access](https://github.com/agileseason/agileseason/wiki/Public-read-only-access)
+- [x] [Keyboard shortcuts](https://github.com/agileseason/agileseason/wiki/Keyboard-shortcuts)
 - [ ] Roadmap with milestones
 
 ### Kanban
