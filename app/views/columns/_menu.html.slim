@@ -11,11 +11,11 @@
   - if can?(:update, @board)
     - if k(column).first?
       .issue-new.primary [
-        title="New issue in #{column.name} column"
+        title="New issue in #{column.name} column. Press c or 1"
         data-column-id=column.id
       ] New issue
     - elsif !k(column).last?
       .issue-new.secondary [
-        title="New issue in #{column.name} column"
+        title="New issue in #{column.name} column. Press #{column.order}"
         data-column-id=column.id
       ] +

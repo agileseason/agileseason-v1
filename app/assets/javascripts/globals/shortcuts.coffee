@@ -3,7 +3,7 @@ $(document).keydown (e) ->
   if document.body.id == 'boards_show'
     # Char c or 1..9
     if (e.keyCode == 67 || (e.keyCode >= 49 && e.keyCode <= 57))
-      return if e.shiftKey || e.ctrlKey || e.altKey
+      return if e.shiftKey || e.ctrlKey || e.altKey || e.metaKey
       return if $('.issue-modal-container:visible').length > 0
       if (e.keyCode == 67)
         columnNumber = 1
