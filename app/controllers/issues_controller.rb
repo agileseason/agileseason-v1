@@ -1,12 +1,12 @@
 class IssuesController < ApplicationController
+  include WipBadge
+
   READ_ACTION = [:show, :new, :search, :modal_data].freeze
   # FIX : Need specs.
   before_action :fetch_board, only: READ_ACTION
   before_action :fetch_board_for_update, except: READ_ACTION
 
-  after_action :fetch_cumulative_graph, only: [:create, :move_to,
-    :archive, :unarchive]
-  after_action :fetch_lines_graph, only: [:move_to]
+  after_action :fetch_cumulative_graph, only: [:create, :archive, :unarchive]
   after_action :fetch_control_chart, only: [:close, :reopen]
 
   def show
@@ -73,29 +73,6 @@ class IssuesController < ApplicationController
     issues = github_api.search_issues(@board, params[:query])
     ui_event(:issue_search)
     render partial: 'search_result', locals: { issues: issues, board: @board }
-  end
-
-  def move_to
-    issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
-
-    column_to = @board.columns.find(params[:column_id])
-    column_from = issue_stat.column
-
-    IssueStats::Mover.call(
-      user: current_user,
-      board_bag: @board_bag,
-      column_to: column_to,
-      number: number,
-      is_force_sort: !!params[:force]
-    )
-
-    broadcast_column(column_from, params[:force])
-    broadcast_column(column_to, params[:force])
-
-    issue_stat.reload
-    # NOTE Includes(:issue_stats) to remove N+1 query in view 'columns/wip_badge'.
-    columns = Column.includes(:issue_stats).where(board_id: @board.id)
-    render json: { badges: columns.map { |column| wip_badge_json(column) } }
   end
 
   def close
@@ -196,16 +173,6 @@ class IssuesController < ApplicationController
 
 private
 
-  def wip_badge_json(column)
-    {
-      column_id: column.id,
-      html: render_to_string(
-        partial: 'columns/wip_badge',
-        locals: { column: column }
-      )
-    }
-  end
-
   def issue_create_params
     params.require(:issue).permit(:title, :color, :column_id, labels: [])
   end
@@ -223,16 +190,13 @@ private
       permit(labels: [])
   end
 
+  # TODO: Remove this method after finish refactoring - CumulativeGraphUpdater.
   def fetch_cumulative_graph
     Graphs::CumulativeWorker.perform_async(@board.id, encrypted_github_token)
   end
 
   def fetch_control_chart
     Graphs::IssueStatsWorker.perform_async(@board.id, encrypted_github_token)
-  end
-
-  def fetch_lines_graph
-    Graphs::LinesWorker.perform_async(@board.id, encrypted_github_token)
   end
 
   def render_board_issue_json

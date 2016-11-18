@@ -202,8 +202,8 @@ $(document).on('turbolinks:load', function () {
       });
     },
     handleColumnChange: function(columnId) {
-      var url = this.issueUrl() + '/move_to/' + columnId + '/force';
-      this.request(url, 'GET', {}, function(data) {
+      var url = this.issueUrl() + '/moves/' + columnId + '/force';
+      this.request(url, 'PATCH', {}, function(data) {
         for (var badge in data.badges) {
           window.update_wip_column(badge);
         }

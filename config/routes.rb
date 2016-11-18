@@ -32,7 +32,6 @@ Rails.application.routes.draw do
       get :search, :collection
       get ':number', to: 'issues#show', as: :show
       get ':number/modal_data', to: 'issues#modal_data', as: :modal_data
-      get ':number/move_to/:column_id(/:force)', to: 'issues#move_to', as: :move_to_column
       get ':number/close', to: 'issues#close', as: :close
       get ':number/reopen', to: 'issues#reopen', as: :reopen
       get ':number/archive', to: 'issues#archive', as: :archive
@@ -44,6 +43,7 @@ Rails.application.routes.draw do
       patch ':number/update', to: 'issues#update', as: :update
       patch ':number/update_labels', to: 'issues#update_labels', as: :update_labels
       patch ':number/update_color', to: 'issues#update_color', as: :update_color
+      patch ':number/moves/:column_id(/:force)', to: 'board_issues/moves#update', as: :move_to_column
 
       get ':number/comments', to: 'comments#index', as: :comments
       post ':number/comment', to: 'comments#create', as: :add_comment

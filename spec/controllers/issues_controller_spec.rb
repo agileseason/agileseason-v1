@@ -169,35 +169,6 @@ describe IssuesController do
     it { expect(response).to have_http_status(:success) }
   end
 
-  describe '#move_to' do
-    let(:column_to) { board.columns.first }
-    let(:issue_stat) { create(:issue_stat, number: number, board: board, column: column_to) }
-    let(:request) do
-      get(
-        :move_to,
-        params: {
-          board_github_full_name: board.github_full_name,
-          number: number,
-          column_id: column_to.id
-        }
-      )
-    end
-    before { allow(Cached::Issues).to receive(:call).and_return(issue.number => issue) }
-    before { allow(Boards::DetectRepo).to receive(:call).and_return(stub_repo) }
-    before do
-      allow_any_instance_of(IssueStats::Finder).
-        to receive(:call).
-        and_return(issue_stat)
-    end
-    before { allow(IssueStats::Mover).to receive(:call).and_return(issue_stat) }
-
-    context 'response' do
-      before { request }
-      it { expect(response).to have_http_status(:success) }
-      it { expect(IssueStats::Mover).to have_received(:call) }
-    end
-  end
-
   describe '#search' do
     let(:request) do
       get(
