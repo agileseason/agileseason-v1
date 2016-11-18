@@ -13,11 +13,11 @@ module Activities
 
     def description(issue_url)
       "moved #{link_to_issue(issue_url)} \
-        from #{column_name(:column_from)} \
-        to the #{column_name(:column_to)}"
+        from <span class='column'>#{column_name(:column_from)}</span> \
+        to the <span class='column'>#{column_name(:column_to)}</span>"
     end
 
-    private
+  private
 
     def column_name(key)
       if data && data[key]
