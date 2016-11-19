@@ -31,7 +31,7 @@ Rails.application.routes.draw do
     resource :issues, only: [:new, :create] do
       get :search, :collection
       get ':number', to: 'issues#show', as: :show
-      get ':number/modal_data', to: 'issues#modal_data', as: :modal_data
+      get ':number/modal_data', to: 'board_issues/modals#show', as: :modal_data
       get ':number/close', to: 'issues#close', as: :close
       get ':number/reopen', to: 'issues#reopen', as: :reopen
       get ':number/archive', to: 'issues#archive', as: :archive

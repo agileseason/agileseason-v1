@@ -111,28 +111,6 @@ describe IssuesController do
     end
   end
 
-  describe '#modal_data' do
-    let(:board_issue) { BoardIssue.new(issue, issue_stat) }
-    let(:issue_stat) { create(:issue_stat, number: number, board: board) }
-    let(:request) do
-      get(
-        :modal_data,
-        params: {
-          board_github_full_name: board.github_full_name,
-          number: number
-        }
-      )
-    end
-    before { allow(Boards::DetectRepo).to receive(:call).and_return(stub_repo) }
-    before { allow(github_api).to receive(:labels).and_return([]) }
-    before do
-      allow_any_instance_of(BoardBag).to receive(:issue).and_return(board_issue)
-    end
-    before { request }
-
-    it { expect(response).to have_http_status(:success) }
-  end
-
   describe '#search' do
     let(:request) do
       get(

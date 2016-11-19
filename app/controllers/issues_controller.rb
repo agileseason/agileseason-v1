@@ -3,7 +3,7 @@ class IssuesController < ApplicationController
   include IssueJsonRenderer
   include WipBadge
 
-  READ_ACTION = [:show, :new, :search, :modal_data].freeze
+  READ_ACTION = [:show, :new, :search].freeze
   # FIX : Need specs.
   before_action :fetch_board, only: READ_ACTION
   before_action :fetch_board_for_update, except: READ_ACTION
@@ -45,10 +45,6 @@ class IssuesController < ApplicationController
       format.html { head :ok }
       format.json { render_board_issue_json }
     end
-  end
-
-  def modal_data
-    render json: k(:issue, @board_bag.issue(number)).to_hash(@board_bag)
   end
 
   def search
