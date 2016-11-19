@@ -1,5 +1,6 @@
 class IssuesController < ApplicationController
   include WipBadge
+  include IssueJsonRenderer
 
   READ_ACTION = [:show, :new, :search, :modal_data].freeze
   # FIX : Need specs.
@@ -38,15 +39,6 @@ class IssuesController < ApplicationController
 
   def update
     issue = github_api.update_issue(@board, number, issue_update_params.to_h)
-    @board_bag.update_cache(issue)
-    respond_to do |format|
-      format.html { head :ok }
-      format.json { render_board_issue_json }
-    end
-  end
-
-  def update_labels
-    issue = github_api.update_issue(@board, number, issue_labels_params.to_h)
     @board_bag.update_cache(issue)
     respond_to do |format|
       format.html { head :ok }
@@ -181,15 +173,6 @@ private
     params.require(:issue).permit(:title)
   end
 
-  def issue_labels_params
-    # For variant when uncheck all labels
-    params[:issue] ||= {}
-    params[:issue][:labels] ||= []
-    params.
-      require(:issue).
-      permit(labels: [])
-  end
-
   # TODO: Remove this method after finish refactoring - CumulativeGraphUpdater.
   def fetch_cumulative_graph
     Graphs::CumulativeWorker.perform_async(@board.id, encrypted_github_token)
@@ -197,17 +180,5 @@ private
 
   def fetch_control_chart
     Graphs::IssueStatsWorker.perform_async(@board.id, encrypted_github_token)
-  end
-
-  def render_board_issue_json
-    board_issue = @board_bag.issue(number)
-    render json: {
-      number: number,
-      issue: render_to_string(
-        partial: 'issue_miniature',
-        locals: { issue: board_issue },
-        formats: [:html]
-      )
-    }
   end
 end

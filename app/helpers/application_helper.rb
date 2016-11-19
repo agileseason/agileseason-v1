@@ -21,14 +21,6 @@ module ApplicationHelper
     "https://avatars.githubusercontent.com/#{user.github_username}"
   end
 
-  def number
-    params[:number].to_i
-  end
-
-  def number?
-    params[:number].present?
-  end
-
   def action_full_name
     "#{controller_name}-#{action_name}"
   end

@@ -1,4 +1,6 @@
 class CommentsController < ApplicationController
+  include IssueJsonRenderer
+
   before_action :fetch_board
 
   def index

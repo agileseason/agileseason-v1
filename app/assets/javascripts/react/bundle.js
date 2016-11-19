@@ -560,7 +560,7 @@ $(document).on('turbolinks:load', function () {
       });
       this.setState({ currentLabels: this.getCheckedLabels() });
 
-      var url = this.issueUrl() + '/update_labels';
+      var url = this.issueUrl() + '/labels';
       var params = { issue: { labels: labelsToSave } };
       this.request(url, 'PATCH', params, function (data) {
         this.updateIssueMiniature(data.number, data.issue);
