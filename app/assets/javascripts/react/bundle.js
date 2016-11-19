@@ -626,7 +626,7 @@ $(document).on('turbolinks:load', function () {
     },
     handleColorChange: function (color) {
       this.setState({ currentColor: color });
-      var url = this.issueUrl() + '/update_color';
+      var url = this.issueUrl() + '/colors';
       var params = { issue: { color: color } };
       this.request(url, 'PATCH', params, function (data) {
         this.updateIssueMiniature(data.number, data.issue);

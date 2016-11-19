@@ -42,7 +42,7 @@ Rails.application.routes.draw do
       post ':number/toggle_ready', to: 'issues#toggle_ready', as: :toggle_ready
       patch ':number/update', to: 'issues#update', as: :update
       patch ':number/labels', to: 'board_issues/labels#update', as: :update_labels
-      patch ':number/update_color', to: 'issues#update_color', as: :update_color
+      patch ':number/colors', to: 'board_issues/colors#update', as: :update_color
       patch ':number/moves/:column_id(/:force)', to: 'board_issues/moves#update', as: :move_to_column
 
       get ':number/comments', to: 'comments#index', as: :comments
