@@ -1,5 +1,6 @@
 module BoardIssues
   class MovesController < ApplicationController
+    include Broadcaster
     include CumulativeGraphUpdater
     include IssueJsonRenderer
     include LinesGraphUpdater

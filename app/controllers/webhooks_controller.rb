@@ -1,4 +1,6 @@
 class WebhooksController < ApplicationController
+  include Broadcaster
+
   skip_authorization_check
   skip_before_action :verify_authenticity_token
 

@@ -1,6 +1,7 @@
 class IssuesController < ApplicationController
-  include WipBadge
+  include Broadcaster
   include IssueJsonRenderer
+  include WipBadge
 
   READ_ACTION = [:show, :new, :search, :modal_data].freeze
   # FIX : Need specs.

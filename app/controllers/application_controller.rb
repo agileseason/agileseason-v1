@@ -154,17 +154,4 @@ class ApplicationController < ActionController::Base
   def save_return_url
     session[:return_url] = request.url unless request.url == root_url
   end
-
-  def broadcast(options, force = false)
-    client_id = force ? 'system_message' : current_user.remember_token
-    FayePusher.broadcast_board(
-      client_id,
-      @board,
-      { action: action_name }.merge(options)
-    )
-  end
-
-  def broadcast_column(column, force = false)
-    broadcast({ action: 'update_column', column_id: column.id }, force)
-  end
 end
