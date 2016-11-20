@@ -24,7 +24,11 @@ module Boards
 
     def archive_not_actual_issues
       not_actual_issue_stats.each do |issue_stat|
-        IssueStats::Archiver.new(user, board, issue_stat.number).call
+        IssueStats::Archiver.call(
+          user: user,
+          board_bag: BoardBag.new(user, board),
+          number: issue_stat.number
+        )
       end
     end
 
