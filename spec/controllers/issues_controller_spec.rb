@@ -111,20 +111,6 @@ describe IssuesController do
     end
   end
 
-  describe '#due_date' do
-    let(:date) { '10/11/2015 12:00' }
-    let!(:issue) { create(:issue_stat, board: board, number: 1, due_date_at: nil) }
-    before do
-      post(:due_date, params: {
-        board_github_full_name: board.github_full_name, number: 1, due_date: date
-      })
-    end
-
-    it { expect(response).to have_http_status(:success) }
-    it { expect(response.body).to eq 'Nov 10 12:00' }
-    it { expect(issue.reload.due_date_at).to eq date }
-  end
-
   describe '#toggle_ready' do
     let(:issue_stat) { create :issue_stat, board: board, is_ready: is_ready }
     before do

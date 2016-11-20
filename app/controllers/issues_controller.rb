@@ -46,23 +46,6 @@ class IssuesController < ApplicationController
     end
   end
 
-  def due_date
-    # Not to_time, because adding localtime +03
-    due_date_at = params[:due_date].try(:to_datetime)
-
-    issue_stat = IssueStatService.set_due_date(
-      current_user,
-      @board,
-      number,
-      due_date_at
-    )
-
-    respond_to do |format|
-      format.html { render plain: k(:issue, issue_stat).due_date_at }
-      format.json { render_board_issue_json }
-    end
-  end
-
   def toggle_ready
     issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
     if issue_stat.ready?

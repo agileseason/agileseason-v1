@@ -620,7 +620,7 @@ $(document).on('turbolinks:load', function () {
       }
 
       this.setState({ currentDueDate: currentDueDate });
-      this.request(url, 'POST', { due_date: datetime }, function (data) {
+      this.request(url, 'PATCH', { due_date: datetime }, function (data) {
         this.updateIssueMiniature(data.number, data.issue);
       });
     },
