@@ -1,8 +1,12 @@
 module IssueStats
   class Unarchiver
     include IdentityHelper
+    include Service
+    include Virtus.model
 
-    pattr_initialize :user, :board_bag, :number
+    attribute :user, User
+    attribute :board_bag, BoardBag
+    attribute :number, Integer
 
     def call
       return unless issue_stat.archive?

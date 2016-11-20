@@ -642,8 +642,8 @@ $(document).on('turbolinks:load', function () {
     },
     handleStateButtonClick: function (state) {
       this.setState({ currentState: state });
-      var url = this.issueUrl() + '/' + state;
-      this.request(url, 'GET', {}, function (data) {
+      var url = this.issueUrl() + '/states';
+      this.request(url, 'PATCH', { state: state }, function (data) {
         if (state == 'archive') {
           $('#issues_' + data.number).remove();
         } else {

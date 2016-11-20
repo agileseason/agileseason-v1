@@ -9,7 +9,6 @@ class IssuesController < ApplicationController
   before_action :fetch_board_for_update, except: READ_ACTION
 
   after_action :fetch_cumulative_graph, only: [:create, :archive, :unarchive]
-  after_action :fetch_control_chart, only: [:close, :reopen]
 
   def show
     respond_to do |format|
@@ -41,51 +40,6 @@ class IssuesController < ApplicationController
   def update
     issue = github_api.update_issue(@board, number, issue_update_params.to_h)
     @board_bag.update_cache(issue)
-    respond_to do |format|
-      format.html { head :ok }
-      format.json { render_board_issue_json }
-    end
-  end
-
-  def close
-    issue_stat = IssueStats::Closer.call(
-      user: current_user,
-      board_bag: @board_bag,
-      number: number
-    )
-    broadcast_column(issue_stat.column)
-
-    respond_to do |format|
-      format.html { head :ok }
-      format.json { render_board_issue_json }
-    end
-  end
-
-  def reopen
-    issue_stat = IssueStats::Reopener.new(current_user, @board_bag, number).call
-    broadcast_column(issue_stat.column)
-
-    respond_to do |format|
-      format.html { head :ok }
-      format.json { render_board_issue_json }
-    end
-  end
-
-  def archive
-    issue_stat = IssueStats::Archiver.new(current_user, @board_bag, number).call
-    broadcast_column(issue_stat.column)
-
-    respond_to do |format|
-      format.html { render json: wip_badge_json(issue_stat.column) }
-      format.json { render_board_issue_json }
-    end
-  end
-
-  def unarchive
-    issue_stat = IssueStats::Unarchiver.new(current_user, @board_bag, number).call
-    # NOTE Use force because there is no div#issue-n to update.
-    broadcast_column(issue_stat.column, true)
-
     respond_to do |format|
       format.html { head :ok }
       format.json { render_board_issue_json }
@@ -152,9 +106,5 @@ private
   # TODO: Remove this method after finish refactoring - CumulativeGraphUpdater.
   def fetch_cumulative_graph
     Graphs::CumulativeWorker.perform_async(@board.id, encrypted_github_token)
-  end
-
-  def fetch_control_chart
-    Graphs::IssueStatsWorker.perform_async(@board.id, encrypted_github_token)
   end
 end

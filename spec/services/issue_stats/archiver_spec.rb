@@ -1,5 +1,4 @@
 describe IssueStats::Archiver do
-  let(:archiver) { IssueStats::Archiver.new(user, board_bag, issue.number) }
   let(:user) { build(:user) }
   let(:board) { build(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(nil, board) }
@@ -7,7 +6,13 @@ describe IssueStats::Archiver do
   before { allow(user).to receive(:github_api).and_return(github_api) }
 
   describe '#call' do
-    subject { archiver.call }
+    subject do
+      IssueStats::Archiver.call(
+        user: user,
+        board_bag: board_bag,
+        number: issue.number
+      )
+    end
 
     context 'issue not closed yet' do
       let(:issue) { stub_issue }
@@ -15,14 +20,12 @@ describe IssueStats::Archiver do
 
       context 'behavior' do
         after { subject }
-
         it { expect(Activities::ArchiveActivity).not_to receive(:create_for) }
         it { expect_any_instance_of(Lifetimes::Finisher).not_to receive(:call) }
       end
 
       context 'result' do
         before { subject }
-
         it { is_expected.to be_nil }
         it { expect(issue_stat.reload).not_to be_archived }
       end
@@ -40,7 +43,6 @@ describe IssueStats::Archiver do
 
       context 'result' do
         before { subject }
-
         it { is_expected.not_to be_nil }
         it { expect(issue_stat.reload).to be_archived }
       end

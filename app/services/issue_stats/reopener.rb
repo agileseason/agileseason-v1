@@ -1,8 +1,12 @@
 module IssueStats
   class Reopener
     include IdentityHelper
+    include Service
+    include Virtus.model
 
-    pattr_initialize :user, :board_bag, :number
+    attribute :user, User
+    attribute :board_bag, BoardBag
+    attribute :number, Integer
 
     def call
       github_issue = user.github_api.reopen(board_bag, number)

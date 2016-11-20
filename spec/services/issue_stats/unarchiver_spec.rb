@@ -1,11 +1,16 @@
 describe IssueStats::Unarchiver do
-  let(:unarchiver) { IssueStats::Unarchiver.new(user, board_bag, issue_stat.number) }
   let(:user) { build(:user) }
   let(:board) { build(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(nil, board) }
 
   describe '#call' do
-    subject { unarchiver.call }
+    subject do
+      IssueStats::Unarchiver.call(
+        user: user,
+        board_bag: board_bag,
+        number: issue_stat.number
+      )
+    end
 
     context 'issue not archived yet' do
       let(:issue_stat) { create(:issue_stat, board: board) }

@@ -48,15 +48,17 @@
     - if can?(:update, @board)
       - if issue.open? && can?(:update_issue, @board_bag)
         a.button.close [
-          href=close_board_issues_url(@board, issue.number)
+          href=update_state_board_issues_url(@board, issue.number, state: :close)
           data-type='json'
           data-remote='true'
+          data-method='PATCH'
           title='Click to close'
         ] Close
 
       a.button.archive [
         class="#{:hidden unless issue.closed?}"
-        href=archive_board_issues_url(@board, issue.number)
+        href=update_state_board_issues_url(@board, issue.number, state: :archive)
         data-remote='true'
+        data-method='PATCH'
       ] Archive
 
