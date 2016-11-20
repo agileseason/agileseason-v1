@@ -18,10 +18,20 @@ describe BoardIssues::DueDatesController do
       create(:issue_stat, board: board, due_date_at: nil, column: column)
     end
     let(:column) { board.columns.first }
+    before { allow(IssueStats::DueDater).to receive(:call).and_return(issue_stat) }
     before { subject }
 
     it { expect(response).to have_http_status(:success) }
-    it { expect(issue_stat.reload.due_date_at).to eq date }
     it { expect(controller).to have_received(:broadcast_column).with(column) }
+    it do
+      expect(IssueStats::DueDater).
+        to have_received(:call).
+        with(
+          user: user,
+          board_bag: anything,
+          number: issue_stat.number,
+          due_date_at: date.to_datetime
+        )
+    end
   end
 end
