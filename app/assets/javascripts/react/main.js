@@ -94,7 +94,7 @@ $(document).on('turbolinks:load', function () {
       return stubs;
     },
     fetchIssueMiniature: function() {
-      var url = this.issueUrl() + '/fetch_miniature';
+      var url = this.issueUrl() + '/miniature';
       this.request(url, 'GET', {}, function(data) {
         this.updateIssueMiniature(data.number, data.issue);
       });

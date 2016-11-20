@@ -111,24 +111,6 @@ describe IssuesController do
     end
   end
 
-  describe '#search' do
-    let(:request) do
-      get(
-        :search,
-        params: {
-          board_github_full_name: board.github_full_name,
-          query: 'test'
-        }
-      )
-    end
-    before { allow_any_instance_of(GithubApi).to receive(:search_issues).and_return([]) }
-    before { allow(controller).to receive(:ui_event) }
-    before { request }
-
-    it { expect(response).to render_template(partial: '_search_result') }
-    it { expect(controller).to have_received(:ui_event).with(:issue_search) }
-  end
-
   describe '#close' do
     subject do
       get(
@@ -311,18 +293,5 @@ describe IssuesController do
       it { expect(issue_stat.reload.is_ready).to eq true }
       it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
     end
-  end
-
-  describe '#fetch_miniature' do
-    let(:issue_stat) { create :issue_stat, board: board, number: issue.number }
-    before { allow_any_instance_of(BoardBag).to receive(:issue).and_return(issue) }
-    before do
-      get(:fetch_miniature, params: {
-        board_github_full_name: board.github_full_name,
-        number: issue_stat.number
-      })
-    end
-
-    it { expect(response).to have_http_status(:success) }
   end
 end

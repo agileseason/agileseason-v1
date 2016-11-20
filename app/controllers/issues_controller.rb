@@ -3,7 +3,7 @@ class IssuesController < ApplicationController
   include IssueJsonRenderer
   include WipBadge
 
-  READ_ACTION = [:show, :new, :search].freeze
+  READ_ACTION = [:show, :new].freeze
   # FIX : Need specs.
   before_action :fetch_board, only: READ_ACTION
   before_action :fetch_board_for_update, except: READ_ACTION
@@ -45,12 +45,6 @@ class IssuesController < ApplicationController
       format.html { head :ok }
       format.json { render_board_issue_json }
     end
-  end
-
-  def search
-    issues = github_api.search_issues(@board, params[:query])
-    ui_event(:issue_search)
-    render partial: 'search_result', locals: { issues: issues, board: @board }
   end
 
   def close
@@ -143,10 +137,6 @@ class IssuesController < ApplicationController
       format.html { head :ok }
       format.json { render_board_issue_json }
     end
-  end
-
-  def fetch_miniature
-    render_board_issue_json
   end
 
 private

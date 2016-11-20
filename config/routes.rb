@@ -28,8 +28,11 @@ Rails.application.routes.draw do
       end
     end
 
+    namespace :board_issues do
+      resource :search, only: [:show]
+    end
+
     resource :issues, only: [:new, :create] do
-      get :search, :collection
       get ':number', to: 'issues#show', as: :show
       get ':number/modal_data', to: 'board_issues/modals#show', as: :modal_data
       get ':number/close', to: 'issues#close', as: :close
@@ -37,7 +40,7 @@ Rails.application.routes.draw do
       get ':number/archive', to: 'issues#archive', as: :archive
       get ':number/unarchive', to: 'issues#unarchive', as: :unarchive
       get ':number/assignee/:login', to: 'issues#assignee', as: :assignee
-      get ':number/fetch_miniature', to: 'issues#fetch_miniature', as: :fetch_miniature
+      get ':number/miniature', to: 'board_issues/miniatures#show', as: :miniature
       post ':number/due_date', to: 'issues#due_date', as: :due_date
       post ':number/toggle_ready', to: 'issues#toggle_ready', as: :toggle_ready
       patch ':number/update', to: 'issues#update', as: :update
