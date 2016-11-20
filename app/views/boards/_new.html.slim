@@ -3,23 +3,19 @@
   = f.input :github_name, as: :hidden
   = f.input :github_full_name, as: :hidden
   = f.input :is_private_repo, as: :hidden
+  = f.input :type, as: :hidden, input_html: { value: 'Boards::KanbanBoard' }
 
   .row
     = f.input :name
 
   .row
-    .label Type
-    .type
-      = f.collection_radio_buttons :type, [['Boards::KanbanBoard', 'Kanban'], ['Boards::ScrumBoard', 'Scrum will be on the next release']], :first, :last
-
-  .errors = @board.errors[:columns].first if @board.errors[:columns]
-
-  .row
-    .label Columns
+    label Columns
     ul
       - ['Backlog', 'To do', 'In progress', 'Test', 'Done', '', '', ''].each do |column|
         li = text_field_tag :name, column, name: 'board[column][name][]'
+    .error
+      = @board.errors[:columns].first if @board.errors[:columns]
 
   .submit-area
-    a href="#{boards_url}" Cancel
+    a href=boards_url Cancel
     = f.button :magic_submit, value: 'Create'
