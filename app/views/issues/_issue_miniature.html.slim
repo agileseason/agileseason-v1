@@ -37,26 +37,29 @@
 
   .buttons
     - if can?(:update, @board)
-      = link_to 'ready',
-          toggle_ready_board_issues_url(@board, issue.number),
-          class: "is_ready #{:active if issue.ready?}",
-          remote: true,
-          method: :post
+      a [
+        href=un(toggle_ready_board_issues_url(@board, issue.number))
+        class="is_ready #{:active if issue.ready?}"
+        data-remote='true'
+        data-method='PATCH'
+      ] Ready
     - else
       a class="is_ready #{:active if issue.ready?}" ready
 
     - if can?(:update, @board)
       - if issue.open? && can?(:update_issue, @board_bag)
         a.button.close [
-          href=close_board_issues_url(@board, issue.number)
+          href=update_state_board_issues_url(@board, issue.number, state: :close)
           data-type='json'
           data-remote='true'
+          data-method='PATCH'
           title='Click to close'
         ] Close
 
       a.button.archive [
         class="#{:hidden unless issue.closed?}"
-        href=archive_board_issues_url(@board, issue.number)
+        href=update_state_board_issues_url(@board, issue.number, state: :archive)
         data-remote='true'
+        data-method='PATCH'
       ] Archive
 

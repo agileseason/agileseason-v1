@@ -523,7 +523,7 @@ $(document).on('turbolinks:load', function () {
       return stubs;
     },
     fetchIssueMiniature: function () {
-      var url = this.issueUrl() + '/fetch_miniature';
+      var url = this.issueUrl() + '/miniature';
       this.request(url, 'GET', {}, function (data) {
         this.updateIssueMiniature(data.number, data.issue);
       });
@@ -560,7 +560,7 @@ $(document).on('turbolinks:load', function () {
       });
       this.setState({ currentLabels: this.getCheckedLabels() });
 
-      var url = this.issueUrl() + '/update_labels';
+      var url = this.issueUrl() + '/labels';
       var params = { issue: { labels: labelsToSave } };
       this.request(url, 'PATCH', params, function (data) {
         this.updateIssueMiniature(data.number, data.issue);
@@ -571,7 +571,7 @@ $(document).on('turbolinks:load', function () {
       this.setState({ currentAssignee: assignee });
 
       var url = this.issueUrl() + '/assignee/' + user.login;
-      this.request(url, 'GET', {}, function (data) {
+      this.request(url, 'PATCH', {}, function (data) {
         this.updateIssueMiniature(data.number, data.issue);
       });
     },
@@ -620,21 +620,21 @@ $(document).on('turbolinks:load', function () {
       }
 
       this.setState({ currentDueDate: currentDueDate });
-      this.request(url, 'POST', { due_date: datetime }, function (data) {
+      this.request(url, 'PATCH', { due_date: datetime }, function (data) {
         this.updateIssueMiniature(data.number, data.issue);
       });
     },
     handleColorChange: function (color) {
       this.setState({ currentColor: color });
-      var url = this.issueUrl() + '/update_color';
+      var url = this.issueUrl() + '/colors';
       var params = { issue: { color: color } };
       this.request(url, 'PATCH', params, function (data) {
         this.updateIssueMiniature(data.number, data.issue);
       });
     },
     handleColumnChange: function (columnId) {
-      var url = this.issueUrl() + '/move_to/' + columnId + '/force';
-      this.request(url, 'GET', {}, function (data) {
+      var url = this.issueUrl() + '/moves/' + columnId + '/force';
+      this.request(url, 'PATCH', {}, function (data) {
         for (var badge in data.badges) {
           window.update_wip_column(badge);
         }
@@ -642,8 +642,8 @@ $(document).on('turbolinks:load', function () {
     },
     handleStateButtonClick: function (state) {
       this.setState({ currentState: state });
-      var url = this.issueUrl() + '/' + state;
-      this.request(url, 'GET', {}, function (data) {
+      var url = this.issueUrl() + '/states';
+      this.request(url, 'PATCH', { state: state }, function (data) {
         if (state == 'archive') {
           $('#issues_' + data.number).remove();
         } else {
@@ -655,7 +655,7 @@ $(document).on('turbolinks:load', function () {
       var url = this.issueUrl() + '/toggle_ready';
       this.state.issue.isReady = state;
       this.setState({ issue: this.state.issue });
-      this.request(url, 'POST', {}, function (data) {
+      this.request(url, 'PATCH', {}, function (data) {
         this.updateIssueMiniature(data.number, data.issue);
       });
     },

@@ -6,6 +6,7 @@ class @Issue
   move: (column_id) ->
     $.ajax
       url: @move_to_path(column_id)
+      type: 'PATCH',
       beforeSend: =>
         return if column_id == @node.data('column')
         @node.find('.is_ready').removeClass('active')
@@ -26,4 +27,4 @@ class @Issue
         window.update_wip_column(badge) for badge in data.badges
 
   move_to_path: (column_id) ->
-    "/boards/#{@board_full_name}/issues/#{@number}/move_to/#{column_id}"
+    "/boards/#{@board_full_name}/issues/#{@number}/moves/#{column_id}"

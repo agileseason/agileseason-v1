@@ -4,13 +4,9 @@ describe Boards::Synchronizer do
     let(:user) { build(:user) }
     let(:board) { build(:board, :with_columns, user: user) }
     let(:github_api) { double(issues: issues, issue: issue_1) }
-    let(:archiver) { double(call: issue_stat_1) }
     let(:number) { 1 }
     before do
-      allow(IssueStats::Archiver).
-        to receive(:new).
-        with(user, board, number).
-        and_return(archiver)
+      allow(IssueStats::Archiver).to receive(:call).and_return(issue_stat_1)
     end
     before { user.github_api = github_api }
 
@@ -24,7 +20,7 @@ describe Boards::Synchronizer do
         let(:issues) { [issue_1] }
         let(:issue_1) { stub_issue(number: number) }
 
-        it { expect(archiver).not_to have_received(:call) }
+        it { expect(IssueStats::Archiver).not_to have_received(:call) }
       end
     end
 
@@ -43,7 +39,7 @@ describe Boards::Synchronizer do
       end
       before { subject }
 
-      it { expect(archiver).to have_received(:call) }
+      it { expect(IssueStats::Archiver).to have_received(:call) }
     end
 
     context 'move archived issues to last column' do
@@ -54,11 +50,10 @@ describe Boards::Synchronizer do
       let!(:issue_stat_1) do
         create(:issue_stat, :archived, board: board, column: column_1, number: number)
       end
-
       before { subject }
 
-      it { expect(archiver).not_to have_received(:call) }
       it { expect(issue_stat_1.reload.column).to eq column_2 }
+      it { expect(IssueStats::Archiver).not_to have_received(:call) }
     end
   end
 end

@@ -46,7 +46,9 @@
             span.octicon.octicon-comment-discussion
 
         - if !current_user.guest? && @board_bag.has_read_permission?
-          li.list-item.icon-button.search data-url=un(search_board_issues_url(@board))
+          li.list-item.icon-button.search [
+            data-url=un(board_board_issues_search_url(@board))
+          ]
             .overlay
             .field.search-input title='Search issues'
               input type='text'

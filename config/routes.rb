@@ -28,22 +28,23 @@ Rails.application.routes.draw do
       end
     end
 
+    namespace :board_issues do
+      resource :search, only: [:show]
+    end
+
     resource :issues, only: [:new, :create] do
-      get :search, :collection
       get ':number', to: 'issues#show', as: :show
-      get ':number/modal_data', to: 'issues#modal_data', as: :modal_data
-      get ':number/move_to/:column_id(/:force)', to: 'issues#move_to', as: :move_to_column
-      get ':number/close', to: 'issues#close', as: :close
-      get ':number/reopen', to: 'issues#reopen', as: :reopen
-      get ':number/archive', to: 'issues#archive', as: :archive
-      get ':number/unarchive', to: 'issues#unarchive', as: :unarchive
-      get ':number/assignee/:login', to: 'issues#assignee', as: :assignee
-      get ':number/fetch_miniature', to: 'issues#fetch_miniature', as: :fetch_miniature
-      post ':number/due_date', to: 'issues#due_date', as: :due_date
-      post ':number/toggle_ready', to: 'issues#toggle_ready', as: :toggle_ready
+      get ':number/modal_data', to: 'board_issues/modals#show', as: :modal_data
+      get ':number/miniature', to: 'board_issues/miniatures#show', as: :miniature
+
       patch ':number/update', to: 'issues#update', as: :update
-      patch ':number/update_labels', to: 'issues#update_labels', as: :update_labels
-      patch ':number/update_color', to: 'issues#update_color', as: :update_color
+      patch ':number/labels', to: 'board_issues/labels#update', as: :update_labels
+      patch ':number/colors', to: 'board_issues/colors#update', as: :update_color
+      patch ':number/states', to: 'board_issues/states#update', as: :update_state
+      patch ':number/assignee/:login', to: 'board_issues/assignees#update', as: :assignee
+      patch ':number/due_date', to: 'board_issues/due_dates#update', as: :due_date
+      patch ':number/toggle_ready', to: 'board_issues/readies#update', as: :toggle_ready
+      patch ':number/moves/:column_id(/:force)', to: 'board_issues/moves#update', as: :move_to_column
 
       get ':number/comments', to: 'comments#index', as: :comments
       post ':number/comment', to: 'comments#create', as: :add_comment

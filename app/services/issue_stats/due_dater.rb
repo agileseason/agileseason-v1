@@ -1,5 +1,5 @@
 module IssueStats
-  class Assigner
+  class DueDater
     include IdentityHelper
     include Service
     include Virtus.model
@@ -7,12 +7,13 @@ module IssueStats
     attribute :user, User
     attribute :board_bag, BoardBag
     attribute :number, Integer
-    attribute :login, String
+    attribute :due_date_at, DateTime
 
     def call
-      github_issue = user.github_api.assign(board_bag, number, login)
-      board_bag.update_cache(github_issue)
-      BoardIssue.new(github_issue, issue_stat)
+      issue_stat.update(due_date_at: due_date_at)
+      Activities::ChangeDueDate.create_for(issue_stat, user)
+      issue_stat
     end
   end
 end
+

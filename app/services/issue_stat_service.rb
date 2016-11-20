@@ -24,12 +24,5 @@ class IssueStatService
         closed_at: github_issue.closed_at,
       )
     end
-
-    def set_due_date(user, board, number, due_date_at)
-      issue_stat = find(board, number)
-      issue_stat.update(due_date_at: due_date_at)
-      Activities::ChangeDueDate.create_for(issue_stat, user)
-      issue_stat
-    end
   end
 end
