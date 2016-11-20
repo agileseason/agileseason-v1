@@ -40,19 +40,20 @@ Look at the our development board for example - [agileseason.com](https://agiles
 1. Clone this repository `git clone git@github.com:agileseason/agileseason.git ~/PROJECTS_DIR/agileseason`
 2. Install [pow](http://pow.cx/) and set up app `cd ~/.pow && ln -s ~/PROJECTS_DIR/agileseason`
 3. Create databases:
-  ```shell
-    1. $ psql -d postgres
-    2. postgres=# create user agileseason_development with password 'agileseason';
-    3. postgres=# alter user agileseason_development createdb;
-    4. postgres=# create user agileseason_test with password 'agileseason';
-    5. postgres=# alter user agileseason_test createdb;
-    6. $ rails db:create
-    7. $ rails db:migrate
-    8. $ npm install --save react react-dom babelify babel-preset-react
-    9. $ browserify -t [ babelify --presets [ react ] ] app/assets/javascripts/react/main.js -o app/assets/javascripts/react/bundle.js
-  ```
-4. Run Sidekiq `bundle exec sidekiq`
-5. You will now have Agile Season running on `http://agileseason.dev`.
+
+   ```
+    $ psql -d postgres
+    postgres=# create user agileseason_development with password 'agileseason';
+    postgres=# alter user agileseason_development createdb;
+    postgres=# create user agileseason_test with password 'agileseason';
+    postgres=# alter user agileseason_test createdb;
+    $ rails db:create
+    $ rails db:migrate
+    ```
+4. `$ npm install --save react react-dom babelify babel-preset-react`
+5. `$ browserify -t [ babelify --presets [ react ] ] app/assets/javascripts/react/main.js -o  app/assets/javascripts/react/bundle.js`
+6. Run Sidekiq `bundle exec sidekiq`
+7. You will now have Agile Season running on `http://agileseason.dev`.
 
 ### Dependencies
   1. `psql`
