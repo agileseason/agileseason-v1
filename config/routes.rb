@@ -36,7 +36,6 @@ Rails.application.routes.draw do
       get ':number', to: 'issues#show', as: :show
       get ':number/modal_data', to: 'board_issues/modals#show', as: :modal_data
 
-      get ':number/assignee/:login', to: 'issues#assignee', as: :assignee
       get ':number/miniature', to: 'board_issues/miniatures#show', as: :miniature
       post ':number/due_date', to: 'issues#due_date', as: :due_date
       post ':number/toggle_ready', to: 'issues#toggle_ready', as: :toggle_ready
@@ -45,6 +44,7 @@ Rails.application.routes.draw do
       patch ':number/labels', to: 'board_issues/labels#update', as: :update_labels
       patch ':number/colors', to: 'board_issues/colors#update', as: :update_color
       patch ':number/states', to: 'board_issues/states#update', as: :update_state
+      patch ':number/assignee/:login', to: 'board_issues/assignees#update', as: :assignee
       patch ':number/moves/:column_id(/:force)', to: 'board_issues/moves#update', as: :move_to_column
 
       get ':number/comments', to: 'comments#index', as: :comments

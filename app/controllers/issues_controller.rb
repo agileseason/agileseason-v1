@@ -46,19 +46,6 @@ class IssuesController < ApplicationController
     end
   end
 
-  def assignee
-    IssueStats::Assigner.new(
-      current_user,
-      @board_bag,
-      number,
-      params[:login]
-    ).call
-
-    respond_to do |format|
-      format.json { render_board_issue_json }
-    end
-  end
-
   def due_date
     # Not to_time, because adding localtime +03
     due_date_at = params[:due_date].try(:to_datetime)

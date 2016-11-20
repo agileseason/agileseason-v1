@@ -1,5 +1,4 @@
 describe IssueStats::Assigner do
-  let(:assigner) { IssueStats::Assigner.new(user, board_bag, issue.number, login) }
   let(:user) { build(:user) }
   let(:board) { build(:board, :with_columns, user: user) }
   let(:board_bag) { BoardBag.new(user, board) }
@@ -11,15 +10,25 @@ describe IssueStats::Assigner do
   before { create(:issue_stat, number: issue.number, board: board) }
 
   describe '#call' do
-    subject { assigner.call }
+    subject do
+      IssueStats::Assigner.call(
+        user: user,
+        board_bag: board_bag,
+        number: issue.number,
+        login: login
+      )
+    end
 
     it { is_expected.not_to be_nil }
 
     context 'behavior' do
-      after { subject }
+      before { subject }
 
-      it { expect(github_api).to receive(:assign).with(board_bag, issue.number, login) }
-      it { expect(board_bag).to receive(:update_cache).with(issue) }
+      it do
+        expect(github_api).
+          to have_received(:assign).with(board_bag, issue.number, login)
+      end
+      it { expect(board_bag).to have_received(:update_cache).with(issue) }
     end
   end
 end

@@ -142,7 +142,7 @@ $(document).on('turbolinks:load', function () {
       this.setState({ currentAssignee: assignee });
 
       var url = this.issueUrl() + '/assignee/' + user.login;
-      this.request(url, 'GET', {}, function(data) {
+      this.request(url, 'PATCH', {}, function(data) {
         this.updateIssueMiniature(data.number, data.issue);
       });
     },
