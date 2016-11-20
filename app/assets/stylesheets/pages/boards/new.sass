@@ -1,28 +1,22 @@
+@import globals/variables
+
 .p-boards-new,
 .p-boards-create
-  .new_board
+  form
     margin: 20px 0
+    .error
+      margin-left: 10px
+      color: $error
 
-    .board_name
-      label
-        width: 70px
+    .row
+      margin-bottom: 16px
 
-    .columns
-      display: table-row
+      input[type="text"]
+        padding: 4px 6px
 
-      .type
-        label[for='board_type_boardsscrumboard']
-          color: #888
-
-    .label-column
-      display: table-cell
-      width: 80px
-
-    ul
-      display: table-cell
-      list-style: none
-      margin: 0
-      padding: 0
-
-      li
-        margin-bottom: 10px
+      ul
+        display: inline-block
+        list-style: none
+        margin: 0
+        padding: 0
+        vertical-align: top
