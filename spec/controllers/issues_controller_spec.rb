@@ -110,30 +110,4 @@ describe IssuesController do
       end
     end
   end
-
-  describe '#toggle_ready' do
-    let(:issue_stat) { create :issue_stat, board: board, is_ready: is_ready }
-    before do
-      post(:toggle_ready, params: {
-        board_github_full_name: board.github_full_name,
-        number: issue_stat.number
-      })
-    end
-
-    context 'true' do
-      let(:is_ready) { true }
-
-      it { expect(response).to have_http_status(:success) }
-      it { expect(issue_stat.reload.is_ready).to eq false }
-      it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
-    end
-
-    context 'flase' do
-      let(:is_ready) { false }
-
-      it { expect(response).to have_http_status(:success) }
-      it { expect(issue_stat.reload.is_ready).to eq true }
-      it { expect(controller).to have_received(:broadcast_column).with(issue_stat.column) }
-    end
-  end
 end

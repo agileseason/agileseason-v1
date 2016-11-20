@@ -224,7 +224,7 @@ $(document).on('turbolinks:load', function () {
       var url = this.issueUrl() + '/toggle_ready';
       this.state.issue.isReady = state;
       this.setState({issue: this.state.issue});
-      this.request(url, 'POST', {}, function(data) {
+      this.request(url, 'PATCH', {}, function(data) {
         this.updateIssueMiniature(data.number, data.issue);
       });
     },

@@ -35,9 +35,7 @@ Rails.application.routes.draw do
     resource :issues, only: [:new, :create] do
       get ':number', to: 'issues#show', as: :show
       get ':number/modal_data', to: 'board_issues/modals#show', as: :modal_data
-
       get ':number/miniature', to: 'board_issues/miniatures#show', as: :miniature
-      post ':number/toggle_ready', to: 'issues#toggle_ready', as: :toggle_ready
 
       patch ':number/update', to: 'issues#update', as: :update
       patch ':number/labels', to: 'board_issues/labels#update', as: :update_labels
@@ -45,6 +43,7 @@ Rails.application.routes.draw do
       patch ':number/states', to: 'board_issues/states#update', as: :update_state
       patch ':number/assignee/:login', to: 'board_issues/assignees#update', as: :assignee
       patch ':number/due_date', to: 'board_issues/due_dates#update', as: :due_date
+      patch ':number/toggle_ready', to: 'board_issues/readies#update', as: :toggle_ready
       patch ':number/moves/:column_id(/:force)', to: 'board_issues/moves#update', as: :move_to_column
 
       get ':number/comments', to: 'comments#index', as: :comments

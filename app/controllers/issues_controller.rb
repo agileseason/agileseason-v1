@@ -1,14 +1,13 @@
 class IssuesController < ApplicationController
   include Broadcaster
   include IssueJsonRenderer
-  include WipBadge
 
   READ_ACTION = [:show, :new].freeze
   # FIX : Need specs.
   before_action :fetch_board, only: READ_ACTION
   before_action :fetch_board_for_update, except: READ_ACTION
 
-  after_action :fetch_cumulative_graph, only: [:create, :archive, :unarchive]
+  after_action :fetch_cumulative_graph, only: [:create]
 
   def show
     respond_to do |format|
@@ -40,23 +39,6 @@ class IssuesController < ApplicationController
   def update
     issue = github_api.update_issue(@board, number, issue_update_params.to_h)
     @board_bag.update_cache(issue)
-    respond_to do |format|
-      format.html { head :ok }
-      format.json { render_board_issue_json }
-    end
-  end
-
-  def toggle_ready
-    issue_stat = IssueStats::Finder.new(current_user, @board_bag, number).call
-    if issue_stat.ready?
-      IssueStats::Unready.call(user: current_user, board_bag: @board_bag,
-        number: number)
-    else
-      IssueStats::Ready.call(user: current_user, board_bag: @board_bag,
-        number: number)
-    end
-    broadcast_column(issue_stat.column)
-
     respond_to do |format|
       format.html { head :ok }
       format.json { render_board_issue_json }
