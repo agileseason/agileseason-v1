@@ -55,6 +55,9 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    appsignal (2.0.4)
+      rack
+      thread_safe
     arel (7.1.2)
     attr_extras (5.0.0)
     awesome_print (1.7.0)
@@ -457,6 +460,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  appsignal
   attr_extras
   awesome_print
   aws-sdk
