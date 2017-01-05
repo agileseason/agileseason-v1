@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-# gem 'appsignal'
+gem 'appsignal'
 gem 'attr_extras'
 gem 'awesome_print'
 gem 'aws-sdk'
@@ -8,8 +8,8 @@ gem 'browser-timezone-rails', git: 'https://github.com/blackchestnut/browser-tim
 gem 'cancancan'
 gem 'coffee-rails'
 gem 'compass-rails'
-gem 'dalli'
 gem 'd3_rails'
+gem 'dalli'
 gem 'enumerize'
 gem 'faye'
 gem 'intercom-rails'
