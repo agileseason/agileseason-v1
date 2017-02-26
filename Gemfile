@@ -78,7 +78,7 @@ end
 group :development, :test do
   gem 'database_cleaner'
   gem 'dotenv-rails'
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', '~> 4.7.0'
   gem 'rb-fsevent'
   gem 'rspec-collection_matchers'
   gem 'rspec-its'
@@ -88,7 +88,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'codeclimate-test-reporter', require: nil
+  gem 'codeclimate-test-reporter', '~> 1.0.0'
   gem 'docile', git: 'https://github.com/blackchestnut/docile.git'
+  gem 'simplecov'
   gem 'timecop'
 end
