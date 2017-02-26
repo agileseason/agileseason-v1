@@ -1,5 +1,6 @@
 .board [
     data-github_full_name="#{@board_bag.github_full_name}"
+    data-url="#{un board_url(@board)}"
 
     data-faye-on="#{FayePusher.on?}"
     data-faye-url="#{FayePusher::URL}"
@@ -13,6 +14,7 @@
 
   = render partial: 'issues/modal'
   = render partial: 'issues/modal_new'
+  = render partial: 'boards/loading'
 
   .board-columns
     - @board_bag.columns.each do |column|

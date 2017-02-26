@@ -25,10 +25,13 @@ window.subscribe_board_update = ->
         ), 1000
 
     $board.on 'faye:disconnect', ->
-      # TODO remove this log after test faye
       console.log "[faye client] lastConnectedAt: #{window.faye.lastConnectedAt}, now: #{new Date()}"
-      timeout = 1000 * 60 * 30
-      $('.alert-timeout').show() if window.faye.lastActionAt() < new Date() - timeout
+      timeout = 1000 * 60 * 20
+      if window.faye.lastActionAt() < new Date() - timeout
+        if $('#issue-modal').is(':hidden')
+          $('.loading').removeClass('hidden')
+          # window.location.reload() - Remove if Turbolinks.visit will be work fine.
+          Turbolinks.visit($board.data('url'))
 
-  catch err
-    console.log err
+  catch e
+    console.error e
