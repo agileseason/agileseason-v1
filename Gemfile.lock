@@ -524,6 +524,7 @@ DEPENDENCIES
   sidekiq-unique-jobs
   simple_form
   simple_form-magic_submit
+  simplecov
   sinatra
   sitemap_generator
   slim-rails

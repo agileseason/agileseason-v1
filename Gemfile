@@ -88,7 +88,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'codeclimate-test-reporter', require: nil
+  gem 'codeclimate-test-reporter'
   gem 'docile', git: 'https://github.com/blackchestnut/docile.git'
+  gem 'simplecov'
   gem 'timecop'
 end
