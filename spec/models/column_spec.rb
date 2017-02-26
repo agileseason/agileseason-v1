@@ -1,8 +1,12 @@
 describe Column do
   let(:board) { create(:board, :with_columns, number_of_columns: 3) }
 
+  describe 'relations' do
+    it { is_expected.to belong_to(:board) }
+    it { is_expected.to have_many(:issue_stats).dependent(:destroy) }
+  end
+
   describe 'validations' do
-    subject { Column.new }
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :board }
   end

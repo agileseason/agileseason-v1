@@ -28,7 +28,6 @@ describe IssueStats::Mover do
       let(:column_to) { board.columns.first }
 
       its(:column) { is_expected.to eq column_from }
-      it { expect { subject }.to change(Lifetime, :count).by(0) }
       it { expect { subject }.to change(Activity, :count).by(0) }
 
       context 'behavior' do
@@ -46,7 +45,6 @@ describe IssueStats::Mover do
 
       let(:is_force_sort) { false }
 
-      it { expect { subject }.to change(Lifetime, :count).by(1) }
       it { expect { subject }.to change(Activity, :count).by(1) }
       its(:column) { is_expected.to eq column_to }
 

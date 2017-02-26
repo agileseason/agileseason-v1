@@ -1,4 +1,9 @@
-RSpec.describe IssueStat, type: :model do
+describe IssueStat do
+  describe 'relations' do
+    it { is_expected.to belong_to(:board) }
+    it { is_expected.to belong_to(:column) }
+  end
+
   describe 'validations' do
     subject { IssueStat.new }
     it { is_expected.to validate_presence_of :number }

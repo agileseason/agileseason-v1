@@ -13,8 +13,6 @@ module IssueStats
     def call
       if column_will_change?
         Activities::ColumnChangedActivity.create_for(issue_stat, column_from, column_to, user)
-        Lifetimes::Finisher.new(issue_stat).call
-        Lifetimes::Starter.new(issue_stat, column_to).call
         IssueStats::Unready.call(user: user, board_bag: board_bag, number: number)
         issue_stat.update!(column: column_to)
       end

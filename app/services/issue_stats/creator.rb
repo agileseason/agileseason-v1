@@ -34,7 +34,6 @@ module IssueStats
         number: @issue_stat.number,
         is_force_sort: true
       )
-      Lifetimes::Starter.new(@issue_stat, @issue_stat.column).call
     end
 
     def create_issue_stat
