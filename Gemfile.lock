@@ -477,7 +477,7 @@ DEPENDENCIES
   capistrano-rails
   capistrano-rbenv
   capistrano-sidekiq
-  codeclimate-test-reporter
+  codeclimate-test-reporter (~> 1.0.0)
   coffee-rails
   compass-rails
   d3_rails
