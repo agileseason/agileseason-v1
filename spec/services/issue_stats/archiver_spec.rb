@@ -21,7 +21,6 @@ describe IssueStats::Archiver do
       context 'behavior' do
         after { subject }
         it { expect(Activities::ArchiveActivity).not_to receive(:create_for) }
-        it { expect_any_instance_of(Lifetimes::Finisher).not_to receive(:call) }
       end
 
       context 'result' do
@@ -38,7 +37,6 @@ describe IssueStats::Archiver do
       context 'behavior' do
         after { subject }
         it { expect(Activities::ArchiveActivity).to receive(:create_for) }
-        it { expect_any_instance_of(Lifetimes::Finisher).to receive(:call) }
       end
 
       context 'result' do

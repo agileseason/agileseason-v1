@@ -11,7 +11,6 @@ describe IssueStats::Creator do
 
   describe '#call' do
     subject { creator.call }
-    before { allow_any_instance_of(Lifetimes::Starter).to receive(:call) }
     before { allow(IssueStats::AutoAssigner).to receive(:call) }
     before { allow(IssueStats::Sorter).to receive(:call) }
     before { allow(board_bag).to receive(:update_cache) }
@@ -33,19 +32,12 @@ describe IssueStats::Creator do
     end
 
     context 'behavior' do
-      context 'before' do
-        before { subject }
+      before { subject }
 
-        it { expect(IssueStats::AutoAssigner).to have_received(:call) }
-        it { expect(IssueStats::Sorter).to have_received(:call) }
-        it { expect(github_api).to have_received(:create_issue).with(board_bag, issue) }
-        it { expect(board_bag).to have_received(:update_cache).with(issue) }
-      end
-
-      context 'after' do
-        after { subject }
-        it { expect_any_instance_of(Lifetimes::Starter).to receive(:call) }
-      end
+      it { expect(IssueStats::AutoAssigner).to have_received(:call) }
+      it { expect(IssueStats::Sorter).to have_received(:call) }
+      it { expect(github_api).to have_received(:create_issue).with(board_bag, issue) }
+      it { expect(board_bag).to have_received(:update_cache).with(issue) }
     end
   end
 end

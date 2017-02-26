@@ -17,9 +17,7 @@ describe IssueStats::Unarchiver do
 
       context 'behavior' do
         after { subject }
-
         it { expect(Activities::UnarchiveActivity).not_to receive(:create_for) }
-        it { expect_any_instance_of(Lifetimes::Starter).not_to receive(:call) }
       end
     end
 
@@ -28,9 +26,7 @@ describe IssueStats::Unarchiver do
 
       context 'behavior' do
         after { subject }
-
         it { expect(Activities::UnarchiveActivity).to receive(:create_for) }
-        it { expect_any_instance_of(Lifetimes::Starter).to receive(:call) }
       end
 
       context 'result' do
