@@ -1,6 +1,5 @@
 #= require jquery
 #= require jquery-ui
-#= require jquery-ui/datepicker
 #= require jquery_ujs
 
 # ---  For clientside timezone  ---
