@@ -9,11 +9,12 @@ module.exports = React.createClass({
     return { display: 'block' }
   },
   componentDidMount: function() {
-    var globalContainer = $('.issue-modal-container');
-    var url = globalContainer.data('direct_post_url')
-    var form_data = globalContainer.data('direct_post_form_data')
+    const globalContainer = $('.issue-modal-container');
+    const url = globalContainer.data('direct_post_url')
+    const form_data = globalContainer.data('direct_post_form_data')
+    const store_key = form_data['key'];
+    const $input = $(this.refs.uploadFile);
 
-    var $input = $(this.refs.uploadFile);
     $input.fileupload({
       fileInput: $input,
       url: url,
@@ -30,16 +31,21 @@ module.exports = React.createClass({
         }
         this.setState({labelText: 'Please wait...'});
       }.bind(this),
+
       add: function(e, data) {
         types = /(\.|\/)(gif|jpe?g|png)$/i;
-        file = data.files[0]
+        file = data.files[0];
         if (types.test(file.type) || types.test(file.name)) {
+          const sanitizedFileName = file.name.replace(/\s+/g, '-');
+          form_data['key'] = store_key.replace('${filename}', sanitizedFileName);
+          data.formData = form_data;
+
           data.submit();
         } else {
           this.setState({labelText: 'Unfortunately, we don’t support that file type. Try again with a PNG, GIF, JPG'});
-          return;
         }
       }.bind(this),
+
       done: function(e, data) {
         if (this.isNeedSkip($(e.target))) {
           return;
@@ -48,12 +54,14 @@ module.exports = React.createClass({
         this.uploadDone(this.getImageUrl(url, key));
         this.setState({labelText: 'Attach images'});
       }.bind(this),
+
       fail: function(e, data) {
         console.error('Fail file upload!');
         this.setState({labelText: 'Attach images [Error. Please try again later.]'});
       }.bind(this)
     });
   },
+
   getImageUrl: function(url, key) {
     var lengthOfHash = 37;
     var name = key.substring(0, key.length - lengthOfHash)
@@ -71,7 +79,8 @@ module.exports = React.createClass({
   uploadDone: function(imageUrl) {
     this.props.onUpload(imageUrl);
   },
-  render: function() {
+
+  render() {
     return (
       <form className='directUpload' style={{display: this.props.display}}>
         <a>{this.state.labelText}</a>
