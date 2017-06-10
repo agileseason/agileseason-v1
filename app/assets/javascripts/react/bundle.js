@@ -1558,6 +1558,7 @@ module.exports = React.createClass({
     var name = key.substring(0, key.length - lengthOfHash);
     return '![' + name + '](' + url + '/' + key + ')';
   },
+
   isNeedSkip: function ($input) {
     if (this.state.display == 'none') {
       return true;
@@ -1567,11 +1568,12 @@ module.exports = React.createClass({
     }
     return false;
   },
+
   uploadDone: function (imageUrl) {
     this.props.onUpload(imageUrl);
   },
 
-  render() {
+  render: function () {
     return React.createElement(
       'form',
       { className: 'directUpload', style: { display: this.props.display } },
