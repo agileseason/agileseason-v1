@@ -144,6 +144,8 @@ describe BoardIssue do
 
     context 'open' do
       let(:issue_stat) { build(:issue_stat, due_date_at: 1.day.from_now) }
+      let(:issue) { stub_issue(state: 'open', closed_at: nil) }
+
       it { is_expected.to eq false }
     end
 
