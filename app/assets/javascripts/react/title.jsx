@@ -13,6 +13,7 @@ module.exports = React.createClass({
       textarea: 'none'
     };
   },
+
   componentDidMount: function() {
     var $textarea = $(this.refs.title);
     $textarea.on('blur', function() {
@@ -21,6 +22,7 @@ module.exports = React.createClass({
       }
     }.bind(this));
   },
+
   componentWillUpdate: function(newProps, newState) {
     if (newState.textarea == 'block') {
       var $textarea = $(this.refs.title);
@@ -74,7 +76,11 @@ module.exports = React.createClass({
         <h1 style={{display: this.state.h1}}>
           <span onClick={this.handleEditTitleClick}>{this.state.title}</span>
           <a href={this.props.url}>#{this.props.number}</a>
-          <CurrentDueDate data={this.props.dueDate} />
+          <CurrentDueDate
+            date={this.props.dueDate}
+            state={this.props.state}
+            closedAt={this.props.closedAt}
+          />
           <CurrentState data={this.props.state} />
         </h1>
         <textarea
@@ -100,14 +106,16 @@ module.exports = React.createClass({
 var CurrentState = React.createClass({
   render: function() {
     if (this.props.data == 'close' || this.props.data == 'closed' || this.props.data == 'unarchive') {
-      return(
+      return (
         <div className='current-state'>
           <span className='octicon octicon-issue-closed'></span>
           <span>Closed</span>
         </div>
       );
-    } else if (this.props.data == 'archive' || this.props.data == 'archived') {
-      return(
+    }
+
+    if (this.props.data == 'archive' || this.props.data == 'archived') {
+      return (
         <div className='states-box'>
           <div className='current-state'>
             <span className='octicon octicon-issue-closed'></span>
@@ -119,37 +127,55 @@ var CurrentState = React.createClass({
           </div>
         </div>
       );
-    } else {
-      return <span />
     }
+
+    return <span />
   }
 });
 
 var CurrentDueDate = React.createClass({
+  render: function() {
+    if (this.props.date) {
+      return (
+        <div
+          className={this.dueDateClasses()}
+          title='Due Date'
+        >
+          {this.getDate()}
+        </div>
+      );
+    }
+
+    return <span />
+  },
+
   getDate: function() {
-    var res = '';
-    if (this.props.data) {
+    if (this.props.date) {
       var date = this.dueDate();
       var yearStr = (new Date()).getUTCFullYear() == date.getUTCFullYear() ? '' : '.' + date.getUTCFullYear();
-      res = (date.getUTCDate()).pad() + '.' + (date.getUTCMonth() + 1).pad() + yearStr
-        + ' ' + (date.getUTCHours()).pad() + ':' + (date.getUTCMinutes()).pad();
+      var dateStr = (date.getUTCDate()).pad() + '.' + (date.getUTCMonth() + 1).pad() + yearStr;
+      var timeStr = (date.getUTCHours()).pad() + ':' + (date.getUTCMinutes()).pad();
+
+      return dateStr + ' ' + timeStr;
     }
-    return res;
+
+    return '';
   },
+
   dueDate: function() {
-    return new Date(this.props.data)
+    return new Date(this.props.date);
   },
+
   dueDateClasses: function() {
+    if (this.props.state == 'closed') {
+      var closedAt = new Date(this.props.closedAt);
+      if (closedAt <= this.dueDate()) { return 'current-due-date success'; }
+    }
+
     if (this.dueDate() < new Date()) {
-      return 'current-due-date passed'
+      return 'current-due-date passed';
     }
-    return 'current-due-date'
-  },
-  render: function() {
-    if (this.props.data) {
-      return <div className={this.dueDateClasses()} title='Due Date'>{this.getDate()}</div>;
-    } else {
-      return <span />
-    }
+
+    return 'current-due-date';
   }
 });

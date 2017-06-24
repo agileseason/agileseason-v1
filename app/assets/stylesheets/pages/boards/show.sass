@@ -375,12 +375,11 @@ $image-path: 'pages/p-boards-show'
         font-size: 12px
         font-weight: bold
         letter-spacing: -0.2px
-        padding: 2px 3px
+        padding: 2px 3px 2px 0
         &.passed
-          +border-radius(3px)
-          background: $due-date-passed
-          color: #fff
-          padding: 2px 4px
+          color: $due-date-passed
+        &.success
+          color: $due-date-success
 
         &.none
           display: none

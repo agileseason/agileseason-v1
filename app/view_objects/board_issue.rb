@@ -40,6 +40,19 @@ class BoardIssue
     issue_stat.due_date_at unless issue_stat.nil?
   end
 
+  def due_date_success?
+    return false unless due_date_at
+    return false unless closed?
+    issue.closed_at < due_date_at
+  end
+
+  def due_date_passed?
+    return false unless due_date_at
+    return false if closed? && due_date_at > closed_at
+
+    due_date_at < Time.current
+  end
+
   def column
     issue_stat.column unless issue_stat.nil?
   end
@@ -65,6 +78,7 @@ class BoardIssue
       columns: board.columns.map { |c| { id: c.id, name: c.name } },
       columnId: column_id,
       state: full_state,
+      closed_at: closed_at,
       isReady: ready?,
       color: color || IssueStats::Painter::DEFAULT_COLOR,
       commentCount: comments

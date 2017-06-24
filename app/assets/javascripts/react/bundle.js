@@ -671,6 +671,7 @@ $(document).on('turbolinks:load', function () {
     render: function () {
       this.setColor(this.state.currentColor);
       var githubIssueUrl = 'https://github.com/' + this.props.githubFullName + '/issues/' + this.props.issue.number;
+
       return React.createElement(
         'div',
         { className: this.modalClassName() },
@@ -678,10 +679,11 @@ $(document).on('turbolinks:load', function () {
           'div',
           { className: 'issue-content' },
           React.createElement(Title, {
-            number: this.props.issue.number,
             title: this.props.issue.title,
+            number: this.props.issue.number,
             url: githubIssueUrl,
             state: this.state.currentState,
+            closedAt: this.state.issue.closed_at,
             dueDate: this.state.currentDueDate,
             isReadonly: this.props.isReadonly,
             onUpdateTitle: this.handleUpdateTitle
@@ -1312,6 +1314,7 @@ module.exports = React.createClass({
       textarea: 'none'
     };
   },
+
   componentDidMount: function () {
     var $textarea = $(this.refs.title);
     $textarea.on('blur', (function () {
@@ -1320,6 +1323,7 @@ module.exports = React.createClass({
       }
     }).bind(this));
   },
+
   componentWillUpdate: function (newProps, newState) {
     if (newState.textarea == 'block') {
       var $textarea = $(this.refs.title);
@@ -1384,7 +1388,11 @@ module.exports = React.createClass({
           '#',
           this.props.number
         ),
-        React.createElement(CurrentDueDate, { data: this.props.dueDate }),
+        React.createElement(CurrentDueDate, {
+          date: this.props.dueDate,
+          state: this.props.state,
+          closedAt: this.props.closedAt
+        }),
         React.createElement(CurrentState, { data: this.props.state })
       ),
       React.createElement('textarea', {
@@ -1421,7 +1429,9 @@ var CurrentState = React.createClass({
           'Closed'
         )
       );
-    } else if (this.props.data == 'archive' || this.props.data == 'archived') {
+    }
+
+    if (this.props.data == 'archive' || this.props.data == 'archived') {
       return React.createElement(
         'div',
         { className: 'states-box' },
@@ -1446,43 +1456,60 @@ var CurrentState = React.createClass({
           )
         )
       );
-    } else {
-      return React.createElement('span', null);
     }
+
+    return React.createElement('span', null);
   }
 });
 
 var CurrentDueDate = React.createClass({
   displayName: 'CurrentDueDate',
 
+  render: function () {
+    if (this.props.date) {
+      return React.createElement(
+        'div',
+        {
+          className: this.dueDateClasses(),
+          title: 'Due Date'
+        },
+        this.getDate()
+      );
+    }
+
+    return React.createElement('span', null);
+  },
+
   getDate: function () {
-    var res = '';
-    if (this.props.data) {
+    if (this.props.date) {
       var date = this.dueDate();
       var yearStr = new Date().getUTCFullYear() == date.getUTCFullYear() ? '' : '.' + date.getUTCFullYear();
-      res = date.getUTCDate().pad() + '.' + (date.getUTCMonth() + 1).pad() + yearStr + ' ' + date.getUTCHours().pad() + ':' + date.getUTCMinutes().pad();
+      var dateStr = date.getUTCDate().pad() + '.' + (date.getUTCMonth() + 1).pad() + yearStr;
+      var timeStr = date.getUTCHours().pad() + ':' + date.getUTCMinutes().pad();
+
+      return dateStr + ' ' + timeStr;
     }
-    return res;
+
+    return '';
   },
+
   dueDate: function () {
-    return new Date(this.props.data);
+    return new Date(this.props.date);
   },
+
   dueDateClasses: function () {
+    if (this.props.state == 'closed') {
+      var closedAt = new Date(this.props.closedAt);
+      if (closedAt <= this.dueDate()) {
+        return 'current-due-date success';
+      }
+    }
+
     if (this.dueDate() < new Date()) {
       return 'current-due-date passed';
     }
+
     return 'current-due-date';
-  },
-  render: function () {
-    if (this.props.data) {
-      return React.createElement(
-        'div',
-        { className: this.dueDateClasses(), title: 'Due Date' },
-        this.getDate()
-      );
-    } else {
-      return React.createElement('span', null);
-    }
   }
 });
 
