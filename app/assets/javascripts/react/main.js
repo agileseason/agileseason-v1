@@ -241,14 +241,16 @@ $(document).on('turbolinks:load', function () {
       this.setColor(this.state.currentColor);
       var githubIssueUrl = 'https://github.com/' + this.props.githubFullName +
         '/issues/' + this.props.issue.number;
+
       return (
         <div className={this.modalClassName()}>
           <div className='issue-content'>
             <Title
-              number={this.props.issue.number}
               title={this.props.issue.title}
+              number={this.props.issue.number}
               url={githubIssueUrl}
               state={this.state.currentState}
+              closedAt={this.state.issue.closed_at}
               dueDate={this.state.currentDueDate}
               isReadonly={this.props.isReadonly}
               onUpdateTitle={this.handleUpdateTitle}

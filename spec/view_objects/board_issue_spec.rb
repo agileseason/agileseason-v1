@@ -132,6 +132,75 @@ describe BoardIssue do
     end
   end
 
+  describe '#due_date_success?' do
+    subject { board_issue.due_date_success? }
+
+    context 'without due_date_at' do
+      let(:issue_stat) { build(:issue_stat, due_date_at: nil) }
+      let(:issue) { stub_issue(state: 'closed', closed_at: 1.day.ago) }
+
+      it { is_expected.to eq false }
+    end
+
+    context 'open' do
+      let(:issue_stat) { build(:issue_stat, due_date_at: 1.day.from_now) }
+      let(:issue) { stub_issue(state: 'open', closed_at: nil) }
+
+      it { is_expected.to eq false }
+    end
+
+    context 'closed after due_date_at' do
+      let(:issue_stat) { build(:issue_stat, due_date_at: 2.day.ago) }
+      let(:issue) { stub_issue(state: 'closed', closed_at: 1.day.ago) }
+
+      it { is_expected.to eq false }
+    end
+
+    context 'closed before due_date_at' do
+      let(:issue_stat) { build(:issue_stat, due_date_at: 1.day.ago) }
+      let(:issue) { stub_issue(state: 'closed', closed_at: 2.day.ago) }
+
+      it { is_expected.to eq true }
+    end
+  end
+
+  describe '#due_date_passed?' do
+    subject { board_issue.due_date_passed? }
+
+    context 'without due_date_at' do
+      let(:issue_stat) { build(:issue_stat, due_date_at: nil) }
+      it { is_expected.to eq false }
+    end
+
+    context 'open and due_date_at in future' do
+      let(:issue_stat) { build(:issue_stat, due_date_at: 1.day.from_now) }
+      let(:issue) { stub_issue(state: 'open') }
+
+      it { is_expected.to eq false }
+    end
+
+    context 'open and due_date_at in past' do
+      let(:issue_stat) { build(:issue_stat, due_date_at: 1.day.ago) }
+      let(:issue) { stub_issue(state: 'open') }
+
+      it { is_expected.to eq true }
+    end
+
+    context 'closed before due_date_at' do
+      let(:issue_stat) { build(:issue_stat, due_date_at: 1.day.ago) }
+      let(:issue) { stub_issue(state: 'closed', closed_at: 2.day.ago) }
+
+      it { is_expected.to eq false }
+    end
+
+    context 'closed after due_date_at' do
+      let(:issue_stat) { build(:issue_stat, due_date_at: 2.day.ago) }
+      let(:issue) { stub_issue(state: 'closed', closed_at: 1.day.ago) }
+
+      it { is_expected.to eq true }
+    end
+  end
+
   describe '#column' do
     subject { board_issue.column }
 
