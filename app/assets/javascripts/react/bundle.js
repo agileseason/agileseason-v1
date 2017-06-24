@@ -1498,7 +1498,7 @@ var CurrentDueDate = React.createClass({
   },
 
   dueDateClasses: function () {
-    if (this.props.state == 'closed') {
+    if (this.props.state == 'closed' || this.props.state == 'close') {
       var closedAt = new Date(this.props.closedAt);
       if (closedAt <= this.dueDate()) {
         return 'current-due-date success';
