@@ -1380,7 +1380,7 @@ module.exports = React.createClass({
         React.createElement(
           'span',
           { onClick: this.handleEditTitleClick },
-          this.state.title
+          `${ this.state.title }\n`
         ),
         React.createElement(
           'a',
