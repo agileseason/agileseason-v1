@@ -75,7 +75,7 @@ module.exports = React.createClass({
       <div className='issue-title'>
         <h1 style={{display: this.state.h1}}>
           <span onClick={this.handleEditTitleClick}>
-            {`${this.state.title}\n`}
+            {this.state.title + "\n"}
           </span>
           <a href={this.props.url}>#{this.props.number}</a>
           <CurrentDueDate

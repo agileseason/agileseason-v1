@@ -388,11 +388,7 @@ $(document).on('turbolinks:load', function () {
       this.props.onColorChange(color, name);
     },
     handleEditButtonClick: function() {
-      if (this.state.overlay == 'none') {
-        overlay = 'block';
-      } else {
-        overlay = 'none';
-      }
+      var overlay = this.state.overlay == 'none' ? 'block' : 'none';
       this.setState({overlay: overlay});
     },
     render: function() {
@@ -421,12 +417,8 @@ $(document).on('turbolinks:load', function () {
       return { data: this.props.data, overlay: 'none' };
     },
     handleEditButtonClick: function() {
-      $('.assignee-list').toggleClass('hidden');
-      state = { overlay: 'block' };
-      if ($('.assignee-list').hasClass('hidden')) {
-        state = { overlay: 'none'};
-      }
-      this.setState(state);
+      var overlay = this.state.overlay == 'none' ? 'block' : 'none';
+      this.setState({overlay: overlay});
     },
     render: function() {
       var assigneeNodes = this.state.data.map(function(user) {
@@ -434,19 +426,23 @@ $(document).on('turbolinks:load', function () {
         return (
           <Assignee
             key={user.login}
-            user={user}
             assigned={isAssigned}
             onAssigneeChange={this.props.onAssigneeChange}
+            user={user}
           >
             {user.login}
           </Assignee>
         );
       }.bind(this));
+
+      const assigneListClass = this.state.overlay == 'none'
+        ? 'assignee-list hidden'
+        : 'assignee-list';
       return (
         <div>
           <EditButton name='Assignee' onButtonClick={this.handleEditButtonClick} icon='octicon octicon-person' />
           <PopoverOverlay display={this.state.overlay} onOverlayClick={this.handleEditButtonClick} />
-          <div className='assignee-list hidden'>
+          <div className={assigneListClass}>
             {assigneeNodes}
           </div>
         </div>
@@ -475,15 +471,11 @@ $(document).on('turbolinks:load', function () {
 
   var LabelList = React.createClass({
     getInitialState: function() {
-      return { data: this.props.data, labelOverlay: 'none' };
+      return { data: this.props.data, overlay: 'none' };
     },
     handleEditButtonClick: function() {
-      $('.label-list').toggleClass('hidden');
-      if ($('.label-list').hasClass('hidden')) {
-        this.setState({labelOverlay: 'none'});
-      } else {
-        this.setState({labelOverlay: 'block'});
-      }
+      var overlay = this.state.overlay == 'none' ? 'block' : 'none';
+      this.setState({overlay: overlay});
     },
     render: function() {
       var labelNodes = this.props.data.map(function(label) {
@@ -493,11 +485,16 @@ $(document).on('turbolinks:load', function () {
           </Label>
         );
       }.bind(this));
+
+      const labelListClass = this.state.overlay == 'none'
+        ? 'label-list hidden'
+        : 'label-list';
+
       return (
         <div>
           <EditButton name='Labels' onButtonClick={this.handleEditButtonClick} icon='octicon octicon-tag' />
-          <PopoverOverlay display={this.state.labelOverlay} onOverlayClick={this.handleEditButtonClick} />
-          <div className='label-list hidden'>
+          <PopoverOverlay display={this.state.overlay} onOverlayClick={this.handleEditButtonClick} />
+          <div className={labelListClass}>
             {labelNodes}
           </div>
         </div>

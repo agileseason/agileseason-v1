@@ -843,11 +843,7 @@ $(document).on('turbolinks:load', function () {
       this.props.onColorChange(color, name);
     },
     handleEditButtonClick: function () {
-      if (this.state.overlay == 'none') {
-        overlay = 'block';
-      } else {
-        overlay = 'none';
-      }
+      var overlay = this.state.overlay == 'none' ? 'block' : 'none';
       this.setState({ overlay: overlay });
     },
     render: function () {
@@ -878,12 +874,8 @@ $(document).on('turbolinks:load', function () {
       return { data: this.props.data, overlay: 'none' };
     },
     handleEditButtonClick: function () {
-      $('.assignee-list').toggleClass('hidden');
-      state = { overlay: 'block' };
-      if ($('.assignee-list').hasClass('hidden')) {
-        state = { overlay: 'none' };
-      }
-      this.setState(state);
+      var overlay = this.state.overlay == 'none' ? 'block' : 'none';
+      this.setState({ overlay: overlay });
     },
     render: function () {
       var assigneeNodes = this.state.data.map((function (user) {
@@ -892,13 +884,15 @@ $(document).on('turbolinks:load', function () {
           Assignee,
           {
             key: user.login,
-            user: user,
             assigned: isAssigned,
-            onAssigneeChange: this.props.onAssigneeChange
+            onAssigneeChange: this.props.onAssigneeChange,
+            user: user
           },
           user.login
         );
       }).bind(this));
+
+      const assigneListClass = this.state.overlay == 'none' ? 'assignee-list hidden' : 'assignee-list';
       return React.createElement(
         'div',
         null,
@@ -906,7 +900,7 @@ $(document).on('turbolinks:load', function () {
         React.createElement(PopoverOverlay, { display: this.state.overlay, onOverlayClick: this.handleEditButtonClick }),
         React.createElement(
           'div',
-          { className: 'assignee-list hidden' },
+          { className: assigneListClass },
           assigneeNodes
         )
       );
@@ -939,15 +933,11 @@ $(document).on('turbolinks:load', function () {
     displayName: 'LabelList',
 
     getInitialState: function () {
-      return { data: this.props.data, labelOverlay: 'none' };
+      return { data: this.props.data, overlay: 'none' };
     },
     handleEditButtonClick: function () {
-      $('.label-list').toggleClass('hidden');
-      if ($('.label-list').hasClass('hidden')) {
-        this.setState({ labelOverlay: 'none' });
-      } else {
-        this.setState({ labelOverlay: 'block' });
-      }
+      var overlay = this.state.overlay == 'none' ? 'block' : 'none';
+      this.setState({ overlay: overlay });
     },
     render: function () {
       var labelNodes = this.props.data.map((function (label) {
@@ -957,14 +947,17 @@ $(document).on('turbolinks:load', function () {
           label.name
         );
       }).bind(this));
+
+      const labelListClass = this.state.overlay == 'none' ? 'label-list hidden' : 'label-list';
+
       return React.createElement(
         'div',
         null,
         React.createElement(EditButton, { name: 'Labels', onButtonClick: this.handleEditButtonClick, icon: 'octicon octicon-tag' }),
-        React.createElement(PopoverOverlay, { display: this.state.labelOverlay, onOverlayClick: this.handleEditButtonClick }),
+        React.createElement(PopoverOverlay, { display: this.state.overlay, onOverlayClick: this.handleEditButtonClick }),
         React.createElement(
           'div',
-          { className: 'label-list hidden' },
+          { className: labelListClass },
           labelNodes
         )
       );
@@ -1380,7 +1373,7 @@ module.exports = React.createClass({
         React.createElement(
           'span',
           { onClick: this.handleEditTitleClick },
-          `${ this.state.title }\n`
+          this.state.title + "\n"
         ),
         React.createElement(
           'a',
