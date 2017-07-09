@@ -435,12 +435,14 @@ $(document).on('turbolinks:load', function () {
         );
       }.bind(this));
 
-      const listHiddenClass = this.state.overlay == 'none' ? 'hidden' : '';
+      const assigneListClass = this.state.overlay == 'none'
+        ? 'assignee-list hidden'
+        : 'assignee-list';
       return (
         <div>
           <EditButton name='Assignee' onButtonClick={this.handleEditButtonClick} icon='octicon octicon-person' />
           <PopoverOverlay display={this.state.overlay} onOverlayClick={this.handleEditButtonClick} />
-          <div className={`assignee-list ${listHiddenClass}`}>
+          <div className={assigneListClass}>
             {assigneeNodes}
           </div>
         </div>
@@ -484,12 +486,15 @@ $(document).on('turbolinks:load', function () {
         );
       }.bind(this));
 
-      const listHiddenClass = this.state.overlay == 'none' ? 'hidden' : '';
+      const labelListClass = this.state.overlay == 'none'
+        ? 'label-list hidden'
+        : 'label-list';
+
       return (
         <div>
           <EditButton name='Labels' onButtonClick={this.handleEditButtonClick} icon='octicon octicon-tag' />
           <PopoverOverlay display={this.state.overlay} onOverlayClick={this.handleEditButtonClick} />
-          <div className={`label-list ${listHiddenClass}`}>
+          <div className={labelListClass}>
             {labelNodes}
           </div>
         </div>

@@ -892,7 +892,7 @@ $(document).on('turbolinks:load', function () {
         );
       }).bind(this));
 
-      const listHiddenClass = this.state.overlay == 'none' ? 'hidden' : '';
+      const assigneListClass = this.state.overlay == 'none' ? 'assignee-list hidden' : 'assignee-list';
       return React.createElement(
         'div',
         null,
@@ -900,7 +900,7 @@ $(document).on('turbolinks:load', function () {
         React.createElement(PopoverOverlay, { display: this.state.overlay, onOverlayClick: this.handleEditButtonClick }),
         React.createElement(
           'div',
-          { className: `assignee-list ${ listHiddenClass }` },
+          { className: assigneListClass },
           assigneeNodes
         )
       );
@@ -948,7 +948,8 @@ $(document).on('turbolinks:load', function () {
         );
       }).bind(this));
 
-      const listHiddenClass = this.state.overlay == 'none' ? 'hidden' : '';
+      const labelListClass = this.state.overlay == 'none' ? 'label-list hidden' : 'label-list';
+
       return React.createElement(
         'div',
         null,
@@ -956,7 +957,7 @@ $(document).on('turbolinks:load', function () {
         React.createElement(PopoverOverlay, { display: this.state.overlay, onOverlayClick: this.handleEditButtonClick }),
         React.createElement(
           'div',
-          { className: `label-list ${ listHiddenClass }` },
+          { className: labelListClass },
           labelNodes
         )
       );
@@ -1372,7 +1373,7 @@ module.exports = React.createClass({
         React.createElement(
           'span',
           { onClick: this.handleEditTitleClick },
-          `${ this.state.title }\n`
+          this.state.title + "\n"
         ),
         React.createElement(
           'a',
