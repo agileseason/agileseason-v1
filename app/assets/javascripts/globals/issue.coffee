@@ -13,12 +13,13 @@ class @Issue
         $column = $("#column_#{column_id}")
         if $column.data('auto-close')
           @node.addClass('closed')
+
         if $column.data('auto-assign')
           $board = $('.board')
           login = $board.data('login')
           htmlUrl = $board.data('html-url')
           avatarUrl = $board.data('avatar-url')
-          @node.find('.b-assignee').replaceWith(
+          @node.find('.b-assignee.js-assignee-none').replaceWith(
             "<div class='b-assignee'><a class='user' href='#{htmlUrl}' title='#{login}'>" +
             "<img class='avatar' src='#{avatarUrl}' /></a></div>"
           )
