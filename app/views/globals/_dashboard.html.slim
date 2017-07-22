@@ -6,7 +6,10 @@
     img.avatar src="#{github_avatar_url(current_user)}"
     .name
       span #{current_user}&nbsp;&mdash;&nbsp;
-      a.sign-out href="#{sign_out_url}" sign out
+      a.sign-out [
+        href="#{sign_out_url}"
+        data-no-turbolink='true'
+      ] sign out
 
 .board-lists
   - if action_full_name == 'boards-index'
@@ -26,3 +29,10 @@
 
   .new-board-form
     .b-preloader.blue-medium
+
+  div.note
+    a [
+      href='https://github.com/agileseason/agileseason/wiki/Troubleshooting#why-cant-i-see-my-github-organizations-repositories'
+      target='_blank'
+    ]
+      | Why can't I see my GitHub organization's repositories?
