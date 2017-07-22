@@ -34,6 +34,10 @@ Look at the our development board for example - [agileseason.com](https://agiles
 - [x] Cycle Time Diagram
 - [x] [Age of Issues](https://agileseason.com/docs/age)
 
+### Troubleshooting
+
+1. [Why can't I see my Github organization's repositories?](https://github.com/agileseason/agileseason/wiki/Troubleshooting#why-cant-i-see-my-github-organizations-repositories)
+
 ## Development
 
 ### Getting Started
