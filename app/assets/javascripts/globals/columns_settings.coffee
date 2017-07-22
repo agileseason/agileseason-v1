@@ -29,6 +29,11 @@ class @ColumnsSettings extends View
 
   _toggle_autoassign: =>
     @$('.autoassign').toggleClass 'active'
+    @board_column = @$root.parent('.board-column')
+    is_auto_assign = !@board_column.data('auto-assign')
+    @board_column
+      .attr('data-auto-assign', is_auto_assign)
+      .data('auto-assign', is_auto_assign)
 
   _fade_out_column: =>
     @$root.fadeOut()
