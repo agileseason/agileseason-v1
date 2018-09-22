@@ -7,6 +7,10 @@ Agile Season
 [![Code Climate](https://codeclimate.com/github/agileseason/agileseason/badges/gpa.svg)](https://codeclimate.com/github/agileseason/agileseason)
 [![Codeship Status for agileseason/agileseason](https://codeship.com/projects/79aa4950-4c53-0132-44ef-36f51938a765/status)](https://codeship.com/projects/47044)
 
+## [DEPRECATED] Not maintained
+The first version of **Agile Season** reach End-Of-Life **October 15th**.
+If you are interested in this project you can try [2.agileseason.com](https://2.agileseason.com) based on GitHub Apps without access to code.
+
 Look at the our development board for example - [agileseason.com](https://agileseason.com/boards/agileseason/agileseason)
 
 ![Board example](https://github.com/agileseason/agileseason/blob/master/doc/help/board_features/board_example.png)
