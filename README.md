@@ -14,8 +14,6 @@ If you are interested in this project you can try [Agile Season II](https://agil
 
 ---
 
-Look at the our development board for example - [agileseason.com](https://agileseason.com/boards/agileseason/agileseason)
-
 ![Board example](https://github.com/agileseason/agileseason/blob/master/doc/help/board_features/board_example.png)
 
 ## Features List
