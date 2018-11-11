@@ -9,7 +9,7 @@ Agile Season
 
 ## [DEPRECATED] Not maintained
 The first version of **Agile Season** reach End-Of-Life **October 15th**.
-If you are interested in this project you can try [2.agileseason.com](https://2.agileseason.com) based on GitHub Apps without access to code.
+If you are interested in this project you can try [Agile Season II](https://agileseason.com) based on GitHub Apps without access to code.
 
 ---
 
