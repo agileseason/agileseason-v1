@@ -1,9 +1,0 @@
-- if column.visible_issue_stats.size > 4 || k(column).wip_status != :normal
-  span.badge [
-    class="#{k(column).wip_status}"
-    title='Work in progress limit'
-  ]
-    = column.visible_issue_stats.size
-- else
-  // NOTE : It is container for wip badge after 'MoveTo' and 'Archive'.
-  span.badge

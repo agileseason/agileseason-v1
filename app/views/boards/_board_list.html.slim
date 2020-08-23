@@ -1,5 +1,0 @@
-.board-list
-  - @boards_lists.select { |list| list[:boards].present? }.each do |list|
-    .title = list[:title]
-    ul.list.boards class=list[:html_class]
-      = render partial: 'boards/board', collection: list[:boards], as: :board

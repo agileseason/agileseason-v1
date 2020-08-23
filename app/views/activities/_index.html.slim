@@ -1,7 +1,0 @@
-- @activities.each do |activity|
-  .activity
-    img.avatar src="#{github_avatar_url(activity.user)}"
-    .description
-      a.user href=activity.user.github_url = activity.user.github_username
-      == activity.description(un modal_data_board_issues_url(@board, activity.issue_stat.number))
-      .date = "#{activity.created_at.strftime('%B %-d')} at #{activity.created_at.strftime('%H:%M')}"

@@ -1,8 +1,0 @@
-ul.b-submenu
-  - submenu.each do |item|
-    li
-      a [
-        class="#{:active if params[:controller] == item.controller}"
-        href="#{un item.url}"
-      ] = item.name
-
