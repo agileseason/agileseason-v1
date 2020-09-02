@@ -8,7 +8,7 @@ Agile Season
 [![Codeship Status for agileseason/agileseason](https://codeship.com/projects/79aa4950-4c53-0132-44ef-36f51938a765/status)](https://codeship.com/projects/47044)
 
 ## [DEPRECATED] Not maintained
-The first version of **Agile Season** reach End-Of-Life **October 15th**.
+The first version of **Agile Season** reach End-Of-Life **October 15th (2018)**.
 
 If you are interested in this project you can try [Agile Season II](https://agileseason.com) based on GitHub Apps without access to code.
 
