@@ -16,7 +16,7 @@ v3 in development https://github.com/agileseason/agileseason
 
 ---
 
-![Board example](https://github.com/agileseason/agileseason/blob/master/doc/help/board_features/board_example.png)
+![Board example](https://github.com/agileseason/agileseason-v1/blob/master/doc/help/board_features/board_example.png)
 
 ## Features List
 
