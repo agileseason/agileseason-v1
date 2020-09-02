@@ -12,6 +12,8 @@ The first version of **Agile Season** reach End-Of-Life **October 15th**.
 
 If you are interested in this project you can try [Agile Season II](https://agileseason.com) based on GitHub Apps without access to code.
 
+v3 in development https://github.com/agileseason/agileseason
+
 ---
 
 ![Board example](https://github.com/agileseason/agileseason/blob/master/doc/help/board_features/board_example.png)
